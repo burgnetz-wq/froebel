@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Lesetraining">
+  <title>Thüringer Lesetraining · iPad-optimiert</title>
+  <style>
+    :root{
+      --bg:#fcfaf2;--card:#fffdf7;--text:#2c3e50;--muted:#607080;--line:#e5dcc7;--accent:#557f9f;--accent2:#d9844c;--good:#2f7d59;--warn:#a75c23;--bad:#a94442;--focus:#e74c3c;--hi:#ffe0b2;--mark:#fff08a;--font-size:1.05rem;--line-height:1.8;--letter-spacing:.12em;--shadow:0 14px 34px rgba(44,62,80,.10);--radius:24px;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;background:radial-gradient(circle at 5% 0%,#e9f5f8 0 280px,transparent 420px),radial-gradient(circle at 100% 20%,#fff0d2 0 260px,transparent 420px),var(--bg);color:var(--text);font-family:"Helvetica Neue",Arial,sans-serif;font-size:var(--font-size);line-height:var(--line-height);letter-spacing:var(--letter-spacing);word-spacing:.2em} body.high-contrast{--bg:#fff;--card:#fff;--text:#000;--muted:#111;--line:#000;--accent:#000;--accent2:#000;--hi:#ddd;--mark:#ccc;background:#fff} body.no-anim *, body.no-anim *::before, body.no-anim *::after{transition:none!important;animation:none!important;scroll-behavior:auto!important}
+    a,button,input,textarea,select{font:inherit} button{letter-spacing:.06em} :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+    .topbar{position:sticky;top:0;z-index:10;display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;padding:.65rem 1rem;border-bottom:2px solid var(--line);background:rgba(252,250,242,.96);backdrop-filter:blur(10px)} .topbar strong{margin-right:auto}.btn{border:2px solid var(--line);background:#fff;color:var(--text);border-radius:999px;padding:.65rem .95rem;cursor:pointer;box-shadow:0 4px 12px rgba(44,62,80,.06)}.btn:hover{transform:translateY(-1px);border-color:var(--accent)}.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}.btn.orange{background:#fff3e4}.btn.active{background:var(--hi);border-color:var(--accent2)}.btn.small{font-size:.92rem;padding:.45rem .7rem}.app{max-width:1240px;margin:0 auto;padding:1.25rem 1rem 4rem} header.hero{background:rgba(255,253,247,.92);border:2px solid var(--line);border-radius:var(--radius);padding:clamp(1.2rem,3vw,2.2rem);box-shadow:var(--shadow);margin:1rem 0 1.3rem} h1,h2,h3{line-height:1.35;word-spacing:.12em;margin-top:0} h1{font-size:clamp(2rem,5vw,3.5rem);margin-bottom:.4rem}.muted{color:var(--muted)}
+    .panel{background:rgba(255,253,247,.94);border:2px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.2rem;margin:1rem 0}.strategy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}.phase{border:2px solid var(--line);border-radius:20px;background:#fff;padding:1rem}.phase summary{font-weight:800;cursor:pointer}.phase label{display:block;margin:.6rem 0}.matrix{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.9rem}.level-tile{border:2px solid var(--line);border-radius:20px;background:#fff;padding:1rem}.level-tile button{width:100%;margin-top:.6rem}.progress-wrap{height:22px;background:#eee4cd;border:1px solid var(--line);border-radius:999px;overflow:hidden}.progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#8bc6a1,#557f9f);transition:width .4s ease}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}.card{display:flex;flex-direction:column;align-items:flex-start;text-align:left;min-height:205px;border:2px solid var(--line);border-radius:22px;background:#fff;padding:1rem;box-shadow:0 6px 18px rgba(44,62,80,.07);cursor:pointer}.card:hover{transform:translateY(-2px);border-color:var(--accent)}.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.15rem .55rem;background:#f4f8fa;font-size:.88rem;margin:.15rem}.done{border-color:var(--good)!important;background:#f5fff8}.view{display:none}.view.active{display:block}.reader-head{display:flex;gap:1rem;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}.tools{display:flex;gap:.6rem;flex-wrap:wrap;margin:.8rem 0}.reading{font-size:1.15em;line-height:calc(var(--line-height) + .15);letter-spacing:calc(var(--letter-spacing) + .02em);background:#fff;border:2px solid var(--line);border-radius:22px;padding:1.25rem;margin:1rem 0;white-space:pre-wrap}.word{border-radius:.4em;padding:.02em .08em;cursor:pointer}.word.current{background:var(--hi);box-shadow:0 0 0 3px rgba(217,132,76,.25)}.word.marked{background:var(--mark)}.word.evidencePick{background:#cdebd8;box-shadow:0 0 0 2px #74aa87}.task{border:2px solid var(--line);border-radius:20px;background:#fff;padding:1rem;margin:1rem 0}.task legend,.task h3{font-weight:800}.feedback{margin-top:.7rem;padding:.75rem;border-radius:14px;background:#f7fbfd;border-left:6px solid var(--accent);min-height:2.5rem}.feedback.good{border-left-color:var(--good);background:#f4fff8}.feedback.warn{border-left-color:var(--warn);background:#fff8ed}.feedback.bad{border-left-color:var(--bad);background:#fff4f4} textarea,input[type="text"],input[type="password"]{width:100%;border:2px solid var(--line);border-radius:16px;padding:.8rem;background:#fff;color:var(--text);letter-spacing:.07em;line-height:1.6} textarea{min-height:100px;resize:vertical}.teacher-list{display:grid;gap:1rem}.solution{border:2px solid var(--line);border-radius:18px;background:#fff;padding:1rem}.print-only{display:none}.sr-only{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+
+    /* Tablet- und iPad-Optimierung: große Touchflächen, keine Hover-Pflicht, stabile Bedienung */
+    html, body{min-height:100%;-webkit-text-size-adjust:100%;touch-action:manipulation}
+    .topbar{padding-top:calc(.65rem + env(safe-area-inset-top));}
+    .btn,.card,summary,label,input[type="checkbox"],input[type="radio"]{touch-action:manipulation;-webkit-tap-highlight-color:rgba(85,127,159,.22)}
+    .btn{min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:.35rem}
+    .btn.small{min-height:44px;padding:.55rem .8rem}
+    input[type="checkbox"],input[type="radio"]{width:1.25rem;height:1.25rem;margin-right:.45rem;vertical-align:middle}
+    textarea,input[type="text"],input[type="password"]{font-size:16px;min-height:48px}
+    .reading{user-select:text;-webkit-user-select:text;overflow-wrap:anywhere}
+    .word{display:inline-block;min-height:1.35em;min-width:.35em}
+    @media (hover:none){.btn:hover,.card:hover{transform:none}.card:active,.btn:active{filter:brightness(.97)}}
+    @media(max-width:1024px){.app{padding:1rem .85rem 5.5rem}.topbar{gap:.45rem}.topbar strong{width:100%;font-size:1rem}.strategy-grid,.matrix,.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.card{min-height:190px}.tools{position:sticky;top:calc(54px + env(safe-area-inset-top));z-index:8;background:rgba(252,250,242,.96);border:2px solid var(--line);border-radius:20px;padding:.6rem;backdrop-filter:blur(10px)}}
+    @media(max-width:760px){.strategy-grid,.matrix,.cards{grid-template-columns:1fr}.topbar{position:static}.tools{position:static}.btn{width:100%;justify-content:center}.btn.small{width:auto;flex:1 1 calc(50% - .5rem)}.reader-head{display:block}.reading{font-size:1.08em;padding:1rem;line-height:calc(var(--line-height) + .25)}.panel{padding:1rem}.card{min-height:auto}}
+    @media print{body{background:#fff!important;color:#000!important;font-size:12pt;letter-spacing:0!important;word-spacing:normal!important;line-height:1.45!important}.topbar,header.hero,#dashboard,#teacherPanel,.tools,.strategy-grid,.matrix,.progressbox,.no-print,.btn,footer{display:none!important}.app{max-width:none;padding:0}.view{display:block!important}.panel,.task,.reading{box-shadow:none!important;border:1px solid #000!important;background:#fff!important;border-radius:0!important}.reading{font-size:12pt!important;letter-spacing:0!important;word-spacing:normal!important;line-height:1.5!important}.print-only{display:block!important}textarea,input{border:1px solid #000!important}.word{padding:0!important}.word.marked,.word.current,.word.evidencePick{background:transparent!important;box-shadow:none!important}}
+  </style>
+</head>
+<body>
+  <nav class="topbar no-print" aria-label="Barrierefreiheit und Bedienung">
+    <strong>Lesetraining Thüringen</strong>
+    <button class="btn small" id="fontPlus">A+</button><button class="btn small" id="fontMinus">A-</button>
+    <button class="btn small" id="linePlus">↕+</button><button class="btn small" id="lineMinus">↕-</button>
+    <button class="btn small" id="contrastBtn">Kontrastmodus</button>
+    <button class="btn small" id="animBtn">Animationsfrei</button>
+    <button class="btn small" id="teacherBtn">Lehrer-Modus</button>
+  </nav>
+  <main class="app">
+    <header class="hero no-print">
+      <h1>Interaktive Lesekompetenz-Applikation</h1>
+      <p class="muted">20 Thüringen-Texte mit LRS-freundlichem Layout, Vorlesen, Wort-Highlighting, Markierwerkzeug, Aufgabenfeedback, Druckansicht und lokalem Lernstand.</p>
+    </header>
+
+    <section id="dashboard" class="view active" aria-labelledby="dashTitle">
+      <section class="panel" aria-labelledby="trainTitle">
+        <h2 id="trainTitle">So trainierst du Lesen!</h2>
+        <div class="strategy-grid">
+          <details class="phase" open><summary>Phase 1: Vor dem Lesen</summary><label><input type="checkbox"> Erst überfliegen: Worum geht es? Titel und Textsorte prüfen.</label></details>
+          <details class="phase" open><summary>Phase 2: Während des Lesens</summary><label><input id="strategyMark" type="checkbox"> Schlüsselwörter markieren.</label><label><input type="checkbox"> Genau lesen: Wer macht was, wo und warum?</label><p class="muted">Wenn „Schlüsselwörter markieren“ aktiv ist, kannst du Wörter im Lesetext anklicken oder antippen.</p></details>
+          <details class="phase" open><summary>Phase 3: Nach dem Lesen</summary><label><input type="checkbox"> Fragen beantworten.</label><label><input type="checkbox"> Antwort mit Textstelle prüfen.</label><label for="globalSummary">In einem Satz zusammenfassen:</label><textarea id="globalSummary" placeholder="Schreibe hier einen Übungssatz, bevor du einen Text auswählst."></textarea></details>
+        </div>
+      </section>
+      <section class="panel progressbox" aria-labelledby="progressTitle"><h2 id="progressTitle">Lernstand</h2><div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div><p id="progressText" class="muted" aria-live="polite"></p></section>
+      <section class="panel" aria-labelledby="dashTitle"><h2 id="dashTitle">Niveaustufen-Matrix</h2><div id="matrix" class="matrix"></div></section>
+      <section class="panel" aria-labelledby="textsTitle"><h2 id="textsTitle">Textauswahl</h2><div id="cards" class="cards"></div></section>
+    </section>
+
+    <section id="reader" class="view" aria-labelledby="readerTitle">
+      <article class="panel">
+        <div class="reader-head">
+          <div><p id="readerMeta" class="muted"></p><h2 id="readerTitle"></h2></div>
+          <button class="btn no-print" id="backBtn">← Zur Übersicht</button>
+        </div>
+        <div class="tools no-print" aria-label="Lesewerkzeuge">
+          <button class="btn primary" id="speakNormal">▶ Normal</button><button class="btn primary" id="speakSlow">▶ Langsam & deutlich</button><button class="btn primary" id="speakVerySlow">▶ Ganz langsam</button><button class="btn orange" id="stopSpeak">■ Stoppen</button><button class="btn" id="highlightToggle">Wort-Highlighting an</button><button class="btn" id="markToggle">Markierwerkzeug</button><button class="btn" id="printBtn">Arbeitsblatt drucken</button>
+        </div>
+        <p id="liveStatus" class="muted" aria-live="polite"></p>
+        <div id="readingText" class="reading" tabindex="0" aria-label="Lesetext"></div>
+        <p class="print-only">Name: __________________________ Klasse: ______ Datum: __________</p>
+        <section class="task" aria-labelledby="summaryTitle"><h3 id="summaryTitle">Eigene Zusammenfassung</h3><label for="summaryBox">Fasse den Text in einem Satz zusammen.</label><textarea id="summaryBox"></textarea></section>
+        <section id="tasks"></section>
+      </article>
+    </section>
+
+    <section id="teacherPanel" class="panel view no-print" aria-labelledby="teacherPanelTitle"><h2 id="teacherPanelTitle">Lehrer-Dashboard</h2><p class="muted">Ohne Passwort zugänglich. Enthält Erwartungshorizonte, Differenzierungshinweise und Metadaten.</p><div class="tools"><button class="btn" id="closeTeacher">Schließen</button><button class="btn" id="resetProgress">Lernstand zurücksetzen</button></div><div id="teacherContent" class="teacher-list"></div></section>
+  </main>
+  <footer class="no-print muted" style="text-align:center;padding:2rem">Hinweis: Der Lernstand bleibt nur lokal in diesem Browser gespeichert.</footer>
+<script>
+const TEXTS = [
+  {
+    "id": "b1",
+    "level": "Basisstufe",
+    "levelNo": 1,
+    "type": "Fabel",
+    "title": "Der Rabe an der Saale",
+    "region": "Saale / Jena",
+    "grade": "5/6",
+    "duration": "20–25 Minuten",
+    "competence": "Einfache Informationen direkt entnehmen; Figurenhandlung erkennen.",
+    "diff": "Vorlesen langsam starten; Schlüsselwörter „Rabe“, „Fisch“, „teilt“ markieren lassen.",
+    "text": "An der Saale saß ein Rabe auf einem Stein. Im Wasser glänzte ein kleiner Fisch. Der Rabe wollte ihn ganz allein fressen. Da kam eine Ente vorbei und sagte: „Wenn du teilst, bekommst du vielleicht auch morgen Hilfe.“ Der Rabe dachte kurz nach. Dann legte er ein Stück Fisch auf ein Blatt und schob es zur Ente. Am nächsten Tag fand der Rabe einen Faden um seinen Fuß. Die Ente zog daran und befreite ihn.",
+    "mcQ": "Was lernt der Rabe in der Fabel?",
+    "mc": [
+      "Er lernt, dass Teilen hilfreich sein kann.",
+      "Er lernt, schneller zu fliegen.",
+      "Er lernt, Fische zu zählen."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle zeigt, dass die Ente dem Raben später hilft?",
+    "evidenceA": "Die Ente zog daran und befreite ihn.",
+    "evidenceHint": "Lies den letzten Abschnitt noch einmal. Dort wird die Hilfe der Ente beschrieben.",
+    "inferQ": "Was bedeutet „befreite ihn“ im Text?",
+    "inferA": "Die Ente hilft dem Raben, den Faden vom Fuß loszuwerden.",
+    "openQ": "Warum passt die Überschrift „Teilen hilft“ zu dieser Fabel? Begründe kurz.",
+    "openA": "Die Überschrift passt, weil der Rabe erst teilt und später selbst Hilfe bekommt."
+  },
+  {
+    "id": "b2",
+    "level": "Basisstufe",
+    "levelNo": 1,
+    "type": "Sage",
+    "title": "Die Nixe vom Hohenwartestausee",
+    "region": "Saaleland",
+    "grade": "5/6",
+    "duration": "20 Minuten",
+    "competence": "Ort, Figur und zentrale Handlung erkennen.",
+    "diff": "Text in zwei Abschnitte teilen; Nixe und Mädchen farbig markieren.",
+    "text": "Am Hohenwartestausee erzählten alte Leute von einer Nixe. Sie sollte in klaren Nächten leise singen. Ein Mädchen hörte das Lied am Ufer. Es ging aber nicht ins Wasser, sondern blieb bei seiner Laterne stehen. Die Nixe tauchte auf und zeigte auf einen verlorenen Ring im Sand. Das Mädchen hob den Ring auf und brachte ihn am nächsten Tag ins Dorf zurück.",
+    "mcQ": "Was findet das Mädchen am Ufer?",
+    "mc": [
+      "Einen verlorenen Ring.",
+      "Ein goldenes Boot.",
+      "Eine alte Krone."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle zeigt, dass das Mädchen vorsichtig bleibt?",
+    "evidenceA": "Es ging aber nicht ins Wasser, sondern blieb bei seiner Laterne stehen.",
+    "evidenceHint": "Lies den mittleren Teil. Dort steht, was das Mädchen nicht tut.",
+    "inferQ": "Was bedeutet „tauchte auf“ im Text?",
+    "inferA": "Die Nixe kommt aus dem Wasser hervor.",
+    "openQ": "Findest du das Verhalten des Mädchens klug? Begründe mit einem Satz.",
+    "openA": "Ja, weil es am Ufer bleibt und nicht unvorsichtig ins Wasser geht."
+  },
+  {
+    "id": "b3",
+    "level": "Basisstufe",
+    "levelNo": 1,
+    "type": "Gebrauchsanweisung",
+    "title": "Erfurter Brunnenkresse ziehen",
+    "region": "Erfurt",
+    "grade": "5/6",
+    "duration": "25 Minuten",
+    "competence": "Handlungsschritte aus einem Gebrauchstext entnehmen.",
+    "diff": "Schrittzahlen vorlesen; Schüler ordnen die drei wichtigsten Handlungen.",
+    "text": "So ziehst du Brunnenkresse im Glas: Lege zuerst ein feuchtes Tuch in eine flache Schale. Streue die Samen dünn darauf. Stelle die Schale an einen hellen Platz, aber nicht direkt in die Mittagssonne. Prüfe jeden Tag, ob das Tuch feucht ist. Nach wenigen Tagen wachsen kleine grüne Blätter. Du kannst sie auf Brot oder in Quark probieren.",
+    "mcQ": "Was soll man jeden Tag prüfen?",
+    "mc": [
+      "Ob das Tuch feucht ist.",
+      "Ob die Schale schwer ist.",
+      "Ob die Samen blau werden."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle zeigt, wo die Schale stehen soll?",
+    "evidenceA": "Stelle die Schale an einen hellen Platz, aber nicht direkt in die Mittagssonne.",
+    "evidenceHint": "Lies den dritten Satz. Dort steht der richtige Platz.",
+    "inferQ": "Was bedeutet „dünn darauf“ im Zusammenhang mit den Samen?",
+    "inferA": "Die Samen sollen nicht als dicker Haufen liegen, sondern verteilt werden.",
+    "openQ": "Warum ist diese Anleitung gut für Anfänger? Begründe.",
+    "openA": "Sie ist gut, weil die Schritte kurz und in einer klaren Reihenfolge erklärt werden."
+  },
+  {
+    "id": "b4",
+    "level": "Basisstufe",
+    "levelNo": 1,
+    "type": "Zeitungsbericht",
+    "title": "Neuer Radweg bei Rudolstadt",
+    "region": "Rudolstadt",
+    "grade": "5/6",
+    "duration": "20 Minuten",
+    "competence": "W-Fragen eines kurzen Berichtes beantworten.",
+    "diff": "W-Fragen-Kärtchen nutzen: Wer? Was? Wo? Warum?",
+    "text": "Rudolstadt bekommt einen neuen Radweg entlang der Saale. Die Stadt meldete, dass die Strecke im Sommer freigegeben werden soll. Der Weg verbindet den Bahnhof mit dem Park an der Heidecksburg. Viele Schüler können dann sicherer zur Schule fahren. Auch Familien sollen den Weg am Wochenende nutzen.",
+    "mcQ": "Warum ist der neue Radweg für Schüler wichtig?",
+    "mc": [
+      "Sie können sicherer zur Schule fahren.",
+      "Sie müssen nicht mehr lesen.",
+      "Sie bekommen neue Fahrräder."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle zeigt den Nutzen für Schüler?",
+    "evidenceA": "Viele Schüler können dann sicherer zur Schule fahren.",
+    "evidenceHint": "Suche den Satz mit dem Wort „Schüler“.",
+    "inferQ": "Was bedeutet „freigegeben“ im Text?",
+    "inferA": "Der Radweg darf dann benutzt werden.",
+    "openQ": "Welche weitere Personengruppe profitiert laut Text? Antworte mit Begründung.",
+    "openA": "Familien profitieren, weil sie den Weg am Wochenende nutzen sollen."
+  },
+  {
+    "id": "b5",
+    "level": "Basisstufe",
+    "levelNo": 1,
+    "type": "Interview",
+    "title": "Drei Fragen im Thüringer Wald",
+    "region": "Thüringer Wald",
+    "grade": "5/6",
+    "duration": "25 Minuten",
+    "competence": "Aussagen einer befragten Person erfassen.",
+    "diff": "Rollenlesen: Reporter und Förster getrennt lesen lassen.",
+    "text": "Reporter: Warum kommen heute viele Klassen in den Thüringer Wald? Försterin: Sie wollen Tiere und Pflanzen direkt sehen. Reporter: Was ist besonders wichtig? Försterin: Man bleibt auf den Wegen und nimmt Müll wieder mit. Reporter: Was kann man entdecken? Försterin: Mit etwas Glück sieht man Spuren von Rehen oder hört einen Specht.",
+    "mcQ": "Was sollen Besucher im Wald mit ihrem Müll tun?",
+    "mc": [
+      "Sie sollen ihn wieder mitnehmen.",
+      "Sie sollen ihn im Moos verstecken.",
+      "Sie sollen ihn in den Bach werfen."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle nennt eine wichtige Regel?",
+    "evidenceA": "Man bleibt auf den Wegen und nimmt Müll wieder mit.",
+    "evidenceHint": "Lies die zweite Antwort der Försterin.",
+    "inferQ": "Was bedeutet „mit etwas Glück“?",
+    "inferA": "Man sieht die Tiere oder Spuren nicht immer, sondern nur vielleicht.",
+    "openQ": "Welche Regel findest du am wichtigsten und warum?",
+    "openA": "Individuell; sinnvoll ist: auf den Wegen bleiben oder Müll mitnehmen, weil der Wald geschützt wird."
+  },
+  {
+    "id": "s1",
+    "level": "Standardstufe",
+    "levelNo": 2,
+    "type": "Historischer Sachtext",
+    "title": "Rudolstadt als Residenzstadt",
+    "region": "Rudolstadt",
+    "grade": "7/8",
+    "duration": "30 Minuten",
+    "competence": "Textabschnitte verknüpfen; historische Funktion erschließen.",
+    "diff": "Abschnitte mit Randtiteln versehen lassen: Hof, Stadt, Wirkung.",
+    "text": "Rudolstadt war über lange Zeit eine Residenzstadt. Das bedeutete, dass ein Fürstenhof dort seinen Mittelpunkt hatte. Die Heidecksburg war nicht nur ein Schloss, sondern auch ein Zeichen von Macht und Ordnung. Handwerker, Musiker und Beamte fanden in der Stadt Arbeit. Dadurch prägte der Hof nicht nur die Politik, sondern auch das tägliche Leben vieler Menschen.",
+    "mcQ": "Welche Wirkung hatte der Fürstenhof auf Rudolstadt?",
+    "mc": [
+      "Er beeinflusste Politik und Alltag.",
+      "Er machte die Saale unsichtbar.",
+      "Er verbot Musik in der Stadt."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle verbindet Hof und tägliches Leben?",
+    "evidenceA": "Dadurch prägte der Hof nicht nur die Politik, sondern auch das tägliche Leben vieler Menschen.",
+    "evidenceHint": "Lies den letzten Satz. Er fasst die Wirkung zusammen.",
+    "inferQ": "Was ist im Text mit „Residenzstadt“ gemeint?",
+    "inferA": "Eine Stadt, in der ein Fürstenhof seinen Mittelpunkt hatte.",
+    "openQ": "Warum konnte ein Schloss mehr sein als nur ein Gebäude? Begründe mit dem Text.",
+    "openA": "Es war ein Zeichen von Macht und zog Arbeit, Verwaltung und Kultur in die Stadt."
+  },
+  {
+    "id": "s2",
+    "level": "Standardstufe",
+    "levelNo": 2,
+    "type": "Diagrammtext",
+    "title": "Besucherzahlen der Wartburg",
+    "region": "Eisenach / Wartburg",
+    "grade": "7/8",
+    "duration": "30 Minuten",
+    "competence": "Zahleninformationen aus Text und Tabelle entnehmen und vergleichen.",
+    "diff": "Tabelle separat ausdrucken; höchste und niedrigste Zahl markieren.",
+    "text": "Die Wartburg wird jedes Jahr von vielen Menschen besucht. In einer Schulübung werden folgende Beispielzahlen verglichen: 2021 kamen 210000 Besucher, 2022 waren es 260000, 2023 stieg die Zahl auf 310000. Der größte Sprung liegt zwischen 2022 und 2023. Gründe können mehr Reisen nach der Pandemie und neue Führungen für Familien sein.",
+    "mcQ": "In welchem Jahr ist die Besucherzahl im Beispiel am höchsten?",
+    "mc": [
+      "2023",
+      "2021",
+      "2022"
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle nennt den größten Sprung?",
+    "evidenceA": "Der größte Sprung liegt zwischen 2022 und 2023.",
+    "evidenceHint": "Suche den Satz mit „größte Sprung“.",
+    "inferQ": "Was bedeutet „stieg die Zahl“ im Text?",
+    "inferA": "Es kamen mehr Besucher als vorher.",
+    "openQ": "Welche Ursache für den Anstieg nennt der Text? Nenne eine und erkläre sie kurz.",
+    "openA": "Möglich: mehr Reisen nach der Pandemie oder neue Familienführungen; beides kann mehr Besucher anziehen."
+  },
+  {
+    "id": "s3",
+    "level": "Standardstufe",
+    "levelNo": 2,
+    "type": "Pointierter Kommentar",
+    "title": "Tourismus im Thüringer Wald",
+    "region": "Thüringer Wald",
+    "grade": "7/8",
+    "duration": "30–35 Minuten",
+    "competence": "Meinung und Begründung unterscheiden; Zusammenhänge erkennen.",
+    "diff": "Meinungssätze und Begründungssätze verschieden markieren.",
+    "text": "Der Thüringer Wald lebt vom Tourismus, aber er darf nicht zur bloßen Kulisse werden. Wer neue Hotels baut, muss auch an Wege, Busverbindungen und Naturschutz denken. Besucher kommen nicht nur wegen schöner Fotos, sondern wegen echter Erlebnisse. Deshalb ist langsamer, gut geplanter Tourismus besser als schneller Massentourismus.",
+    "mcQ": "Welche Meinung vertritt der Kommentar?",
+    "mc": [
+      "Tourismus soll gut geplant und naturverträglich sein.",
+      "Es sollen gar keine Besucher mehr kommen.",
+      "Alle Wege sollen gesperrt werden."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle zeigt die Hauptmeinung besonders deutlich?",
+    "evidenceA": "Deshalb ist langsamer, gut geplanter Tourismus besser als schneller Massentourismus.",
+    "evidenceHint": "Lies den letzten Satz. Dort wird die Meinung zugespitzt.",
+    "inferQ": "Was bedeutet „bloße Kulisse“ im Text?",
+    "inferA": "Der Wald soll nicht nur als Hintergrund für Fotos benutzt werden, sondern als lebendiger Naturraum gelten.",
+    "openQ": "Stimmst du dem Kommentar zu? Begründe mit einem Textbezug.",
+    "openA": "Individuell; passend ist ein Bezug auf Naturschutz, Busverbindungen oder echte Erlebnisse."
+  },
+  {
+    "id": "s4",
+    "level": "Standardstufe",
+    "levelNo": 2,
+    "type": "Kurze regionale Erzählung",
+    "title": "Der Brunnen auf dem Domplatz",
+    "region": "Erfurt",
+    "grade": "7/8",
+    "duration": "30 Minuten",
+    "competence": "Handlungsfolge und Motiv erkennen.",
+    "diff": "Erzählung in Anfang, Problem, Lösung gliedern.",
+    "text": "Auf dem Erfurter Domplatz stand ein alter Brunnen, den kaum jemand beachtete. Als im Sommer das Wasser knapp wurde, erinnerte sich ein Junge an die Geschichten seiner Großmutter. Sie hatte erzählt, dass der Brunnen früher allen offenstand. Der Junge malte ein Schild: „Wasser ist kein Besitz, sondern Aufgabe.“ Viele Passanten blieben stehen und sprachen darüber.",
+    "mcQ": "Was bewirkt das Schild des Jungen?",
+    "mc": [
+      "Menschen bleiben stehen und sprechen über Wasser.",
+      "Der Brunnen verschwindet.",
+      "Alle verlassen den Domplatz."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle zeigt die Wirkung des Schildes?",
+    "evidenceA": "Viele Passanten blieben stehen und sprachen darüber.",
+    "evidenceHint": "Lies den letzten Satz. Dort steht die Reaktion der Menschen.",
+    "inferQ": "Was bedeutet „Wasser ist kein Besitz, sondern Aufgabe“?",
+    "inferA": "Menschen sollen Wasser gemeinsam achten und verantwortungsvoll nutzen.",
+    "openQ": "Warum erinnert sich der Junge an seine Großmutter? Erkläre den Zusammenhang.",
+    "openA": "Ihre Geschichten geben ihm die Idee, den Brunnen als gemeinschaftlichen Ort wieder wichtig zu machen."
+  },
+  {
+    "id": "s5",
+    "level": "Standardstufe",
+    "levelNo": 2,
+    "type": "Argumentativer Schülertext",
+    "title": "Mehr Busse nach Jena",
+    "region": "Jena",
+    "grade": "7/8",
+    "duration": "30 Minuten",
+    "competence": "These und Begründungen erkennen und verknüpfen.",
+    "diff": "These unterstreichen; zwei Begründungen nummerieren lassen.",
+    "text": "Ich finde, dass es mehr Busse zwischen den Dörfern und Jena geben sollte. Viele Jugendliche sind auf ihre Eltern angewiesen, wenn sie am Nachmittag zum Training oder in die Bibliothek wollen. Außerdem würden weniger Autos in die Stadt fahren. Das wäre gut für die Luft und für alle, die sicherer mit dem Fahrrad unterwegs sein möchten.",
+    "mcQ": "Welche Forderung stellt der Schülertext?",
+    "mc": [
+      "Es soll mehr Busse zwischen den Dörfern und Jena geben.",
+      "Alle Bibliotheken sollen schließen.",
+      "Jugendliche sollen nicht trainieren."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle nennt einen Umweltgrund?",
+    "evidenceA": "Außerdem würden weniger Autos in die Stadt fahren. Das wäre gut für die Luft.",
+    "evidenceHint": "Lies die letzten beiden Sätze. Dort geht es um Autos und Luft.",
+    "inferQ": "Was bedeutet „auf ihre Eltern angewiesen“?",
+    "inferA": "Die Jugendlichen können oft nicht allein fahren und brauchen die Eltern als Fahrer.",
+    "openQ": "Welche Begründung findest du stärker: Freizeit oder Umwelt? Begründe.",
+    "openA": "Individuell; die Antwort sollte eine der beiden Begründungen aufgreifen und erklären."
+  },
+  {
+    "id": "f1",
+    "level": "Fortgeschrittene Stufe",
+    "levelNo": 3,
+    "type": "Literarischer Kurztext",
+    "title": "Goethes Schatten in Weimar",
+    "region": "Weimar",
+    "grade": "9/10",
+    "duration": "35 Minuten",
+    "competence": "Zwischen den Zeilen lesen; Symbolik und Deutung formulieren.",
+    "diff": "Vor dem Lesen Begriffe „Schatten“, „Denkmal“, „Stimme“ klären.",
+    "text": "Am Abend stand Clara vor dem Denkmal in Weimar. Die Figuren wirkten größer, als sie am Mittag gewesen waren. „Vielleicht wachsen Denkmäler, wenn wir zu leise über sie sprechen“, dachte sie. Neben ihr las ein Kind laut aus einem zerknitterten Heft. Clara merkte, dass die alten Namen erst dann lebendig wurden, wenn jemand eine eigene Frage an sie richtete.",
+    "mcQ": "Welche Einsicht gewinnt Clara?",
+    "mc": [
+      "Alte Namen werden durch eigene Fragen lebendig.",
+      "Denkmäler wachsen wirklich aus Stein.",
+      "Kinder dürfen in Weimar nicht lesen."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle zeigt Claras Einsicht?",
+    "evidenceA": "Clara merkte, dass die alten Namen erst dann lebendig wurden, wenn jemand eine eigene Frage an sie richtete.",
+    "evidenceHint": "Lies den letzten Satz. Dort wird Claras Gedanke deutlich.",
+    "inferQ": "Was kann „Denkmäler wachsen“ im übertragenen Sinn bedeuten?",
+    "inferA": "Die Bedeutung von Denkmälern wird größer, wenn Menschen über sie nachdenken.",
+    "openQ": "Formuliere eine Deutung: Worum geht es in dem Text eigentlich?",
+    "openA": "Es geht darum, Tradition nicht nur zu bewundern, sondern durch eigene Fragen lebendig zu machen."
+  },
+  {
+    "id": "f2",
+    "level": "Fortgeschrittene Stufe",
+    "levelNo": 3,
+    "type": "Interview",
+    "title": "Interview im Zeiss-Planetarium",
+    "region": "Jena",
+    "grade": "9/10",
+    "duration": "35 Minuten",
+    "competence": "Absicht und implizite Aussage eines Interviews erschließen.",
+    "diff": "Fragen und Antworten getrennt markieren; Kernaussage notieren.",
+    "text": "Frage: Warum kommen Schulklassen ins Planetarium? Antwort: Weil der Himmel dort nicht nur erklärt, sondern erfahrbar wird. Frage: Reicht ein gutes Bild für Lernen aus? Antwort: Nein. Ein Bild öffnet die Tür, aber Denken beginnt erst mit einer Frage. Frage: Was wünschen Sie sich von Besuchern? Antwort: Dass sie nicht nur staunen, sondern genau beobachten und Zweifel zulassen.",
+    "mcQ": "Welche Auffassung vom Lernen zeigt das Interview?",
+    "mc": [
+      "Lernen braucht Fragen, Beobachtung und Nachdenken.",
+      "Lernen besteht nur aus schönen Bildern.",
+      "Zweifel stören jedes Lernen."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle zeigt, dass Bilder allein nicht reichen?",
+    "evidenceA": "Ein Bild öffnet die Tür, aber Denken beginnt erst mit einer Frage.",
+    "evidenceHint": "Lies die zweite Antwort. Dort wird Bild und Denken verglichen.",
+    "inferQ": "Was bedeutet „Zweifel zulassen“ im Kontext?",
+    "inferA": "Man darf nachfragen und muss nicht alles sofort glauben.",
+    "openQ": "Warum passt das Planetarium als Lernort besonders gut zu dieser Aussage?",
+    "openA": "Weil es Staunen erzeugt, aber zugleich zum Fragen, Beobachten und Nachdenken anregt."
+  },
+  {
+    "id": "f3",
+    "level": "Fortgeschrittene Stufe",
+    "levelNo": 3,
+    "type": "Zeitungsbericht",
+    "title": "Strukturwandel in Gera",
+    "region": "Gera",
+    "grade": "9/10",
+    "duration": "35 Minuten",
+    "competence": "Sachinformation und Deutung eines Wandels verbinden.",
+    "diff": "Positive und problematische Folgen zweifarbig markieren.",
+    "text": "In Gera entsteht auf einem früheren Industriegelände ein neues Bildungs- und Werkstattzentrum. Die Stadt hofft, damit junge Menschen zu halten und neue Betriebe anzuziehen. Kritiker warnen jedoch, dass ein Gebäude allein keinen Wandel schafft. Entscheidend sei, ob Schulen, Handwerk und Unternehmen dauerhaft zusammenarbeiten. Der Umbau steht deshalb für Hoffnung, aber auch für eine offene Aufgabe.",
+    "mcQ": "Wie bewertet der Text den Umbau insgesamt?",
+    "mc": [
+      "Als Hoffnung mit noch offener Aufgabe.",
+      "Als vollständig gelöstes Problem.",
+      "Als reines Freizeitprojekt."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle zeigt die ausgewogene Bewertung?",
+    "evidenceA": "Der Umbau steht deshalb für Hoffnung, aber auch für eine offene Aufgabe.",
+    "evidenceHint": "Lies den Schluss. Dort wird nicht nur gelobt, sondern abgewogen.",
+    "inferQ": "Was bedeutet „ein Gebäude allein schafft keinen Wandel“?",
+    "inferA": "Es braucht zusätzlich Zusammenarbeit, Konzepte und Menschen, die das Zentrum nutzen.",
+    "openQ": "Welche Bedingung muss erfüllt sein, damit das Projekt gelingt? Begründe mit dem Text.",
+    "openA": "Schulen, Handwerk und Unternehmen müssen dauerhaft zusammenarbeiten."
+  },
+  {
+    "id": "f4",
+    "level": "Fortgeschrittene Stufe",
+    "levelNo": 3,
+    "type": "Sage neu erzählt",
+    "title": "Die Saale-Nixe schweigt",
+    "region": "Saaletal",
+    "grade": "9/10",
+    "duration": "35 Minuten",
+    "competence": "Leerstellen deuten; Stimmung und Botschaft erschließen.",
+    "diff": "Stimmungswörter sammeln: still, trüb, leer, wachsam.",
+    "text": "Früher, so erzählte man, sang die Saale-Nixe bei Mondlicht. Heute sitzt sie unter der Brücke und schweigt. Nicht weil sie ihre Lieder vergessen hat, sondern weil das Wasser trüb geworden ist. Ein Kind legt am Ufer eine leere Flasche in den Mülleimer. Da hebt die Nixe den Kopf. Noch singt sie nicht, aber sie hört wieder zu.",
+    "mcQ": "Warum schweigt die Nixe laut Text?",
+    "mc": [
+      "Weil das Wasser trüb geworden ist.",
+      "Weil sie keine Stimme hat.",
+      "Weil der Mond verschwunden ist."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle zeigt eine kleine Hoffnung?",
+    "evidenceA": "Da hebt die Nixe den Kopf. Noch singt sie nicht, aber sie hört wieder zu.",
+    "evidenceHint": "Lies die letzten beiden Sätze. Dort verändert sich die Stimmung.",
+    "inferQ": "Was kann die Nixe symbolisieren?",
+    "inferA": "Sie kann für die Natur oder den Fluss stehen, der auf menschliches Verhalten reagiert.",
+    "openQ": "Welche Botschaft steckt in der neu erzählten Sage?",
+    "openA": "Schon kleine verantwortliche Handlungen können zeigen, dass Natur wieder ernst genommen wird."
+  },
+  {
+    "id": "f5",
+    "level": "Fortgeschrittene Stufe",
+    "levelNo": 3,
+    "type": "Kommentar",
+    "title": "Weimar braucht Fragen",
+    "region": "Weimar",
+    "grade": "9/10",
+    "duration": "35 Minuten",
+    "competence": "Autorenabsicht erkennen; Argumentationsabsicht erschließen.",
+    "diff": "These, Beispiel und Schlussfolgerung farbig markieren.",
+    "text": "Weimar lebt nicht davon, dass man ehrfürchtig an Häusern vorbeigeht. Die Stadt lebt, wenn Besucher fragen, warum bestimmte Stimmen berühmt wurden und andere kaum erwähnt sind. Klassik darf kein Staub unter Glas sein. Sie muss Gespräch bleiben: über Schönheit, Macht, Bildung und darüber, wer früher überhaupt sprechen durfte.",
+    "mcQ": "Was fordert der Kommentar?",
+    "mc": [
+      "Weimar soll kritisch und fragend betrachtet werden.",
+      "Alle Museen sollen schließen.",
+      "Klassik soll nur auswendig gelernt werden."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle zeigt die zentrale Forderung?",
+    "evidenceA": "Die Stadt lebt, wenn Besucher fragen, warum bestimmte Stimmen berühmt wurden und andere kaum erwähnt sind.",
+    "evidenceHint": "Lies den zweiten Satz. Dort steht der Kern der Forderung.",
+    "inferQ": "Was bedeutet „Staub unter Glas“ im Text?",
+    "inferA": "Kultur soll nicht tot und unberührbar wirken, sondern lebendig diskutiert werden.",
+    "openQ": "Warum ist der Kommentar nicht gegen Weimar, obwohl er kritisch klingt?",
+    "openA": "Er will Weimar ernst nehmen, indem er Fragen stellt und die Klassik lebendig hält."
+  },
+  {
+    "id": "p1",
+    "level": "Profistufe",
+    "levelNo": 4,
+    "type": "Argumentativer Schülertext",
+    "title": "Sollte die Wartburg leiser werden?",
+    "region": "Eisenach / Wartburg",
+    "grade": "9/10",
+    "duration": "40 Minuten",
+    "competence": "Text kritisch bewerten; Interessen abwägen und Stellung nehmen.",
+    "diff": "Pro- und Contra-Argumente tabellarisch sammeln.",
+    "text": "Die Wartburg ist ein Ort der Geschichte, aber auch ein Ziel für viele Reisegruppen. Ich finde, dass es dort feste stille Zeiten geben sollte. Nicht jeder Besuch muss von Lautsprechern, Selfies und schnellen Rundgängen bestimmt sein. Wer einen historischen Ort betritt, sollte wenigstens für kurze Zeit spüren können, dass Geschichte mehr ist als ein Foto. Gegen stille Zeiten spricht, dass Gruppen eng geplant sind. Trotzdem wäre ein Versuch sinnvoll, etwa morgens für eine Stunde.",
+    "mcQ": "Welche Position vertritt der Text?",
+    "mc": [
+      "Es sollte probeweise stille Zeiten auf der Wartburg geben.",
+      "Die Wartburg soll für Besucher schließen.",
+      "Fotos sollen überall Pflicht werden."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle zeigt, dass der Autor auch ein Gegenargument sieht?",
+    "evidenceA": "Gegen stille Zeiten spricht, dass Gruppen eng geplant sind.",
+    "evidenceHint": "Suche den Satz, der mit „Gegen“ beginnt.",
+    "inferQ": "Was bedeutet „Geschichte ist mehr als ein Foto“?",
+    "inferA": "Historische Orte sollen nicht nur oberflächlich konsumiert, sondern bewusst wahrgenommen werden.",
+    "openQ": "Bewerte den Vorschlag. Ist eine stille Stunde sinnvoll? Begründe abwägend.",
+    "openA": "Eine gute Antwort wägt Ruhe und Organisationsprobleme ab und kommt zu einem begründeten Urteil."
+  },
+  {
+    "id": "p2",
+    "level": "Profistufe",
+    "levelNo": 4,
+    "type": "Gebrauchsanweisung mit Bewertung",
+    "title": "Stadtrallye durch Erfurt planen",
+    "region": "Erfurt",
+    "grade": "9/10",
+    "duration": "40 Minuten",
+    "competence": "Gebrauchstext prüfen; Kriterien für Verständlichkeit anwenden.",
+    "diff": "Planungsschritte auf Karten legen und Reihenfolge prüfen.",
+    "text": "Eine gute Stadtrallye beginnt nicht mit möglichst vielen Stationen, sondern mit einer klaren Frage. Beispiel: Wie zeigt Erfurt seine mittelalterliche Geschichte im heutigen Stadtbild? Danach wählt man höchstens fünf Orte aus, etwa Krämerbrücke, Domplatz und alte Gassen. Jede Station braucht eine Aufgabe, die genaues Hinsehen verlangt. Am Ende sollen die Gruppen ihre wichtigste Entdeckung erklären, nicht nur Lösungswörter sammeln.",
+    "mcQ": "Was ist laut Text der erste Schritt einer guten Stadtrallye?",
+    "mc": [
+      "Eine klare Frage festlegen.",
+      "Möglichst viele Stationen wählen.",
+      "Nur Lösungswörter sammeln."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle zeigt, dass Qualität wichtiger ist als Menge?",
+    "evidenceA": "Danach wählt man höchstens fünf Orte aus.",
+    "evidenceHint": "Lies den Satz nach der Beispielfrage. Dort wird die Anzahl begrenzt.",
+    "inferQ": "Was bedeutet „genaues Hinsehen“ hier?",
+    "inferA": "Die Teilnehmer sollen Details am Ort beobachten und nicht nur oberflächlich vorbeigehen.",
+    "openQ": "Bewerte die Anleitung: Was macht sie für Schülergruppen brauchbar?",
+    "openA": "Sie gibt klare Schritte, begrenzt die Stationen und verlangt Beobachtung sowie Erklärung."
+  },
+  {
+    "id": "p3",
+    "level": "Profistufe",
+    "levelNo": 4,
+    "type": "Historischer Sachtext",
+    "title": "Jena zwischen Forschung und Verantwortung",
+    "region": "Jena",
+    "grade": "9/10",
+    "duration": "40 Minuten",
+    "competence": "Abstrahieren; historische und gegenwärtige Verantwortung verbinden.",
+    "diff": "Begriffe „Forschung“, „Verantwortung“, „Nutzen“ vorentlasten.",
+    "text": "Jena gilt als Stadt der Wissenschaft. Universitäten, optische Industrie und Forschungseinrichtungen prägten den Ort stark. Doch Wissenschaft ist nie nur Fortschrittserzählung. Neue Erkenntnisse können helfen, Krankheiten zu behandeln oder Technik zu verbessern. Sie können aber auch wirtschaftliche Interessen, Konkurrenz und ethische Fragen auslösen. Wer Jena als Wissenschaftsstadt beschreibt, sollte deshalb nicht nur Erfolge nennen, sondern auch Verantwortung.",
+    "mcQ": "Welche Hauptaussage formuliert der Sachtext?",
+    "mc": [
+      "Wissenschaft braucht neben Erfolg auch Verantwortung.",
+      "Wissenschaft ist immer gefährlich.",
+      "Jena hat nichts mit Forschung zu tun."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle fasst die Hauptaussage zusammen?",
+    "evidenceA": "Wer Jena als Wissenschaftsstadt beschreibt, sollte deshalb nicht nur Erfolge nennen, sondern auch Verantwortung.",
+    "evidenceHint": "Lies den letzten Satz. Er bündelt die Bewertung.",
+    "inferQ": "Was ist mit „nie nur Fortschrittserzählung“ gemeint?",
+    "inferA": "Man darf Wissenschaft nicht nur positiv darstellen, sondern muss Folgen und Fragen mitbedenken.",
+    "openQ": "Nimm Stellung: Sollte Forschung in der Schule stärker ethisch diskutiert werden? Begründe.",
+    "openA": "Eine starke Antwort begründet, warum Nutzen und mögliche Folgen gemeinsam betrachtet werden sollten."
+  },
+  {
+    "id": "p4",
+    "level": "Profistufe",
+    "levelNo": 4,
+    "type": "Diagrammtext / Kommentar",
+    "title": "Wenn Besucherzahlen täuschen",
+    "region": "Thüringen allgemein",
+    "grade": "9/10",
+    "duration": "40 Minuten",
+    "competence": "Daten kritisch deuten; Aussagekraft von Zahlen bewerten.",
+    "diff": "Zahlenaussage und Deutung getrennt markieren.",
+    "text": "Ein Diagramm zeigt: Drei Thüringer Museen hatten im Frühjahr mehr Besucher als im Vorjahr. Daraus könnte man schließen, dass alle Ausstellungen erfolgreicher wurden. Doch Zahlen erklären nicht alles. Vielleicht gab es mehr Schulausflüge, längere Öffnungszeiten oder ein großes Stadtfest in der Nähe. Wer Daten liest, muss deshalb fragen, welche Bedingungen hinter den Zahlen stehen.",
+    "mcQ": "Welche Warnung gibt der Text beim Umgang mit Diagrammen?",
+    "mc": [
+      "Man soll Zahlen nicht ohne Kontext deuten.",
+      "Man soll Diagramme nie verwenden.",
+      "Mehr Besucher bedeuten immer bessere Inhalte."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle zeigt mögliche andere Ursachen?",
+    "evidenceA": "Vielleicht gab es mehr Schulausflüge, längere Öffnungszeiten oder ein großes Stadtfest in der Nähe.",
+    "evidenceHint": "Lies den Satz mit „Vielleicht“. Dort werden Bedingungen genannt.",
+    "inferQ": "Was bedeutet „Kontext“ in diesem Text?",
+    "inferA": "Die Umstände, die erklären können, warum sich Zahlen verändern.",
+    "openQ": "Warum ist diese Denkweise auch außerhalb des Deutschunterrichts wichtig?",
+    "openA": "Weil man Daten in Medien, Politik und Alltag prüfen muss, bevor man Schlussfolgerungen zieht."
+  },
+  {
+    "id": "p5",
+    "level": "Profistufe",
+    "levelNo": 4,
+    "type": "Literarischer Kurztext mit offener Deutung",
+    "title": "Die leere Bank an der Heidecksburg",
+    "region": "Rudolstadt",
+    "grade": "9/10",
+    "duration": "40 Minuten",
+    "competence": "Mehrdeutigkeit deuten; begründet Stellung nehmen.",
+    "diff": "Mehrere Deutungen zulassen; Belege im Text suchen lassen.",
+    "text": "Unterhalb der Heidecksburg steht eine Bank, auf der niemand sitzt. Jeden Morgen wischt der Hausmeister die Blätter fort, obwohl niemand ihn darum bittet. „Für wen machst du das?“, fragt ein Junge. Der Hausmeister zeigt auf die Stadt im Tal und sagt: „Manche Plätze warten länger als Menschen.“ Der Junge versteht den Satz nicht sofort. Später setzt er sich und schaut hinunter, bis die Fenster im Abendlicht glänzen.",
+    "mcQ": "Was tut der Hausmeister jeden Morgen?",
+    "mc": [
+      "Er wischt die Blätter von der Bank.",
+      "Er verkauft Eintrittskarten.",
+      "Er schließt die Stadt ab."
+    ],
+    "mcA": 0,
+    "evidenceQ": "Welche Textstelle zeigt, dass der Junge später nachdenklich wird?",
+    "evidenceA": "Später setzt er sich und schaut hinunter, bis die Fenster im Abendlicht glänzen.",
+    "evidenceHint": "Lies den letzten Satz. Dort handelt der Junge anders als vorher.",
+    "inferQ": "Was könnte „Manche Plätze warten länger als Menschen“ bedeuten?",
+    "inferA": "Orte können Erinnerungen, Ruhe oder Bedeutung bewahren, auch wenn Menschen sie lange nicht beachten.",
+    "openQ": "Deute den Schluss: Hat der Junge etwas verstanden? Begründe mit Textbezug.",
+    "openA": "Ja, möglicherweise versteht er durch das stille Sitzen den Wert des Ortes; Beleg ist sein Blick ins Tal am Ende."
+  }
+];
+const LEVELS = [
+  {no:1,name:'Basisstufe',desc:'Einfache Informationen im Text finden und direkt entnehmen.'},
+  {no:2,name:'Standardstufe',desc:'Zusammenhänge zwischen Textabschnitten erkennen und verknüpfen.'},
+  {no:3,name:'Fortgeschrittene Stufe',desc:'Deutungen formulieren, Absichten des Autors erschließen und zwischen den Zeilen lesen.'},
+  {no:4,name:'Profistufe',desc:'Texte kritisch bewerten, abstrahieren und begründet Stellung nehmen.'}
+];
+let current=null, utter=null, speechHighlight=true, markMode=false, fontScale=1, lineScale=1, wordMap=[];
+const $=s=>document.querySelector(s); const $$=s=>Array.from(document.querySelectorAll(s));
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+function storage(){return JSON.parse(localStorage.getItem('lrsDoneTexts')||'[]')}
+function saveDone(id){const a=storage(); if(!a.includes(id)){a.push(id);localStorage.setItem('lrsDoneTexts',JSON.stringify(a));} updateProgress(); renderCards();}
+function updateProgress(){const done=storage().length; const pct=Math.round(done/TEXTS.length*100); $('#progressBar').style.width=pct+'%'; $('#progressText').textContent=done+' von '+TEXTS.length+' Texten erfolgreich bearbeitet ('+pct+' %).'}
+function renderMatrix(){ $('#matrix').innerHTML=LEVELS.map(l=>`<div class="level-tile"><h3>${l.name}</h3><p>${l.desc}</p><button class="btn" onclick="filterLevel(${l.no})">Texte anzeigen</button></div>`).join('');}
+function filterLevel(no){ $$('#cards .card').forEach(c=>c.style.display=(+c.dataset.level===no?'flex':'none')); location.hash='textsTitle';}
+function renderCards(){const done=storage(); $('#cards').innerHTML=TEXTS.map(t=>`<button class="card ${done.includes(t.id)?'done':''}" data-level="${t.levelNo}" onclick="openText('${t.id}')"><span class="tag">${t.level}</span><span class="tag">${t.type}</span><h3>${esc(t.title)}</h3><p class="muted">${esc(t.region)} · Klasse ${esc(t.grade)} · ${esc(t.duration)}</p><p>${esc(t.competence)}</p></button>`).join('');}
+function show(id){$$('.view').forEach(v=>v.classList.remove('active')); $(id).classList.add('active');}
+function openText(id){stopSpeech(); current=TEXTS.find(t=>t.id===id); $('#readerMeta').textContent=current.level+' · '+current.type+' · '+current.region+' · Klasse '+current.grade; $('#readerTitle').textContent=current.title; $('#summaryBox').value=localStorage.getItem('summary_'+id)||''; renderReading(); renderTasks(); show('#reader'); scrollTo(0,0); $('#liveStatus').textContent='Text geöffnet. Du kannst vorlesen lassen, markieren oder die Aufgaben bearbeiten.';}
+function tokenize(text){const re=/[A-Za-zÄÖÜäöüß0-9]+(?:-[A-Za-zÄÖÜäöüß0-9]+)?|[^A-Za-zÄÖÜäöüß0-9]+/g; let m,out=[]; while((m=re.exec(text))){const v=m[0];out.push({type:/^[A-Za-zÄÖÜäöüß0-9]/.test(v)?'word':'sep',value:v,start:m.index,end:m.index+v.length});} return out;}
+function renderReading(){wordMap=[]; const marked=JSON.parse(localStorage.getItem('marks_'+current.id)||'[]'); $('#readingText').innerHTML=''; tokenize(current.text).forEach((tok,i)=>{ if(tok.type==='word'){const sp=document.createElement('span'); sp.className='word'; sp.textContent=tok.value; sp.dataset.start=tok.start; sp.dataset.end=tok.end; if(marked.includes(tok.start)) sp.classList.add('marked'); sp.onclick=()=>wordClicked(sp); $('#readingText').appendChild(sp); wordMap.push({start:tok.start,end:tok.end,el:sp});} else $('#readingText').appendChild(document.createTextNode(tok.value)); });}
+function wordClicked(sp){ if(markMode || $('#strategyMark').checked){sp.classList.toggle('marked'); persistMarks(); $('#liveStatus').textContent='Markierung geändert.';} sp.classList.add('evidencePick'); setTimeout(()=>sp.classList.remove('evidencePick'),900);}
+function persistMarks(){const arr=$$('#readingText .word.marked').map(w=>+w.dataset.start); localStorage.setItem('marks_'+current.id,JSON.stringify(arr));}
+function renderTasks(){const t=current; $('#tasks').innerHTML=`
+ <fieldset class="task"><legend>1. Verstehen</legend><p>${esc(t.mcQ)}</p>${t.mc.map((a,i)=>`<label><input type="radio" name="mc" value="${i}"> ${esc(a)}</label><br>`).join('')}<button class="btn" onclick="checkMC()">Antwort prüfen</button><div id="fbMc" class="feedback" aria-live="polite"></div></fieldset>
+ <section class="task"><h3>2. Belegen</h3><p>${esc(t.evidenceQ)}</p><input id="evidenceInput" type="text" placeholder="Schreibe die Textstelle oder einen wichtigen Satz ab."><button class="btn" onclick="checkEvidence()">Beleg prüfen</button><div id="fbEv" class="feedback" aria-live="polite"></div></section>
+ <section class="task"><h3>3. Erschließen</h3><p>${esc(t.inferQ)}</p><input id="inferInput" type="text" placeholder="Erkläre in eigenen Worten."><button class="btn" onclick="checkInfer()">Erklärung prüfen</button><div id="fbInf" class="feedback" aria-live="polite"></div></section>
+ <section class="task"><h3>4. Anwenden / Bewerten</h3><p>${esc(t.openQ)}</p><textarea id="openInput" placeholder="Schreibe deine begründete Antwort."></textarea><button class="btn" onclick="saveOpen()">Antwort speichern und Text abschließen</button><div id="fbOpen" class="feedback" aria-live="polite"></div></section>`;}
+function setFb(id,msg,cls){const el=$(id); el.className='feedback '+cls; el.textContent=msg;}
+function checkMC(){const v=document.querySelector('input[name="mc"]:checked'); if(!v){setFb('#fbMc','Wähle zuerst eine Antwort aus. Lies die Frage noch einmal genau.', 'warn');return;} if(+v.value===current.mcA){const msg=current.levelNo===1?'Richtig! Du hast eine Information direkt aus dem Text entnommen.':current.levelNo===2?'Gut! Du hast Textabschnitte sinnvoll miteinander verknüpft.':current.levelNo===3?'Hervorragend! Du hast eine Deutung aus dem Textzusammenhang erschlossen.':'Stark! Du hast die zentrale Aussage kritisch und zusammenfassend erfasst.'; setFb('#fbMc',msg,'good');} else setFb('#fbMc','Noch nicht. '+current.evidenceHint,'bad');}
+function normalize(s){return s.toLowerCase().replace(/[.,;:!?„“"']/g,'').trim();}
+function checkEvidence(){const val=normalize($('#evidenceInput').value); const ans=normalize(current.evidenceA); const key=ans.split(' ').filter(w=>w.length>4).slice(0,4); const hits=key.filter(k=>val.includes(k)).length; if(hits>=2 || val.length>18 && ans.includes(val.slice(0,15))){setFb('#fbEv','Richtig belegt! Du stützt deine Antwort mit einer passenden Textstelle.', 'good');} else setFb('#fbEv','Der Beleg ist noch zu ungenau. '+current.evidenceHint,'bad');}
+function checkInfer(){const val=$('#inferInput').value.trim(); if(val.length<18){setFb('#fbInf','Schreibe etwas ausführlicher: Was bedeutet der Ausdruck im Zusammenhang des Textes?', 'warn');return;} setFb('#fbInf','Gute Erklärung. Vergleiche deine Antwort mit dem Erwartungshorizont: '+current.inferA, 'good');}
+function saveOpen(){const val=$('#openInput').value.trim(); if(val.length<30){setFb('#fbOpen','Die Antwort braucht noch eine Begründung. Nutze mindestens einen Hinweis aus dem Text.', 'warn');return;} localStorage.setItem('open_'+current.id,val); saveDone(current.id); setFb('#fbOpen','Gespeichert. Du hast eine eigene begründete Antwort formuliert und den Text abgeschlossen.', 'good');}
+function speak(rate){ if(!('speechSynthesis'in window)){ $('#liveStatus').textContent='Dieser Browser unterstützt keine Vorlesefunktion.';return;} stopSpeech(); utter=new SpeechSynthesisUtterance(current.text); utter.lang='de-DE'; utter.rate=rate; const voices=speechSynthesis.getVoices(); const de=voices.find(v=>v.lang&&v.lang.toLowerCase().startsWith('de')); if(de) utter.voice=de; utter.onstart=()=>$('#liveStatus').textContent=rate<0.65?'Ganz langsames Vorlesen läuft.':rate<1?'Langsames Vorlesen läuft.':'Normales Vorlesen läuft.'; utter.onboundary=e=>{if(speechHighlight) highlightAt(e.charIndex)}; utter.onend=()=>{clearCurrent();$('#liveStatus').textContent='Vorlesen beendet.'}; utter.onerror=()=>{$('#liveStatus').textContent='Vorlesen wurde unterbrochen.'}; speechSynthesis.speak(utter);}
+function highlightAt(idx){let w=wordMap.find(x=>idx>=x.start&&idx<x.end); if(!w) return; clearCurrent(); w.el.classList.add('current'); w.el.scrollIntoView({block:'center',behavior:document.body.classList.contains('no-anim')?'auto':'smooth'});}
+function clearCurrent(){$$('#readingText .current').forEach(e=>e.classList.remove('current'))}
+function stopSpeech(){ if('speechSynthesis'in window) speechSynthesis.cancel(); clearCurrent();}
+function renderTeacher(){ $('#teacherContent').innerHTML=TEXTS.map((t,i)=>`<article class="solution"><h3>${i+1}. ${esc(t.title)}</h3><p><b>Niveau:</b> ${esc(t.level)} · <b>Textsorte:</b> ${esc(t.type)} · <b>Region:</b> ${esc(t.region)}</p><p><b>Kompetenz:</b> ${esc(t.competence)}</p><p><b>Klasse / Dauer:</b> ${esc(t.grade)} · ${esc(t.duration)}</p><p><b>Differenzierung:</b> ${esc(t.diff)}</p><p><b>MC-Lösung:</b> ${esc(t.mc[t.mcA])}</p><p><b>Beleg:</b> ${esc(t.evidenceA)}</p><p><b>Erschließen:</b> ${esc(t.inferA)}</p><p><b>Offene Aufgabe – Richtwert:</b> ${esc(t.openA)}</p></article>`).join('');}
+$('#backBtn').onclick=()=>{stopSpeech();show('#dashboard');updateProgress();}; $('#speakNormal').onclick=()=>speak(1); $('#speakSlow').onclick=()=>speak(.75); $('#speakVerySlow').onclick=()=>speak(.5); $('#stopSpeak').onclick=()=>{stopSpeech();$('#liveStatus').textContent='Vorlesen gestoppt.'}; $('#highlightToggle').onclick=()=>{speechHighlight=!speechHighlight; $('#highlightToggle').classList.toggle('active',speechHighlight); $('#highlightToggle').textContent=speechHighlight?'Wort-Highlighting aus':'Wort-Highlighting an';}; $('#markToggle').onclick=()=>{markMode=!markMode; $('#markToggle').classList.toggle('active',markMode); $('#liveStatus').textContent=markMode?'Markierwerkzeug aktiv. Klicke Wörter im Text an.':'Markierwerkzeug aus.'}; $('#printBtn').onclick=()=>window.print(); $('#summaryBox').addEventListener('input',e=>{if(current)localStorage.setItem('summary_'+current.id,e.target.value)});
+$('#fontPlus').onclick=()=>{fontScale=Math.min(1.45,fontScale+.08);document.documentElement.style.setProperty('--font-size',fontScale+'rem')}; $('#fontMinus').onclick=()=>{fontScale=Math.max(.92,fontScale-.08);document.documentElement.style.setProperty('--font-size',fontScale+'rem')}; $('#linePlus').onclick=()=>{lineScale=Math.min(2.4,lineScale+.1);document.documentElement.style.setProperty('--line-height',lineScale)}; $('#lineMinus').onclick=()=>{lineScale=Math.max(1.45,lineScale-.1);document.documentElement.style.setProperty('--line-height',lineScale)}; $('#contrastBtn').onclick=()=>document.body.classList.toggle('high-contrast'); $('#animBtn').onclick=()=>document.body.classList.toggle('no-anim'); $('#teacherBtn').onclick=()=>{renderTeacher();show('#teacherPanel');scrollTo(0,0)}; $('#closeTeacher').onclick=()=>show('#dashboard'); $('#resetProgress').onclick=()=>{localStorage.removeItem('lrsDoneTexts'); updateProgress(); renderCards();};
+if('speechSynthesis'in window){speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();}
+renderMatrix(); renderCards(); updateProgress();
+</script>
+</body>
+</html>
