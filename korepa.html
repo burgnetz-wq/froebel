@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Kopfrechnen Klasse 5 – Partnerduell</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root{
+  --bg1:#fff7d6;
+  --bg2:#d7f7ff;
+  --card:#ffffffee;
+  --ink:#243047;
+  --accent:#ff8a3d;
+  --accent2:#3c82ff;
+  --good:#1e9f5a;
+  --bad:#d94141;
+  --soft:#f2f6ff;
+  --shadow:0 12px 30px rgba(30,60,100,.18);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at top left,#ffe082 0 12%,transparent 25%),
+    radial-gradient(circle at bottom right,#9be7ff 0 14%,transparent 28%),
+    linear-gradient(135deg,var(--bg1),var(--bg2));
+  min-height:100vh;
+}
+header{
+  padding:22px 16px 12px;
+  text-align:center;
+}
+h1{
+  margin:0;
+  font-size:clamp(1.8rem,4vw,3.1rem);
+  line-height:1.05;
+}
+.subtitle{
+  margin:.6rem auto 0;
+  max-width:850px;
+  font-size:1.05rem;
+}
+.app{
+  max-width:1180px;
+  margin:0 auto;
+  padding:14px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:14px;
+}
+.panel{
+  background:var(--card);
+  border-radius:24px;
+  box-shadow:var(--shadow);
+  padding:18px;
+  border:2px solid rgba(255,255,255,.8);
+}
+.topgrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+.stat{
+  background:var(--soft);
+  border-radius:18px;
+  padding:12px;
+  text-align:center;
+}
+.stat strong{display:block;font-size:1.6rem}
+.controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  justify-content:center;
+}
+button{
+  border:0;
+  border-radius:15px;
+  padding:11px 15px;
+  font-weight:700;
+  font-size:1rem;
+  color:#162033;
+  background:#fff;
+  box-shadow:0 5px 14px rgba(0,0,0,.13);
+  cursor:pointer;
+  transition:.15s transform,.15s filter;
+}
+button:hover{transform:translateY(-2px);filter:brightness(1.02)}
+button.primary{background:linear-gradient(135deg,#ffd166,#ff8a3d);color:#2b1600}
+button.blue{background:linear-gradient(135deg,#a7d8ff,#3c82ff);color:#061a42}
+button.green{background:linear-gradient(135deg,#b9f6ca,#40c979)}
+button.red{background:linear-gradient(135deg,#ffcaca,#ff7676)}
+button.dark{background:#243047;color:white}
+button:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.main{
+  display:grid;
+  grid-template-columns:1.08fr .92fr;
+  gap:14px;
+}
+@media(max-width:850px){
+  .main,.topgrid{grid-template-columns:1fr}
+}
+.rolebar{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.role{
+  border-radius:20px;
+  padding:14px;
+  background:#f7fbff;
+  border:3px solid transparent;
+}
+.role.activeA{border-color:#ff8a3d;background:#fff3e7}
+.role.activeB{border-color:#3c82ff;background:#eaf3ff}
+.role h2{margin:.1rem 0 .2rem}
+.taskbox{
+  margin-top:14px;
+  text-align:center;
+  border-radius:24px;
+  background:linear-gradient(135deg,#ffffff,#f5fbff);
+  padding:18px;
+  border:2px dashed #c7d8ff;
+  min-height:260px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.badge{
+  display:inline-block;
+  background:#243047;
+  color:white;
+  padding:5px 11px;
+  border-radius:999px;
+  font-size:.9rem;
+  margin-bottom:8px;
+}
+.scenario{
+  font-size:1.15rem;
+  margin:7px auto;
+  max-width:680px;
+}
+.problem{
+  font-size:clamp(2.1rem,7vw,4rem);
+  font-weight:900;
+  letter-spacing:.02em;
+  margin:10px 0;
+}
+.answerrow{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:8px;
+}
+input[type=number], input[type=text]{
+  font-size:1.35rem;
+  padding:12px 14px;
+  border-radius:14px;
+  border:2px solid #bdd0ee;
+  width:170px;
+  text-align:center;
+}
+.feedback{
+  min-height:56px;
+  margin-top:12px;
+  font-size:1.15rem;
+  font-weight:700;
+}
+.help{
+  display:grid;
+  gap:10px;
+}
+.cardmini{
+  background:#f7fbff;
+  border-radius:18px;
+  padding:13px;
+  border:1px solid #dbe8ff;
+}
+.cardmini h3{margin:.1rem 0 .4rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  padding:8px 10px;
+  border-radius:999px;
+  background:#eef4ff;
+  font-weight:700;
+}
+.progressOuter{
+  background:#e6edf7;
+  border-radius:999px;
+  height:20px;
+  overflow:hidden;
+  border:1px solid #c6d4e9;
+}
+.progressInner{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#57d68d,#ffd166,#ff8a3d);
+  transition:width .35s ease;
+}
+.log{
+  max-height:185px;
+  overflow:auto;
+  font-size:.95rem;
+  padding-right:5px;
+}
+.log div{
+  padding:6px 7px;
+  border-bottom:1px dashed #d9e4f5;
+}
+.flashGood{animation:pop .35s ease}
+.shake{animation:shake .35s ease}
+@keyframes pop{
+  0%{transform:scale(.96)}
+  60%{transform:scale(1.04)}
+  100%{transform:scale(1)}
+}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-7px)}
+  75%{transform:translateX(7px)}
+}
+.confetti{
+  position:fixed;
+  width:10px;height:10px;
+  top:-20px;
+  border-radius:50%;
+  animation:fall 1.5s linear forwards;
+  pointer-events:none;
+}
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(720deg);opacity:.2}
+}
+dialog{
+  border:0;
+  border-radius:24px;
+  padding:0;
+  max-width:720px;
+  box-shadow:var(--shadow);
+}
+dialog .inside{padding:22px;background:white;border-radius:24px}
+.biglist li{margin:.45rem 0}
+.karte{
+  background:#fff8e8;
+  border:2px dashed #ffcc80;
+  border-radius:18px;
+  padding:12px;
+}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>🤝 Kopfrechnen im Doppelpack</h1>
+  <p class="subtitle">Partnerarbeit für Klasse 5: Einer rechnet, einer coacht. Danach wird gewechselt. Ziel: gemeinsam Prozent sammeln – ohne Taschenrechner, aber mit Gehirn-Muskeln.</p>
+</header>
+
+<main class="app">
+  <section class="panel">
+    <div class="topgrid">
+      <div class="stat"><span>Team-Fortschritt</span><strong id="percent">0%</strong></div>
+      <div class="stat"><span>Gelöst</span><strong><span id="done">0</span>/<span id="target">20</span></strong></div>
+      <div class="stat"><span>Team-Punkte</span><strong id="points">0</strong></div>
+      <div class="stat"><span>Serie</span><strong id="streak">0 🔥</strong></div>
+    </div>
+    <div style="margin:12px 0 4px" class="progressOuter"><div id="bar" class="progressInner"></div></div>
+    <div class="controls" style="margin-top:14px">
+      <button class="primary" onclick="startGame('warm')">🐣 Warmwerden</button>
+      <button class="blue" onclick="startGame('mix')">🎲 Misch-Masch</button>
+      <button class="green" onclick="startGame('trick')">🧠 Trickrechnen</button>
+      <button class="red" onclick="startGame('boss')">🐉 Bossrunde</button>
+      <button onclick="openRules()">📜 So geht’s</button>
+      <button class="dark" onclick="resetAll()">🔄 Neustart</button>
+    </div>
+  </section>
+
+  <section class="main">
+    <div class="panel" id="gamePanel">
+      <div class="rolebar">
+        <div id="roleA" class="role activeA">
+          <h2>🧑 Partner A</h2>
+          <p><b>Rechnet gerade.</b><br>Sprich deinen Rechenweg laut aus.</p>
+        </div>
+        <div id="roleB" class="role">
+          <h2>🧑 Partner B</h2>
+          <p><b>Coacht gerade.</b><br>Nur Tipps geben, nicht vorsagen!</p>
+        </div>
+      </div>
+
+      <div class="taskbox" id="taskbox">
+        <div class="badge" id="levelBadge">Start</div>
+        <div class="scenario" id="scenario">Wählt oben eine Runde aus.</div>
+        <div class="problem" id="problem">🤝</div>
+        <div id="extra" class="scenario"></div>
+        <div class="answerrow">
+          <input id="answer" type="number" placeholder="Antwort" onkeydown="if(event.key==='Enter')checkAnswer()">
+          <button class="primary" onclick="checkAnswer()">Prüfen</button>
+          <button onclick="showCoachTip()">Coach-Tipp</button>
+          <button onclick="nextTask()">Weiter</button>
+        </div>
+        <div id="feedback" class="feedback"></div>
+      </div>
+    </div>
+
+    <aside class="panel help">
+      <div class="cardmini">
+        <h3>🎯 Partner-Regel</h3>
+        <p>Nach jeder Aufgabe wird gewechselt: Wer eben gerechnet hat, wird Coach. Der Coach darf <b>fragen</b>, <b>zeichnen</b> und <b>an Strategien erinnern</b> – aber nicht einfach die Lösung rufen wie ein Mathe-Papagei.</p>
+      </div>
+      <div class="cardmini">
+        <h3>🧩 Strategien</h3>
+        <div class="chips">
+          <span class="chip">Zehner vollmachen</span>
+          <span class="chip">Verdoppeln</span>
+          <span class="chip">Halbieren</span>
+          <span class="chip">Nachbaraufgabe</span>
+          <span class="chip">Tauschaufgabe</span>
+          <span class="chip">Überschlag</span>
+        </div>
+      </div>
+      <div class="cardmini">
+        <h3>🗣️ Satzstarter für den Coach</h3>
+        <div class="karte" id="coachSentence">„Welche Zahl hilft dir, den nächsten Zehner zu erreichen?“</div>
+        <button style="margin-top:10px" onclick="newCoachSentence()">Neuer Satz</button>
+      </div>
+      <div class="cardmini">
+        <h3>📒 Aufgaben-Protokoll</h3>
+        <div id="log" class="log"></div>
+      </div>
+    </aside>
+  </section>
+</main>
+
+<dialog id="rules">
+  <div class="inside">
+    <h2>📜 So funktioniert die Partnerarbeit</h2>
+    <ol class="biglist">
+      <li>Wählt eine Runde: <b>Warmwerden</b>, <b>Misch-Masch</b>, <b>Trickrechnen</b> oder <b>Bossrunde</b>.</li>
+      <li><b>Partner A</b> rechnet laut. <b>Partner B</b> coacht mit Fragen.</li>
+      <li>Nach jeder Aufgabe wird automatisch gewechselt.</li>
+      <li>Bei richtiger Antwort gibt es Punkte. Bei falscher Antwort gibt es einen Hinweis.</li>
+      <li>Nach 20 Aufgaben seht ihr, wie viel Prozent ihr geschafft habt.</li>
+    </ol>
+    <p><b>Lehrer-Tipp:</b> Die Seite eignet sich gut für 10–15 Minuten Partnertraining. Danach können die Teams ihre beste Rechenstrategie nennen.</p>
+    <button class="primary" onclick="document.getElementById('rules').close()">Los geht’s</button>
+  </div>
+</dialog>
+
+<script>
+let mode = "warm";
+let current = null;
+let done = 0;
+let correct = 0;
+let points = 0;
+let streak = 0;
+let target = 20;
+let active = "A";
+let checked = false;
+
+const scenarios = [
+  "Im Pausenhof verkauft ein Kiosk Mathe-Muffins. Keine Sorge: Sie schmecken besser als sie klingen.",
+  "Ein Hamster trainiert für die Kopfrechen-Olympiade.",
+  "Zwei Roboter sortieren Bonbons nach Farbe und behaupten, das sei Wissenschaft.",
+  "Eine Schildkröte rennt heute ungewöhnlich langsam. Also eigentlich normal.",
+  "Der Klassendrache sammelt Zahlen statt Gold.",
+  "Ein Pinguin kauft Eiswürfel. Sehr verdächtig.",
+  "Die Schulkatze zählt heimlich Radiergummis.",
+  "Ein Einhorn möchte seine Glitzerpunkte gerecht verteilen."
+];
+
+const coachSentences = [
+  "Welche Zahl hilft dir, den nächsten Zehner zu erreichen?",
+  "Kannst du die Aufgabe in zwei leichtere Teile zerlegen?",
+  "Gibt es eine Tauschaufgabe, die einfacher ist?",
+  "Was wäre eine Nachbaraufgabe, die du schon kennst?",
+  "Kannst du erst verdoppeln oder halbieren?",
+  "Welche Rechnung würdest du auf einem Zahlenstrahl sehen?",
+  "Was ist ungefähr das Ergebnis? Passt deine Antwort dazu?",
+  "Welche Aufgabe klingt ähnlich, ist aber leichter?"
+];
+
+function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min}
+function choice(arr){return arr[Math.floor(Math.random()*arr.length)]}
+
+function startGame(m){
+  mode = m;
+  done = 0; correct = 0; points = 0; streak = 0; active = "A";
+  document.getElementById("target").textContent = target;
+  document.getElementById("log").innerHTML = "";
+  updateStats();
+  setRoles();
+  nextTask();
+}
+
+function resetAll(){
+  done = 0; correct = 0; points = 0; streak = 0; active = "A"; checked=false;
+  current = null;
+  document.getElementById("levelBadge").textContent = "Start";
+  document.getElementById("scenario").textContent = "Wählt oben eine Runde aus.";
+  document.getElementById("problem").textContent = "🤝";
+  document.getElementById("extra").textContent = "";
+  document.getElementById("answer").value = "";
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("log").innerHTML = "";
+  updateStats();
+  setRoles();
+}
+
+function makeTask(){
+  let typePool;
+  if(mode==="warm") typePool=["bridge10","double","near10","money"];
+  if(mode==="mix") typePool=["bridge10","double","half","multiply","divide","money","time"];
+  if(mode==="trick") typePool=["near100","friendlyMultiply","missing","chain","estimate"];
+  if(mode==="boss") typePool=["chain","missing","moneyHard","timeHard","friendlyMultiply","near100"];
+  const type = choice(typePool);
+  let a,b,c,problem,answer,tip,badge,extra="";
+
+  if(type==="bridge10"){
+    a=rand(18,79); b=10-(a%10); c=rand(1,9);
+    problem = `${a} + ${b+c}`;
+    answer = a+b+c;
+    tip = `Erst bis zum nächsten Zehner: ${a}+${b}=${a+b}. Dann noch ${c}.`;
+    badge = "Zehner vollmachen";
+  }
+  if(type==="double"){
+    a=rand(6,49);
+    problem = `${a} + ${a}`;
+    answer = a+a;
+    tip = `Das ist Verdoppeln: ${a} doppelt.`;
+    badge = "Verdoppeln";
+  }
+  if(type==="half"){
+    a=rand(8,60)*2;
+    problem = `die Hälfte von ${a}`;
+    answer = a/2;
+    tip = `Teile ${a} in zwei gleich große Gruppen.`;
+    badge = "Halbieren";
+  }
+  if(type==="near10"){
+    a=rand(21,89); b=choice([9,11,19,21]);
+    problem = `${a} + ${b}`;
+    answer = a+b;
+    tip = `${b} ist fast ${Math.round(b/10)*10}. Rechne erst rund, dann korrigiere.`;
+    badge = "Fast-Zehner";
+  }
+  if(type==="multiply"){
+    a=rand(3,9); b=rand(4,12);
+    problem = `${a} · ${b}`;
+    answer = a*b;
+    tip = `Nutze eine bekannte Reihe oder zerlege: ${a}·${b}.`;
+    badge = "Einmaleins plus";
+  }
+  if(type==="divide"){
+    b=rand(3,12); answer=rand(3,12); a=b*answer;
+    problem = `${a} : ${b}`;
+    tip = `Welche Malaufgabe passt? ${b} · ? = ${a}`;
+    badge = "Teilen";
+  }
+  if(type==="money"){
+    a=choice([20,30,40,50,60,70,80,90]); b=choice([5,10,15,20,25,30]);
+    problem = `${a} ct + ${b} ct`;
+    answer = a+b;
+    tip = `Cent rechnest du wie normale Zahlen. 100 ct sind 1 Euro.`;
+    badge = "Geld";
+    extra = "Antwort nur als Zahl in Cent eingeben.";
+  }
+  if(type==="moneyHard"){
+    a=rand(2,9)*50; b=rand(2,9)*20;
+    problem = `${a} ct + ${b} ct`;
+    answer = a+b;
+    tip = `Rechne in Cent. Du kannst auch 50er und 20er bündeln.`;
+    badge = "Kiosk-Kasse";
+    extra = "Antwort nur als Zahl in Cent eingeben.";
+  }
+  if(type==="time"){
+    a=choice([15,20,25,30,35,40,45]); b=choice([10,15,20,25]);
+    problem = `${a} min + ${b} min`;
+    answer = a+b;
+    tip = `Minuten addieren. Bei 60 Minuten ist eine Stunde voll.`;
+    badge = "Zeit";
+    extra = "Antwort nur als Zahl in Minuten eingeben.";
+  }
+  if(type==="timeHard"){
+    a=choice([35,40,45,50,55]); b=choice([20,25,30,35]);
+    problem = `${a} min + ${b} min`;
+    answer = a+b;
+    tip = `Erst bis 60 Minuten auffüllen, dann den Rest dazu.`;
+    badge = "Zeitknobelei";
+    extra = "Antwort nur als Zahl in Minuten eingeben.";
+  }
+  if(type==="near100"){
+    a=rand(41,96); b=100-a;
+    problem = `${a} + ? = 100`;
+    answer = b;
+    tip = `Ergänze erst zum nächsten Zehner, dann bis 100.`;
+    badge = "Ergänzen bis 100";
+  }
+  if(type==="friendlyMultiply"){
+    a=choice([5,10,20,25,50]); b=rand(2,9);
+    problem = `${a} · ${b}`;
+    answer = a*b;
+    tip = `${a} ist eine freundliche Zahl. Bündle in ${a}er-Schritten.`;
+    badge = "Freundliche Malaufgabe";
+  }
+  if(type==="missing"){
+    a=rand(20,90); answer=rand(5,35); c=a+answer;
+    problem = `${a} + ? = ${c}`;
+    tip = `Rechne rückwärts: ${c} - ${a}.`;
+    badge = "Lückenzahl";
+  }
+  if(type==="chain"){
+    a=rand(8,40); b=rand(4,25); c=rand(3,18);
+    problem = `${a} + ${b} - ${c}`;
+    answer = a+b-c;
+    tip = `Rechne Schritt für Schritt. Erst plus, dann minus.`;
+    badge = "Rechenkette";
+  }
+  if(type==="estimate"){
+    a=rand(21,89); b=rand(21,89);
+    problem = `${a} + ${b}`;
+    answer = a+b;
+    tip = `Überschlage zuerst: Sind beide Zahlen eher bei 20, 50 oder 90?`;
+    badge = "Überschlag & genau";
+    extra = "Erst schätzen, dann genau rechnen.";
+  }
+  return {problem, answer, tip, badge, extra, scenario:choice(scenarios)};
+}
+
+function nextTask(){
+  if(done>=target){
+    finish();
+    return;
+  }
+  current = makeTask();
+  checked = false;
+  document.getElementById("levelBadge").textContent = current.badge;
+  document.getElementById("scenario").textContent = current.scenario;
+  document.getElementById("problem").textContent = current.problem;
+  document.getElementById("extra").textContent = current.extra || "";
+  document.getElementById("answer").value = "";
+  document.getElementById("feedback").textContent = "";
+  document.getElementById("answer").focus();
+}
+
+function checkAnswer(){
+  if(!current || checked) return;
+  const input = document.getElementById("answer");
+  const val = Number(input.value);
+  if(input.value.trim()===""){
+    document.getElementById("feedback").textContent = "Erst eine Zahl eingeben – Gedankenlesen ist noch nicht im Lehrplan.";
+    return;
+  }
+  checked = true;
+  done++;
+  const box = document.getElementById("taskbox");
+  box.classList.remove("flashGood","shake");
+  void box.offsetWidth;
+
+  if(val === current.answer){
+    correct++;
+    streak++;
+    let gain = 10 + Math.min(streak,5)*2;
+    points += gain;
+    document.getElementById("feedback").innerHTML = `✅ Richtig! +${gain} Punkte. Rollenwechsel!`;
+    box.classList.add("flashGood");
+    if(streak % 5 === 0) confetti();
+    addLog(`✅ ${current.problem} = ${current.answer}`);
+  }else{
+    streak = 0;
+    points = Math.max(0, points-2);
+    document.getElementById("feedback").innerHTML = `❌ Noch nicht. Richtig wäre <b>${current.answer}</b>. Tipp: ${current.tip}`;
+    box.classList.add("shake");
+    addLog(`❌ ${current.problem}: ${val} → richtig ${current.answer}`);
+  }
+  switchRoles();
+  updateStats();
+  if(done>=target) setTimeout(finish,700);
+}
+
+function showCoachTip(){
+  if(!current) return;
+  document.getElementById("feedback").innerHTML = "💡 Coach-Tipp: " + current.tip;
+}
+
+function switchRoles(){
+  active = active === "A" ? "B" : "A";
+  setRoles();
+  newCoachSentence();
+}
+
+function setRoles(){
+  const A=document.getElementById("roleA"), B=document.getElementById("roleB");
+  A.className="role"; B.className="role";
+  if(active==="A"){
+    A.classList.add("activeA");
+    A.innerHTML="<h2>🧑 Partner A</h2><p><b>Rechnet gerade.</b><br>Sprich deinen Rechenweg laut aus.</p>";
+    B.innerHTML="<h2>🧑 Partner B</h2><p><b>Coacht gerade.</b><br>Nur Tipps geben, nicht vorsagen!</p>";
+  }else{
+    B.classList.add("activeB");
+    B.innerHTML="<h2>🧑 Partner B</h2><p><b>Rechnet gerade.</b><br>Sprich deinen Rechenweg laut aus.</p>";
+    A.innerHTML="<h2>🧑 Partner A</h2><p><b>Coacht gerade.</b><br>Nur Tipps geben, nicht vorsagen!</p>";
+  }
+}
+
+function updateStats(){
+  const pct = target ? Math.round((correct/target)*100) : 0;
+  document.getElementById("percent").textContent = pct + "%";
+  document.getElementById("done").textContent = done;
+  document.getElementById("points").textContent = points;
+  document.getElementById("streak").textContent = streak + " 🔥";
+  document.getElementById("bar").style.width = Math.round((done/target)*100) + "%";
+}
+
+function finish(){
+  const pct = Math.round((correct/target)*100);
+  let msg = "";
+  if(pct>=90) msg="🏆 Team-Legenden! Der Taschenrechner wirkt nervös.";
+  else if(pct>=70) msg="⭐ Starkes Team! Eure Rechenwege haben Muskeln bekommen.";
+  else if(pct>=50) msg="👍 Solide! Beim nächsten Mal knackt ihr die nächste Stufe.";
+  else msg="🌱 Anfang geschafft. Jetzt Strategien sammeln und zweite Runde starten.";
+  document.getElementById("levelBadge").textContent = "Auswertung";
+  document.getElementById("scenario").textContent = "Runde beendet!";
+  document.getElementById("problem").textContent = pct + "%";
+  document.getElementById("extra").textContent = `${correct} von ${target} Aufgaben richtig. ${msg}`;
+  document.getElementById("feedback").textContent = "Tauscht euch aus: Welche Strategie hat euch am meisten geholfen?";
+  if(pct>=70) confetti();
+}
+
+function addLog(text){
+  const log=document.getElementById("log");
+  const div=document.createElement("div");
+  div.textContent=text;
+  log.prepend(div);
+}
+
+function newCoachSentence(){
+  document.getElementById("coachSentence").textContent = "„" + choice(coachSentences) + "“";
+}
+
+function openRules(){
+  document.getElementById("rules").showModal();
+}
+
+function confetti(){
+  const colors=["#ff8a3d","#3c82ff","#57d68d","#ffd166","#ff6b9a","#8b5cf6"];
+  for(let i=0;i<55;i++){
+    const p=document.createElement("div");
+    p.className="confetti";
+    p.style.left=Math.random()*100+"vw";
+    p.style.background=choice(colors);
+    p.style.animationDuration=(.9+Math.random()*1.3)+"s";
+    p.style.transform=`rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),2200);
+  }
+}
+
+newCoachSentence();
+updateStats();
+</script>
+</body>
+</html>
