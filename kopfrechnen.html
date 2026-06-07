@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kopfrechnen Klasse 5 – Mathe-Mission</title>
+<style>
+  :root{
+    --bg1:#fff7d6;--bg2:#d8f7ff;--ink:#243042;--card:#ffffffee;--good:#1b9e5a;--bad:#d94141;--accent:#6d5dfc;--warn:#ffb703;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);
+    background: radial-gradient(circle at 20% 10%, #fff 0 7%, transparent 8%), linear-gradient(135deg,var(--bg1),var(--bg2));
+    min-height:100vh;overflow-x:hidden;
+  }
+  .wrap{max-width:1100px;margin:auto;padding:18px}
+  header{
+    background:linear-gradient(135deg,#6d5dfc,#00a6d6);color:white;border-radius:28px;padding:24px;box-shadow:0 14px 35px #0002;position:relative;overflow:hidden
+  }
+  header:before{content:"➕ ✖️ ➗ 🧠 🚀";position:absolute;right:18px;top:12px;font-size:42px;opacity:.25;letter-spacing:9px;transform:rotate(-6deg)}
+  h1{margin:0;font-size:clamp(28px,4vw,46px)}
+  .sub{font-size:18px;max-width:760px;line-height:1.45;margin-top:8px}
+  .grid{display:grid;grid-template-columns:1fr 350px;gap:18px;margin-top:18px}
+  @media(max-width:850px){.grid{grid-template-columns:1fr}.side{order:-1}}
+  .card{background:var(--card);border-radius:24px;padding:20px;box-shadow:0 12px 28px #0001;border:2px solid #fff}
+  .levels{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+  button,.btn{
+    border:0;border-radius:16px;padding:12px 16px;font-size:16px;font-weight:750;cursor:pointer;background:#f0efff;color:#312e81;box-shadow:0 5px 0 #0001;transition:.12s transform,.12s filter
+  }
+  button:hover{transform:translateY(-2px);filter:brightness(1.03)}
+  button:active{transform:translateY(2px);box-shadow:0 2px 0 #0001}
+  .active{background:#6d5dfc;color:white}
+  .bigTask{font-size:clamp(32px,7vw,72px);font-weight:900;text-align:center;margin:24px 0 10px;letter-spacing:.5px}
+  .story{text-align:center;font-size:21px;min-height:58px;line-height:1.35;background:#fff9c9;border-radius:18px;padding:12px;border:2px dashed #ffd166}
+  .inputrow{display:flex;gap:10px;justify-content:center;margin:18px 0;flex-wrap:wrap}
+  input[type=number]{font-size:30px;width:180px;text-align:center;border-radius:18px;border:3px solid #6d5dfc;padding:10px;background:white;color:var(--ink);font-weight:800}
+  .primary{background:#14b8a6;color:white}.secondary{background:#ffb703;color:#342300}.danger{background:#ffdddd;color:#7f1d1d}.ghost{background:#eef2ff;color:#3730a3}
+  .feedback{font-size:22px;text-align:center;min-height:42px;font-weight:850}
+  .good{color:var(--good)}.bad{color:var(--bad)}
+  .barbox{height:28px;background:#e8e8f6;border-radius:999px;overflow:hidden;border:2px solid white;box-shadow:inset 0 2px 6px #0002}
+  .bar{height:100%;width:0%;background:linear-gradient(90deg,#ffb703,#2ec4b6,#6d5dfc);transition:.45s width;border-radius:999px}
+  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+  .stat{background:#f8fafc;border-radius:18px;padding:12px;text-align:center;border:1px solid #e5e7eb}
+  .stat b{font-size:28px;display:block}
+  .mini{font-size:13px;opacity:.75}
+  .mascot{font-size:86px;text-align:center;filter:drop-shadow(0 8px 0 #0001);animation:floaty 2.6s ease-in-out infinite}
+  @keyframes floaty{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-8px) rotate(2deg)}}
+  .badges{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+  .badge{background:#fff;border:2px solid #e5e7eb;border-radius:999px;padding:7px 11px;font-weight:750;font-size:14px}
+  .badge.on{background:#dcfce7;border-color:#86efac;color:#14532d}
+  .tools{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .tip{background:#eefdf8;border-left:8px solid #14b8a6;border-radius:14px;padding:12px;margin-top:12px;line-height:1.45}
+  .shake{animation:shake .25s linear} @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+  .pop{animation:pop .35s ease} @keyframes pop{0%{transform:scale(.8)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+  .confetti{position:fixed;top:-10px;width:10px;height:10px;border-radius:3px;animation:fall 1.6s linear forwards;z-index:99}
+  @keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.2}}
+  dialog{border:0;border-radius:24px;max-width:650px;padding:0;box-shadow:0 24px 80px #0005}
+  dialog .inner{padding:24px;background:white;border-radius:24px} dialog::backdrop{background:#0007}
+  .kbd{font-family:ui-monospace,Consolas,monospace;background:#f1f5f9;border-radius:6px;padding:2px 6px}
+  .modebox{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+  @media(max-width:600px){.modebox,.tools{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+  .smallTask{font-size:16px;text-align:center;color:#475569;margin-top:-4px}.hidden{display:none!important}
+  .hearts{font-size:26px;text-align:center;letter-spacing:5px}.timer{font-weight:900;font-size:30px;text-align:center}.history{max-height:180px;overflow:auto;margin-top:12px}.row{display:flex;justify-content:space-between;border-bottom:1px dashed #ddd;padding:6px 2px;font-size:15px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>🧠 Kopfrechnen-Mission Klasse 5</h1>
+  <div class="sub">Rechne dich durch lustige Mini-Abenteuer. Sammle Sterne, knacke Prozentwerte und besiege den Taschenrechner-Drachen – natürlich im Kopf!</div>
+</header>
+
+<div class="grid">
+<main class="card" id="taskCard">
+  <h2>1. Wähle deine Mission</h2>
+  <div class="levels" id="levels"></div>
+  <div class="modebox">
+    <button id="modeNormal" class="active" onclick="setMode('normal')">🌈 Normal</button>
+    <button id="modeTime" onclick="setMode('time')">⏱️ Zeitduell</button>
+    <button id="modeSurvival" onclick="setMode('survival')">❤️ Leben</button>
+  </div>
+
+  <div class="story" id="story">Wähle ein Level und starte deine Mathe-Mission.</div>
+  <div class="bigTask" id="task">?</div>
+  <div class="smallTask" id="hintLine">Tipp: Du kannst auch Enter drücken.</div>
+  <div class="inputrow">
+    <input id="answer" type="number" inputmode="numeric" placeholder="?" />
+    <button class="primary" onclick="checkAnswer()">Prüfen</button>
+    <button class="secondary" onclick="nextTask(true)">Neue Aufgabe</button>
+  </div>
+  <div class="feedback" id="feedback"></div>
+  <div class="inputrow">
+    <button class="ghost" onclick="showHint()">💡 Tipp</button>
+    <button class="ghost" onclick="readTask()">🔊 Vorlesen</button>
+    <button class="ghost" onclick="openHelp()">❔ Hilfe</button>
+    <button class="danger" onclick="resetGame()">🔄 Neustart</button>
+  </div>
+  <div class="tip hidden" id="tipBox"></div>
+</main>
+
+<aside class="side card">
+  <div class="mascot" id="mascot">🦊</div>
+  <div class="hearts" id="hearts">❤️❤️❤️</div>
+  <div class="timer hidden" id="timer">60</div>
+  <h2>Dein Fortschritt</h2>
+  <div class="barbox"><div class="bar" id="bar"></div></div>
+  <div style="text-align:center;font-weight:900;margin-top:8px" id="percent">0 % geschafft</div>
+  <div class="stats">
+    <div class="stat"><b id="done">0</b><span>Aufgaben</span></div>
+    <div class="stat"><b id="right">0</b><span>richtig</span></div>
+    <div class="stat"><b id="streak">0</b><span>Serie</span></div>
+    <div class="stat"><b id="stars">0</b><span>Sterne</span></div>
+  </div>
+  <div class="badges" id="badges"></div>
+  <div class="tools">
+    <button onclick="toggleTheme()">🎨 Design</button>
+    <button onclick="toggleHardHelp()">🧩 Rechenweg</button>
+  </div>
+  <div class="history" id="history"></div>
+  <p class="mini">Für Lehrkräfte: Die Datei läuft offline. Es werden keine Daten gespeichert oder übertragen.</p>
+</aside>
+</div>
+</div>
+
+<dialog id="helpDialog"><div class="inner">
+  <h2>So funktioniert die Mathe-Mission</h2>
+  <p>Wähle ein Level. Löse Aufgaben im Kopf. Nach jeder richtigen Antwort steigt dein Prozentwert. Bei <b>100 %</b> hast du die Mission geschafft.</p>
+  <p><b>Normal:</b> entspannt üben. <b>Zeitduell:</b> 60 Sekunden. <b>Leben:</b> Drei Fehler sind erlaubt.</p>
+  <p>Steuerung: Antwort eintippen und <span class="kbd">Enter</span> drücken.</p>
+  <button class="primary" onclick="helpDialog.close()">Alles klar!</button>
+</div></dialog>
+
+<script>
+const LEVELS=[
+ {name:'🐣 Warmwerden',goal:10,desc:'Plus und Minus bis 20',gen:()=>genAddSub(20)},
+ {name:'🍕 Pizzateile',goal:12,desc:'Plus und Minus bis 100',gen:()=>genAddSub(100)},
+ {name:'🚀 Raketenstart',goal:12,desc:'Einmaleins und Teilen',gen:()=>genMulDiv(10)},
+ {name:'🦖 Dino-Profi',goal:14,desc:'Gemischte Aufgaben bis 200',gen:()=>genMixed(200)},
+ {name:'🧙 Zaubermeister',goal:16,desc:'Klammern, Verdoppeln, Halbieren',gen:()=>genWizard()},
+ {name:'🏆 Boss-Level',goal:20,desc:'Alles gemischt, aber fair',gen:()=>genBoss()}
+];
+let level=0,mode='normal',task=null,done=0,right=0,streak=0,stars=0,lives=3,timer=60,tick=null,hardHelp=false,theme=0,answered=false;
+const stories=[
+ 'Ein Mathe-Fuchs hat seine Kekse falsch gezählt. Hilf ihm!',
+ 'Die Schulkantine braucht blitzschnelle Kopfrechner.',
+ 'Ein Drache bewacht die Lösungszahl. Sei mutiger als dein Radiergummi!',
+ 'Auf dem Pausenhof fliegen Zahlenbälle durch die Luft.',
+ 'Ein Taschenrechner hat Urlaub. Jetzt bist du dran!',
+ 'Die Pizzastücke verschwinden. Rechne, bevor sie kalt werden!'
+];
+const mascots=['🦊','🐼','🐸','🦄','🐧','🦖','🐙'];
+const badgesDef=[['first','Erster Treffer'],['five','5 richtig'],['streak5','Serie 5'],['half','50 %'],['finish','100 %']];
+function init(){
+ const box=document.getElementById('levels');
+ LEVELS.forEach((l,i)=>{const b=document.createElement('button');b.textContent=l.name;b.title=l.desc;b.onclick=()=>setLevel(i);box.appendChild(b)});
+ document.getElementById('answer').addEventListener('keydown',e=>{if(e.key==='Enter')checkAnswer()});
+ renderBadges();setLevel(0);
+}
+function setLevel(i){level=i;document.querySelectorAll('#levels button').forEach((b,n)=>b.classList.toggle('active',n===i));resetGame(false)}
+function setMode(m){mode=m;['Normal','Time','Survival'].forEach(x=>document.getElementById('mode'+x).classList.remove('active'));document.getElementById('mode'+(m==='normal'?'Normal':m==='time'?'Time':'Survival')).classList.add('active');resetGame(false)}
+function resetGame(makeTask=true){done=0;right=0;streak=0;stars=0;lives=3;timer=60;answered=false;clearInterval(tick);tick=null;document.getElementById('history').innerHTML='';document.getElementById('feedback').textContent='';document.getElementById('tipBox').classList.add('hidden');
+ document.getElementById('timer').classList.toggle('hidden',mode!=='time');document.getElementById('hearts').classList.toggle('hidden',mode!=='survival');
+ if(mode==='time') startTimer(); update(); if(makeTask!==false) nextTask(true);
+}
+function startTimer(){clearInterval(tick);tick=setInterval(()=>{timer--;document.getElementById('timer').textContent=timer;if(timer<=0){clearInterval(tick);finish('⏱️ Zeit vorbei!')}},1000)}
+function nextTask(manual=false){answered=false;task=LEVELS[level].gen();document.getElementById('task').textContent=task.q;document.getElementById('story').textContent=stories[Math.floor(Math.random()*stories.length)];document.getElementById('answer').value='';document.getElementById('answer').focus();document.getElementById('feedback').textContent=manual?'Neue Aufgabe geladen. Auf geht’s!':'';document.getElementById('tipBox').classList.add('hidden');document.getElementById('mascot').textContent=mascots[Math.floor(Math.random()*mascots.length)]}
+function checkAnswer(){ if(!task||answered)return; const val=Number(document.getElementById('answer').value); if(document.getElementById('answer').value===''){msg('Erst Zahl eintippen – Gedankenlesen kann ich erst ab Klasse 8.','bad');return}
+ answered=true; done++;
+ if(val===task.a){right++;streak++;stars+=1+(streak>0&&streak%5===0?2:0);msg(randomGood(),'good');pop();if(streak%5===0)confetti(30);addHistory('✅ '+task.q+' = '+task.a);}
+ else{streak=0;lives--;msg('Fast! Richtig wäre '+task.a+'. '+task.explain,'bad');shake();addHistory('❌ '+task.q+' = '+task.a+' / du: '+val);if(mode==='survival'&&lives<=0){update();finish('❤️ Keine Leben mehr. Neuer Versuch, neuer Ruhm!');return}}
+ update(); if(right>=LEVELS[level].goal){finish('🏆 Geschafft! Du hast die Mission abgeschlossen.');confetti(80);return} setTimeout(()=>nextTask(),900);
+}
+function update(){let goal=LEVELS[level].goal;let pct=Math.min(100,Math.round(right/goal*100));document.getElementById('bar').style.width=pct+'%';document.getElementById('percent').textContent=pct+' % geschafft';document.getElementById('done').textContent=done;document.getElementById('right').textContent=right;document.getElementById('streak').textContent=streak;document.getElementById('stars').textContent=stars;document.getElementById('hearts').textContent='❤️'.repeat(Math.max(0,lives))+'🖤'.repeat(Math.max(0,3-lives));document.getElementById('timer').textContent=timer;renderBadges();}
+function renderBadges(){const got={first:right>=1,five:right>=5,streak5:streak>=5,half:right>=Math.ceil(LEVELS[level]?.goal/2||5),finish:right>=LEVELS[level]?.goal};document.getElementById('badges').innerHTML=badgesDef.map(([k,t])=>`<span class="badge ${got[k]?'on':''}">${got[k]?'⭐':'☆'} ${t}</span>`).join('')}
+function msg(t,c){const f=document.getElementById('feedback');f.className='feedback '+c;f.textContent=t}
+function finish(t){msg(t,'good');document.getElementById('task').textContent='🎉';document.getElementById('story').textContent='Mission beendet. Starte neu oder wähle ein anderes Level.';clearInterval(tick)}
+function addHistory(t){const h=document.getElementById('history');const d=document.createElement('div');d.className='row';d.textContent=t;h.prepend(d)}
+function showHint(){if(!task)return;const b=document.getElementById('tipBox');b.innerHTML='<b>Rechentipp:</b> '+task.hint+(hardHelp?'<br><b>Rechenweg:</b> '+task.explain:'');b.classList.remove('hidden')}
+function toggleHardHelp(){hardHelp=!hardHelp;showHint()}
+function openHelp(){helpDialog.showModal()}
+function readTask(){ if(!task)return; const u=new SpeechSynthesisUtterance('Aufgabe: '+task.say+'.'); u.lang='de-DE'; u.rate=.9; speechSynthesis.cancel(); speechSynthesis.speak(u)}
+function pop(){const c=document.getElementById('taskCard');c.classList.remove('pop');void c.offsetWidth;c.classList.add('pop')}
+function shake(){const c=document.getElementById('taskCard');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake')}
+function confetti(n){for(let i=0;i<n;i++){let e=document.createElement('div');e.className='confetti';e.style.left=Math.random()*100+'vw';e.style.background=['#ff006e','#ffbe0b','#3a86ff','#06d6a0','#8338ec'][i%5];e.style.animationDelay=Math.random()*.4+'s';document.body.appendChild(e);setTimeout(()=>e.remove(),1900)}}
+function toggleTheme(){theme=(theme+1)%3;const r=document.documentElement.style;if(theme===0){r.setProperty('--bg1','#fff7d6');r.setProperty('--bg2','#d8f7ff')}if(theme===1){r.setProperty('--bg1','#f5d0fe');r.setProperty('--bg2','#dbeafe')}if(theme===2){r.setProperty('--bg1','#dcfce7');r.setProperty('--bg2','#fef3c7')}}
+function randomGood(){return ['Richtig! Dein Kopf rechnet schneller als ein Hamster im Laufrad.','Treffer! Die Zahl hat keine Chance gehabt.','Sehr gut! Mathe-Fuchs-Modus aktiviert.','Genau! Das war sauber gerechnet.','Bäm! Richtige Lösung.'][Math.floor(Math.random()*5)]}
+function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function genAddSub(max){let op=Math.random()<.55?'+':'−',a=rnd(2,max),b=rnd(1,max);if(op==='−'&&b>a)[a,b]=[b,a];let ans=op==='+'?a+b:a-b;return make(`${a} ${op} ${b}`,ans,`${a} ${op==='+'?'plus':'minus'} ${b}`, op==='+'?'Rechne erst bis zum nächsten Zehner, dann den Rest.':'Ziehe erst die Zehner ab, dann die Einer.', `${a} ${op} ${b} = ${ans}`)}
+function genMulDiv(n){if(Math.random()<.55){let a=rnd(2,n),b=rnd(2,n);return make(`${a} · ${b}`,a*b,`${a} mal ${b}`,'Nutze eine bekannte Einmaleins-Reihe.',`${a} · ${b} = ${a*b}`)}else{let b=rnd(2,n),ans=rnd(2,n),a=b*ans;return make(`${a} : ${b}`,ans,`${a} geteilt durch ${b}`,'Denke rückwärts: Welche Zahl mal '+b+' ergibt '+a+'?',`${a} : ${b} = ${ans}`)}}
+function genMixed(max){let type=rnd(1,4);if(type===1)return genAddSub(max);if(type===2)return genMulDiv(12);if(type===3){let a=rnd(20,99);return make(`${a} verdoppeln`,a*2,`${a} verdoppeln`,'Verdoppeln heißt: Zahl plus sich selbst.',`${a}+${a}=${a*2}`)}let a=rnd(10,80)*2;return make(`${a} halbieren`,a/2,`${a} halbieren`,'Halbiere erst die Zehner, dann die Einer.',`${a}:2=${a/2}`)}
+function genWizard(){let type=rnd(1,4);if(type===1){let a=rnd(2,9),b=rnd(2,9),c=rnd(2,20);return make(`${a} · ${b} + ${c}`,a*b+c,`${a} mal ${b} plus ${c}`,'Punkt vor Strich: erst malrechnen.',`${a}·${b}=${a*b}, dann +${c} = ${a*b+c}`)}if(type===2){let a=rnd(30,90),b=rnd(5,25),c=rnd(2,15);return make(`${a} − ${b} + ${c}`,a-b+c,`${a} minus ${b} plus ${c}`,'Von links nach rechts rechnen.',`${a}-${b}=${a-b}, dann +${c}=${a-b+c}`)}if(type===3){let a=rnd(2,9),b=rnd(2,9);return make(`(${a} + ${b}) · 2`,(a+b)*2,`Klammer auf ${a} plus ${b} Klammer zu mal 2`,'Erst die Klammer, dann mal 2.',`${a}+${b}=${a+b}, doppelt = ${(a+b)*2}`)}let a=rnd(10,49);return make(`${a} + 99`,a+99,`${a} plus 99`,'Plus 99 heißt: plus 100, dann minus 1.',`${a}+100=${a+100}, minus 1 = ${a+99}`)}
+function genBoss(){return pick([()=>genAddSub(300),()=>genMulDiv(12),()=>genMixed(250),()=>genWizard(),()=>{let a=rnd(2,9),b=rnd(10,30);return make(`${a} · ${b}`,a*b,`${a} mal ${b}`,'Zerlege die größere Zahl in Zehner und Einer.',`${a}·${b} = ${a}·${Math.floor(b/10)*10} + ${a}·${b%10} = ${a*b}`)}])()}
+function make(q,a,say,hint,explain){return{q:q,a:a,say:say,hint:hint,explain:explain}}
+init();
+</script>
+</body>
+</html>
