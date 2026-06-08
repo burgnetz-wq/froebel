@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Die Goldenen Zwanziger – Weimarer Republik 1924–1929</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C96A;
+    --gold-pale: #F5E8C0;
+    --dark: #1A1208;
+    --dark2: #2B1E0A;
+    --cream: #FAF3E0;
+    --red-accent: #8B1A1A;
+    --green-accent: #1A4A2E;
+    --blue-accent: #1A2E4A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--dark);
+    color: var(--cream);
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--dark2);
+    border-bottom: 3px solid var(--gold);
+    text-align: center;
+    padding: 3rem 1rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(
+      45deg, transparent, transparent 20px,
+      rgba(201,168,76,0.04) 20px, rgba(201,168,76,0.04) 21px
+    );
+  }
+  .header-ornament {
+    color: var(--gold);
+    font-size: 1.1rem;
+    letter-spacing: 0.6em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 900;
+    color: var(--gold-light);
+    line-height: 1.1;
+    text-shadow: 0 2px 20px rgba(201,168,76,0.3);
+  }
+  header h2 {
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: clamp(0.85rem, 2vw, 1.05rem);
+    font-weight: 300;
+    color: var(--gold-pale);
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    margin-top: 0.6rem;
+  }
+  .deco-line {
+    display: flex; align-items: center; justify-content: center;
+    gap: 1rem; margin: 1.2rem 0; color: var(--gold);
+  }
+  .deco-line::before, .deco-line::after {
+    content: ''; flex: 1; max-width: 200px;
+    height: 1px; background: linear-gradient(to var(--dir, right), transparent, var(--gold));
+  }
+  .deco-line::before { --dir: right; }
+  .deco-line::after  { --dir: left; }
+
+  /* ── MUSIC PLAYER ── */
+  #music-player {
+    background: #120D04;
+    border-top: 1px solid rgba(201,168,76,0.15);
+    border-bottom: 3px solid var(--gold);
+    padding: 1rem 1.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .player-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .player-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .track-info {
+    flex: 1;
+    min-width: 160px;
+  }
+  .track-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    color: var(--gold-light);
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .track-artist {
+    font-size: 0.7rem;
+    color: rgba(201,168,76,0.6);
+    letter-spacing: 0.1em;
+    margin-top: 0.1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .player-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-shrink: 0;
+  }
+  .ctrl-btn {
+    background: none;
+    border: 1px solid rgba(201,168,76,0.35);
+    color: var(--gold);
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .ctrl-btn:hover { background: rgba(201,168,76,0.15); border-color: var(--gold); }
+  .ctrl-btn.play-btn { width: 42px; height: 42px; font-size: 1.1rem; border-width: 2px; }
+  .ctrl-btn.active { background: rgba(201,168,76,0.2); }
+
+  .playlist-toggle {
+    background: none;
+    border: 1px solid rgba(201,168,76,0.3);
+    color: rgba(201,168,76,0.7);
+    font-size: 0.7rem;
+    font-family: 'Josefin Sans', sans-serif;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    cursor: pointer;
+    border-radius: 1px;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .playlist-toggle:hover { background: rgba(201,168,76,0.1); color: var(--gold); }
+
+  audio { display: none; }
+
+  /* Vinyl animation */
+  .vinyl-wrap {
+    flex-shrink: 0;
+    width: 42px; height: 42px;
+    position: relative;
+  }
+  .vinyl {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: conic-gradient(
+      #1a1208 0deg 30deg, #2a1e0e 30deg 60deg,
+      #1a1208 60deg 90deg, #2a1e0e 90deg 120deg,
+      #1a1208 120deg 150deg, #2a1e0e 150deg 180deg,
+      #1a1208 180deg 210deg, #2a1e0e 210deg 240deg,
+      #1a1208 240deg 270deg, #2a1e0e 270deg 300deg,
+      #1a1208 300deg 330deg, #2a1e0e 330deg 360deg
+    );
+    position: relative;
+    animation: spin 3s linear infinite paused;
+    border: 1px solid rgba(201,168,76,0.2);
+  }
+  .vinyl.playing { animation-play-state: running; }
+  .vinyl::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 6px rgba(201,168,76,0.5);
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Progress */
+  .progress-wrap {
+    flex: 1;
+    min-width: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .progress-bar-bg {
+    width: 100%;
+    height: 3px;
+    background: rgba(201,168,76,0.15);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--gold);
+    border-radius: 2px;
+    width: 0%;
+    pointer-events: none;
+  }
+  .time-display {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.62rem;
+    color: rgba(201,168,76,0.5);
+    letter-spacing: 0.05em;
+  }
+
+  /* Playlist panel */
+  #playlist-panel {
+    display: none;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.8rem 0 0.2rem;
+  }
+  #playlist-panel.open { display: block; }
+
+  .playlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.5rem;
+  }
+  .pl-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid rgba(201,168,76,0.12);
+    border-radius: 1px;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s;
+    background: rgba(0,0,0,0.2);
+  }
+  .pl-item:hover { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.3); }
+  .pl-item.active { background: rgba(201,168,76,0.12); border-color: rgba(201,168,76,0.5); }
+  .pl-num {
+    font-size: 0.65rem;
+    color: rgba(201,168,76,0.4);
+    width: 16px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .pl-item.active .pl-num { color: var(--gold); }
+  .pl-texts { flex: 1; overflow: hidden; }
+  .pl-name {
+    font-size: 0.78rem;
+    color: var(--gold-pale);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .pl-item.active .pl-name { color: var(--gold-light); }
+  .pl-art {
+    font-size: 0.65rem;
+    color: rgba(201,168,76,0.45);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── INTRO STRIP ── */
+  .intro-strip {
+    background: var(--gold);
+    color: var(--dark);
+    text-align: center;
+    padding: 0.9rem 2rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ── MAIN GRID ── */
+  main { max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+
+  .section-title {
+    display: flex; align-items: center; gap: 1rem;
+    margin: 3rem 0 1.5rem;
+  }
+  .section-title .icon {
+    width: 44px; height: 44px;
+    border: 2px solid var(--gold); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0; color: var(--gold);
+  }
+  .section-title h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 700; color: var(--gold-light);
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+    padding-bottom: 0.3rem; flex: 1; letter-spacing: 0.05em;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+  .card {
+    background: var(--dark2);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-top: 3px solid var(--gold);
+    border-radius: 2px;
+    padding: 1.4rem 1.3rem 1.2rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .card:hover { border-color: var(--gold); transform: translateY(-3px); }
+  .card-icon { font-size: 1.8rem; margin-bottom: 0.6rem; display: block; }
+  .card h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem; font-weight: 700;
+    color: var(--gold-light); margin-bottom: 0.5rem; line-height: 1.25;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.7rem; }
+  .tag {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+    padding: 0.25rem 0.6rem; border-radius: 1px; text-transform: uppercase;
+  }
+  .tag-gold   { background: rgba(201,168,76,0.18); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.3); }
+  .tag-red    { background: rgba(139,26,26,0.35);  color: #E89090; border: 1px solid rgba(139,26,26,0.5); }
+  .tag-blue   { background: rgba(26,46,74,0.5);    color: #90B0D8; border: 1px solid rgba(90,130,180,0.4); }
+  .tag-green  { background: rgba(26,74,46,0.45);   color: #90D4A8; border: 1px solid rgba(40,140,80,0.35); }
+  .card p { font-size: 0.85rem; line-height: 1.6; color: rgba(250,243,224,0.72); }
+
+  .timeline {
+    display: flex; overflow-x: auto; gap: 0;
+    margin: 2rem 0; padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+  .tl-item {
+    flex: 0 0 auto; min-width: 140px;
+    padding: 0.7rem 1rem;
+    border-left: 2px solid rgba(201,168,76,0.2);
+  }
+  .tl-item:first-child { border-left-color: var(--gold); }
+  .tl-year { font-size: 0.7rem; font-weight: 600; color: var(--gold); letter-spacing: 0.1em; display: block; margin-bottom: 0.25rem; }
+  .tl-text { font-size: 0.78rem; color: rgba(250,243,224,0.75); line-height: 1.4; }
+
+  .contrast-box { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin: 1.5rem 0; }
+  @media (max-width: 560px) { .contrast-box { grid-template-columns: 1fr; } }
+  .contrast-side { padding: 1.3rem; border-radius: 2px; }
+  .contrast-side.bright { background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.35); }
+  .contrast-side.dark-side { background: rgba(139,26,26,0.12); border: 1px solid rgba(139,26,26,0.35); }
+  .contrast-side h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--gold-light); margin-bottom: 0.7rem; }
+  .contrast-side.dark-side h4 { color: #E89090; }
+  .contrast-side ul { list-style: none; }
+  .contrast-side ul li { font-size: 0.82rem; color: rgba(250,243,224,0.75); padding: 0.2rem 0 0.2rem 1.1rem; position: relative; }
+  .contrast-side ul li::before { content: '◆'; position: absolute; left: 0; font-size: 0.5rem; top: 0.35rem; color: var(--gold); }
+  .contrast-side.dark-side ul li::before { color: #E89090; }
+
+  .pull-quote {
+    border-left: 4px solid var(--gold); padding: 1rem 1.5rem;
+    margin: 2rem 0; background: rgba(201,168,76,0.06);
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 1.05rem; color: var(--gold-pale); line-height: 1.6;
+  }
+  .pull-quote cite { display: block; margin-top: 0.5rem; font-size: 0.78rem; font-style: normal; font-family: 'Josefin Sans', sans-serif; color: var(--gold); letter-spacing: 0.1em; }
+
+  .wide-card {
+    background: var(--dark2); border: 1px solid rgba(201,168,76,0.25);
+    border-left: 4px solid var(--gold); padding: 1.3rem 1.5rem;
+    margin: 1rem 0; border-radius: 2px;
+  }
+  .wide-card h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--gold-light); margin-bottom: 0.5rem; }
+  .wide-card p { font-size: 0.84rem; color: rgba(250,243,224,0.72); line-height: 1.6; }
+
+  footer {
+    border-top: 1px solid rgba(201,168,76,0.25);
+    text-align: center; padding: 1.5rem;
+    font-size: 0.75rem; color: rgba(201,168,76,0.5);
+    letter-spacing: 0.15em; text-transform: uppercase;
+  }
+
+  ::-webkit-scrollbar { height: 4px; width: 4px; background: var(--dark2); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="header-ornament">Weimarer Republik &nbsp;·&nbsp; 1924–1929</p>
+  <h1>Die Goldenen Zwanziger</h1>
+  <div class="deco-line">✦</div>
+  <h2>Blütezeit · Widerspruch · Moderne</h2>
+</header>
+
+<!-- ══ MUSIC PLAYER ══ -->
+<div id="music-player">
+  <div class="player-inner">
+    <span class="player-label">♪ Musik der Zeit</span>
+
+    <div class="vinyl-wrap">
+      <div class="vinyl" id="vinyl-disc"></div>
+    </div>
+
+    <div class="track-info">
+      <div class="track-title" id="track-title">Wähle einen Titel aus der Playlist …</div>
+      <div class="track-artist" id="track-artist"></div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar-bg" id="prog-bg">
+        <div class="progress-bar-fill" id="prog-fill"></div>
+      </div>
+      <div class="time-display">
+        <span id="time-cur">0:00</span>
+        <span id="time-tot">0:00</span>
+      </div>
+    </div>
+
+    <div class="player-controls">
+      <button class="ctrl-btn" id="btn-prev" title="Vorheriger Titel">&#9664;&#9664;</button>
+      <button class="ctrl-btn play-btn" id="btn-play" title="Abspielen / Pause">&#9654;</button>
+      <button class="ctrl-btn" id="btn-next" title="Nächster Titel">&#9654;&#9654;</button>
+    </div>
+
+    <button class="playlist-toggle" id="pl-toggle">Playlist ▾</button>
+  </div>
+
+  <div id="playlist-panel">
+    <div class="playlist-grid" id="playlist-grid"></div>
+  </div>
+
+  <audio id="audio-el" preload="none"></audio>
+</div>
+
+<div class="intro-strip">
+  Stabilisierungsphase nach Inflation &nbsp;|&nbsp; Relative Demokratie &nbsp;|&nbsp; Kulturelle Revolution &nbsp;|&nbsp; Fragilität
+</div>
+
+<main>
+
+  <div class="section-title"><div class="icon">⚖</div><h3>Politik &amp; Staat</h3></div>
+
+  <div class="timeline">
+    <div class="tl-item"><span class="tl-year">1923</span><span class="tl-text">Hyperinflation – Zusammenbruch der Währung</span></div>
+    <div class="tl-item"><span class="tl-year">1924</span><span class="tl-text">Dawes-Plan · Rentenmark · Stabilisierung</span></div>
+    <div class="tl-item"><span class="tl-year">1925</span><span class="tl-text">Locarno-Verträge · Hindenburg wird Reichspräsident</span></div>
+    <div class="tl-item"><span class="tl-year">1926</span><span class="tl-text">Deutschland tritt dem Völkerbund bei</span></div>
+    <div class="tl-item"><span class="tl-year">1928</span><span class="tl-text">SPD gewinnt Wahl · Koalitionsregierung</span></div>
+    <div class="tl-item"><span class="tl-year">1929</span><span class="tl-text">Young-Plan · Tod Stresemanns · Weltwirtschaftskrise</span></div>
+  </div>
+
+  <div class="contrast-box">
+    <div class="contrast-side bright">
+      <h4>✦ Stabilisierung</h4>
+      <ul>
+        <li>Weimarer Verfassung als moderne Demokratie</li>
+        <li>Außenpolitische Entspannung (Stresemann)</li>
+        <li>Völkerbund-Beitritt 1926</li>
+        <li>Dawes- &amp; Young-Plan regeln Reparationen</li>
+        <li>Koalitionsregierungen halten Republik aufrecht</li>
+      </ul>
+    </div>
+    <div class="contrast-side dark-side">
+      <h4>⚠ Fragilität</h4>
+      <ul>
+        <li>Extremparteien auf Links und Rechts</li>
+        <li>Putschversuche (Hitler-Putsch 1923)</li>
+        <li>Politische Morde (Rathenau 1922)</li>
+        <li>Antirepublikanische Eliten in Militär &amp; Justiz</li>
+        <li>Abhängigkeit von US-Krediten</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="section-title"><div class="icon">⚙</div><h3>Wirtschaft &amp; Arbeit</h3></div>
+
+  <div class="cards">
+    <div class="card">
+      <span class="card-icon">🏭</span>
+      <h4>Industrie &amp; Rationalisierung</h4>
+      <p>Fordismus hält Einzug in deutsche Fabriken. Fließbandproduktion, Taylorismus, Massenproduktion. Großkonzerne wie I.G. Farben, Krupp, Siemens dominieren.</p>
+      <div class="tags"><span class="tag tag-gold">Fließband</span><span class="tag tag-gold">Fordismus</span><span class="tag tag-blue">Export</span></div>
+    </div>
+    <div class="card">
+      <span class="card-icon">💵</span>
+      <h4>US-Kredite &amp; Dawes-Plan</h4>
+      <p>Amerikanisches Kapital finanziert den Aufschwung. Kurzfristige Anleihen erzeugen Abhängigkeit. Wirtschaftswachstum auf tönernen Füßen.</p>
+      <div class="tags"><span class="tag tag-gold">Auslandskredit</span><span class="tag tag-red">Reparationen</span><span class="tag tag-red">Abhängigkeit</span></div>
+    </div>
+    <div class="card">
+      <span class="card-icon">📉</span>
+      <h4>Arbeitslosigkeit</h4>
+      <p>Trotz Aufschwung: strukturelle Massenarbeitslosigkeit bleibt. Rationalisierung vernichtet Jobs. Weibliche Beschäftigung steigt in Büro &amp; Handel.</p>
+      <div class="tags"><span class="tag tag-red">Strukturell</span><span class="tag tag-blue">Frauen im Beruf</span><span class="tag tag-green">Aufschwung</span></div>
+    </div>
+    <div class="card">
+      <span class="card-icon">🤝</span>
+      <h4>Gewerkschaften &amp; Sozialpolitik</h4>
+      <p>Achtstundentag, Tarifverhandlungen, Sozialversicherung ausgebaut. Arbeitgeber und Gewerkschaften ringen um Kompromisse.</p>
+      <div class="tags"><span class="tag tag-green">8-Stunden-Tag</span><span class="tag tag-green">Sozialstaat</span><span class="tag tag-gold">Tarifrecht</span></div>
+    </div>
+  </div>
+
+  <div class="section-title"><div class="icon">👥</div><h3>Gesellschaft &amp; Alltag</h3></div>
+
+  <div class="cards">
+    <div class="card">
+      <span class="card-icon">👩</span>
+      <h4>Die Neue Frau</h4>
+      <p>Kurze Haare (Bubikopf), kürzere Röcke, Zigarette, Beruf, Wahlrecht seit 1919. Symbol des modernen Lebensgefühls – und Provokation für Konservative.</p>
+      <div class="tags"><span class="tag tag-gold">Bubikopf</span><span class="tag tag-gold">Wahlrecht</span><span class="tag tag-blue">Emanzipation</span></div>
+    </div>
+    <div class="card">
+      <span class="card-icon">🏙</span>
+      <h4>Urbanisierung</h4>
+      <p>Berlin wächst zur Weltmetropole mit 4 Mio. Einwohnern. Warenhäuser, Kinos, Leuchtreklamen, S-Bahn. Massenkonsum beginnt.</p>
+      <div class="tags"><span class="tag tag-gold">Berlin</span><span class="tag tag-blue">Großstadt</span><span class="tag tag-green">Massenkonsum</span></div>
+    </div>
+    <div class="card">
+      <span class="card-icon">🎰</span>
+      <h4>Vergnügungskultur</h4>
+      <p>Kabaretts, Revuen, Tanzdielen, Sportveranstaltungen. Boxen und Fußball werden Massenphänomene. Das „Amüsierviertel" boomt.</p>
+      <div class="tags"><span class="tag tag-gold">Kabarett</span><span class="tag tag-gold">Revue</span><span class="tag tag-blue">Sport</span></div>
+    </div>
+    <div class="card">
+      <span class="card-icon">🏘</span>
+      <h4>Wohnen &amp; Wohnungsnot</h4>
+      <p>Moderner sozialer Wohnungsbau (Neue Sachlichkeit). Dennoch: Überfüllung in Arbeiterquartieren. Frankfurt am Main als Vorbild moderner Stadtplanung.</p>
+      <div class="tags"><span class="tag tag-green">Sozialer Wohnbau</span><span class="tag tag-red">Wohnungsnot</span><span class="tag tag-blue">Neue Sachlichkeit</span></div>
+    </div>
+  </div>
+
+  <div class="section-title"><div class="icon">🎭</div><h3>Kultur &amp; Kunst</h3></div>
+
+  <div class="cards">
+    <div class="card">
+      <span class="card-icon">🏛</span>
+      <h4>Bauhaus</h4>
+      <p>Gegründet 1919 in Weimar. Design, Architektur, Handwerk als Gesamtkunstwerk. Gropius, Klee, Kandinsky, Mies van der Rohe. Weltweite Wirkung bis heute.</p>
+      <div class="tags"><span class="tag tag-gold">Gropius</span><span class="tag tag-gold">Dessau 1925</span><span class="tag tag-blue">Funktionalismus</span></div>
+    </div>
+    <div class="card">
+      <span class="card-icon">🎬</span>
+      <h4>Film &amp; Kino</h4>
+      <p>Deutschland führend im Stummfilm (UFA-Studios, Babelsberg). „Metropolis" (1927), „Nosferatu", expressionistischer Film. Ab 1929: Tonfilm revolutioniert alles.</p>
+      <div class="tags"><span class="tag tag-gold">UFA</span><span class="tag tag-gold">Metropolis</span><span class="tag tag-blue">Expressionismus</span></div>
+    </div>
+    <div class="card">
+      <span class="card-icon">🎷</span>
+      <h4>Musik &amp; Jazz</h4>
+      <p>Jazz aus Amerika erobert Tanzlokale. Charleston, Foxtrott, Shimmy. Kabarett-Songs (Brecht/Weill). Klassische Moderne: Schönberg, Hindemith.</p>
+      <div class="tags"><span class="tag tag-gold">Jazz</span><span class="tag tag-gold">Charleston</span><span class="tag tag-blue">Kabarett</span></div>
+    </div>
+    <div class="card">
+      <span class="card-icon">📻</span>
+      <h4>Rundfunk</h4>
+      <p>1923: Erste Rundfunksendung in Deutschland. Radio als Massenmedium. Neue Öffentlichkeit entsteht. Nachrichten, Musik, Unterhaltung für alle.</p>
+      <div class="tags"><span class="tag tag-gold">1923</span><span class="tag tag-green">Massenmedium</span><span class="tag tag-blue">Volksempfänger</span></div>
+    </div>
+    <div class="card">
+      <span class="card-icon">✒</span>
+      <h4>Literatur &amp; Presse</h4>
+      <p>Neue Sachlichkeit in der Literatur (Remarque, Kästner, Döblin). Boulevardblätter, Satirezeitschriften (Simplicissimus). Lebhafte Presselandschaft.</p>
+      <div class="tags"><span class="tag tag-gold">Remarque</span><span class="tag tag-gold">Kästner</span><span class="tag tag-blue">Neue Sachlichkeit</span></div>
+    </div>
+    <div class="card">
+      <span class="card-icon">🎨</span>
+      <h4>Bildende Kunst</h4>
+      <p>Expressionismus (Brücke, Blauer Reiter), Neue Sachlichkeit (Grosz, Dix). Politisch kritische Kunst. Dada als Protest. Plakat als Massenmedium.</p>
+      <div class="tags"><span class="tag tag-gold">Dix · Grosz</span><span class="tag tag-blue">Expressionismus</span><span class="tag tag-red">Gesellschaftskritik</span></div>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    „Berlin ist der tollste Hexenkessel, den ich je gesehen habe – es pulsiert wie ein Herz."
+    <cite>— Zeitgenössisches Zitat über Berlin in den Zwanzigern</cite>
+  </div>
+
+  <div class="section-title"><div class="icon">⚗</div><h3>Wissenschaft &amp; Technik</h3></div>
+
+  <div class="cards">
+    <div class="card">
+      <span class="card-icon">⚛</span>
+      <h4>Physik &amp; Nobelpreise</h4>
+      <p>Deutsche Wissenschaft weltweit führend. Einstein, Heisenberg (Quantenmechanik 1925), Max Planck. Berlin und Göttingen als Zentren der Physik.</p>
+      <div class="tags"><span class="tag tag-gold">Einstein</span><span class="tag tag-gold">Heisenberg</span><span class="tag tag-blue">Quantentheorie</span></div>
+    </div>
+    <div class="card">
+      <span class="card-icon">✈</span>
+      <h4>Luftfahrt</h4>
+      <p>Zeppelin-Luftschiffe (LZ 127 „Graf Zeppelin") als Prestige-Symbol. Erste transatlantische Linien. Junkers baut Passagierflugzeuge.</p>
+      <div class="tags"><span class="tag tag-gold">Zeppelin</span><span class="tag tag-green">Junkers</span><span class="tag tag-blue">Transatlantik</span></div>
+    </div>
+    <div class="card">
+      <span class="card-icon">🚗</span>
+      <h4>Automobil &amp; Infrastruktur</h4>
+      <p>Kraftfahrzeuge werden sichtbarer. ADAC, erste Verkehrsampeln (Berlin 1924). Noch Luxusgut – aber Massenkonsum kündigt sich an.</p>
+      <div class="tags"><span class="tag tag-gold">Auto</span><span class="tag tag-blue">Ampel 1924</span><span class="tag tag-green">Infrastruktur</span></div>
+    </div>
+  </div>
+
+  <div class="section-title"><div class="icon">☁</div><h3>Schattenseiten &amp; Widersprüche</h3></div>
+
+  <div class="wide-card">
+    <h4>🌾 Landwirtschaft in der Krise</h4>
+    <p>Die Goldenen Zwanziger sind städtisches Phänomen. Die Landbevölkerung (ca. 35 %) profitiert kaum. Agrarpreisverfall, Verschuldung, Abwanderung in die Städte. Auf dem Land herrscht stille Depression – fruchtbarer Boden für Radikalisierung.</p>
+  </div>
+  <div class="wide-card">
+    <h4>📊 Soziale Ungleichheit</h4>
+    <p>Zwischen Großverdiener und Massenarmut klafft eine riesige Lücke. Spekulationsboom und Luxuskonsum der Oberschicht, gleichzeitig Armutsviertel und „Mietskasernen". Der Mittelstand fühlt sich durch die Inflation dauerhaft enteignet.</p>
+  </div>
+  <div class="wide-card">
+    <h4>⚠ Extremismus auf dem Vormarsch</h4>
+    <p>NSDAP (1921 gegründet), KPD, rechtsnationale Verbände. Paramilitärische Gruppen (SA, Stahlhelm, Rotfrontkämpferbund) prägen die Straßenpolitik. Der Hass auf die Republik ist tief verwurzelt – in Militär, Justiz, Großbürgertum.</p>
+  </div>
+  <div class="wide-card">
+    <h4>💥 1929: Das Ende der Illusion</h4>
+    <p>Schwarzer Freitag (25. Oktober 1929) – Börsenkrach in New York. US-Gläubiger kündigen Kredite. Arbeitslosigkeit explodiert (bis 1932: 6 Mio.). Die Goldenen Zwanziger enden abrupt. Die Demokratie hält dieser Belastung nicht stand.</p>
+  </div>
+
+  <div class="section-title"><div class="icon">★</div><h3>Zusammenfassung: Das Doppelgesicht der Ära</h3></div>
+
+  <div class="contrast-box">
+    <div class="contrast-side bright">
+      <h4>✦ Aufbruch &amp; Moderne</h4>
+      <ul>
+        <li>Demokratie und Grundrechte</li>
+        <li>Kulturelle Avantgarde (Bauhaus, Expressionismus)</li>
+        <li>Emanzipation der Frau</li>
+        <li>Massenmedien und Massenkultur</li>
+        <li>Wissenschaftliche Weltspitze</li>
+        <li>Außenpolitische Normalisierung</li>
+        <li>Wachstum, Investitionen, Konsum</li>
+      </ul>
+    </div>
+    <div class="contrast-side dark-side">
+      <h4>⚠ Fragilität &amp; Krisen</h4>
+      <ul>
+        <li>Fehlende demokratische Tradition</li>
+        <li>Abhängigkeit von Auslandskrediten</li>
+        <li>Permanente Polarisierung</li>
+        <li>Landbevölkerung ohne Aufschwung</li>
+        <li>Feinde der Republik in Schlüsselstellungen</li>
+        <li>Strukturelle Arbeitslosigkeit</li>
+        <li>Jederzeit angreifbare Verfassungsordnung</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    Die Goldenen Zwanziger waren kein goldenes Zeitalter für alle – sondern eine Phase relativer Stabilität auf dünnem Eis, die zeigte, was Demokratie leisten kann – und wie leicht sie zu zerstören ist.
+  </div>
+
+</main>
+
+<footer>
+  Weimarer Republik &nbsp;·&nbsp; 1919–1933 &nbsp;·&nbsp; Unterrichtsmaterial Geschichte Sekundarstufe
+  <br><span style="font-size:0.65rem;opacity:0.6;margin-top:0.3rem;display:block;">Musikquellen: Internet Archive (Public Domain / 78rpm-Digitalisierungen)</span>
+</footer>
+
+<script>
+// Helper: build archive.org URL with correct encoding
+function archiveUrl(identifier, filename) {
+  return 'https://archive.org/download/' + identifier + '/' + encodeURIComponent(filename);
+}
+
+const TRACKS = [
+  {
+    title: "The Japanese Sandman",
+    artist: "Paul Whiteman & His Orchestra (1920)",
+    context: "Fox Trot · Jazz-Ära · Victor 78rpm",
+    url: archiveUrl('PAULWHITEMANAndHisOrchestra-NEWTRANSFER_201405', '02. The Japanese Sandman.mp3')
+  },
+  {
+    title: "Best Ever Medley",
+    artist: "Paul Whiteman & His Orchestra (1920)",
+    context: "One-Step · Victor 78rpm · Aufnahme 1920",
+    url: archiveUrl('PAULWHITEMANAndHisOrchestra-NEWTRANSFER_201405', '01. Best Ever Medley.mp3')
+  },
+  {
+    title: "Dein ist mein ganzes Herz",
+    artist: "Richard Tauber / Franz Lehár (1929)",
+    context: "Aus: Land des Lächelns · Odeon-Schellack 1929",
+    url: archiveUrl(
+      'richard-tauber-franz-lehar-orchester-der-staatskapelle-berlin-dein-ist-mein-ganzes-herz',
+      'Richard Tauber & Franz Lehar Orchester der Staatskapelle Berlin - Dein ist mein ganzes Herz.mp3'
+    )
+  },
+  {
+    title: "Immer nur lächeln",
+    artist: "Richard Tauber / Franz Lehár (1929)",
+    context: "Aus: Land des Lächelns · Operette 1929",
+    url: archiveUrl(
+      'richard-tauber-franz-lehar-orchester-der-staatskapelle-berlin-immer-nur-lacheln',
+      'Richard Tauber & Franz Lehar Orchester der Staatskapelle Berlin - Immer nur lächeln.mp3'
+    )
+  },
+  {
+    title: "Moritat von Mackie Messer",
+    artist: "Dreigroschenoper (1962 – Originalpartitur Weill/Brecht)",
+    context: "Brecht / Weill · Deutsche Originalfassung",
+    url: archiveUrl('15-dreigroschenoper', '02 - Moritat von Mackie Messer.mp3')
+  },
+  {
+    title: "Kanonen-Song",
+    artist: "Dreigroschenoper (Weill/Brecht)",
+    context: "Brecht / Weill · Deutsche Originalfassung",
+    url: archiveUrl('15-dreigroschenoper', '04 - Kanonen-Song.mp3')
+  },
+  {
+    title: "Seeräuber-Jenny",
+    artist: "Dreigroschenoper (Weill/Brecht)",
+    context: "Brecht / Weill · Deutsche Originalfassung",
+    url: archiveUrl('15-dreigroschenoper', '09 - Seeräuber-Jenny.mp3')
+  },
+  {
+    title: "Barbara-Song",
+    artist: "Dreigroschenoper (Weill/Brecht)",
+    context: "Brecht / Weill · Deutsche Originalfassung",
+    url: archiveUrl('15-dreigroschenoper', '06 - Barbara-Song.mp3')
+  }
+];
+
+const audio    = document.getElementById('audio-el');
+const vinyl    = document.getElementById('vinyl-disc');
+const btnPlay  = document.getElementById('btn-play');
+const btnPrev  = document.getElementById('btn-prev');
+const btnNext  = document.getElementById('btn-next');
+const progBg   = document.getElementById('prog-bg');
+const progFill = document.getElementById('prog-fill');
+const timeCur  = document.getElementById('time-cur');
+const timeTot  = document.getElementById('time-tot');
+const tTitle   = document.getElementById('track-title');
+const tArtist  = document.getElementById('track-artist');
+const plGrid   = document.getElementById('playlist-grid');
+const plToggle = document.getElementById('pl-toggle');
+const plPanel  = document.getElementById('playlist-panel');
+
+let current = -1;
+let playing = false;
+
+function fmt(s) {
+  if (isNaN(s)) return '0:00';
+  const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+  return m + ':' + String(sec).padStart(2,'0');
+}
+
+function buildPlaylist() {
+  TRACKS.forEach((t, i) => {
+    const div = document.createElement('div');
+    div.className = 'pl-item';
+    div.id = 'pl-' + i;
+    div.innerHTML = `<span class="pl-num">${i+1}</span>
+      <div class="pl-texts">
+        <div class="pl-name">${t.title}</div>
+        <div class="pl-art">${t.artist}</div>
+      </div>`;
+    div.addEventListener('click', () => load(i, true));
+    plGrid.appendChild(div);
+  });
+}
+
+function setActive(i) {
+  document.querySelectorAll('.pl-item').forEach(el => el.classList.remove('active'));
+  const el = document.getElementById('pl-' + i);
+  if (el) el.classList.add('active');
+}
+
+function load(i, autoplay) {
+  current = i;
+  const t = TRACKS[i];
+  audio.src = t.url;
+  tTitle.textContent = t.title;
+  tArtist.textContent = t.artist + (t.context ? ' · ' + t.context : '');
+  setActive(i);
+  progFill.style.width = '0%';
+  timeCur.textContent = '0:00';
+  timeTot.textContent = '0:00';
+  if (autoplay) { audio.play(); playing = true; updateUI(); }
+}
+
+function updateUI() {
+  btnPlay.innerHTML = playing ? '&#9646;&#9646;' : '&#9654;';
+  vinyl.classList.toggle('playing', playing);
+}
+
+btnPlay.addEventListener('click', () => {
+  if (current < 0) { load(0, true); return; }
+  if (playing) { audio.pause(); playing = false; }
+  else { audio.play(); playing = true; }
+  updateUI();
+});
+
+btnPrev.addEventListener('click', () => {
+  const prev = (current <= 0 ? TRACKS.length - 1 : current - 1);
+  load(prev, playing);
+});
+
+btnNext.addEventListener('click', () => {
+  const next = (current >= TRACKS.length - 1 ? 0 : current + 1);
+  load(next, playing);
+});
+
+audio.addEventListener('ended', () => {
+  const next = (current >= TRACKS.length - 1 ? 0 : current + 1);
+  load(next, true);
+});
+
+audio.addEventListener('error', () => {
+  const el = document.getElementById('pl-' + current);
+  if (el) { el.style.opacity = '0.35'; el.style.textDecoration = 'line-through'; }
+  tArtist.textContent = '⚠️ Titel nicht erreichbar – weiter …';
+  setTimeout(() => {
+    const next = (current >= TRACKS.length - 1 ? 0 : current + 1);
+    if (next !== current) load(next, playing);
+  }, 1200);
+});
+
+audio.addEventListener('timeupdate', () => {
+  if (!audio.duration) return;
+  const pct = (audio.currentTime / audio.duration) * 100;
+  progFill.style.width = pct + '%';
+  timeCur.textContent = fmt(audio.currentTime);
+  timeTot.textContent = fmt(audio.duration);
+});
+
+audio.addEventListener('play',  () => { playing = true;  updateUI(); });
+audio.addEventListener('pause', () => { playing = false; updateUI(); });
+
+progBg.addEventListener('click', e => {
+  if (!audio.duration) return;
+  const rect = progBg.getBoundingClientRect();
+  audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+});
+
+plToggle.addEventListener('click', () => {
+  plPanel.classList.toggle('open');
+  plToggle.textContent = plPanel.classList.contains('open') ? 'Playlist ▴' : 'Playlist ▾';
+});
+
+buildPlaylist();
+// Autostart with first track, muted until user interacts
+load(0, false);
+</script>
+</body>
+</html>
