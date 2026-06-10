@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brechung des Lichts – interaktive Simulation mit Strahlengang</title>
+<style>
+:root{--bg1:#07122b;--bg2:#0f2f55;--card:#ffffffee;--ink:#132033;--muted:#5b6b82;--accent:#2563eb;--glass:#7dd3fc55;--glass2:#bae6fd66;--yellow:#facc15;--red:#ef4444;--green:#22c55e;--violet:#8b5cf6;}
+*{box-sizing:border-box} body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:radial-gradient(circle at top left,#1d4ed8 0,#0b1838 38%,#050816 100%);color:#fff;min-height:100vh} 
+header{padding:26px 18px 12px;text-align:center} h1{margin:0;font-size:clamp(1.7rem,3.2vw,3rem);letter-spacing:.2px} .subtitle{margin:10px auto 0;max-width:980px;color:#dbeafe;font-size:1.05rem;line-height:1.45}
+.wrap{max-width:1220px;margin:0 auto;padding:14px;display:grid;grid-template-columns:330px 1fr;gap:16px}.panel,.stage,.info{background:var(--card);color:var(--ink);border-radius:22px;box-shadow:0 18px 50px #0008;border:1px solid #ffffff70}.panel{padding:18px;align-self:start;position:sticky;top:12px}.stage{padding:14px;overflow:hidden}.info{max-width:1220px;margin:0 auto 22px;padding:18px}.control{margin:17px 0}.row{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px}label{font-weight:700}.value{font-variant-numeric:tabular-nums;color:#0f3f8f;font-weight:800;background:#e0ecff;border-radius:999px;padding:4px 10px}input[type=range]{width:100%;accent-color:var(--accent)}.buttons{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}.btn{border:0;border-radius:14px;padding:11px 12px;font-weight:800;cursor:pointer;background:#e5edff;color:#16346d}.btn.primary{background:linear-gradient(135deg,#2563eb,#06b6d4);color:#fff}.btn:hover{filter:brightness(.97);transform:translateY(-1px)}.switch{display:flex;align-items:center;gap:9px;margin:12px 0;font-weight:650}.switch input{width:18px;height:18px}.mini{font-size:.88rem;color:var(--muted);line-height:1.35}.formula{background:#eef6ff;border-left:5px solid #2563eb;border-radius:12px;padding:12px;margin-top:14px;font-family:Consolas,monospace;color:#0f2c5c}.readout{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:15px}.tile{background:#f1f5f9;border-radius:15px;padding:10px}.tile b{display:block;color:#334155;font-size:.8rem}.tile span{font-size:1.1rem;font-weight:900;color:#0b3b84}svg{width:100%;height:auto;display:block;border-radius:18px;background:linear-gradient(180deg,#eff9ff,#f8fbff 58%,#eaf7ff)}.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;color:#334155;font-size:.9rem}.leg{display:flex;align-items:center;gap:6px;background:#f8fafc;border-radius:999px;padding:5px 9px}.dot{width:22px;height:5px;border-radius:99px;background:#000}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.task{background:#f8fafc;border-radius:16px;padding:14px}.task h3{margin:0 0 8px}.task p{margin:0;color:#44546a;line-height:1.45}.note{margin-top:12px;background:#fff7d6;border-left:5px solid #facc15;border-radius:12px;padding:11px;color:#4d3b00}.badge{display:inline-block;background:#dbeafe;color:#173c82;border-radius:999px;padding:3px 9px;font-weight:800;font-size:.82rem}.svgtext{font-family:Segoe UI,Arial,sans-serif;user-select:none}.angleText{font-size:15px;font-weight:800;fill:#0f172a}.smallText{font-size:13px;fill:#475569;font-weight:700}.mediumText{font-size:16px;fill:#0f172a;font-weight:900}.rayLabel{font-size:14px;font-weight:900;fill:#0f172a}.danger{fill:#991b1b;font-weight:900}.pulse{animation:pulse 1.6s infinite ease-in-out}@keyframes pulse{50%{opacity:.5}}@media(max-width:900px){.wrap{grid-template-columns:1fr}.panel{position:static}.grid2{grid-template-columns:1fr}.readout{grid-template-columns:1fr 1fr}}@media print{body{background:white;color:#111}.panel,.stage,.info{box-shadow:none;border:1px solid #ddd}.btn{display:none}.wrap{grid-template-columns:1fr}.panel{position:static}.stage{break-inside:avoid}}
+
+.spec-wrap{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:18px}.spec-card{background:#f8fafc;border-radius:18px;padding:16px}.spec-card h3{margin:0 0 10px}.spec-card p,.spec-card li{color:#44546a;line-height:1.45}.spec-card ul{margin:8px 0 0 18px;padding:0}.spec-svg{width:100%;height:auto;display:block;border-radius:14px;background:linear-gradient(180deg,#fafdff,#eff6ff)}.chipline{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.chip{padding:6px 10px;border-radius:999px;font-weight:800;color:#0f172a;font-size:.88rem;border:1px solid #cbd5e1;background:#fff}.chip.red{background:#fee2e2}.chip.orange{background:#ffedd5}.chip.yellow{background:#fef9c3}.chip.green{background:#dcfce7}.chip.blue{background:#dbeafe}.chip.indigo{background:#e0e7ff}.chip.violet{background:#f3e8ff}.chip.ir{background:#ffe4e6}.chip.uv{background:#ede9fe}@media(max-width:900px){.spec-wrap{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+<h1>Brechung des Lichts am Prisma</h1>
+<p class="subtitle">Interaktive Einzeldatei für den Unterricht: Einfallslot, Einfallswinkel, Brechungswinkel und der komplette <b>Strahlengang</b> werden sichtbar. Zusätzlich gibt es eine beschriftete <b>Abbildung zur Dispersion, zu den Spektralfarben sowie zu Infrarot und Ultraviolett</b>. Keine Installation, keine externen Dateien – läuft direkt im Browser.</p>
+</header>
+<main class="wrap">
+<section class="panel" aria-label="Steuerung">
+<h2 style="margin:0 0 8px">Steuerung</h2>
+<p class="mini">Verändere die Regler und beobachte, wie der Lichtstrahl beim Eintritt und Austritt gebrochen wird. Das Prisma hat heute Physikdienst, es beschwert sich nur innerlich.</p>
+<div class="control"><div class="row"><label for="incident">Einfallswinkel α₁</label><span id="incidentVal" class="value">35°</span></div><input id="incident" type="range" min="5" max="58" value="35" step="1"></div>
+<div class="control"><div class="row"><label for="apex">Prismenwinkel γ</label><span id="apexVal" class="value">60°</span></div><input id="apex" type="range" min="35" max="80" value="60" step="1"></div>
+<div class="control"><div class="row"><label for="wavelength">Wellenlänge</label><span id="wavelengthVal" class="value">550 nm</span></div><input id="wavelength" type="range" min="420" max="680" value="550" step="5"></div>
+<label class="switch"><input id="dispersion" type="checkbox" checked> Farbzerlegung zeigen</label>
+<label class="switch"><input id="normals" type="checkbox" checked> Einfallslote anzeigen</label>
+<label class="switch"><input id="angles" type="checkbox" checked> Winkel anzeigen</label>
+<div class="buttons"><button class="btn primary" id="presetNormal">ruhiger Strahl</button><button class="btn" id="presetSteep">starke Brechung</button><button class="btn" id="presetRed">rotes Licht</button><button class="btn" id="presetBlue">blaues Licht</button></div>
+<div class="readout"><div class="tile"><b>Brechzahl n</b><span id="nOut">1,519</span></div><div class="tile"><b>β₁ im Glas</b><span id="beta1Out">22,2°</span></div><div class="tile"><b>β₂ innen</b><span id="beta2Out">37,8°</span></div><div class="tile"><b>Austrittswinkel α₂</b><span id="alpha2Out">68,8°</span></div></div>
+<div class="formula">Snelliussches Gesetz:<br>n₁ · sin(α) = n₂ · sin(β)</div>
+<div class="note"><b>Merksatz:</b> Zum optisch dichteren Stoff hin wird der Strahl <b>zum Lot hin</b> gebrochen. Beim Austritt in Luft wird er <b>vom Lot weg</b> gebrochen.</div>
+</section>
+<section class="stage">
+<svg id="svg" viewBox="0 0 900 560" role="img" aria-label="Simulation des Strahlengangs durch ein Prisma">
+<defs>
+<linearGradient id="prismGrad" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#dff8ff" stop-opacity=".9"/><stop offset=".5" stop-color="#7dd3fc" stop-opacity=".35"/><stop offset="1" stop-color="#e0f2fe" stop-opacity=".8"/></linearGradient>
+<filter id="glow"><feGaussianBlur stdDeviation="3.5" result="coloredBlur"/><feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+<marker id="arrowYellow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#eab308"/></marker>
+<marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#2563eb"/></marker>
+</defs>
+<rect x="0" y="0" width="900" height="560" fill="url(#sky)" opacity="0"/>
+<g id="draw"></g>
+</svg>
+<div class="legend"><span class="leg"><span class="dot" style="background:#eab308"></span>einfallender Strahl</span><span class="leg"><span class="dot" style="background:#2563eb"></span>gebrochener Strahl im Glas</span><span class="leg"><span class="dot" style="background:#ef4444"></span>austretender Strahl / Spektrum</span><span class="leg"><span class="dot" style="background:#64748b"></span>Lot</span></div>
+</section>
+</main>
+<section class="info">
+<div class="grid2">
+<div class="task"><h3><span class="badge">Aufgabe 1</span> Beobachten</h3><p>Stelle α₁ auf 20°, 35° und 50°. Notiere jeweils β₁. Was fällt dir auf? Formuliere den Zusammenhang in einem Satz.</p></div>
+<div class="task"><h3><span class="badge">Aufgabe 2</span> Erklären</h3><p>Warum wird blaues Licht stärker abgelenkt als rotes Licht? Nutze die Anzeige der Brechzahl n und den Strahlengang. Erkläre außerdem, warum Licht einer einzelnen Spektralfarbe nicht weiter zerlegt werden kann.</p></div>
+<div class="task"><h3><span class="badge">Aufgabe 3</span> Begriffe</h3><p>Zeige auf der Zeichnung: Einfallsstrahl, Lot, Einfallswinkel, Brechungswinkel, Austrittsstrahl. Danach erklärt ein Partner den Weg des Lichtstrahls.</p></div>
+<div class="task"><h3><span class="badge">Tafelbild</span> Kurzfassung</h3><p>Licht ändert an einer Grenzfläche seine Richtung, wenn es schräg auftrifft und sich die Lichtgeschwindigkeit im neuen Stoff ändert. Diese Richtungsänderung nennt man Brechung.</p></div>
+</div>
+
+<div class="spec-wrap">
+  <div class="spec-card">
+    <h3><span class="badge">Abbildung</span> Spektralfarben bei der Dispersion</h3>
+    <svg class="spec-svg" viewBox="0 0 860 320" role="img" aria-label="Abbildung zur Dispersion von weißem Licht in einem Prisma mit Spektralfarben, Infrarot und Ultraviolett">
+      <defs>
+        <linearGradient id="miniPrism" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0" stop-color="#dff8ff" stop-opacity="0.95"/>
+          <stop offset="1" stop-color="#93c5fd" stop-opacity="0.45"/>
+        </linearGradient>
+        <filter id="softGlow"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <rect x="15" y="15" width="830" height="290" rx="24" fill="#ffffff" stroke="#dbeafe"/>
+      <text x="55" y="48" class="svgtext mediumText" text-anchor="start">Weißes Licht trifft auf ein Prisma</text>
+      <text x="55" y="72" class="svgtext smallText" text-anchor="start">Das Prisma zerlegt weißes Licht in sichtbare Spektralfarben: Rot, Orange, Gelb, Grün, Blau, Indigo, Violett. Daneben liegen Infrarot und Ultraviolett.</text>
+      <line x1="70" y1="160" x2="285" y2="160" stroke="#f8fafc" stroke-width="18" stroke-linecap="round" filter="url(#softGlow)"/>
+      <line x1="70" y1="160" x2="285" y2="160" stroke="#ffffff" stroke-width="10" stroke-linecap="round"/>
+      <polygon points="315,95 265,230 425,230" fill="url(#miniPrism)" stroke="#0284c7" stroke-width="3"/>
+      <text x="345" y="252" class="svgtext smallText">Glasprisma</text>
+      <!-- Korrekte Reihenfolge nach Ablenkung: Infrarot/Rot oben = schwächer gebrochen, Violett/Ultraviolett unten = stärker gebrochen -->
+      <line x1="334" y1="155" x2="555" y2="96" stroke="#b91c1c" stroke-width="4" stroke-dasharray="9 7" stroke-linecap="round" opacity="0.65"/>
+      <line x1="334" y1="155" x2="570" y2="117" stroke="#ef4444" stroke-width="6" stroke-linecap="round"/>
+      <line x1="334" y1="155" x2="578" y2="136" stroke="#f97316" stroke-width="6" stroke-linecap="round"/>
+      <line x1="334" y1="155" x2="586" y2="155" stroke="#eab308" stroke-width="6" stroke-linecap="round"/>
+      <line x1="334" y1="155" x2="594" y2="176" stroke="#22c55e" stroke-width="6" stroke-linecap="round"/>
+      <line x1="334" y1="155" x2="602" y2="198" stroke="#3b82f6" stroke-width="6" stroke-linecap="round"/>
+      <line x1="334" y1="155" x2="610" y2="220" stroke="#4f46e5" stroke-width="6" stroke-linecap="round"/>
+      <line x1="334" y1="155" x2="618" y2="242" stroke="#8b5cf6" stroke-width="6" stroke-linecap="round"/>
+      <line x1="334" y1="155" x2="628" y2="264" stroke="#6d28d9" stroke-width="4" stroke-dasharray="9 7" stroke-linecap="round" opacity="0.65"/>
+      <text x="615" y="99" class="svgtext smallText" text-anchor="start" fill="#7f1d1d">Infrarot</text>
+      <text x="615" y="114" class="svgtext smallText" text-anchor="start" fill="#7f1d1d">nicht sichtbar</text>
+      <text x="620" y="121" class="svgtext smallText" text-anchor="start" fill="#b91c1c">Rot</text>
+      <text x="628" y="140" class="svgtext smallText" text-anchor="start" fill="#c2410c">Orange</text>
+      <text x="636" y="159" class="svgtext smallText" text-anchor="start" fill="#a16207">Gelb</text>
+      <text x="644" y="180" class="svgtext smallText" text-anchor="start" fill="#15803d">Grün</text>
+      <text x="652" y="202" class="svgtext smallText" text-anchor="start" fill="#1d4ed8">Blau</text>
+      <text x="660" y="224" class="svgtext smallText" text-anchor="start" fill="#3730a3">Indigo</text>
+      <text x="668" y="246" class="svgtext smallText" text-anchor="start" fill="#7c3aed">Violett</text>
+      <text x="676" y="266" class="svgtext smallText" text-anchor="start" fill="#5b21b6">Ultraviolett</text>
+      <text x="676" y="281" class="svgtext smallText" text-anchor="start" fill="#5b21b6">nicht sichtbar</text>
+      <text x="92" y="146" class="svgtext smallText" text-anchor="start">weißes Licht</text>
+      <text x="478" y="288" class="svgtext smallText" text-anchor="middle">Rot wird am wenigsten, violett am stärksten gebrochen. Infrarot und Ultraviolett liegen außerhalb des sichtbaren Spektrums.</text>
+    </svg>
+    <div class="chipline">
+      <span class="chip ir">Infrarot</span>
+      <span class="chip red">Rot</span>
+      <span class="chip orange">Orange</span>
+      <span class="chip yellow">Gelb</span>
+      <span class="chip green">Grün</span>
+      <span class="chip blue">Blau</span>
+      <span class="chip indigo">Indigo</span>
+      <span class="chip violet">Violett</span>
+      <span class="chip uv">Ultraviolett</span>
+    </div>
+  </div>
+  <div class="spec-card">
+    <h3><span class="badge">Merkhilfe</span> Was bedeutet Dispersion?</h3>
+    <p><b>Dispersion</b> bedeutet: Licht verschiedener Wellenlängen wird <b>unterschiedlich stark</b> gebrochen. Darum zerlegt ein Prisma weißes Licht in seine Spektralfarben.</p>
+    <ul>
+      <li><b>Rotes Licht</b> hat eine größere Wellenlänge und wird schwächer abgelenkt.</li>
+      <li><b>Violettes Licht</b> hat eine kleinere Wellenlänge und wird stärker abgelenkt.</li>
+      <li>Die Reihenfolge des sichtbaren Spektrums lautet: <b>Rot – Orange – Gelb – Grün – Blau – Indigo – Violett</b>.</li>
+      <li><b>Infrarot</b> liegt jenseits von Rot, <b>Ultraviolett</b> jenseits von Violett. Beide Bereiche gehören zum elektromagnetischen Spektrum, sind aber für das menschliche Auge nicht sichtbar.</li>
+      <li><b>Licht einer einzelnen Spektralfarbe</b> ist monochromatisch und wird durch ein Prisma <b>nicht weiter in andere Farben zerlegt</b>.</li>
+      <li>Ein Regenbogen entsteht ebenfalls durch Dispersion – nur übernehmen dort Wassertropfen die Arbeit des Prismas.</li>
+    </ul>
+    <div class="note" style="margin-top:14px"><b>Tafel-Satz:</b> Weißes Licht besteht aus vielen Farben. Eine einzelne Spektralfarbe ist nicht weiter zerlegbar. Infrarot und Ultraviolett liegen außerhalb des sichtbaren Spektrums.</div>
+  </div>
+</div>
+
+</section>
+<script>
+const $=id=>document.getElementById(id);const svg=$('draw');
+const state={incident:35,apex:60,wavelength:550,dispersion:true,normals:true,angles:true};
+function rad(d){return d*Math.PI/180} function deg(r){return r*180/Math.PI}
+function v(x,y){return{x,y}} function add(a,b){return v(a.x+b.x,a.y+b.y)} function sub(a,b){return v(a.x-b.x,a.y-b.y)} function mul(a,s){return v(a.x*s,a.y*s)} function len(a){return Math.hypot(a.x,a.y)} function unit(a){const l=len(a)||1;return v(a.x/l,a.y/l)} function dot(a,b){return a.x*b.x+a.y*b.y} function cross(a,b){return a.x*b.y-a.y*b.x} function angleOf(a){return Math.atan2(a.y,a.x)}
+function nGlass(wl){const um=wl/1000;return 1.5046+0.00420/(um*um)}
+function wlColor(wl){let r=0,g=0,b=0;if(wl<440){r=-(wl-440)/(440-380);b=1}else if(wl<490){g=(wl-440)/(490-440);b=1}else if(wl<510){g=1;b=-(wl-510)/(510-490)}else if(wl<580){r=(wl-510)/(580-510);g=1}else if(wl<645){r=1;g=-(wl-645)/(645-580)}else{r=1}let f=1;if(wl<420)f=.3+.7*(wl-380)/40;else if(wl>700)f=.3+.7*(750-wl)/50;const adj=c=>Math.round(Math.pow(Math.max(0,c*f),.8)*255);return `rgb(${adj(r)},${adj(g)},${adj(b)})`}
+function line(x1,y1,x2,y2,stroke,w=4,dash='',arrow=false,op=1){return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${stroke}" stroke-width="${w}" stroke-linecap="round" ${dash?`stroke-dasharray="${dash}"`:''} ${arrow?`marker-end="url(#${arrow})"`:''} opacity="${op}"/>`}
+function poly(points,fill,stroke,w=2){return `<polygon points="${points.map(p=>p.x+','+p.y).join(' ')}" fill="${fill}" stroke="${stroke}" stroke-width="${w}"/>`}
+function text(x,y,t,cls='smallText',anchor='middle'){return `<text x="${x}" y="${y}" class="svgtext ${cls}" text-anchor="${anchor}">${t}</text>`}
+function arc(cx,cy,r,a1,a2,color,label){const x1=cx+r*Math.cos(a1),y1=cy+r*Math.sin(a1),x2=cx+r*Math.cos(a2),y2=cy+r*Math.sin(a2);const large=Math.abs(a2-a1)>Math.PI?1:0;const sweep=a2>a1?1:0;const mid=(a1+a2)/2;return `<path d="M ${x1} ${y1} A ${r} ${r} 0 ${large} ${sweep} ${x2} ${y2}" fill="none" stroke="${color}" stroke-width="3"/><text x="${cx+(r+18)*Math.cos(mid)}" y="${cy+(r+18)*Math.sin(mid)}" class="svgtext angleText" text-anchor="middle">${label}</text>`}
+function intersectRaySegment(P,d,A,B){const e=sub(B,A);const det=cross(d,e);if(Math.abs(det)<1e-6)return null;const AP=sub(A,P);const t=cross(AP,e)/det;const u=cross(AP,d)/det;if(t>=0&&u>=0&&u<=1)return add(P,mul(d,t));return null}
+function prismGeometry(){const cx=455,cy=322;const h=210;const gamma=rad(state.apex);const half=h*Math.tan(gamma/2);const top=v(cx,cy-h),left=v(cx-half,cy+h*0.72),right=v(cx+half,cy+h*0.72);return{top,left,right}}
+function calcRay(wl){const {top,left,right}=prismGeometry();const leftEdge=sub(left,top),rightEdge=sub(right,top);const leftU=unit(leftEdge),rightU=unit(rightEdge);let nLout=v(-leftU.y,leftU.x); if(nLout.x>0)nLout=mul(nLout,-1); const nLin=mul(nLout,-1);let nRout=v(rightU.y,-rightU.x); if(nRout.x<0)nRout=mul(nRout,-1); const nRin=mul(nRout,-1);
+const Pentry=add(top,mul(leftEdge,.56));const n=nGlass(wl);const alpha1=rad(state.incident);const beta1=Math.asin(Math.sin(alpha1)/n);const nLAng=angleOf(nLin);const incDir=v(Math.cos(nLAng-alpha1),Math.sin(nLAng-alpha1));const inDir=v(Math.cos(nLAng-beta1),Math.sin(nLAng-beta1));const Pexit=intersectRaySegment(Pentry,inDir,top,right);if(!Pexit)return{miss:true,n,Pentry,incDir,inDir,top,left,right,nLin,nLout,nRout,nRin,beta1};const cosb=Math.max(-1,Math.min(1,dot(inDir,nRout)));const beta2=Math.acos(cosb);const sinAlpha2=n*Math.sin(beta2);let tir=sinAlpha2>1,alpha2=NaN,outDir=null;if(!tir){alpha2=Math.asin(sinAlpha2);const sign=cross(nRout,inDir)>0?1:-1;const outAng=angleOf(nRout)+sign*alpha2;outDir=v(Math.cos(outAng),Math.sin(outAng));}
+return{n,alpha1,beta1,beta2,alpha2,tir,Pentry,Pexit,incDir,inDir,outDir,top,left,right,nLin,nLout,nRout,nRin,wl};}
+function updateReadout(r){$('incidentVal').textContent=state.incident+'°';$('apexVal').textContent=state.apex+'°';$('wavelengthVal').textContent=state.wavelength+' nm';$('nOut').textContent=r.n.toFixed(3).replace('.',',');$('beta1Out').textContent=isFinite(r.beta1)?deg(r.beta1).toFixed(1).replace('.',',')+'°':'–';$('beta2Out').textContent=isFinite(r.beta2)?deg(r.beta2).toFixed(1).replace('.',',')+'°':'–';$('alpha2Out').textContent=r.tir?'Totalreflexion':(isFinite(r.alpha2)?deg(r.alpha2).toFixed(1).replace('.',',')+'°':'–');}
+function render(){const r=calcRay(state.wavelength);updateReadout(r);const {top,left,right}=prismGeometry();let h='';h+=`<rect x="28" y="30" width="844" height="500" rx="28" fill="#f8fbff" stroke="#dbeafe"/>`;h+=`<path d="M 60 455 C180 430 250 470 370 445 S610 425 840 455 L840 530 L60 530 Z" fill="#dbeafe" opacity=".85"/>`;h+=poly([top,left,right],'url(#prismGrad)','#0284c7',3);h+=`<path d="M ${top.x} ${top.y} L ${left.x} ${left.y} L ${right.x} ${right.y} Z" fill="none" stroke="#ffffff" stroke-width="7" opacity=".5"/>`;h+=text(top.x,top.y-17,'Glasprisma','mediumText');h+=text(84,73,'Luft','mediumText','start');h+=text(760,73,'Luft','mediumText','start');
+const start=add(r.Pentry,mul(r.incDir,-260));h+=line(start.x,start.y,r.Pentry.x,r.Pentry.y,'#eab308',7,'','arrowYellow',.95);h+=text((start.x+r.Pentry.x)/2-26,(start.y+r.Pentry.y)/2-13,'Einfallsstrahl','rayLabel');
+if(r.Pexit){h+=line(r.Pentry.x,r.Pentry.y,r.Pexit.x,r.Pexit.y,'#2563eb',7,'','arrowBlue',.92);h+=text((r.Pentry.x+r.Pexit.x)/2,(r.Pentry.y+r.Pexit.y)/2-16,'gebrochener Strahl','rayLabel');
+ if(r.tir){const refl=v(r.inDir.x-2*dot(r.inDir,r.nRout)*r.nRout.x,r.inDir.y-2*dot(r.inDir,r.nRout)*r.nRout.y);const p2=add(r.Pexit,mul(refl,120));h+=line(r.Pexit.x,r.Pexit.y,p2.x,p2.y,'#dc2626',7,'','arrowYellow',.95);h+=text(r.Pexit.x+25,r.Pexit.y-22,'Totalreflexion','danger','start');}else{if(state.dispersion){[430,455,485,520,560,600,640,675].forEach((wl,i)=>{const rr=calcRay(wl);if(rr.Pexit&&!rr.tir&&rr.outDir){const end=add(rr.Pexit,mul(rr.outDir,270));h+=line(rr.Pexit.x,rr.Pexit.y,end.x,end.y,wlColor(wl),4,'','',.9)}});h+=text(698,366,'Spektrum','rayLabel','start')}else{const end=add(r.Pexit,mul(r.outDir,285));h+=line(r.Pexit.x,r.Pexit.y,end.x,end.y,wlColor(state.wavelength),7,'','arrowYellow',.95);h+=text((r.Pexit.x+end.x)/2+8,(r.Pexit.y+end.y)/2-12,'Austrittsstrahl','rayLabel','start')}}}
+ if(state.normals){const l1=add(r.Pentry,mul(r.nLin,90)),l2=add(r.Pentry,mul(r.nLin,-90));h+=line(l1.x,l1.y,l2.x,l2.y,'#64748b',3,'9 7','',.9);h+=text(l1.x+8,l1.y-6,'Lot 1','smallText','start');if(r.Pexit){const q1=add(r.Pexit,mul(r.nRout,90)),q2=add(r.Pexit,mul(r.nRout,-90));h+=line(q1.x,q1.y,q2.x,q2.y,'#64748b',3,'9 7','',.9);h+=text(q1.x+6,q1.y-6,'Lot 2','smallText','start')}}
+ if(state.angles&&r.Pexit&&!r.tir){const aInc=angleOf(r.incDir);const aN=angleOf(r.nLin);h+=arc(r.Pentry.x,r.Pentry.y,48,aN,aInc,'#f59e0b','α₁');h+=arc(r.Pentry.x,r.Pentry.y,72,aN,angleOf(r.inDir),'#2563eb','β₁');h+=arc(r.Pexit.x,r.Pexit.y,50,angleOf(r.nRout),angleOf(r.inDir),'#2563eb','β₂');h+=arc(r.Pexit.x,r.Pexit.y,76,angleOf(r.nRout),angleOf(r.outDir),'#ef4444','α₂')}
+ h+=`<circle cx="${r.Pentry.x}" cy="${r.Pentry.y}" r="6" fill="#0f172a"/><circle cx="${r.Pexit?r.Pexit.x:0}" cy="${r.Pexit?r.Pexit.y:0}" r="6" fill="#0f172a"/>`;
+ h+=text(58,520,'Tipp: Gelbe/rote Strahlen sind Lichtwege, blaue Linien zeigen den Strahl im Glas. Gestrichelt = Lot.','smallText','start');svg.innerHTML=h;}
+['incident','apex','wavelength'].forEach(id=>$(id).addEventListener('input',e=>{state[id==='incident'?'incident':id==='apex'?'apex':'wavelength']=Number(e.target.value);render()}));
+['dispersion','normals','angles'].forEach(id=>$(id).addEventListener('change',e=>{state[id]=e.target.checked;render()}));
+$('presetNormal').onclick=()=>{state.incident=30;state.apex=60;state.wavelength=550;sync();};$('presetSteep').onclick=()=>{state.incident=52;state.apex=65;state.wavelength=450;sync();};$('presetRed').onclick=()=>{state.wavelength=660;state.dispersion=false;sync();};$('presetBlue').onclick=()=>{state.wavelength=440;state.dispersion=false;sync();};
+function sync(){$('incident').value=state.incident;$('apex').value=state.apex;$('wavelength').value=state.wavelength;$('dispersion').checked=state.dispersion;$('normals').checked=state.normals;$('angles').checked=state.angles;render()} sync();
+</script>
+</body>
+</html>
