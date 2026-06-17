@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patrizier und Plebejer – Klasse 6</title>
+<style>
+:root{
+  --bg:#f4ead7;--card:#fffaf0;--ink:#241a12;--muted:#6b5948;
+  --brown:#4a2717;--brown2:#6d3c20;--gold:#c9953d;--blue:#285b7a;--green:#356a42;--red:#8c2f25;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:linear-gradient(135deg,#f7ecd4,#d7b377);color:var(--ink)}
+header{background:linear-gradient(135deg,var(--brown),var(--brown2));color:white;text-align:center;padding:26px 14px}
+header h1{margin:0;font-size:clamp(1.9rem,4vw,3.4rem)}
+header p{max-width:980px;margin:.5rem auto 0;font-size:1.08rem}
+nav{position:sticky;top:0;z-index:20;background:#fff9;backdrop-filter:blur(8px);display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:10px;border-bottom:1px solid #0002}
+button,.btn{border:0;border-radius:999px;background:var(--brown);color:white;font-weight:700;padding:10px 14px;cursor:pointer}
+button:hover,.btn:hover{filter:brightness(1.15)}
+main{max-width:1180px;margin:auto;padding:20px}
+section{display:none}
+section.active{display:block}
+.card{background:var(--card);border:1px solid #d8bf91;border-radius:22px;box-shadow:0 10px 25px #0002;padding:18px;margin:0 0 18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+.hero{width:100%;border-radius:18px;box-shadow:0 10px 24px #0003;margin:8px 0 12px;display:block}
+.readbox{font-size:1.08rem;line-height:1.72}
+.note{background:#fff3c4;border-left:7px solid var(--gold);padding:12px;border-radius:12px;margin:12px 0}
+.info{background:#e8f1f8;border-left:7px solid var(--blue);padding:12px;border-radius:12px;margin:12px 0}
+.term{background:#fff1a8;border-bottom:2px dotted #7a4b00;border-radius:5px;padding:0 3px;cursor:pointer;font-weight:700}
+.exercise{background:white;border:2px solid #e2cda5;border-radius:18px;padding:15px;margin:14px 0}
+.option{display:block;width:100%;text-align:left;background:#f4ead7;color:#261c14;border:2px solid transparent;border-radius:14px;padding:12px;margin:8px 0}
+.option.correct{background:#dff2df;border-color:#2e7d32}
+.option.wrong{background:#f7d7d4;border-color:#b3261e}
+.feedback{font-weight:700;min-height:1.4em}
+select,textarea,input{font:inherit;border:2px solid #d5bd91;border-radius:10px;padding:8px;background:#fffdf7}
+textarea{width:100%;min-height:110px}
+.badge{display:inline-block;border-radius:999px;padding:4px 9px;background:#e7d0a3;font-weight:700}
+table{width:100%;border-collapse:collapse;background:white;border-radius:14px;overflow:hidden}
+th,td{border:1px solid #e0cda9;padding:10px;vertical-align:top}
+th{background:var(--brown);color:white}
+.timelineItem,.dragword{padding:10px;margin:7px 0;border-radius:12px;background:#f4ead7;cursor:pointer;border:2px solid transparent}
+.timelineItem.selected,.dragword.selected{outline:3px solid var(--blue)}
+.dropzone{min-height:48px;background:#fffaf0;border:2px dashed #bd9a62;border-radius:14px;padding:9px;margin:7px 0}
+.progress{height:12px;border-radius:99px;background:#e7d0a3;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--green);transition:.3s}
+.modal{position:fixed;inset:0;background:#0007;display:none;align-items:center;justify-content:center;z-index:99;padding:20px}
+.modal.open{display:flex}
+.modalbox{background:#fffaf0;border-radius:22px;max-width:560px;padding:22px;box-shadow:0 20px 50px #0006;border:2px solid #d8bf91}
+.modalbox h2{margin-top:0;color:var(--brown)}
+.close{float:right;background:var(--red)}
+footer{text-align:center;color:#6d5a49;padding:25px}
+.small{font-size:.94rem;color:var(--muted)}
+@media print{nav,.btn,button,.modal{display:none!important}section{display:block!important}body{background:white}.card{box-shadow:none}}
+</style>
+</head>
+<body>
+<header>
+<h1>Patrizier und Plebejer</h1>
+<p>Eine interaktive Lernseite für einzelne Schüler der Klasse 6</p>
+</header>
+<nav>
+<button onclick="showSec('start')">Start</button>
+<button onclick="showSec('lernen')">Lernen</button>
+<button onclick="showSec('bilder')">Bilder</button>
+<button onclick="showSec('vergleich')">Vergleich</button>
+<button onclick="showSec('uebungen')">Übungen</button>
+<button onclick="showSec('rollenspiel')">Rollenspiel</button>
+<button onclick="showSec('abschluss')">Abschluss</button>
+<button onclick="stopSpeak()">Stopp</button>
+</nav>
+
+<main>
+<section id="start" class="active">
+<div class="card">
+<img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/patrpleb.png" alt="Lernweg">
+<h2>Dein Lernweg</h2>
+<p class="readbox" id="startText">
+Heute lernst du zwei wichtige Gruppen der römischen Republik kennen: die <span class="term" onclick="popup('Patrizier')">Patrizier</span> und die <span class="term" onclick="popup('Plebejer')">Plebejer</span>.
+Du arbeitest Schritt für Schritt. Klicke gelbe Fachbegriffe an. Lies die Texte oder lasse sie dir vorlesen.
+Am Ende kannst du erklären, warum es in Rom zu den <span class="term" onclick="popup('Ständekämpfe')">Ständekämpfen</span> kam.
+</p>
+<button class="btn" onclick="speak('startText')">Vorlesen</button>
+<div class="note"><b>Leitfrage:</b> War die römische Republik für alle Bürger gerecht?</div>
+</div>
+</section>
+
+<section id="lernen">
+<div class="grid">
+<div class="card">
+<h2>Patrizier</h2>
+<img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/senatoren.png" alt="Senatoren als Patrizier">
+<p id="patText" class="readbox">
+Die Patrizier gehörten zu alten und angesehenen Familien. Viele hatten Land, Geld und politische Macht.
+Sie konnten wichtige Ämter übernehmen und hatten im <span class="term" onclick="popup('Senat')">Senat</span> großen Einfluss.
+Sie wollten ihre Vorrechte oft behalten.
+</p>
+<button class="btn" onclick="speak('patText')">Vorlesen</button>
+</div>
+<div class="card">
+<h2>Plebejer</h2>
+<img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/forum.png" alt="Forum Romanum als Ort des öffentlichen Lebens">
+<p id="plebText" class="readbox">
+Die Plebejer waren die Mehrheit der römischen Bürger. Zu ihnen gehörten Bauern, Händler, Handwerker und Soldaten.
+Nicht alle waren arm. Aber sie hatten zunächst weniger politische Rechte. Viele fragten:
+Warum sollen wir Rom verteidigen, wenn wir kaum mitbestimmen dürfen?
+</p>
+<button class="btn" onclick="speak('plebText')">Vorlesen</button>
+</div>
+<div class="card">
+<h2>Warum kam es zum Streit?</h2>
+<img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/patrpleb.png" alt="Ständekämpfe">
+<p id="streitText" class="readbox">
+Die Plebejer forderten Schutz und Mitbestimmung. Sie drohten sogar, Rom zu verlassen und keinen Militärdienst mehr zu leisten.
+Das nennt man <span class="term" onclick="popup('Secessio plebis')">Secessio plebis</span>. Für die Patrizier war das gefährlich,
+weil Rom ohne plebejische Soldaten geschwächt war.
+</p>
+<button class="btn" onclick="speak('streitText')">Vorlesen</button>
+</div>
+<div class="card">
+<h2>Was änderte sich?</h2>
+<img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/gesetze.png" alt="Zwölftafelgesetze">
+<div class="info">
+  <b>Bild zum Volkstribun:</b> Der Volkstribun vertritt die Plebejer und schützt sie vor ungerechten Entscheidungen.
+</div>
+<img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/tribun.png" alt="Volkstribun als Schutzvertreter der Plebejer">
+
+<p id="gesetzText" class="readbox">
+Nach und nach erhielten die Plebejer mehr Rechte. Besonders wichtig waren die <span class="term" onclick="popup('Volkstribunen')">Volkstribunen</span>.
+Sie sollten die Plebejer schützen. Auch schriftliche Gesetze, die <span class="term" onclick="popup('Zwölftafelgesetze')">Zwölftafelgesetze</span>,
+waren ein Fortschritt.
+</p>
+<button class="btn" onclick="speak('gesetzText')">Vorlesen</button>
+</div>
+</div>
+</section>
+
+<section id="bilder">
+<div class="card" id="bildCheckHinweis">
+<h2>Bildkarten</h2>
+<p class="info"><b>Hinweis:</b> Jede Bildkarte ist einem passenden Inhalt zugeordnet: Insula = Wohnen einfacher Römer, Senatoren = Patrizier/Oberschicht, Patrizier und Plebejer = sozialer Gegensatz, Markt/Forum = öffentliches Leben, Gesetze = Zwölftafelgesetze, Legion = Militärdienst, Tribun = Schutz der Plebejer.</p>
+<p class="small">Die Bilder werden direkt über GitHub-Raw-Links geladen. Sie sind den Textabschnitten fachlich passend zugeordnet.</p>
+</div>
+<div class="grid">
+<div class="card"><h3>Insula</h3><img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/insula.png" alt="Insula"><p>Ein Mietshaus einfacher Römer. Das passt zum Alltag vieler Plebejer.</p></div>
+<div class="card"><h3>Domus</h3><img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/patrhaus.png" alt="Wohnhaus eines Patriziers"><p>Ein großes Haus wohlhabender Familien. Das passt zum Lebensstil reicher Patrizier.</p></div>
+<div class="card"><h3>Senat</h3><img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/senat.png" alt="Senat"><p>Der Senat steht für politische Beratung und Macht.</p></div>
+<div class="card"><h3>Senatoren</h3><img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/senatoren.png" alt="Senatoren"><p>Senatoren waren angesehene Männer, häufig aus reichen Familien.</p></div>
+<div class="card"><h3>Markt und Forum</h3><img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/forum.png" alt="Markt und Forum Romanum"><p>Auf dem Forum trafen sich Menschen zum Handeln, Reden und Entscheiden. Hier konnten Patrizier und Plebejer einander begegnen.</p></div>
+<div class="card"><h3>Patrizier und Plebejer</h3><img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/patrpleb.png" alt="Patrizier und Plebejer"><p>Das Bild passt zum Vergleich der beiden Gruppen und zum Streit um Rechte.</p></div>
+<div class="card"><h3>Volkstribun</h3><img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/tribun.png" alt="Volkstribun"><p>Der Volkstribun vertrat die Plebejer und sollte sie vor ungerechten Entscheidungen schützen.</p></div>
+<div class="card"><h3>Gesetze</h3><img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/gesetze.png" alt="Zwölftafelgesetze"><p>Schriftliche Gesetze machten Regeln sichtbarer. So konnten Patrizier Recht nicht mehr so leicht nach Belieben auslegen.</p></div>
+<div class="card"><h3>Legion</h3><img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/legion.png" alt="Römische Legion"><p>Rom war auf plebejische Soldaten angewiesen. Deshalb war die Streikdrohung der Plebejer wirksam.</p></div>
+</div>
+</section>
+
+<section id="vergleich">
+<div class="card">
+<h2>Vergleich</h2>
+<table>
+<tr><th>Merkmal</th><th>Patrizier</th><th>Plebejer</th></tr>
+<tr><td>Herkunft</td><td>alte Adelsfamilien</td><td>übrige römische Bürger</td></tr>
+<tr><td>Besitz</td><td>oft viel Land und Vermögen</td><td>von arm bis wohlhabend</td></tr>
+<tr><td>Berufe</td><td>Politik, Verwaltung, Großgrundbesitz</td><td>Bauern, Händler, Handwerker, Soldaten</td></tr>
+<tr><td>Politische Macht</td><td>anfangs sehr groß</td><td>anfangs gering</td></tr>
+<tr><td>Ziel</td><td>Vorrechte bewahren</td><td>Schutz und Mitbestimmung</td></tr>
+</table>
+<div class="exercise">
+<h3>Schreibaufgabe</h3>
+<p>Ergänze den Satz in deinem Heft:</p>
+<p><b>Patrizier und Plebejer unterschieden sich vor allem durch …</b></p>
+<textarea placeholder="Hier kannst du erst ausprobieren."></textarea>
+</div>
+</div>
+</section>
+
+<section id="uebungen">
+<div class="card">
+<h2>Übungen</h2>
+<div class="progress"><span id="bar"></span></div>
+<p id="scoreText">0 von 5 Aufgaben gelöst</p>
+
+<div class="exercise">
+<h3>1. Welche Aussage stimmt?</h3>
+<button class="option" onclick="check(this,true,'fb1')">Patrizier gehörten zur Oberschicht.</button>
+<button class="option" onclick="check(this,false,'fb1')">Plebejer waren römische Könige.</button>
+<button class="option" onclick="check(this,false,'fb1')">Volkstribunen waren ägyptische Beamte.</button>
+<p id="fb1" class="feedback"></p>
+</div>
+
+<div class="exercise">
+<h3>2. Lückentext</h3>
+<p>Die <select id="l1"><option>?</option><option>Patrizier</option><option>Plebejer</option></select> hatten anfangs viel politische Macht.
+Die <select id="l2"><option>?</option><option>Patrizier</option><option>Plebejer</option></select> forderten mehr Rechte.
+Ihre Vertreter hießen <select id="l3"><option>?</option><option>Volkstribunen</option><option>Gladiatoren</option><option>Pharaonen</option></select>.</p>
+<button class="btn" onclick="checkGap()">Prüfen</button>
+<p id="gapFb" class="feedback"></p>
+</div>
+
+<div class="exercise">
+<h3>3. Reihenfolge</h3>
+<p>Klicke die Ereignisse in der richtigen Reihenfolge an.</p>
+<div class="timelineItem" data-n="1">Plebejer sind unzufrieden.</div>
+<div class="timelineItem" data-n="2">Sie drohen mit Auszug und Dienstverweigerung.</div>
+<div class="timelineItem" data-n="3">Patrizier geben nach.</div>
+<div class="timelineItem" data-n="4">Volkstribunen schützen die Plebejer.</div>
+<p id="timeFb" class="feedback"></p>
+<button class="btn" onclick="resetTimeline()">Zurücksetzen</button>
+</div>
+
+<div class="exercise">
+<h3>4. Begriffe zuordnen</h3>
+<p>Klicke erst einen Begriff, dann das passende Feld.</p>
+<div class="grid">
+<div>
+<div class="dragword" onclick="selectWord(this,'Patrizier')">Patrizier</div>
+<div class="dragword" onclick="selectWord(this,'Plebejer')">Plebejer</div>
+<div class="dragword" onclick="selectWord(this,'Volkstribun')">Volkstribun</div>
+</div>
+<div>
+<div class="dropzone" onclick="dropWord(this,'Patrizier')">alte Adelsfamilien</div>
+<div class="dropzone" onclick="dropWord(this,'Plebejer')">Mehrheit der Bürger</div>
+<div class="dropzone" onclick="dropWord(this,'Volkstribun')">Schutzvertreter der Plebejer</div>
+</div>
+</div>
+<p id="matchFb" class="feedback"></p>
+</div>
+
+<div class="exercise">
+<h3>5. Entscheidung</h3>
+<p>Warum war die Streikdrohung der Plebejer wirksam?</p>
+<button class="option" onclick="check(this,true,'fb5')">Weil Rom auf ihre Arbeit und ihren Militärdienst angewiesen war.</button>
+<button class="option" onclick="check(this,false,'fb5')">Weil Patrizier keine Häuser besaßen.</button>
+<button class="option" onclick="check(this,false,'fb5')">Weil der Senat in Ägypten lag.</button>
+<p id="fb5" class="feedback"></p>
+</div>
+</div>
+</section>
+
+<section id="rollenspiel">
+<div class="grid">
+<div class="card">
+<h2>Mini-Rollenspiel</h2>
+<img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/patrpleb.png" alt="Patrizier und Plebejer verhandeln">
+<img class="hero" src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/tribun.png" alt="Der Volkstribun im Rollenspiel">
+<p id="rollText" class="readbox">
+Die Plebejer versammeln sich und verlangen mehr Rechte. Die Patrizier wollen ihre alte Macht behalten.
+Ein Volkstribun versucht zu vermitteln. Ziel ist kein Schreiduell, sondern ein politischer Kompromiss.
+</p>
+<button class="btn" onclick="speak('rollText')">Vorlesen</button>
+</div>
+<div class="card">
+<h2>Rollenkarte</h2>
+<ul>
+<li><span class="badge">Patrizier</span> Wir tragen Verantwortung und wollen Ordnung.</li>
+<li><span class="badge">Plebejer</span> Wir arbeiten und kämpfen, also wollen wir Rechte.</li>
+<li><span class="badge">Volkstribun</span> Ich suche einen Kompromiss.</li>
+</ul>
+<textarea placeholder="Mein Kompromissvorschlag lautet …"></textarea>
+</div>
+</div>
+</section>
+
+<section id="abschluss">
+<div class="card">
+<h2>Abschluss</h2>
+<div class="exercise">
+<h3>Erkläre in eigenen Worten</h3>
+<p>Warum mussten die Patrizier den Plebejern schließlich entgegenkommen?</p>
+<textarea placeholder="Schreibe 3–5 Sätze."></textarea>
+</div>
+<div class="note">
+<b>Musterantwort:</b> Die Patrizier mussten nachgeben, weil Rom auf die Plebejer angewiesen war.
+Viele Plebejer arbeiteten und dienten als Soldaten. Ohne sie wäre Rom geschwächt gewesen.
+</div>
+</div>
+</section>
+</main>
+
+<div class="modal" id="modal" onclick="closePopup(event)">
+<div class="modalbox">
+<button class="close" onclick="hidePopup()">×</button>
+<h2 id="popTitle">Begriff</h2>
+<p id="popText">Erklärung</p>
+</div>
+</div>
+
+<footer>Patrizier und Plebejer · Klasse 6 · GitHub-Version mit passenden externen PNG-Bildlinks</footer>
+
+<script>
+const terms={
+"Patrizier":"Patrizier waren Angehörige alter und einflussreicher Adelsfamilien in Rom. Sie hatten lange besonders viel politische Macht.",
+"Plebejer":"Plebejer waren die Mehrheit der römischen Bürger. Zu ihnen gehörten Bauern, Händler, Handwerker und Soldaten.",
+"Ständekämpfe":"Die Ständekämpfe waren ein langer politischer Konflikt zwischen Patriziern und Plebejern um Rechte und Mitbestimmung.",
+"Senat":"Der Senat war ein wichtiges Beratungsgremium in Rom. Dort hatten angesehene Familien großen Einfluss.",
+"Secessio plebis":"Secessio plebis bedeutet Auszug der Plebejer. Sie drohten, Rom zu verlassen und keinen Militärdienst mehr zu leisten.",
+"Volkstribunen":"Volkstribunen waren Schutzvertreter der Plebejer. Sie konnten gegen ungerechte Entscheidungen einschreiten.",
+"Zwölftafelgesetze":"Die Zwölftafelgesetze waren aufgeschriebene Regeln. Dadurch wurden Gesetze sichtbarer und weniger willkürlich."
+};
+let score=0, solved=new Set(), order=[], selected=null, matches=0;
+function showSec(id){
+ document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function speak(id){
+ stopSpeak();
+ const el=document.getElementById(id);
+ if(!el)return;
+ const u=new SpeechSynthesisUtterance(el.innerText);
+ u.lang='de-DE'; u.rate=.92; u.pitch=1;
+ speechSynthesis.speak(u);
+}
+function stopSpeak(){ if('speechSynthesis' in window) speechSynthesis.cancel(); }
+function popup(t){ popTitle.textContent=t; popText.textContent=terms[t]||'Keine Erklärung vorhanden.'; modal.classList.add('open'); }
+function hidePopup(){ modal.classList.remove('open'); }
+function closePopup(e){ if(e.target.id==='modal') hidePopup(); }
+function addPoint(key){
+ if(!solved.has(key)){ solved.add(key); score=solved.size; scoreText.textContent=score+' von 5 Aufgaben gelöst'; bar.style.width=(score*20)+'%';}
+}
+function check(btn, ok, fb){
+ btn.classList.add(ok?'correct':'wrong');
+ const f=document.getElementById(fb);
+ f.textContent=ok?'Richtig.':'Noch einmal nachdenken.';
+ f.style.color=ok?'#2e7d32':'#b3261e';
+ if(ok) addPoint(fb);
+}
+function checkGap(){
+ const ok=l1.value==='Patrizier'&&l2.value==='Plebejer'&&l3.value==='Volkstribunen';
+ gapFb.textContent=ok?'Alles richtig.':'Prüfe die Begriffe noch einmal.';
+ gapFb.style.color=ok?'#2e7d32':'#b3261e';
+ if(ok) addPoint('gap');
+}
+document.querySelectorAll('.timelineItem').forEach(item=>{
+ item.addEventListener('click',()=>{
+  if(item.classList.contains('selected'))return;
+  item.classList.add('selected'); order.push(Number(item.dataset.n));
+  if(order.length===4){
+   const ok=order.join(',')==='1,2,3,4';
+   timeFb.textContent=ok?'Richtig geordnet.':'Fast. Beginne mit der Unzufriedenheit der Plebejer.';
+   timeFb.style.color=ok?'#2e7d32':'#b3261e';
+   if(ok) addPoint('time');
+  }
+ });
+});
+function resetTimeline(){ order=[]; document.querySelectorAll('.timelineItem').forEach(i=>i.classList.remove('selected')); timeFb.textContent=''; }
+function selectWord(el,w){
+ selected=w;
+ document.querySelectorAll('.dragword').forEach(e=>e.classList.remove('selected'));
+ el.classList.add('selected');
+}
+function dropWord(el,correct){
+ if(!selected){ matchFb.textContent='Wähle zuerst einen Begriff.'; return; }
+ if(selected===correct){
+  el.textContent+=' ✓ '+selected; el.style.borderColor='#2e7d32'; matches++;
+  selected=null; document.querySelectorAll('.dragword').forEach(e=>e.classList.remove('selected'));
+  matchFb.textContent='Richtig zugeordnet.';
+  matchFb.style.color='#2e7d32';
+  if(matches>=3) addPoint('match');
+ }else{
+  matchFb.textContent='Das passt noch nicht.';
+  matchFb.style.color='#b3261e';
+ }
+}
+</script>
+</body>
+</html>
