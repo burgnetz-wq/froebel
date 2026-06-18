@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vertretungsstunde Klasse 7 – Verben & UK</title>
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --ink:#1b2430;
+      --muted:#526173;
+      --blue:#1d4ed8;
+      --blue2:#dbeafe;
+      --green:#15803d;
+      --green2:#dcfce7;
+      --red:#b91c1c;
+      --red2:#fee2e2;
+      --yellow:#b45309;
+      --yellow2:#fef3c7;
+      --purple:#6d28d9;
+      --purple2:#ede9fe;
+      --border:#d7deea;
+      --shadow:0 10px 28px rgba(20, 40, 80, .10);
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #e0f2fe 0, transparent 35%), var(--bg);
+      color:var(--ink);
+      line-height:1.5;
+    }
+    header{
+      background: linear-gradient(135deg, #0f172a, #1d4ed8 58%, #7c3aed);
+      color:white;
+      padding:28px 18px 24px;
+      box-shadow:var(--shadow);
+    }
+    .wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center}
+    h1{font-size:clamp(1.8rem,3.8vw,3.1rem);line-height:1.05;margin:.2rem 0 .6rem}
+    .subtitle{font-size:1.05rem;max-width:780px;opacity:.96;margin:0}
+    .badge-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .badge{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);border-radius:999px;padding:7px 11px;font-weight:700;font-size:.92rem}
+    .hero-card{
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.25);
+      border-radius:var(--radius);
+      padding:18px;
+      backdrop-filter: blur(5px);
+    }
+    .hero-card strong{display:block;font-size:1.1rem;margin-bottom:8px}
+    .mini-plan{margin:0;padding-left:20px}
+    nav.sticky{
+      position:sticky;top:0;z-index:20;
+      background:rgba(244,247,251,.94);backdrop-filter:blur(10px);
+      border-bottom:1px solid var(--border);
+      padding:10px 0;
+    }
+    .nav-buttons{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px}
+    button, .button-like{
+      border:0;border-radius:14px;background:#e8eef8;color:#132238;
+      padding:10px 13px;font-weight:750;cursor:pointer;
+      transition:.18s transform,.18s background,.18s box-shadow;
+      min-height:42px;
+    }
+    button:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(15,23,42,.12)}
+    button:active{transform:translateY(0)}
+    button.primary{background:var(--blue);color:white}
+    button.green{background:var(--green);color:white}
+    button.red{background:var(--red);color:white}
+    button.yellow{background:var(--yellow2);color:#78350f}
+    button.purple{background:var(--purple);color:white}
+    button.ghost{background:white;border:1px solid var(--border)}
+    main{padding:22px 0 46px}
+    section.card{
+      background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+      box-shadow:var(--shadow);padding:22px;margin:18px 0;
+    }
+    h2{margin:0 0 10px;font-size:1.55rem}
+    h3{margin:18px 0 8px;font-size:1.13rem}
+    .muted{color:var(--muted)}
+    .grid{display:grid;gap:14px}
+    .grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .info-box{border-radius:16px;padding:14px;border:1px solid var(--border);background:#f8fafc}
+    .info-box.blue{background:var(--blue2);border-color:#bfdbfe}
+    .info-box.green{background:var(--green2);border-color:#bbf7d0}
+    .info-box.yellow{background:var(--yellow2);border-color:#fde68a}
+    .info-box.purple{background:var(--purple2);border-color:#ddd6fe}
+    .term{
+      display:inline-flex;align-items:center;gap:4px;
+      border-bottom:2px dotted #64748b;cursor:pointer;font-weight:800;color:#0f3e9e;
+    }
+    .term::after{content:"ⓘ";font-size:.8em;color:#475569}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+    .tab-btn.active{background:var(--blue);color:white}
+    .tab-panel{display:none;border:1px solid var(--border);border-radius:16px;padding:15px;background:#fbfdff}
+    .tab-panel.active{display:block}
+    .verb-table{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px;overflow:hidden;border:1px solid var(--border);border-radius:14px}
+    .verb-table th,.verb-table td{padding:10px;border-bottom:1px solid var(--border);vertical-align:top;text-align:left}
+    .verb-table th{background:#eaf1ff}
+    .verb-table tr:last-child td{border-bottom:0}
+    .sight-card{
+      border-radius:18px;overflow:hidden;border:1px solid var(--border);background:white;box-shadow:0 6px 16px rgba(15,23,42,.08);
+      display:flex;flex-direction:column;min-height:100%;
+    }
+    .sight-art{
+      min-height:130px;display:flex;align-items:center;justify-content:center;font-size:3.2rem;
+      background:linear-gradient(135deg,#dbeafe,#fef3c7 52%,#ede9fe);
+      position:relative;
+    }
+    .sight-art span{filter:drop-shadow(0 8px 8px rgba(30,41,59,.18))}
+    .sight-body{padding:14px;display:flex;flex-direction:column;gap:7px;flex:1}
+    .tag{display:inline-block;border-radius:999px;background:#eef2ff;color:#3730a3;padding:4px 8px;font-size:.78rem;font-weight:800;width:max-content}
+    .example{border-left:5px solid var(--blue);background:#f8fafc;padding:10px 12px;border-radius:12px;margin:8px 0}
+    .example .de{color:#334155}
+    .example .en{font-weight:800;color:#111827}
+    .choice-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+    .choice{background:white;border:1px solid var(--border)}
+    .choice.selected{outline:3px solid #93c5fd;background:#eff6ff}
+    .choice.correct{background:var(--green2);outline:3px solid #86efac}
+    .choice.wrong{background:var(--red2);outline:3px solid #fca5a5}
+    .dropzone{
+      background:#f8fafc;border:2px dashed #b6c3d8;border-radius:14px;padding:12px;min-height:54px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    }
+    .dropzone.filled{border-style:solid;background:#eef6ff}
+    .match-card{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center;margin:10px 0}
+    select,input[type="text"]{
+      width:100%;border:1px solid var(--border);border-radius:12px;padding:10px;font-size:1rem;background:white;min-height:42px;
+    }
+    .result{margin-top:10px;font-weight:800;border-radius:14px;padding:10px;display:none}
+    .result.ok{display:block;background:var(--green2);color:#14532d}
+    .result.no{display:block;background:var(--red2);color:#7f1d1d}
+    .result.mid{display:block;background:var(--yellow2);color:#78350f}
+    .progress-box{background:white;border:1px solid rgba(255,255,255,.4);border-radius:16px;padding:12px;margin-top:14px}
+    .progress-track{height:12px;border-radius:999px;background:rgba(255,255,255,.25);overflow:hidden}
+    .progress-fill{height:100%;width:0;background:#86efac;border-radius:999px;transition:.3s width}
+    .progress-text{margin-top:6px;font-weight:800}
+    .quiz-item{border:1px solid var(--border);border-radius:16px;padding:14px;margin:12px 0;background:#fcfdff}
+    .sentence-builder{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .word-bank{display:flex;flex-wrap:wrap;gap:8px}
+    .word{background:#eff6ff;border:1px solid #bfdbfe}
+    .sentence-output{min-height:62px;background:#f8fafc;border:2px dashed #b6c3d8;border-radius:14px;padding:12px;font-size:1.08rem;font-weight:800}
+    .pill{display:inline-block;margin:4px;padding:6px 9px;background:#e2e8f0;border-radius:999px}
+
+    .speak-row{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px}
+    .speak-btn{background:#111827;color:white;border:1px solid rgba(255,255,255,.12)}
+    .speak-btn.de{background:#0f766e;color:white}
+    .speak-btn.en{background:#1d4ed8;color:white}
+    .stop-btn{background:#7f1d1d;color:white}
+    .tiny-help{font-size:.92rem;color:var(--muted);margin-top:4px}
+    .teacher-note{font-size:.96rem;background:#fff7ed;border:1px solid #fed7aa;border-radius:16px;padding:14px}
+    .hidden{display:none!important}
+    dialog{border:0;border-radius:20px;box-shadow:0 24px 80px rgba(15,23,42,.32);max-width:560px;width:calc(100% - 32px);padding:0}
+    dialog::backdrop{background:rgba(15,23,42,.48)}
+    .modal-head{background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:white;padding:16px 18px;border-radius:20px 20px 0 0;display:flex;justify-content:space-between;gap:10px;align-items:center}
+    .modal-head h3{margin:0;color:white}
+    .modal-body{padding:18px;background:white;border-radius:0 0 20px 20px}
+    .close{background:rgba(255,255,255,.18);color:white;border:1px solid rgba(255,255,255,.35)}
+    .print-only{display:none}
+    .footer{padding:28px 0;color:#526173;text-align:center}
+    @media (max-width:850px){
+      .hero,.grid.two,.grid.three,.grid.four,.sentence-builder{grid-template-columns:1fr}
+      .match-card{grid-template-columns:1fr}
+      section.card{padding:16px}
+    }
+    @media print{
+      nav.sticky,button,.no-print,dialog{display:none!important}
+      body{background:white;color:black}
+      header{background:white;color:black;box-shadow:none;border-bottom:2px solid #000}
+      section.card{box-shadow:none;break-inside:avoid;border:1px solid #999}
+      .tab-panel{display:block!important}
+      .print-only{display:block}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap hero">
+      <div>
+        <div class="badge-row" aria-label="Rahmendaten">
+          <span class="badge">Klasse 7</span>
+          <span class="badge">Vertretungsstunde</span>
+          <span class="badge">Englisch + Deutsch</span>
+          <span class="badge">UK-Sightseeing</span>
+        </div>
+        <h1>Verben auf Tour durch das United Kingdom</h1>
+        <p class="subtitle">Eine interaktive Stunde zu Verben, Grundformen, Zeiten und Beispielsätzen. Die Übungen führen von London bis nach Schottland, Wales und Nordirland.</p>
+        <div class="speak-row no-print">
+          <button class="speak-btn de" onclick="speak('Willkommen zur Vertretungsstunde. Heute wiederholst du Verben in Deutsch und Englisch. Die Aufgaben führen dich zu Sehenswürdigkeiten im Vereinigten Königreich.','de-DE')">Einführung vorlesen</button>
+          <button class="stop-btn" onclick="stopSpeak()">Stop</button>
+        </div>
+        <div class="progress-box no-print" aria-label="Fortschritt">
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="progress-text" id="progressText">Fortschritt: 0 von 8 Stationen erledigt</div>
+        </div>
+      </div>
+      <aside class="hero-card">
+        <strong>Stundenidee in 45 Minuten</strong>
+        <ol class="mini-plan">
+          <li>Start: Was ist ein Verb?</li>
+          <li>UK-Tour: Verben in echten Sätzen</li>
+          <li>Übungen: Zuordnen, Formen, Quiz</li>
+          <li>Abschluss: Mini-Reisebericht schreiben</li>
+        </ol>
+      </aside>
+    </div>
+  </header>
+
+  <nav class="sticky no-print">
+    <div class="wrap nav-buttons" aria-label="Navigation">
+      <button onclick="jumpTo('start')">Start</button>
+      <button onclick="jumpTo('erklaerung')">Erklärung</button>
+      <button onclick="jumpTo('sights')">UK-Orte</button>
+      <button onclick="jumpTo('glossar')">Glossar</button>
+      <button onclick="jumpTo('uebung1')">Übung 1</button>
+      <button onclick="jumpTo('uebung2')">Übung 2</button>
+      <button onclick="jumpTo('uebung3')">Übung 3</button>
+      <button onclick="jumpTo('finale')">Abschluss</button>
+      <button class="stop-btn" onclick="stopSpeak()">Vorlesen stoppen</button>
+      <button class="ghost" onclick="window.print()">Drucken</button>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section id="start" class="card">
+      <h2>1. Einstieg: Finde die Verben</h2>
+      <div class="speak-row no-print">
+        <button id="startIntroSpeak" class="speak-btn de" onclick="speak('Ein Verb sagt, was jemand tut oder was geschieht. In Englisch und Deutsch verändern sich Verben oft, wenn sich Person oder Zeit ändern.','de-DE')">Erklärung vorlesen</button>
+        <button class="speak-btn en" onclick="speak('I visit London. We see the Tower. Verbs are visit and see.','en-GB')">Beispiele Englisch vorlesen</button>
+      </div>
+      <p>Ein <span class="term" data-term="verb">Verb</span> sagt, was jemand tut oder was geschieht. In Englisch und Deutsch verändern sich Verben oft, wenn sich Person oder Zeit ändern.</p>
+      <div class="grid two">
+        <div class="info-box blue">
+          <h3>Beispiel Deutsch</h3>
+          <p><strong>Ich besuche</strong> London.</p>
+          <p><strong>Wir sehen</strong> den Tower.</p>
+          <p class="muted">Verben: besuchen, sehen</p>
+        </div>
+        <div class="info-box green">
+          <h3>Example English</h3>
+          <p><strong>I visit</strong> London.</p>
+          <p><strong>We see</strong> the Tower.</p>
+          <p class="muted">Verbs: visit, see</p>
+        </div>
+      </div>
+      <div class="quiz-item">
+        <h3>Antipp-Aufgabe</h3>
+        <div class="speak-row no-print"><button id="tapTaskSpeak" class="speak-btn de" onclick="speak('Tippe alle Verben an. Achtung: Nicht jedes Wort ist ein Verb. Suche Wörter, die eine Handlung ausdrücken.','de-DE')">Aufgabe vorlesen</button></div>
+        <p>Tippe alle Verben an. Achtung: Nicht jedes Wort bewegt sich so fleißig wie ein Verb.</p>
+        <div class="choice-row" id="verbTap">
+          <button class="choice" data-right="true">visit</button>
+          <button class="choice" data-right="false">London</button>
+          <button class="choice" data-right="true">walk</button>
+          <button class="choice" data-right="false">castle</button>
+          <button class="choice" data-right="true">learn</button>
+          <button class="choice" data-right="false">beautiful</button>
+          <button class="choice" data-right="true">see</button>
+          <button class="choice" data-right="false">river</button>
+        </div>
+        <button class="primary" onclick="checkVerbTap()">Prüfen</button>
+        <div id="tapResult" class="result"></div>
+      </div>
+    </section>
+
+    <section id="erklaerung" class="card">
+      <h2>2. Erklärung: So arbeiten Verben</h2>
+      <div class="speak-row no-print">
+        <button id="explainSpeak" class="speak-btn de" onclick="speak('Verben haben eine Grundform. Sie können als Personalform im Satz stehen. Außerdem zeigen sie Zeitformen, zum Beispiel Gegenwart oder Vergangenheit.','de-DE')">Überblick vorlesen</button>
+        <button class="speak-btn en" onclick="speak('Infinitive: to see, to go, to visit. Finite verb: I see, he sees. Tense: I visit London, I visited London.','en-GB')">English overview</button>
+      </div>
+      <div class="tabs no-print">
+        <button class="tab-btn active" onclick="openTab(event,'tab1')">Grundform</button>
+        <button class="tab-btn" onclick="openTab(event,'tab2')">Personalform</button>
+        <button class="tab-btn" onclick="openTab(event,'tab3')">Zeitform</button>
+        <button class="tab-btn" onclick="openTab(event,'tab4')">Unregelmäßig</button>
+      </div>
+      <div id="tab1" class="tab-panel active">
+        <h3>Grundform / infinitive</h3>
+        <div class="speak-row no-print"><button id="tab1Speak" class="speak-btn de" onclick="speak('Die Grundform ist die Wörterbuchform des Verbs. Deutsch: sehen, gehen, besuchen. Englisch: to see, to go, to visit.','de-DE')">Tab vorlesen</button></div>
+        <p>Die Grundform ist die Wörterbuchform des Verbs.</p>
+        <div class="example"><div class="de">Deutsch: <strong>sehen</strong>, gehen, besuchen</div><div class="en">English: <strong>to see</strong>, to go, to visit</div></div>
+      </div>
+      <div id="tab2" class="tab-panel">
+        <h3>Personalform / finite verb</h3>
+        <div class="speak-row no-print"><button id="tab2Speak" class="speak-btn de" onclick="speak('Das Verb passt sich an die Person an. Deutsch: ich sehe, du siehst, er sieht. Englisch: I see, he sees.','de-DE')">Tab vorlesen</button></div>
+        <p>Das Verb passt sich an die Person an.</p>
+        <div class="example"><div class="de">Deutsch: ich <strong>sehe</strong>, du <strong>siehst</strong>, er <strong>sieht</strong></div><div class="en">English: I <strong>see</strong>, he/she/it <strong>sees</strong></div></div>
+      </div>
+      <div id="tab3" class="tab-panel">
+        <h3>Zeitform / tense</h3>
+        <div class="speak-row no-print"><button id="tab3Speak" class="speak-btn de" onclick="speak('Das Verb zeigt, ob etwas jetzt, früher oder später passiert. Beispiel: Ich besuche London. Ich besuchte London. Englisch: I visit London. I visited London.','de-DE')">Tab vorlesen</button></div>
+        <p>Das Verb zeigt, ob etwas jetzt, früher oder später passiert.</p>
+        <div class="example"><div class="de">Deutsch: Ich <strong>besuche</strong> London. / Ich <strong>besuchte</strong> London.</div><div class="en">English: I <strong>visit</strong> London. / I <strong>visited</strong> London.</div></div>
+      </div>
+      <div id="tab4" class="tab-panel">
+        <h3>Unregelmäßige Verben / irregular verbs</h3>
+        <div class="speak-row no-print"><button id="tab4Speak" class="speak-btn de" onclick="speak('Manche Verben bilden die Vergangenheit nicht mit e d. Diese Formen muss man lernen. Englisch: go wird went, see wird saw, be wird was oder were.','de-DE')">Tab vorlesen</button></div>
+        <p>Manche Verben bilden die Vergangenheit nicht mit <strong>-ed</strong>. Die muss man lernen. Sie sind die kleinen Diven der Grammatik.</p>
+        <div class="example"><div class="de">Deutsch: gehen → ging</div><div class="en">English: go → went, see → saw, be → was/were</div></div>
+      </div>
+
+      <div class="speak-row no-print"><button id="tableSpeak" class="speak-btn de" onclick="speak('Verb bedeutet Tunwort oder Zeitwort. Grundform heißt auf Englisch infinitive. Gegenwart heißt present. Vergangenheit heißt past. Beispiele: We visit Buckingham Palace. I saw Edinburgh Castle.','de-DE')">Tabelle vorlesen</button></div>
+      <table class="verb-table" aria-label="Verbüberblick">
+        <thead><tr><th>Begriff</th><th>Deutsch</th><th>Englisch</th><th>Beispiel mit UK-Ort</th></tr></thead>
+        <tbody>
+          <tr><td>Verb</td><td>Tunwort/Zeitwort</td><td>verb</td><td>We <strong>visit</strong> Buckingham Palace.</td></tr>
+          <tr><td>Grundform</td><td>gehen</td><td>to go</td><td>They want <strong>to go</strong> to Stonehenge.</td></tr>
+          <tr><td>Gegenwart</td><td>ich sehe</td><td>I see</td><td>I <strong>see</strong> the London Eye.</td></tr>
+          <tr><td>Vergangenheit</td><td>ich sah</td><td>I saw</td><td>I <strong>saw</strong> Edinburgh Castle.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="sights" class="card">
+      <h2>3. UK-Sightseeing mit Verben</h2>
+      <div class="speak-row no-print"><button id="sightsIntroSpeak" class="speak-btn de" onclick="speak('Jede Sehenswürdigkeit bringt ein Verb mit. Lies die deutschen und englischen Sätze. Nutze die Vorlese-Buttons für die Aussprache.','de-DE')">Abschnitt vorlesen</button></div>
+      <p>Jede Sehenswürdigkeit bringt ein Verb mit. Lies die Sätze. Nutze den Vorlese-Button, wenn du hören willst, wie der englische Satz klingt.</p>
+      <div class="grid three">
+        <article class="sight-card">
+          <div class="sight-art"><span>🏰</span></div>
+          <div class="sight-body">
+            <span class="tag">London</span>
+            <h3>Tower of London</h3>
+            <p><strong>Verb:</strong> guard – bewachen</p>
+            <p class="example"><span class="en">The guards <strong>guard</strong> the Tower.</span><br><span class="de">Die Wachen <strong>bewachen</strong> den Tower.</span></p>
+            <div class="speak-row no-print"><button class="speak-btn en" onclick="speak('The guards guard the Tower.','en-GB')">English vorlesen</button><button class="speak-btn de" onclick="speak('Die Wachen bewachen den Tower.','de-DE')">Deutsch vorlesen</button></div>
+          </div>
+        </article>
+        <article class="sight-card">
+          <div class="sight-art"><span>🎡</span></div>
+          <div class="sight-body">
+            <span class="tag">London</span>
+            <h3>London Eye</h3>
+            <p><strong>Verb:</strong> see – sehen</p>
+            <p class="example"><span class="en">We <strong>see</strong> the city from above.</span><br><span class="de">Wir <strong>sehen</strong> die Stadt von oben.</span></p>
+            <div class="speak-row no-print"><button class="speak-btn en" onclick="speak('We see the city from above.','en-GB')">English vorlesen</button><button class="speak-btn de" onclick="speak('Wir sehen die Stadt von oben.','de-DE')">Deutsch vorlesen</button></div>
+          </div>
+        </article>
+        <article class="sight-card">
+          <div class="sight-art"><span>🪨</span></div>
+          <div class="sight-body">
+            <span class="tag">England</span>
+            <h3>Stonehenge</h3>
+            <p><strong>Verb:</strong> stand – stehen</p>
+            <p class="example"><span class="en">The stones <strong>stand</strong> in a circle.</span><br><span class="de">Die Steine <strong>stehen</strong> in einem Kreis.</span></p>
+            <div class="speak-row no-print"><button class="speak-btn en" onclick="speak('The stones stand in a circle.','en-GB')">English vorlesen</button><button class="speak-btn de" onclick="speak('Die Steine stehen in einem Kreis.','de-DE')">Deutsch vorlesen</button></div>
+          </div>
+        </article>
+        <article class="sight-card">
+          <div class="sight-art"><span>⛰️</span></div>
+          <div class="sight-body">
+            <span class="tag">Scotland</span>
+            <h3>Edinburgh Castle</h3>
+            <p><strong>Verb:</strong> climb – hinaufsteigen</p>
+            <p class="example"><span class="en">Visitors <strong>climb</strong> the hill.</span><br><span class="de">Besucher <strong>steigen</strong> den Hügel hinauf.</span></p>
+            <div class="speak-row no-print"><button class="speak-btn en" onclick="speak('Visitors climb the hill.','en-GB')">English vorlesen</button><button class="speak-btn de" onclick="speak('Besucher steigen den Hügel hinauf.','de-DE')">Deutsch vorlesen</button></div>
+          </div>
+        </article>
+        <article class="sight-card">
+          <div class="sight-art"><span>🐉</span></div>
+          <div class="sight-body">
+            <span class="tag">Wales</span>
+            <h3>Caernarfon Castle</h3>
+            <p><strong>Verb:</strong> build – bauen</p>
+            <p class="example"><span class="en">People <strong>built</strong> strong castle walls.</span><br><span class="de">Menschen <strong>bauten</strong> starke Burgmauern.</span></p>
+            <div class="speak-row no-print"><button class="speak-btn en" onclick="speak('People built strong castle walls.','en-GB')">English vorlesen</button><button class="speak-btn de" onclick="speak('Menschen bauten starke Burgmauern.','de-DE')">Deutsch vorlesen</button></div>
+          </div>
+        </article>
+        <article class="sight-card">
+          <div class="sight-art"><span>🌊</span></div>
+          <div class="sight-body">
+            <span class="tag">Northern Ireland</span>
+            <h3>Giant's Causeway</h3>
+            <p><strong>Verb:</strong> walk – gehen</p>
+            <p class="example"><span class="en">Tourists <strong>walk</strong> on the rocks.</span><br><span class="de">Touristen <strong>gehen</strong> auf den Felsen.</span></p>
+            <div class="speak-row no-print"><button class="speak-btn en" onclick="speak('Tourists walk on the rocks.','en-GB')">English vorlesen</button><button class="speak-btn de" onclick="speak('Touristen gehen auf den Felsen.','de-DE')">Deutsch vorlesen</button></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="glossar" class="card">
+      <h2>4. Verb-Glossar Deutsch–Englisch</h2>
+      <div class="speak-row no-print"><button id="glossaryIntroSpeak" class="speak-btn de" onclick="speak('Tippe einen Eintrag an. Danach siehst du die deutsche Bedeutung, einen englischen Beispielsatz und die Vergangenheitsform.','de-DE')">Abschnitt vorlesen</button></div>
+      <p>Tippe einen Eintrag an. Danach siehst du Bedeutung, Beispielsatz und Vergangenheitsform.</p>
+      <div class="grid four" id="glossaryGrid"></div>
+    </section>
+
+    <section id="uebung1" class="card">
+      <h2>5. Übung 1: Deutsch und Englisch zuordnen</h2>
+      <div class="speak-row no-print"><button id="matchIntroSpeak" class="speak-btn de" onclick="speak('Wähle zu jedem deutschen Verb das passende englische Verb aus. Nutze das Glossar, wenn du unsicher bist.','de-DE')">Aufgabe vorlesen</button></div>
+      <p>Wähle zu jedem deutschen Verb das passende englische Verb aus.</p>
+      <div id="matchArea"></div>
+      <button class="primary" onclick="checkMatch()">Zuordnung prüfen</button>
+      <button class="ghost" onclick="resetMatch()">Zurücksetzen</button>
+      <div id="matchResult" class="result"></div>
+    </section>
+
+    <section id="uebung2" class="card">
+      <h2>6. Übung 2: Verbformen im Simple Present</h2>
+      <div class="speak-row no-print"><button id="presentIntroSpeak" class="speak-btn de" onclick="speak('Setze das Verb richtig ein. Denke an die Regel: he, she, it, das s muss mit.','de-DE')">Aufgabe vorlesen</button><button class="speak-btn en" onclick="speak('She visits Buckingham Palace. We go to the Tower of London. He sees the old castle walls. Tourists walk on the rocks.','en-GB')">Lösungssätze vorlesen</button></div>
+      <p>Setze das Verb richtig ein. Denke an <strong>he/she/it + s</strong>.</p>
+      <div class="grid two">
+        <div class="quiz-item">
+          <p>1. She ____ Buckingham Palace. <span class="muted">(visit)</span></p>
+          <input id="sp1" type="text" placeholder="Verbform eintragen" />
+        </div>
+        <div class="quiz-item">
+          <p>2. We ____ to the Tower of London. <span class="muted">(go)</span></p>
+          <input id="sp2" type="text" placeholder="Verbform eintragen" />
+        </div>
+        <div class="quiz-item">
+          <p>3. He ____ the old castle walls. <span class="muted">(see)</span></p>
+          <input id="sp3" type="text" placeholder="Verbform eintragen" />
+        </div>
+        <div class="quiz-item">
+          <p>4. Tourists ____ on the rocks. <span class="muted">(walk)</span></p>
+          <input id="sp4" type="text" placeholder="Verbform eintragen" />
+        </div>
+      </div>
+      <button class="green" onclick="checkSimplePresent()">Prüfen</button>
+      <div id="spResult" class="result"></div>
+    </section>
+
+    <section id="uebung3" class="card">
+      <h2>7. Übung 3: Vergangenheit und Sehenswürdigkeit</h2>
+      <div class="speak-row no-print"><button id="pastIntroSpeak" class="speak-btn de" onclick="speak('Wähle die richtige Vergangenheitsform. Manche Verben sind unregelmäßig. See wird saw. Go wird went. Visit wird visited.','de-DE')">Aufgabe vorlesen</button><button class="speak-btn en" onclick="speak('Yesterday, I saw the London Eye. Last summer, we visited Stonehenge. On Monday, they went to Edinburgh Castle.','en-GB')">Sätze vorlesen</button></div>
+      <p>Wähle die richtige Vergangenheitsform. Kleine Stolperfalle: Manche Verben sind unregelmäßig.</p>
+      <div class="quiz-item" data-past="saw">
+        <p>1. Yesterday, I ____ the London Eye.</p>
+        <div class="choice-row">
+          <button class="choice" onclick="choosePast(this,'saw')">saw</button>
+          <button class="choice" onclick="choosePast(this,'seed')">seed</button>
+          <button class="choice" onclick="choosePast(this,'seeed')">seeed</button>
+        </div>
+      </div>
+      <div class="quiz-item" data-past="visited">
+        <p>2. Last summer, we ____ Stonehenge.</p>
+        <div class="choice-row">
+          <button class="choice" onclick="choosePast(this,'visit')">visit</button>
+          <button class="choice" onclick="choosePast(this,'visited')">visited</button>
+          <button class="choice" onclick="choosePast(this,'visitted')">visitted</button>
+        </div>
+      </div>
+      <div class="quiz-item" data-past="went">
+        <p>3. On Monday, they ____ to Edinburgh Castle.</p>
+        <div class="choice-row">
+          <button class="choice" onclick="choosePast(this,'goed')">goed</button>
+          <button class="choice" onclick="choosePast(this,'went')">went</button>
+          <button class="choice" onclick="choosePast(this,'go')">go</button>
+        </div>
+      </div>
+      <button class="primary" onclick="checkPast()">Vergangenheit prüfen</button>
+      <div id="pastResult" class="result"></div>
+    </section>
+
+    <section id="builder" class="card">
+      <h2>8. Satzbau: Baue einen UK-Satz</h2>
+      <div class="speak-row no-print"><button id="builderIntroSpeak" class="speak-btn de" onclick="speak('Tippe Wörter an und baue einen englischen Satz. Danach kannst du ihn vorlesen lassen.','de-DE')">Aufgabe vorlesen</button><button class="speak-btn en" onclick="speak('We visited the Tower of London yesterday.','en-GB')">Zielsatz vorlesen</button></div>
+      <p>Tippe Wörter an und baue einen englischen Satz. Danach kannst du ihn vorlesen lassen.</p>
+      <div class="sentence-builder">
+        <div>
+          <h3>Wortbank</h3>
+          <div class="word-bank" id="wordBank">
+            <button class="word" onclick="addWord('We')">We</button>
+            <button class="word" onclick="addWord('visited')">visited</button>
+            <button class="word" onclick="addWord('the')">the</button>
+            <button class="word" onclick="addWord('Tower')">Tower</button>
+            <button class="word" onclick="addWord('of')">of</button>
+            <button class="word" onclick="addWord('London')">London</button>
+            <button class="word" onclick="addWord('yesterday')">yesterday</button>
+            <button class="word" onclick="addWord('.')">.</button>
+          </div>
+        </div>
+        <div>
+          <h3>Dein Satz</h3>
+          <div class="sentence-output" id="sentenceOutput" aria-live="polite"></div>
+          <div class="choice-row">
+            <button class="green" onclick="checkSentence()">Satz prüfen</button>
+            <button onclick="speakSentence()">Vorlesen</button>
+            <button class="ghost" onclick="clearSentence()">Leeren</button>
+          </div>
+          <div id="sentenceResult" class="result"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="finale" class="card">
+      <h2>9. Abschluss: Mini-Reisebericht</h2>
+      <div class="speak-row no-print"><button id="finalIntroSpeak" class="speak-btn de" onclick="speak('Schreibe drei Sätze. Nutze mindestens drei Verben aus dem Glossar und zwei Sehenswürdigkeiten aus dem Vereinigten Königreich.','de-DE')">Aufgabe vorlesen</button><button class="speak-btn en" onclick="speak('I visit London. We saw Stonehenge. Tourists walk on the rocks.','en-GB')">Satzstarter vorlesen</button></div>
+      <p>Schreibe 3 Sätze. Nutze mindestens 3 Verben aus dem Glossar und 2 UK-Sehenswürdigkeiten.</p>
+      <div class="grid two">
+        <div class="info-box yellow">
+          <h3>Satzstarter Englisch</h3>
+          <p><span class="pill">I visit ...</span> <span class="pill">We saw ...</span> <span class="pill">Tourists walk ...</span> <span class="pill">The stones stand ...</span></p>
+        </div>
+        <div class="info-box purple">
+          <h3>Hilfen Deutsch</h3>
+          <p><span class="pill">besuchen</span> <span class="pill">sehen</span> <span class="pill">gehen</span> <span class="pill">stehen</span> <span class="pill">bauen</span></p>
+        </div>
+      </div>
+      <textarea id="travelText" rows="6" style="width:100%;margin-top:12px;border:1px solid var(--border);border-radius:16px;padding:12px;font-size:1rem" placeholder="Write your mini travel report here..."></textarea>
+      <div class="choice-row">
+        <button class="primary" onclick="checkTravelText()">Text prüfen</button>
+        <button onclick="speak(document.getElementById('travelText').value,'en-GB')">Text vorlesen</button>
+      </div>
+      <div id="travelResult" class="result"></div>
+    </section>
+
+    <section id="teacher" class="card">
+      <h2>Hinweise für die Vertretung</h2>
+      <div class="teacher-note">
+        <p><strong>Vorschlag Ablauf:</strong> Einstieg 5 Min., Erklärung 8 Min., UK-Orte 8 Min., Übungen 18 Min., Reisebericht 6 Min.</p>
+        <p><strong>Arbeitsform:</strong> Einzelarbeit oder Partnerarbeit am Tablet/PC. Ohne Internet nutzbar. Die Vorlesefunktion hängt vom Browser ab.</p>
+        <p><strong>Differenzierung:</strong> Schwächere Schüler nutzen Glossar und Satzstarter. Schnellere Schüler schreiben den Reisebericht in Vergangenheit.</p>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="termModal">
+    <div class="modal-head">
+      <h3 id="modalTitle">Begriff</h3>
+      <button class="close" onclick="closeModal()">Schließen</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </dialog>
+
+  <footer class="footer">
+    <div class="wrap">Interaktive Vertretungsstunde · Klasse 7 · Thema Verben · UK-Kontext</div>
+  </footer>
+
+  <script>
+    const completed = new Set();
+    const totalStations = 8;
+
+    const terms = {
+      verb: {
+        title: 'Verb',
+        body: '<p>Ein Verb beschreibt eine Handlung, einen Vorgang oder einen Zustand.</p><p><strong>Deutsch:</strong> gehen, sehen, besuchen</p><p><strong>Englisch:</strong> go, see, visit</p>'
+      },
+      infinitive: {
+        title: 'Grundform / infinitive',
+        body: '<p>Die Grundform ist die Form, die im Wörterbuch steht.</p><p><strong>English:</strong> to visit, to walk, to see</p>'
+      }
+    };
+
+    const glossary = [
+      {en:'visit', de:'besuchen', past:'visited', example:'We visit Buckingham Palace.'},
+      {en:'see', de:'sehen', past:'saw', example:'I saw the London Eye.'},
+      {en:'go', de:'gehen/fahren', past:'went', example:'They went to Edinburgh.'},
+      {en:'walk', de:'gehen/laufen', past:'walked', example:'Tourists walked on the rocks.'},
+      {en:'stand', de:'stehen', past:'stood', example:'The stones stood in a circle.'},
+      {en:'build', de:'bauen', past:'built', example:'People built castle walls.'},
+      {en:'guard', de:'bewachen', past:'guarded', example:'The guards guarded the Tower.'},
+      {en:'climb', de:'hinaufsteigen', past:'climbed', example:'Visitors climbed the hill.'},
+      {en:'learn', de:'lernen', past:'learned/learnt', example:'We learned about Wales.'},
+      {en:'travel', de:'reisen', past:'travelled/traveled', example:'I travelled through the UK.'},
+      {en:'watch', de:'ansehen/beobachten', past:'watched', example:'We watched the guards.'},
+      {en:'discover', de:'entdecken', past:'discovered', example:'We discovered old places.'}
+    ];
+
+    const matchData = [
+      ['besuchen','visit'],['sehen','see'],['gehen/fahren','go'],['bauen','build'],['bewachen','guard'],['hinaufsteigen','climb']
+    ];
+
+    function jumpTo(id){ document.getElementById(id).scrollIntoView({behavior:'smooth', block:'start'}); }
+
+    function markDone(id){
+      completed.add(id);
+      const pct = Math.min(100, Math.round((completed.size / totalStations) * 100));
+      document.getElementById('progressFill').style.width = pct + '%';
+      document.getElementById('progressText').textContent = `Fortschritt: ${completed.size} von ${totalStations} Stationen erledigt`;
+    }
+
+    function openTab(evt, tabId){
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      evt.currentTarget.classList.add('active');
+      markDone('tabs');
+    }
+
+    function speak(text, lang){
+      if(!text || !('speechSynthesis' in window)){
+        alert('Die Vorlesefunktion wird von diesem Browser leider nicht unterstützt.');
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = lang || 'en-GB';
+      u.rate = lang === 'de-DE' ? 0.92 : 0.86;
+      u.pitch = 1;
+      window.speechSynthesis.speak(u);
+    }
+
+    function stopSpeak(){
+      if('speechSynthesis' in window) window.speechSynthesis.cancel();
+    }
+
+    document.querySelectorAll('.term').forEach(el => {
+      el.addEventListener('click', () => {
+        const data = terms[el.dataset.term] || {title:el.textContent, body:'<p>Dieser Begriff gehört zum Thema Verben.</p>'};
+        document.getElementById('modalTitle').textContent = data.title;
+        document.getElementById('modalBody').innerHTML = data.body;
+        document.getElementById('termModal').showModal();
+      });
+    });
+    function closeModal(){ document.getElementById('termModal').close(); }
+
+    function renderGlossary(){
+      const grid = document.getElementById('glossaryGrid');
+      grid.innerHTML = '';
+      glossary.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'ghost';
+        btn.style.textAlign = 'left';
+        btn.innerHTML = `<strong>${item.en}</strong><br><span class="muted">${item.de}</span>`;
+        btn.onclick = () => {
+          document.getElementById('modalTitle').textContent = `${item.en} – ${item.de}`;
+          const safeExample = item.example.replace(/'/g,"\\'");
+          const safeExplain = (item.en + ' bedeutet ' + item.de + '. Die Vergangenheit ist ' + item.past + '.').replace(/'/g,"\\'");
+          document.getElementById('modalBody').innerHTML = `<p><strong>Vergangenheit:</strong> ${item.past}</p><p><strong>Beispiel:</strong> ${item.example}</p><div class="speak-row no-print"><button class="speak-btn en" onclick="speak('${safeExample}','en-GB')">Beispiel vorlesen</button><button class="speak-btn de" onclick="speak('${safeExplain}','de-DE')">Erklärung vorlesen</button></div>`;
+          document.getElementById('termModal').showModal();
+          markDone('glossary');
+        };
+        grid.appendChild(btn);
+      });
+    }
+
+    function renderMatch(){
+      const area = document.getElementById('matchArea');
+      area.innerHTML = '';
+      const options = matchData.map(x => x[1]).sort(() => Math.random() - .5);
+      matchData.forEach(([de,en], i) => {
+        const row = document.createElement('div');
+        row.className = 'match-card';
+        row.innerHTML = `<div class="dropzone"><strong>${de}</strong></div><select id="match${i}"><option value="">-- englisches Verb wählen --</option>${options.map(o => `<option value="${o}">${o}</option>`).join('')}</select>`;
+        area.appendChild(row);
+      });
+    }
+
+    function checkVerbTap(){
+      const buttons = [...document.querySelectorAll('#verbTap .choice')];
+      let ok = 0, wrong = 0;
+      buttons.forEach(b => {
+        const right = b.dataset.right === 'true';
+        const selected = b.classList.contains('selected');
+        b.classList.remove('correct','wrong');
+        if(selected && right){ b.classList.add('correct'); ok++; }
+        if(selected && !right){ b.classList.add('wrong'); wrong++; }
+        if(!selected && right){ wrong++; }
+      });
+      const res = document.getElementById('tapResult');
+      if(ok === 4 && wrong === 0){ res.className='result ok'; res.textContent='Richtig! visit, walk, learn und see sind Verben.'; markDone('tap'); }
+      else { res.className='result mid'; res.textContent='Fast. Suche Wörter, die eine Handlung ausdrücken.'; }
+    }
+    document.querySelectorAll('#verbTap .choice').forEach(b => b.onclick = () => b.classList.toggle('selected'));
+
+    function checkMatch(){
+      let score = 0;
+      matchData.forEach(([de,en], i) => {
+        const sel = document.getElementById('match'+i);
+        sel.style.borderColor = sel.value === en ? '#22c55e' : '#ef4444';
+        if(sel.value === en) score++;
+      });
+      const res = document.getElementById('matchResult');
+      if(score === matchData.length){ res.className='result ok'; res.textContent='Alles richtig zugeordnet. Das ist grammatisch sauberer als englischer Tee mit Milch.'; markDone('match'); }
+      else { res.className='result mid'; res.textContent=`${score} von ${matchData.length} richtig. Prüfe noch einmal mit dem Glossar.`; }
+    }
+    function resetMatch(){ renderMatch(); document.getElementById('matchResult').className='result'; }
+
+    function checkSimplePresent(){
+      const answers = [['sp1','visits'],['sp2','go'],['sp3','sees'],['sp4','walk']];
+      let score = 0;
+      answers.forEach(([id,ans]) => {
+        const el = document.getElementById(id);
+        const value = el.value.trim().toLowerCase();
+        if(value === ans){ score++; el.style.borderColor = '#22c55e'; }
+        else { el.style.borderColor = '#ef4444'; }
+      });
+      const res = document.getElementById('spResult');
+      if(score === 4){ res.className='result ok'; res.textContent='Richtig! Du hast he/she/it + s beachtet.'; markDone('present'); }
+      else { res.className='result mid'; res.textContent=`${score} von 4 richtig. Tipp: Bei she und he kommt im Simple Present meist ein -s dazu.`; }
+    }
+
+    function choosePast(btn, value){
+      const item = btn.closest('.quiz-item');
+      item.dataset.choice = value;
+      item.querySelectorAll('.choice').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+    }
+
+    function checkPast(){
+      let score = 0;
+      document.querySelectorAll('#uebung3 .quiz-item').forEach(item => {
+        const correct = item.dataset.past;
+        const chosen = item.dataset.choice;
+        item.querySelectorAll('.choice').forEach(b => b.classList.remove('correct','wrong'));
+        item.querySelectorAll('.choice').forEach(b => {
+          if(b.textContent.trim() === correct) b.classList.add('correct');
+          if(b.classList.contains('selected') && chosen !== correct) b.classList.add('wrong');
+        });
+        if(chosen === correct) score++;
+      });
+      const res = document.getElementById('pastResult');
+      if(score === 3){ res.className='result ok'; res.textContent='Sehr gut! saw, visited und went sitzen.'; markDone('past'); }
+      else { res.className='result mid'; res.textContent=`${score} von 3 richtig. Die unregelmäßigen Formen sind: see → saw, go → went.`; }
+    }
+
+    let sentenceWords = [];
+    function addWord(w){
+      sentenceWords.push(w);
+      renderSentence();
+    }
+    function renderSentence(){
+      let text = sentenceWords.join(' ');
+      text = text.replace(' .','.');
+      document.getElementById('sentenceOutput').textContent = text;
+    }
+    function clearSentence(){ sentenceWords = []; renderSentence(); document.getElementById('sentenceResult').className='result'; }
+    function speakSentence(){ speak(document.getElementById('sentenceOutput').textContent,'en-GB'); }
+    function checkSentence(){
+      const text = document.getElementById('sentenceOutput').textContent.trim();
+      const res = document.getElementById('sentenceResult');
+      if(text === 'We visited the Tower of London yesterday.'){
+        res.className='result ok'; res.textContent='Perfekt gebaut: Subjekt + Verb + Objekt + Zeitangabe.'; markDone('builder');
+      } else {
+        res.className='result mid'; res.textContent='Baue: We visited the Tower of London yesterday.';
+      }
+    }
+
+    function checkTravelText(){
+      const text = document.getElementById('travelText').value.toLowerCase();
+      const verbs = ['visit','visited','see','saw','go','went','walk','walked','stand','stood','build','built','guard','guarded','climb','climbed','learn','learned','learnt','travel','travelled','traveled','watch','watched','discover','discovered'];
+      const places = ['tower','london eye','stonehenge','edinburgh','caernarfon','giant'];
+      const verbCount = new Set(verbs.filter(v => text.includes(v))).size;
+      const placeCount = new Set(places.filter(p => text.includes(p))).size;
+      const sentenceCount = (text.match(/[.!?]/g) || []).length;
+      const res = document.getElementById('travelResult');
+      if(verbCount >= 3 && placeCount >= 2 && sentenceCount >= 3){
+        res.className='result ok'; res.textContent='Erledigt: mindestens 3 Verben, 2 UK-Orte und 3 Sätze. Sehr gut!'; markDone('travel');
+      } else {
+        res.className='result mid'; res.textContent=`Noch prüfen: ${verbCount}/3 Verben, ${placeCount}/2 Orte, ${sentenceCount}/3 Sätze.`;
+      }
+    }
+
+    renderGlossary();
+    renderMatch();
+  </script>
+</body>
+</html>
