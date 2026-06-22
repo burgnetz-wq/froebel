@@ -1,0 +1,1576 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Zwischen Rückzug und Revolution – Biedermeier und Vormärz</title>
+<style>
+:root{
+  --papier:#f3ecdd;
+  --papier-2:#eee3cd;
+  --karte:#fbf7ed;
+  --tinte:#2a2420;
+  --tinte-weich:#5a4f44;
+  --altgold:#9a7b32;
+  --altgold-hell:#c2a24e;
+  --dunkelrot:#7a2218;
+  --dunkelrot-hell:#9b3225;
+  --linie:#d8ccae;
+  --gruen:#3f6b3a;
+  --gruen-bg:#e3ecdd;
+  --rot-bg:#f1ddd8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  background:var(--papier);
+  color:var(--tinte);
+  line-height:1.65;
+  font-size:18px;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px 80px}
+
+/* Kopf */
+header.haupt{
+  background:linear-gradient(160deg,#322a20,#574631);
+  color:#f4ecd9;
+  padding:54px 24px 46px;
+  text-align:center;
+  border-bottom:6px solid var(--altgold);
+}
+header.haupt .epoche{
+  letter-spacing:.32em;text-transform:uppercase;font-size:.78em;
+  color:var(--altgold-hell);margin-bottom:14px;
+}
+header.haupt h1{
+  font-size:2.35em;margin:0 0 6px;line-height:1.2;font-weight:normal;
+}
+header.haupt .jahre{font-size:1.05em;color:#d9cbab;font-style:italic}
+
+/* Navigation */
+nav.modul{
+  position:sticky;top:0;z-index:50;
+  background:var(--papier-2);
+  border-bottom:1px solid var(--linie);
+  display:flex;flex-wrap:wrap;justify-content:center;gap:4px;
+  padding:8px;
+}
+nav.modul a{
+  color:var(--tinte-weich);text-decoration:none;font-size:.8em;
+  padding:7px 12px;border-radius:4px;letter-spacing:.03em;
+}
+nav.modul a:hover{background:var(--altgold);color:#fff}
+
+section{
+  background:var(--karte);
+  margin:34px 0;padding:30px 32px;
+  border:1px solid var(--linie);
+  border-radius:6px;
+  box-shadow:0 2px 10px rgba(60,45,25,.06);
+}
+h2{
+  font-size:1.6em;font-weight:normal;color:var(--dunkelrot);
+  border-bottom:2px solid var(--altgold);
+  padding-bottom:8px;margin-top:0;
+}
+h3{color:var(--tinte);font-weight:normal;font-size:1.22em}
+.kicker{
+  display:inline-block;font-size:.72em;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--altgold);margin-bottom:6px;
+}
+p{margin:.6em 0}
+.lead{font-size:1.08em;color:var(--tinte-weich)}
+mark.b{background:var(--altgold-hell);padding:0 3px;border-radius:2px}
+
+/* Vorlesen */
+.vorlese-leiste{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+button{
+  font-family:inherit;cursor:pointer;border:none;border-radius:5px;
+  font-size:.92em;padding:10px 16px;line-height:1.2;
+}
+.btn-vorlesen{background:var(--altgold);color:#fff}
+.btn-vorlesen:hover{background:var(--altgold-hell)}
+.btn-stop{background:#6b6258;color:#fff}
+.btn-stop:hover{background:#857a6d}
+button:focus-visible,a:focus-visible{outline:3px solid var(--dunkelrot);outline-offset:2px}
+
+/* Beschlüsse */
+.beschluss-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px}
+.beschluss{
+  background:var(--papier-2);border-left:4px solid var(--dunkelrot);
+  padding:14px 16px;border-radius:0 5px 5px 0;
+}
+.beschluss h4{margin:0 0 6px;color:var(--dunkelrot);font-size:1.05em}
+.beschluss p{margin:0;font-size:.94em}
+
+
+/* Liberal / Konservativ */
+.politik-kompass{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:18px;
+  margin-top:20px;
+}
+.politik-karte{
+  background:var(--papier-2);
+  border:1px solid var(--linie);
+  border-radius:6px;
+  padding:18px 20px;
+  box-shadow:0 2px 8px rgba(60,45,25,.06);
+}
+.politik-karte.liberal{border-top:5px solid var(--dunkelrot)}
+.politik-karte.konservativ{border-top:5px solid var(--altgold)}
+.politik-karte h3{margin-top:0;color:var(--dunkelrot)}
+.politik-karte ul{padding-left:1.15em;margin:.5em 0 0}
+.politik-karte li{margin:.35em 0;font-size:.96em}
+.begriffszeile{
+  margin-top:18px;
+  background:#f6eedc;
+  border-left:4px solid var(--altgold);
+  padding:14px 16px;
+  border-radius:0 5px 5px 0;
+}
+.begriffszeile strong{color:var(--dunkelrot)}
+.zuordnung-mini{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:14px;
+  margin-top:16px;
+}
+.zuordnung-mini div{
+  background:#fffaf0;
+  border:1px solid var(--linie);
+  border-radius:6px;
+  padding:12px 14px;
+}
+
+
+/* Stationen Wartburgfest / Hambacher Fest */
+.feste-block{
+  margin:20px 0 24px;
+  background:#fffaf0;
+  border:1px solid var(--linie);
+  border-left:5px solid var(--dunkelrot);
+  border-radius:0 6px 6px 0;
+  padding:18px 20px;
+}
+.feste-block h3{margin-top:0;color:var(--dunkelrot)}
+.feste-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  gap:18px;
+  margin-top:16px;
+}
+.feste-karte{
+  margin:0;
+  background:var(--papier-2);
+  border:1px solid var(--linie);
+  border-radius:6px;
+  overflow:hidden;
+}
+.feste-karte img{
+  display:block;
+  width:100%;
+  height:230px;
+  object-fit:cover;
+  background:#efe4cc;
+}
+.feste-karte figcaption{
+  padding:13px 15px 15px;
+  font-size:.9em;
+  color:var(--tinte-weich);
+  line-height:1.45;
+}
+.feste-karte strong{display:block;color:var(--dunkelrot);font-size:1.04em;margin-bottom:4px}
+.einordnung-linie{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:12px;
+  margin-top:16px;
+}
+.einordnung-linie div{
+  background:#f6eedc;
+  border-left:4px solid var(--altgold);
+  border-radius:0 5px 5px 0;
+  padding:12px 14px;
+  font-size:.94em;
+}
+.bildkarte img.portrait-fit,
+.quellenbild img.portrait-fit,
+.bildpaar img.portrait-fit{
+  object-fit:contain;
+  background:#fffdf6;
+  padding:8px;
+}
+
+
+/* Spaltung */
+.spaltung{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:20px}
+.saeule{border-radius:6px;padding:20px 22px;border:1px solid var(--linie)}
+.saeule.bieder{background:#f1ead7;border-top:5px solid var(--altgold)}
+.saeule.vor{background:#f0e0db;border-top:5px solid var(--dunkelrot)}
+.saeule h3{margin-top:0}
+.saeule .signum{font-size:.74em;letter-spacing:.18em;text-transform:uppercase;color:var(--tinte-weich)}
+.saeule ul{padding-left:1.15em;margin:.5em 0}
+.saeule li{margin:.35em 0;font-size:.96em}
+.kontrast-pfeil{text-align:center;color:var(--altgold);font-size:1.4em;margin:8px 0}
+
+/* Lebenswelt-Kategorien */
+.lebenswelt-intro{
+  background:#fffaf0;
+  border-left:5px solid var(--altgold);
+  border-radius:0 6px 6px 0;
+  padding:14px 16px;
+  color:var(--tinte-weich);
+}
+.lebenswelt-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:16px;
+  margin-top:22px;
+}
+.lebenskarte{
+  background:var(--papier-2);
+  border:1px solid var(--linie);
+  border-radius:6px;
+  padding:16px 16px 18px;
+  box-shadow:0 2px 8px rgba(60,45,25,.07);
+}
+.lebenskarte h3{
+  margin:.1em 0 .35em;
+  color:var(--dunkelrot);
+}
+.lebenskarte p{
+  font-size:.94em;
+  color:var(--tinte-weich);
+}
+.btn-kategorie{
+  background:var(--altgold);
+  color:#fff;
+  margin-top:8px;
+  padding:8px 12px;
+  font-size:.86em;
+}
+.btn-kategorie:hover{background:var(--altgold-hell)}
+.kategorie-info{
+  margin-top:24px;
+  background:#f6eedc;
+  border:2px solid var(--altgold-hell);
+  border-radius:6px;
+  padding:18px 20px;
+}
+.kategorie-info h3{
+  margin-top:0;
+  color:var(--dunkelrot);
+}
+.merksatz-box{
+  margin-top:18px;
+  background:#ead7ae;
+  border-radius:6px;
+  padding:14px 16px;
+  text-align:center;
+}
+
+
+
+/* Erklärvideo und Begriff */
+.video-box,.begriff-box{
+  display:grid;
+  grid-template-columns:minmax(0,1.35fr) minmax(240px,.65fr);
+  gap:22px;
+  align-items:center;
+  margin-top:18px;
+}
+.video-card,.begriff-text{
+  background:var(--papier-2);
+  border-left:4px solid var(--altgold);
+  border-radius:0 6px 6px 0;
+  padding:18px 20px;
+}
+.video-button{
+  display:inline-block;
+  margin-top:12px;
+  background:var(--dunkelrot);
+  color:#fff;
+  text-decoration:none;
+  padding:11px 16px;
+  border-radius:6px;
+  font-weight:bold;
+}
+.video-button:hover{background:var(--dunkelrot-hell)}
+.video-mini{
+  font-size:.88em;
+  color:var(--tinte-weich);
+  margin-top:8px;
+}
+.begriff-figure{margin:0}
+.begriff-figure img{
+  width:100%;
+  height:auto;
+  border:7px solid #fff;
+  box-shadow:0 3px 14px rgba(60,45,25,.18);
+}
+.begriff-figure figcaption{
+  font-size:.84em;
+  color:var(--tinte-weich);
+  margin-top:8px;
+  line-height:1.45;
+}
+
+/* Lebenswelt-Kategorien mit Bildzuordnung */
+.lebenskarte{
+  display:flex;
+  flex-direction:column;
+  padding:0;
+  overflow:hidden;
+}
+.lebenskarte img{
+  display:block;
+  width:100%;
+  height:155px;
+  object-fit:cover;
+  background:#efe4cc;
+  border-bottom:1px solid var(--linie);
+}
+.lebenskarte img.portrait-fit{
+  object-fit:contain;
+  background:#fffdf6;
+  padding:8px;
+}
+.lebenskarte .inhalt{
+  padding:15px 16px 18px;
+  display:flex;
+  flex-direction:column;
+  flex:1;
+}
+.lebenskarte .bildquelle{
+  display:block;
+  font-size:.78em;
+  color:var(--tinte-weich);
+  margin-top:-4px;
+  margin-bottom:7px;
+  font-style:italic;
+}
+.lebenskarte .btn-kategorie{align-self:flex-start;margin-top:auto}
+.lebenskarte.aktiv{
+  outline:3px solid var(--altgold-hell);
+  outline-offset:2px;
+}
+.zuordnungs-hinweis{
+  margin-top:16px;
+  background:#f6eedc;
+  border-left:4px solid var(--dunkelrot);
+  padding:12px 14px;
+  border-radius:0 5px 5px 0;
+  color:var(--tinte-weich);
+  font-size:.94em;
+}
+.wikipedia-reihe{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:18px;
+  margin-top:22px;
+}
+
+/* Bildpaare zur Verdeutlichung */
+.bildpaar-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:18px;
+  margin-top:22px;
+}
+.bildpaar{
+  background:var(--papier-2);
+  border:1px solid var(--linie);
+  border-radius:6px;
+  overflow:hidden;
+}
+.bildpaar .bilder{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+}
+.bildpaar img{
+  width:100%;
+  height:165px;
+  object-fit:cover;
+  display:block;
+  background:#efe4cc;
+}
+.bildpaar figcaption{
+  padding:12px 14px 14px;
+  font-size:.88em;
+  color:var(--tinte-weich);
+  line-height:1.45;
+}
+.bildpaar strong{color:var(--dunkelrot)}
+
+/* Eingefügte Bildwelt */
+.bildreihe{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:18px;
+  margin-top:22px;
+}
+.bildkarte{
+  margin:0;
+  background:var(--papier-2);
+  border:1px solid var(--linie);
+  border-radius:6px;
+  overflow:hidden;
+  box-shadow:0 2px 10px rgba(60,45,25,.08);
+}
+.bildkarte img{
+  display:block;
+  width:100%;
+  height:auto;
+  background:#efe4cc;
+}
+.bildkarte figcaption{
+  padding:12px 14px 14px;
+  font-size:.86em;
+  color:var(--tinte-weich);
+  line-height:1.45;
+}
+.bildkarte figcaption strong{
+  display:block;
+  color:var(--dunkelrot);
+  font-size:1.02em;
+  margin-bottom:4px;
+}
+.bild-hinweis{
+  background:#f6eedc;
+  border-left:4px solid var(--altgold);
+  padding:12px 14px;
+  border-radius:0 5px 5px 0;
+  margin:16px 0 0;
+  color:var(--tinte-weich);
+  font-size:.94em;
+}
+
+
+.quellenreihe{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:18px;
+  margin:20px 0 4px;
+}
+.quellenbild{
+  background:#f6eedc;
+  border-top:4px solid var(--dunkelrot);
+}
+.quellenbild img{
+  max-height:390px;
+  object-fit:contain;
+  background:#fffdf6;
+}
+.quellenbild.breit img{
+  max-height:340px;
+}
+.quellenbild.atmosphaere{
+  border-top-color:var(--altgold);
+}
+.quellenbild .quelle{
+  display:block;
+  font-size:.86em;
+  color:var(--tinte-weich);
+  margin-top:4px;
+}
+
+/* Bildanalyse */
+.bild-block{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;margin-top:18px}
+.bild-block figure{margin:0}
+.bild-block img{
+  width:100%;height:auto;border:8px solid #fff;
+  box-shadow:0 4px 16px rgba(50,40,25,.25);border-radius:2px;
+}
+.bild-block figcaption{font-size:.84em;color:var(--tinte-weich);margin-top:8px;font-style:italic}
+.methode-box{background:var(--papier-2);padding:18px;border-radius:6px;border:1px solid var(--linie)}
+.btn-methode{background:var(--dunkelrot);color:#fff;margin-top:10px}
+.btn-methode:hover{background:var(--dunkelrot-hell)}
+
+/* Texte */
+.text-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:18px}
+blockquote{
+  margin:0;padding:16px 20px;border-radius:6px;font-style:italic;
+  background:var(--papier-2);border-left:4px solid var(--altgold);
+}
+blockquote.kampf{border-left-color:var(--dunkelrot);background:#f0e0db}
+blockquote cite{display:block;margin-top:10px;font-style:normal;font-size:.84em;color:var(--tinte-weich)}
+
+/* Quiz */
+.frage{border-bottom:1px dashed var(--linie);padding:18px 0}
+.frage:last-child{border-bottom:none}
+.frage p.q{font-weight:bold;margin-bottom:10px}
+.optionen{display:flex;flex-direction:column;gap:8px}
+.opt{
+  text-align:left;background:var(--papier-2);color:var(--tinte);
+  border:1px solid var(--linie);width:100%;
+}
+.opt:hover{background:#e7dcc2}
+.opt.richtig{background:var(--gruen-bg);border-color:var(--gruen);color:var(--gruen)}
+.opt.falsch{background:var(--rot-bg);border-color:var(--dunkelrot);color:var(--dunkelrot)}
+.opt:disabled{cursor:default}
+.feedback{margin-top:10px;font-size:.92em;display:none;padding:10px 12px;border-radius:5px}
+.feedback.show{display:block}
+.feedback.gut{background:var(--gruen-bg);color:var(--gruen)}
+.feedback.pruef{background:var(--rot-bg);color:var(--dunkelrot)}
+
+/* Aufgaben */
+.afb{margin:16px 0;padding:16px 18px;border-radius:6px;background:var(--papier-2);border-left:4px solid var(--altgold)}
+.afb .stufe{display:inline-block;font-size:.72em;letter-spacing:.14em;text-transform:uppercase;
+  background:var(--altgold);color:#fff;padding:2px 9px;border-radius:10px;margin-bottom:8px}
+.afb.afb2 .stufe{background:#8a6f2c}
+.afb.afb3{border-left-color:var(--dunkelrot)}
+.afb.afb3 .stufe{background:var(--dunkelrot)}
+.afb ol{margin:.4em 0 0;padding-left:1.3em}
+.afb li{margin:.45em 0}
+
+/* Modal */
+.modal-bg{
+  display:none;position:fixed;inset:0;z-index:100;
+  background:rgba(35,28,18,.66);
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-bg.show{display:flex}
+.modal{
+  background:var(--karte);max-width:600px;width:100%;border-radius:8px;
+  padding:28px 30px;border-top:6px solid var(--dunkelrot);
+  max-height:86vh;overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.4);
+}
+.modal h3{margin-top:0;color:var(--dunkelrot)}
+.modal ol{padding-left:1.2em}
+.modal ol li{margin:.6em 0}
+.modal .schritt{font-weight:bold;color:var(--altgold)}
+.modal .schliessen{background:var(--tinte);color:#fff;margin-top:14px}
+
+
+/* Begriffs-Popups */
+.begriff-btn{
+  display:inline-block;
+  font-family:inherit;
+  font-size:.88em;
+  line-height:1.2;
+  padding:2px 7px;
+  margin:0 2px;
+  border:1px solid var(--altgold-hell);
+  border-radius:999px;
+  background:#fff8e8;
+  color:var(--dunkelrot);
+  font-weight:bold;
+  vertical-align:baseline;
+  cursor:pointer;
+}
+.begriff-btn:hover{background:var(--altgold);color:#fff}
+.begriff-btn:focus-visible{outline:3px solid var(--dunkelrot);outline-offset:2px}
+.glossar-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+  gap:12px;
+  margin-top:18px;
+}
+.glossar-card{
+  background:var(--papier-2);
+  border:1px solid var(--linie);
+  border-left:4px solid var(--altgold);
+  border-radius:0 6px 6px 0;
+  padding:13px 14px;
+}
+.glossar-card h3{margin:.1em 0 .35em;color:var(--dunkelrot);font-size:1.05em}
+.glossar-card p{font-size:.92em;color:var(--tinte-weich);margin:.2em 0 .7em}
+.glossar-card .begriff-btn{font-size:.82em;margin-left:0}
+.begriff-modal .beispiel{
+  margin-top:12px;
+  padding:12px 14px;
+  background:#f6eedc;
+  border-left:4px solid var(--altgold);
+  border-radius:0 5px 5px 0;
+  color:var(--tinte-weich);
+}
+.begriff-modal .beispiel strong{color:var(--dunkelrot)}
+
+footer{text-align:center;color:var(--tinte-weich);font-size:.82em;padding:20px;font-style:italic}
+
+@media (max-width:760px){
+  .spaltung,.bild-block,.text-grid,.video-box,.begriff-box{grid-template-columns:1fr}
+  header.haupt h1{font-size:1.8em}
+  body{font-size:17px}
+}
+
+/* Druckansicht */
+@media print{
+  body{background:#fff;color:#000;font-size:12pt}
+  nav.modul,.vorlese-leiste,.btn-methode,.modal-bg,footer button{display:none !important}
+  header.haupt{background:none;color:#000;border-bottom:2px solid #000;padding:0 0 12px}
+  header.haupt .epoche,header.haupt .jahre{color:#000}
+  section{box-shadow:none;border:1px solid #999;page-break-inside:avoid;margin:14px 0;padding:14px}
+  .opt{border:1px solid #000;background:#fff;color:#000}
+  .bild-block img{box-shadow:none;border:1px solid #000}
+  h2{color:#000;border-bottom:1px solid #000}
+  a[href^="#"]{color:#000;text-decoration:none}
+  .feedback{display:none !important}
+  .begriff-btn{border:none;background:none;color:#000;padding:0;margin:0;font-weight:bold}
+}
+</style>
+</head>
+<body>
+<header class="haupt">
+<div class="epoche">Restauration · Bürgertum · Aufbegehren</div>
+<h1>Zwischen Rückzug und Revolution</h1>
+<div class="jahre">Biedermeier und Vormärz im Spannungsfeld · 1815 – 1848</div>
+</header>
+<nav aria-label="Modulnavigation" class="modul">
+<a href="#einstieg">Einstieg</a>
+<a href="#video">Erklärvideo</a>
+<a href="#begriff">Begriff</a>
+<a href="#glossar">Begriffe</a>
+<a href="#kontext">Karlsbader Beschlüsse</a>
+<a href="#libkon">Liberal/Konservativ</a>
+<a href="#spaltung">Zwei Welten</a>
+<a href="#feste">Wartburg/Hambach</a>
+<a href="#vereine">Vereine</a>
+<a href="#lebenswelt">Lebenswelt</a>
+<a href="#bilderwelt">Bilderwelt</a>
+<a href="#bildpaare">Bildpaare</a>
+<a href="#bild">Bildanalyse</a>
+<a href="#texte">Textzeugnisse</a>
+<a href="#quiz">Kompetenz-Check</a>
+<a href="#aufgaben">Arbeitsaufträge</a>
+</nav>
+<div class="wrap">
+<!-- 1. EINSTIEG -->
+<section id="einstieg">
+<span class="kicker">Problemstellung</span>
+<h2>Eine Epoche mit zwei Gesichtern</h2>
+<div id="text-einstieg">
+<p class="lead">Nach dem Wiener Kongress 1815 ordneten die Fürsten Europa neu. Die alte Ordnung sollte
+    wiederhergestellt werden – diese Politik nennt man <button class="begriff-btn" data-begriff="restauration" type="button">Restauration</button>. Doch die Ideen
+    der Französischen Revolution – Freiheit, Gleichheit, ein einiges Vaterland – ließen sich nicht zurückdrängen.</p>
+<p>So zerfiel die Zeit von 1815 bis 1848 in zwei Lager. Auf der einen Seite zog sich ein verängstigtes,
+    politikmüdes <button class="begriff-btn" data-begriff="buergertum" type="button">Bürgertum</button> ins Private zurück: in die gute Stube, den Familienkreis, den heimischen Garten.
+    Diese Haltung bekam später den Namen <button class="begriff-btn" data-begriff="biedermeier" type="button">Biedermeier</button>. Auf der anderen Seite formierte sich
+    ein wachsender Widerstand, der heimlich und offen für <button class="begriff-btn" data-begriff="pressefreiheit" type="button">Pressefreiheit</button>, <button class="begriff-btn" data-begriff="verfassung" type="button">Verfassung</button> und <button class="begriff-btn" data-begriff="nationale-einheit" type="button">nationale Einheit</button>
+    kämpfte – der <button class="begriff-btn" data-begriff="vormaerz" type="button">Vormärz</button>, benannt nach der Zeit vor der Märzrevolution 1848.</p>
+<p>Die Leitfrage dieses Moduls lautet: War der Rückzug ins häusliche Glück eine verständliche Schutzreaktion
+    gegen Überwachung und <button class="begriff-btn" data-begriff="zensur" type="button">Zensur</button> – oder eine Flucht vor politischer Verantwortung?</p>
+</div>
+<figure class="bildkarte" style="max-width:760px;margin:20px auto 6px;">
+<img alt="Biedermeier-Stube mit warmem Licht, Möbeln, Bildern und häuslicher Atmosphäre." src="https://burgnetz-wq.github.io/froebel/bilder/01_stube.png"/>
+<figcaption><strong>01 Stube:</strong> Die gute Stube steht für den Rückzug ins Private: Schutzraum, Ordnung und Geborgenheit statt politischem Risiko.</figcaption>
+</figure>
+<div class="vorlese-leiste">
+<button class="btn-vorlesen" data-vorlesen="text-einstieg">▶ Einstieg vorlesen</button>
+<button class="btn-stop" onclick="stoppeVorlesen()">■ Stopp</button>
+</div>
+</section>
+
+<!-- 1b. ERKLÄRVIDEO -->
+<section id="video">
+<span class="kicker">Kurzer Überblick</span>
+<h2>Erklärvideo: Biedermeier und Vormärz</h2>
+<div class="video-box">
+  <div class="video-card" id="text-video">
+    <p class="lead">Das Video fasst den Grundkonflikt der Epoche knapp zusammen: Auf der einen Seite steht der Rückzug ins Private, auf der anderen Seite der politische Aufbruch des Vormärz.</p>
+    <p>Nutze es als Einstieg oder Wiederholung vor dem Kompetenz-Check. Leitfrage beim Anschauen: <strong>Warum reagieren Menschen auf denselben politischen Druck so unterschiedlich?</strong></p>
+    <a class="video-button" href="https://www.youtube.com/watch?v=UNbIQ2epNF0" target="_blank" rel="noopener">▶ Erklärvideo öffnen</a>
+    <div class="video-mini">Hinweis: Der Link öffnet YouTube in einem neuen Tab. Vor dem Einsatz in der Schule kurz Werbung und Ton prüfen – YouTube bleibt YouTube, also pädagogisch: einmal linsen.</div>
+  </div>
+  <figure class="bildkarte quellenbild breit">
+    <img alt="Historische Karikatur Der Denker-Club mit Maulkörben als Symbol der Zensur." src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Bildarchiv_Preu%C3%9Fischer_Kulturbesitz.jpg/500px-Bildarchiv_Preu%C3%9Fischer_Kulturbesitz.jpg"/>
+    <figcaption><strong>Merksymbol der Epoche:</strong> Wer frei sprechen wollte, stieß auf Zensur. Genau daraus erklären sich Rückzug und Protest.</figcaption>
+  </figure>
+</div>
+<div class="vorlese-leiste">
+<button class="btn-vorlesen" data-vorlesen="text-video">▶ Videoauftrag vorlesen</button>
+<button class="btn-stop" onclick="stoppeVorlesen()">■ Stopp</button>
+</div>
+</section>
+
+<!-- 1c. BEGRIFF -->
+<section id="begriff">
+<span class="kicker">Wortgeschichte</span>
+<h2>Woher kommt der Begriff „Biedermeier“?</h2>
+<div class="begriff-box">
+  <div class="begriff-text" id="text-begriff">
+    <p class="lead">Der Begriff war ursprünglich keine freundliche Selbstbezeichnung, sondern eine spöttische Erfindung.</p>
+    <p>Er geht auf die fiktive Figur <strong>Gottlieb Biedermaier</strong> zurück. Diese Figur wurde ab 1855 in den Münchner <em>Fliegenden Blättern</em> verwendet. Ludwig Eichrodt und Adolf Kußmaul parodierten damit den treuherzigen, unpolitischen, etwas spießbürgerlichen Dorfschullehrer.</p>
+    <p>Der Name entstand aus älteren Spottfiguren wie <strong>Biedermann</strong> und <strong>Bummelmaier</strong>. Erst später wurde aus „Biedermaier“ die heute übliche Schreibweise <strong>Biedermeier</strong>. Aus einer Karikatur wurde schließlich eine Epochenbezeichnung für häusliche Gemütlichkeit, bürgerliche Ordnung und Rückzug ins Private.</p>
+  </div>
+  <figure class="begriff-figure">
+    <img alt="Bildnis der fiktiven Figur Gottlieb Biedermaier aus den Münchener Fliegenden Blättern." src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Gottlieb_Biedermaier.jpg/500px-Gottlieb_Biedermaier.jpg"/>
+    <figcaption><strong>Gottlieb Biedermaier:</strong> Die Spottfigur zeigt, dass der Begriff zunächst ironisch gemeint war: brav, harmlos, häuslich, unpolitisch.</figcaption>
+  </figure>
+</div>
+<div class="vorlese-leiste">
+<button class="btn-vorlesen" data-vorlesen="text-begriff">▶ Begriffserklärung vorlesen</button>
+<button class="btn-stop" onclick="stoppeVorlesen()">■ Stopp</button>
+</div>
+</section>
+
+<!-- 1d. BEGRIFFS-POPUPS -->
+<section id="glossar">
+<span class="kicker">Klickbegriffe</span>
+<h2>Zentrale Begriffe als Popups</h2>
+<p class="lead">Die wichtigsten Fachbegriffe der Stunde lassen sich hier direkt anklicken. Die Popups sind kurz gehalten, damit sie im Unterricht nicht zum historischen Kaninchenbau werden.</p>
+<div class="glossar-grid">
+  <article class="glossar-card"><h3>Restauration</h3><p>Wiederherstellung und Sicherung der alten Ordnung nach 1815.</p><button class="begriff-btn" data-begriff="restauration" type="button">Erklären</button></article>
+  <article class="glossar-card"><h3>Biedermeier</h3><p>Rückzug ins Private: Familie, Wohnung, Ordnung, Häuslichkeit.</p><button class="begriff-btn" data-begriff="biedermeier" type="button">Erklären</button></article>
+  <article class="glossar-card"><h3>Vormärz</h3><p>Politische Opposition vor der Märzrevolution 1848.</p><button class="begriff-btn" data-begriff="vormaerz" type="button">Erklären</button></article>
+  <article class="glossar-card"><h3>liberal</h3><p>Freiheit, Grundrechte, Verfassung, Pressefreiheit, Mitsprache.</p><button class="begriff-btn" data-begriff="liberal" type="button">Erklären</button></article>
+  <article class="glossar-card"><h3>konservativ</h3><p>Bewahrung der alten Ordnung, Ruhe, Fürstenmacht, Kontrolle.</p><button class="begriff-btn" data-begriff="konservativ" type="button">Erklären</button></article>
+  <article class="glossar-card"><h3>Zensur</h3><p>Staatliche Kontrolle von Texten, Zeitungen und Meinungen.</p><button class="begriff-btn" data-begriff="zensur" type="button">Erklären</button></article>
+  <article class="glossar-card"><h3>Burschenschaft</h3><p>Studentischer Zusammenschluss mit national-liberalen Zielen.</p><button class="begriff-btn" data-begriff="burschenschaft" type="button">Erklären</button></article>
+  <article class="glossar-card"><h3>Urburschenschaft</h3><p>1815 in Jena gegründete erste gesamtdeutsch gedachte Burschenschaft.</p><button class="begriff-btn" data-begriff="urburschenschaft" type="button">Erklären</button></article>
+  <article class="glossar-card"><h3>Wartburgfest</h3><p>Studentische Versammlung 1817 mit Forderungen nach Einheit und Freiheit.</p><button class="begriff-btn" data-begriff="wartburgfest" type="button">Erklären</button></article>
+  <article class="glossar-card"><h3>Hambacher Fest</h3><p>Große politische Versammlung 1832 mit liberal-nationalen Forderungen.</p><button class="begriff-btn" data-begriff="hambacher-fest" type="button">Erklären</button></article>
+  <article class="glossar-card"><h3>Verfassung</h3><p>Grundordnung eines Staates; sie begrenzt Macht und regelt Rechte.</p><button class="begriff-btn" data-begriff="verfassung" type="button">Erklären</button></article>
+  <article class="glossar-card"><h3>Pressefreiheit</h3><p>Recht, Informationen und Meinungen ohne staatliche Vorzensur zu veröffentlichen.</p><button class="begriff-btn" data-begriff="pressefreiheit" type="button">Erklären</button></article>
+  <article class="glossar-card"><h3>Bürgertum</h3><p>Gebildete, städtische und besitzende Gruppen; politisch nicht einheitlich.</p><button class="begriff-btn" data-begriff="buergertum" type="button">Erklären</button></article>
+  <article class="glossar-card"><h3>Grundrechte</h3><p>Rechte des Einzelnen gegenüber dem Staat, etwa Meinungs- und Pressefreiheit.</p><button class="begriff-btn" data-begriff="grundrechte" type="button">Erklären</button></article>
+</div>
+<div class="zuordnungs-hinweis"><strong>Aufgabe:</strong> Wähle drei Begriffe aus und ordne sie einer Seite zu: eher Restauration/Biedermeier oder eher Vormärz. Begründe jeden Begriff mit einem Satz.</div>
+</section>
+
+
+<!-- 2. KONTEXT -->
+<section id="kontext">
+<span class="kicker">Der Druck von oben</span>
+<h2>Die Karlsbader Beschlüsse 1819</h2>
+<div id="text-kontext">
+<p>Nach der Ermordung des Schriftstellers August von Kotzebue durch den Burschenschafter Karl Ludwig Sand
+    nutzte der österreichische Staatskanzler <button class="begriff-btn" data-begriff="metternich" type="button">Fürst Metternich</button> die Gelegenheit. 1819 setzte er
+    im <button class="begriff-btn" data-begriff="deutscher-bund" type="button">Deutschen Bund</button> die <button class="begriff-btn" data-begriff="karlsbader" type="button">Karlsbader Beschlüsse</button> durch – ein Maßnahmenpaket gegen jede oppositionelle Bewegung.</p>
+</div>
+<div class="vorlese-leiste">
+<button class="btn-vorlesen" data-vorlesen="text-kontext">▶ Abschnitt vorlesen</button>
+<button class="btn-stop" onclick="stoppeVorlesen()">■ Stopp</button>
+</div>
+<div class="quellenreihe">
+<figure class="bildkarte quellenbild breit">
+<img alt="Metaphorische Darstellung der Zensur: Ein großer Stempel drückt auf Zeitungen und Flugschriften; im Hintergrund beobachtet ein Spitzel die Szene." src="https://burgnetz-wq.github.io/froebel/bilder/13_zensur.png"/>
+<figcaption><strong>Zensur als Druckmittel</strong>Metternichs System setzte auf Vorzensur, Überwachung und Einschüchterung. Das Bild macht sichtbar: Öffentliche Meinung sollte nicht frei entstehen, sondern kontrolliert werden.</figcaption>
+</figure>
+<figure class="bildkarte quellenbild breit">
+<img alt="Historische Karikatur Der Denker-Club von 1819: Gelehrte sitzen mit Maulkörben in einem Klubraum." src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Bildarchiv_Preu%C3%9Fischer_Kulturbesitz.jpg/250px-Bildarchiv_Preu%C3%9Fischer_Kulturbesitz.jpg"/>
+<figcaption><strong>Der Denker-Club, 1819</strong>Zeitgenössische Karikatur zur Unterdrückung der Meinungsfreiheit nach den Karlsbader Beschlüssen. Die Maulkörbe zeigen: Sprechen wird gefährlich, Denken bleibt gerade noch erlaubt.<span class="quelle">Quelle: Wikimedia/Wikipedia, gemeinfreie historische Karikatur.</span></figcaption>
+</figure>
+</div>
+<div class="beschluss-grid">
+<div class="beschluss">
+<h4><button class="begriff-btn" data-begriff="zensur" type="button">Zensur</button></h4>
+<p>Druckschriften unter 320 Seiten mussten vor dem Erscheinen geprüft werden. Kritische Inhalte
+      wurden gestrichen oder ganz verboten.</p>
+</div>
+<div class="beschluss">
+<h4><button class="begriff-btn" data-begriff="demagogenverfolgung" type="button">Demagogenverfolgung</button></h4>
+<p>Eine zentrale Kommission verfolgte „Aufwiegler“. Professoren wurden entlassen, Studenten
+      verhaftet, <button class="begriff-btn" data-begriff="burschenschaft" type="button">Burschenschaften</button> verboten.</p>
+</div>
+<div class="beschluss">
+<h4>Universitätsaufsicht</h4>
+<p>Staatliche Bevollmächtigte überwachten die Hochschulen und das, was dort gelehrt wurde.</p>
+</div>
+<div class="beschluss">
+<h4><button class="begriff-btn" data-begriff="spitzelwesen" type="button">Spitzelwesen</button></h4>
+<p>Ein dichtes Netz von Informanten beobachtete Versammlungen, Briefe und Gespräche. Misstrauen
+      prägte das öffentliche Leben.</p>
+</div>
+</div>
+</section>
+
+<!-- 2b. LIBERAL UND KONSERVATIV -->
+<section id="libkon">
+<span class="kicker">Politische Grundbegriffe</span>
+<h2>Liberal und konservativ: zwei politische Richtungen</h2>
+<div id="text-libkon">
+<p class="lead">Die Zeit zwischen 1815 und 1848 lässt sich besser verstehen, wenn man die Begriffe <button class="begriff-btn" data-begriff="liberal" type="button">liberal</button> und <button class="begriff-btn" data-begriff="konservativ" type="button">konservativ</button> kennt. Sie beschreiben zwei gegensätzliche politische Grundhaltungen.</p>
+<p><button class="begriff-btn" data-begriff="liberal" type="button">Liberal</button> bedeutete damals nicht einfach „nett“ oder „locker“, sondern: Bürgerrechte, Verfassung, Pressefreiheit, Mitbestimmung und oft auch nationale Einheit. <button class="begriff-btn" data-begriff="konservativ" type="button">Konservativ</button> bedeutete: die bestehende Ordnung bewahren, Fürstenherrschaft sichern, Revolution verhindern und Veränderungen nur sehr vorsichtig zulassen.</p>
+</div>
+<div class="vorlese-leiste">
+<button class="btn-vorlesen" data-vorlesen="text-libkon">▶ Begriffe vorlesen</button>
+<button class="btn-stop" onclick="stoppeVorlesen()">■ Stopp</button>
+</div>
+
+<div class="politik-kompass">
+<article class="politik-karte liberal">
+<h3>Liberal</h3>
+<ul>
+<li><strong>Ziel:</strong> Freiheit des Einzelnen, <button class="begriff-btn" data-begriff="grundrechte" type="button">Grundrechte</button> und politische Mitbestimmung.</li>
+<li><strong>Forderungen:</strong> Verfassung, Parlament, Pressefreiheit, Versammlungsfreiheit.</li>
+<li><strong>Träger:</strong> Teile des Bürgertums, Studenten, Professoren, Schriftsteller, Journalisten.</li>
+<li><strong>Beispiele:</strong> <button class="begriff-btn" data-begriff="burschenschaft" type="button">Burschenschaften</button>, <button class="begriff-btn" data-begriff="wartburgfest" type="button">Wartburgfest</button>, <button class="begriff-btn" data-begriff="hambacher-fest" type="button">Hambacher Fest</button>, Vormärz-Literatur.</li>
+<li><strong>Typischer Satz:</strong> „Das Volk soll Rechte haben und mitentscheiden.“</li>
+</ul>
+</article>
+
+<article class="politik-karte konservativ">
+<h3>Konservativ</h3>
+<ul>
+<li><strong>Ziel:</strong> Bewahrung der bestehenden Ordnung nach 1815.</li>
+<li><strong>Forderungen:</strong> Ruhe, Gehorsam, Fürstenmacht, staatliche Kontrolle.</li>
+<li><strong>Träger:</strong> Fürsten, Adel, hohe Beamte, Militär, konservative Regierungskreise.</li>
+<li><strong>Beispiele:</strong> Restauration, Metternich-System, Karlsbader Beschlüsse, Zensur.</li>
+<li><strong>Typischer Satz:</strong> „Zu viel Freiheit führt zu Unruhe und Revolution.“</li>
+</ul>
+</article>
+</div>
+
+<div class="begriffszeile">
+<strong>Wichtig:</strong> Die Begriffe bedeuten im 19. Jahrhundert nicht exakt dasselbe wie heutige Parteibezeichnungen. Im Unterricht geht es hier vor allem um die Grundfrage: <em>Soll die alte Ordnung bewahrt oder politisch verändert werden?</em>
+</div>
+
+<div class="zuordnung-mini">
+<div><strong>Biedermeier:</strong><br/>häufig unpolitischer Rückzug, oft angepasst an die konservative Ordnung – aber nicht automatisch begeistert von ihr.</div>
+<div><strong>Vormärz:</strong><br/>deutlich näher an liberalen Forderungen nach Freiheit, Verfassung, Pressefreiheit und nationaler Einheit.</div>
+<div><strong>Vereine:</strong><br/>Zwischenraum: nach außen Geselligkeit, nach innen teilweise liberale Ideen und nationales Gemeinschaftsgefühl.</div>
+</div>
+
+<div class="afb afb2">
+<span class="stufe">Mini-Aufgabe</span>
+<ol>
+<li>Ordne zu: Zensur, Verfassung, Pressefreiheit, Fürstenmacht, Parlament, Karlsbader Beschlüsse.</li>
+<li>Erkläre anschließend, warum die <button class="begriff-btn" data-begriff="urburschenschaft" type="button">Urburschenschaft</button> eher zur liberalen Bewegung gehört.</li>
+</ol>
+</div>
+</section>
+
+<!-- 3. SPALTUNG -->
+<section id="spaltung">
+<span class="kicker">Zwei Antworten auf dieselbe Zeit</span>
+<h2>Die Spaltung der Gesellschaft</h2>
+<p class="lead">Dieselbe Unterdrückung führte zu zwei gegensätzlichen Lebenshaltungen. Dahinter stehen auch zwei politische Richtungen: konservative Bewahrung der Ordnung und liberales Aufbegehren für Rechte und Mitsprache.</p>
+<div class="feste-block" id="feste">
+<h3>Wartburgfest und Hambacher Fest: zwei Stationen des Vormärz</h3>
+<p>Beide Feste gehören zur liberal-nationalen Bewegung, aber sie stehen nicht für dasselbe Moment. Das <button class="begriff-btn" data-begriff="wartburgfest" type="button">Wartburgfest</button> war 1817 ein frühes studentisch-akademisches Zeichen für Einheit, Freiheit und Verfassung. Das <button class="begriff-btn" data-begriff="hambacher-fest" type="button">Hambacher Fest</button> machte 1832 diese Forderungen in einer viel breiteren Öffentlichkeit sichtbar.</p>
+<div class="feste-grid">
+<figure class="feste-karte">
+<img alt="Historische Darstellung des Wartburgfestes 1817: Studenten ziehen mit Fahne zur Wartburg bei Eisenach." src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Wartburg_demonstration_1817.jpg/500px-Wartburg_demonstration_1817.jpg"/>
+<figcaption><strong>Wartburgfest, 1817</strong>Frühes Signal der Burschenschaftsbewegung: Studenten und Professoren verbanden Erinnerung an Luther und die Befreiungskriege mit Forderungen nach deutscher Einheit, Freiheit und Verfassung.</figcaption>
+</figure>
+<figure class="feste-karte">
+<img alt="Zeitgenössische Darstellung des Hambacher Festes 1832 mit Menschenmenge, Schlossberg und schwarz-rot-goldenen Fahnen." src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Hambacher_Fest_1832.jpg/500px-Hambacher_Fest_1832.jpg"/>
+<figcaption><strong>Hambacher Fest, 1832</strong>Höhepunkt politischer Öffentlichkeit im Vormärz: Bürger, Studenten und weitere Teilnehmer forderten Pressefreiheit, Bürgerrechte, nationale Einheit und politische Mitsprache.</figcaption>
+</figure>
+</div>
+<div class="einordnung-linie">
+<div><strong>Einordnung:</strong> Wartburgfest = frühe, stärker studentisch geprägte Protestform.</div>
+<div><strong>Einordnung:</strong> Hambacher Fest = breitere Massenversammlung und sichtbares Symbol Schwarz-Rot-Gold.</div>
+<div><strong>Folge:</strong> Die Obrigkeit reagierte mit Überwachung, Verboten und Zensur – also genau mit dem Druck, der Rückzug und Protest zugleich erklärt.</div>
+</div>
+</div>
+
+<div class="spaltung">
+<div class="saeule bieder">
+<span class="signum">Spalte A</span>
+<h3>Biedermeier – Rückzug ins Private</h3>
+<ul>
+<li><strong>Politische Nähe:</strong> eher angepasst an die konservative Ordnung, aber oft aus Angst oder Vorsicht.</li>
+<li><strong>Häusliche Idylle:</strong> Die Wohnung wird zum Schutzraum vor der bedrohlichen Außenwelt.</li>
+<li><strong>Familie und Gemüt:</strong> Geborgenheit, Beständigkeit und Pflichtgefühl stehen im Mittelpunkt.</li>
+<li><strong>Wohnkultur:</strong> Bequeme, schlichte Möbel, Biedermeier-Sofa, Zimmerpflanzen, Hausmusik.</li>
+<li><strong>Salonkultur:</strong> Man trifft sich im kleinen Kreis zu Musik, Lesungen und Gesprächen – fern der Politik.</li>
+<li><strong>Unpolitische Kunst:</strong> Stillleben, Naturbilder, gemütvolle Genreszenen statt politischer Botschaften.</li>
+</ul>
+</div>
+<div class="saeule vor">
+<span class="signum">Spalte B</span>
+<h3>Vormärz – Aufbegehren für die Freiheit</h3>
+<ul>
+<li><strong>Politische Nähe:</strong> liberal: Verfassung, Grundrechte, Pressefreiheit und nationale Einheit.</li>
+<li><strong>Politisierung:</strong> Dichter und Bürger mischen sich bewusst in die Politik ein.</li>
+<li><strong>Flugschriften:</strong> Verbotene Schriften werden heimlich gedruckt und verbreitet.</li>
+<li><strong>Burschenschaften und Bürgerbewegung:</strong> Vom <button class="begriff-btn" data-begriff="wartburgfest" type="button">Wartburgfest</button> 1817 bis zum <button class="begriff-btn" data-begriff="hambacher-fest" type="button">Hambacher Fest</button> 1832 werden Einheit und Freiheit öffentlich gefordert.</li>
+<li><strong>Pressefreiheit:</strong> Der Kampf gegen die Zensur wird zum zentralen Anliegen.</li>
+<li><strong>Grundrechte:</strong> Verfassung, Volksvertretung und ein einiger Nationalstaat werden gefordert.</li>
+</ul>
+</div>
+</div>
+<div class="kontrast-pfeil">◆ derselbe Druck – zwei Wege ◆</div>
+</section>
+
+<!-- 3a. VEREINE -->
+<section id="vereine">
+<span class="kicker">Geselligkeit · Ersatzöffentlichkeit · Vormärz</span>
+<h2>Vereine: harmlos oder politisch?</h2>
+<div id="text-vereine">
+<p class="lead">Vereine waren im 19. Jahrhundert mehr als Freizeit. Sie bildeten einen Zwischenraum: nach außen gesellig und kulturell, nach innen oft ein Ort für Austausch, Gemeinschaftsgefühl und politische Wünsche.</p>
+<p>Weil offene politische Vereinigungen im restaurativen Staat verdächtig oder verboten waren, wichen viele Bürger auf scheinbar unpolitische Formen aus. Besonders wichtig wurden <strong>Gesangsvereine</strong>, <strong>Lesegesellschaften</strong>, <strong>Turnvereine</strong> und studentische <strong>Burschenschaften</strong>. Dort konnte man über Bücher, Lieder, Körperertüchtigung, Vaterland, Freiheit und Einheit sprechen, ohne gleich wie auf dem Marktplatz eine Revolution auszurufen.</p>
+<p><strong>Friedrich Ludwig Jahn</strong> steht hier als Beispiel für die Turnbewegung: Turnen war Sport, Erziehung und Gemeinschaft – konnte im Vormärz aber zugleich nationales Denken fördern.</p>
+<p><strong><button class="begriff-btn" data-begriff="urburschenschaft" type="button">Urburschenschaft</button>:</strong> Besonders wichtig ist die 1815 in Jena entstandene Urburschenschaft. Sie wollte die alten landsmannschaftlichen Studentengruppen überwinden und Studenten aus den deutschen Ländern in einer gemeinsamen Burschenschaft zusammenführen. Darin steckt bereits eine politische Idee: So wie die Studenten zusammengehören sollten, sollte auch Deutschland nicht in viele Einzelstaaten zersplittert bleiben.</p>
+<p>Für den Unterricht ist wichtig: Vereine gehören nicht sauber nur zum Biedermeier oder nur zum Vormärz. Sie verbinden beide Welten. Sie sehen nach bürgerlicher Ordnung aus, können aber politisches Denken vorbereiten.</p>
+</div>
+<div class="vorlese-leiste">
+<button class="btn-vorlesen" data-vorlesen="text-vereine">▶ Vereine vorlesen</button>
+<button class="btn-stop" onclick="stoppeVorlesen()">■ Stopp</button>
+</div>
+
+<div class="beschluss-grid">
+<div class="beschluss">
+<h4>Gesangsvereine</h4>
+<p>Singen wirkte harmlos, konnte aber Gemeinschaft stiften. Lieder über Freiheit, Vaterland und Einheit stärkten ein nationales Bewusstsein.</p>
+</div>
+<div class="beschluss">
+<h4>Lesegesellschaften</h4>
+<p>Gemeinsames Lesen und Diskutieren ersetzte teilweise eine freie Öffentlichkeit. Zeitungen, Bücher und Gespräche machten politische Bildung möglich.</p>
+</div>
+<div class="beschluss">
+<h4>Turnvereine</h4>
+<p>Turnen war nicht nur Sport. In der Turnbewegung verbanden sich Körpererziehung, Gemeinschaft und der Gedanke eines freien, einigen Deutschlands.</p>
+</div>
+<div class="beschluss">
+<h4>Burschenschaften</h4>
+<p>Studentische Zusammenschlüsse forderten Einheit, Freiheit und Verfassung. Darum wurden sie von der Obrigkeit besonders beobachtet und verfolgt.</p>
+</div>
+<div class="beschluss">
+<h4>Urburschenschaft Jena</h4>
+<p>Sie entstand 1815 in Jena und steht am Anfang der modernen Burschenschaftsbewegung. Ihr Gedanke: Aus regional getrennten Studenten sollte eine gemeinsame, nationale Gemeinschaft werden.</p>
+</div>
+</div>
+
+<div class="quellenreihe">
+<figure class="bildkarte quellenbild">
+<img alt="Siegel der Jenaer Urburschenschaft von 1815." class="portrait-fit" src="https://commons.wikimedia.org/wiki/Special:FilePath/Siegel%20Jenenser%20Urburschenschaft.JPG?width=600"/>
+<figcaption><strong>Urburschenschaft Jena:</strong> Das Siegel macht die studentische Bewegung als organisierte Gemeinschaft sichtbar. Für Schüler gut erkennbar: Aus „Verein“ wird hier ein politisches Symbol.<span class="quelle">Quelle: Wikimedia Commons, Siegel der Jenaer Urburschenschaft.</span></figcaption>
+</figure>
+<figure class="bildkarte quellenbild">
+<img alt="Friedrich Ludwig Jahn als Symbolfigur der Turnbewegung." class="portrait-fit" src="https://commons.wikimedia.org/wiki/Special:FilePath/Friedrich%20Ludwig%20Jahn%20%282%29.jpg?width=600"/>
+<figcaption><strong>Friedrich Ludwig Jahn:</strong> Der sogenannte „Turnvater Jahn“ steht für die Verbindung von Turnen, Gemeinschaft und frühem Nationaldenken. Turnvereine konnten deshalb politisch gelesen werden.<span class="quelle">Quelle: Wikimedia Commons.</span></figcaption>
+</figure>
+</div>
+
+<div class="zuordnungs-hinweis"><strong>Merksatz:</strong> Ein Verein konnte im Vormärz aussehen wie Freizeit – und trotzdem ein politischer Übungsraum sein. Manchmal beginnt Revolution eben mit Liedblatt, Buch und Turnplatz. Klingt harmlos. War es aber nicht immer.</div>
+</section>
+
+<!-- 3b. LEBENSWELT -->
+<section id="lebenswelt">
+<span class="kicker">Alltag · Familie · Werte</span>
+<h2>Lebensstil des Biedermeier: Kategorien und passende Bilder</h2>
+<div id="text-lebenswelt">
+<p class="lead">Das Biedermeier lässt sich gut über Lebensbereiche erschließen. Jede Kategorie ist hier direkt mit einem passenden Bild verbunden: Die Schüler sehen nicht nur Begriffe, sondern konkrete Hinweise auf Kleidung, Räume, Rollen, Freizeit, Vereine und Politik.</p>
+<p class="lebenswelt-intro">Klicke auf eine Kategorie. Unten erscheint jeweils eine genauere Erklärung für Hefteintrag, Bildbeschreibung oder Vergleich mit dem Vormärz.</p>
+</div>
+<div class="vorlese-leiste">
+<button class="btn-vorlesen" data-vorlesen="text-lebenswelt">▶ Lebensstil vorlesen</button>
+<button class="btn-stop" onclick="stoppeVorlesen()">■ Stopp</button>
+</div>
+
+<div class="lebenswelt-grid">
+<article class="lebenskarte">
+<img alt="Biedermeier-Mode mit Dame und Herr in bürgerlicher Kleidung." src="https://upload.wikimedia.org/wikipedia/commons/d/db/Biedermeier_Mode_1.jpg"/>
+<div class="inhalt">
+<h3>Mode</h3>
+<span class="bildquelle">Bildbezug: Kleidung als sichtbare Ordnung</span>
+<p>Gepflegte Kleidung, betonte Taille, Haube, Schal, Weste, Frack oder Zylinder zeigen Anstand und bürgerliche Selbstkontrolle.</p>
+<button class="btn-kategorie" data-kategorie="mode" aria-expanded="false">Mehr erfahren</button>
+</div>
+</article>
+
+<article class="lebenskarte">
+<img alt="Carl Spitzweg: Sonntagsspaziergang als Familienszene im Biedermeier." src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Carl_Spitzweg_-_Sonntagsspaziergang.jpg/500px-Carl_Spitzweg_-_Sonntagsspaziergang.jpg"/>
+<div class="inhalt">
+<h3>Familienstruktur</h3>
+<span class="bildquelle">Bildbezug: Familie als geordnete Kleingruppe</span>
+<p>Die Familie galt als Schutzraum. Der Vater stand meist an der Spitze, die Mutter war für Haushalt, Kinder und Häuslichkeit zuständig.</p>
+<button class="btn-kategorie" data-kategorie="familie" aria-expanded="false">Mehr erfahren</button>
+</div>
+</article>
+
+<article class="lebenskarte">
+<img alt="Biedermeierliches Zimmerbild einer bürgerlichen Wohnung." src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Zimmerbild_96.jpg/500px-Zimmerbild_96.jpg"/>
+<div class="inhalt">
+<h3>Wohnen</h3>
+<span class="bildquelle">Bildbezug: Zimmer als kleine sichere Welt</span>
+<p>Die gute Stube, Möbel, Bilder, Uhr, Porzellan und Klavier machten das Zuhause zum Mittelpunkt der bürgerlichen Lebenswelt.</p>
+<button class="btn-kategorie" data-kategorie="wohnen" aria-expanded="false">Mehr erfahren</button>
+</div>
+</article>
+
+<article class="lebenskarte">
+<img alt="Biedermeier-Stube mit Ordnung, Möbeln und häuslicher Atmosphäre." src="https://burgnetz-wq.github.io/froebel/bilder/01_stube.png"/>
+<div class="inhalt">
+<h3>Werte</h3>
+<span class="bildquelle">Bildbezug: Ordnung und Behaglichkeit</span>
+<p>Fleiß, Ehrlichkeit, Pflichtgefühl, Sparsamkeit und Bescheidenheit wurden als bürgerliche Tugenden verstanden.</p>
+<button class="btn-kategorie" data-kategorie="werte" aria-expanded="false">Mehr erfahren</button>
+</div>
+</article>
+
+<article class="lebenskarte">
+<img alt="Klavierszene als Beispiel für Hausmusik im Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/03_klavier.png"/>
+<div class="inhalt">
+<h3>Freizeit</h3>
+<span class="bildquelle">Bildbezug: Hausmusik und kleine Geselligkeit</span>
+<p>Hausmusik, Lesen, Handarbeit, Teestunden, Spaziergänge und Besuch im kleinen Kreis prägten die private Freizeit.</p>
+<button class="btn-kategorie" data-kategorie="freizeit" aria-expanded="false">Mehr erfahren</button>
+</div>
+</article>
+
+<article class="lebenskarte">
+<img alt="Carl Spitzweg: Der arme Poet als Kunstbeispiel des Biedermeier." src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Carl_Spitzweg_-_Der_arme_Poet_%28Neue_Pinakothek%29.jpg/500px-Carl_Spitzweg_-_Der_arme_Poet_%28Neue_Pinakothek%29.jpg"/>
+<div class="inhalt">
+<h3>Kunst</h3>
+<span class="bildquelle">Bildbezug: Alltag, Innenraum, leise Ironie</span>
+<p>Beliebt waren Innenräume, Familienbilder, Landschaften und Alltagsszenen. Oft wirkt alles ruhig – manchmal aber mit feinem Spott.</p>
+<button class="btn-kategorie" data-kategorie="kunst" aria-expanded="false">Mehr erfahren</button>
+</div>
+</article>
+
+<article class="lebenskarte">
+<img alt="Friedrich Ludwig Jahn als Hinweis auf Turnvereine und Vereinswesen im Vormärz." class="portrait-fit" src="https://commons.wikimedia.org/wiki/Special:FilePath/Friedrich%20Ludwig%20Jahn%20%282%29.jpg?width=600"/>
+<div class="inhalt">
+<h3>Vereine</h3>
+<span class="bildquelle">Beispielbild: Friedrich Ludwig Jahn ("Turnvater Jahn")</span>
+<span class="bildquelle">Bildbezug: Turnen, Singen, Lesen als Ersatzöffentlichkeit</span>
+<p>Vereine wirkten oft unverdächtig, konnten aber Gemeinschaft, Bildung und politische Wünsche nach Einheit und Freiheit bündeln.</p>
+<button class="btn-kategorie" data-kategorie="vereine" aria-expanded="false">Mehr erfahren</button>
+</div>
+</article>
+
+<article class="lebenskarte">
+<img alt="Siegel der Jenaer Urburschenschaft von 1815." class="portrait-fit" src="https://commons.wikimedia.org/wiki/Special:FilePath/Siegel%20Jenenser%20Urburschenschaft.JPG?width=600"/>
+<div class="inhalt">
+<h3>Burschenschaften</h3>
+<span class="bildquelle">Bildbezug: Urburschenschaft Jena 1815</span>
+<p>Studentische Zusammenschlüsse verbanden Bildung, Gemeinschaft und nationale Freiheitsideen. Dadurch wurden sie für die Obrigkeit verdächtig.</p>
+<button class="btn-kategorie" data-kategorie="burschenschaften" aria-expanded="false">Mehr erfahren</button>
+</div>
+</article>
+
+<article class="lebenskarte">
+<img alt="Zensur-Stempel als Symbol politischer Kontrolle." src="https://burgnetz-wq.github.io/froebel/bilder/13_zensur.png"/>
+<div class="inhalt">
+<h3>Politik</h3>
+<span class="bildquelle">Bildbezug: Kontrolle statt freier Öffentlichkeit</span>
+<p>Zensur und Überwachung machten offene Kritik riskant. Der Rückzug ins Private war daher auch eine Reaktion auf politischen Druck.</p>
+<button class="btn-kategorie" data-kategorie="politik" aria-expanded="false">Mehr erfahren</button>
+</div>
+</article>
+
+<article class="lebenskarte">
+<img alt="Frau in Biedermeierkleidung auf einer Daguerreotypie um 1840." src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Anton_Martin_Woman_infront_a_Gobelin_1840.JPG/500px-Anton_Martin_Woman_infront_a_Gobelin_1840.JPG"/>
+<div class="inhalt">
+<h3>Frauenbild</h3>
+<span class="bildquelle">Bildbezug: weibliche Rolle im häuslichen Ideal</span>
+<p>Frauen wurden häufig auf Ehe, Haushalt, Mutterschaft, Erziehung, Klavierspiel und Handarbeit festgelegt.</p>
+<button class="btn-kategorie" data-kategorie="frauenbild" aria-expanded="false">Mehr erfahren</button>
+</div>
+</article>
+
+<article class="lebenskarte">
+<img alt="Kinderzimmer als Symbol für Erziehung und Familienleben im Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/09_kinderzimmer.png"/>
+<div class="inhalt">
+<h3>Erziehung</h3>
+<span class="bildquelle">Bildbezug: Kinderzimmer und Ordnung im Kleinen</span>
+<p>Kinder sollten höflich, sauber, fleißig, gehorsam und angepasst sein. Erziehung war ein Kernbereich der Familie.</p>
+<button class="btn-kategorie" data-kategorie="erziehung" aria-expanded="false">Mehr erfahren</button>
+</div>
+</article>
+
+<article class="lebenskarte">
+<img alt="Garten- und Naturszene als Rückzugsort des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/07_garten.png"/>
+<div class="inhalt">
+<h3>Naturbild</h3>
+<span class="bildquelle">Bildbezug: Spaziergang, Garten, innere Ruhe</span>
+<p>Die Natur erschien als friedlicher Gegenraum zur politischen Enge: Garten, Wald und Spaziergang statt Demonstration.</p>
+<button class="btn-kategorie" data-kategorie="natur" aria-expanded="false">Mehr erfahren</button>
+</div>
+</article>
+</div>
+
+<div class="kategorie-info" aria-live="polite">
+<h3 id="kategorieTitel">Kategorie auswählen</h3>
+<p id="kategorieText">Klicke auf eine Kategorie, um eine ausführlichere Erklärung zur Lebenswelt des Biedermeier zu erhalten.</p>
+</div>
+
+<div class="zuordnungs-hinweis"><strong>Bildauftrag:</strong> Wähle zwei Kategorien aus. Beschreibe jeweils zuerst das Bild und erkläre dann, welcher Lebensstil darin sichtbar wird. Achte auf Kleidung, Raum, Körperhaltung, Gegenstände, Vereine, Burschenschaften/Urburschenschaft und mögliche politische Abwesenheit.</div>
+
+<div class="merksatz-box">
+<strong>Merksatz:</strong> Das Biedermeier ist die Epoche der guten Stube: wenig Revolution draußen, viel Ordnung, Familie und Gemütlichkeit drinnen.
+</div>
+</section>
+
+<!-- 3b. BILDERWELT -->
+<section id="bilderwelt">
+<span class="kicker">Anschauliche Bildquellen</span>
+<h2>Bilderwelt des Biedermeier</h2>
+<p class="lead">Die folgenden Bilder zeigen typische Motive der bürgerlichen Lebenswelt. </p>
+<div class="bild-hinweis"><strong>Arbeitsidee:</strong> Wähle ein Bild aus und erkläre in drei Sätzen, ob es eher Rückzug, Geborgenheit, Kontrolle oder stille Kritik ausdrückt.</div>
+<div class="bildreihe">
+<figure class="bildkarte">
+<img alt="02 Teestunde: fotorealistische Szene zur Lebenswelt des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/02_teestunde.png"/>
+<figcaption><strong>02 Teestunde</strong>Teetrinken, feine Umgangsformen und häusliche Geselligkeit zeigen die bürgerliche Alltagskultur des Biedermeier.</figcaption>
+</figure>
+<figure class="bildkarte">
+<img alt="03 Klavier: fotorealistische Szene zur Lebenswelt des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/03_klavier.png"/>
+<figcaption><strong>03 Klavier</strong>Hausmusik war ein zentrales Element der Salonkultur: Bildung, Gefühl und Gemeinschaft ohne offene Politik.</figcaption>
+</figure>
+<figure class="bildkarte">
+<img alt="04 Leser: fotorealistische Szene zur Lebenswelt des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/04_leser.png"/>
+<figcaption><strong>04 Leser</strong>Lesen verweist auf Bildung und Innerlichkeit, aber auch auf die Frage: Welche Texte durfte man überhaupt lesen?</figcaption>
+</figure>
+<figure class="bildkarte">
+<img alt="05 Handarbeit: fotorealistische Szene zur Lebenswelt des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/05_handarbeit.png"/>
+<figcaption><strong>05 Handarbeit</strong>Handarbeit steht für häusliche Ordnung, Fleiß und die stark geregelte Rollenwelt der Zeit.</figcaption>
+</figure>
+<figure class="bildkarte">
+<img alt="06 Straße: fotorealistische Szene zur Lebenswelt des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/06_strasse.png"/>
+<figcaption><strong>06 Straße</strong>Die Straßenszene bildet den Kontrast zum privaten Raum: Öffentlichkeit, Begegnung und mögliche politische Unruhe.</figcaption>
+</figure>
+<figure class="bildkarte">
+<img alt="07 Garten: fotorealistische Szene zur Lebenswelt des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/07_garten.png"/>
+<figcaption><strong>07 Garten</strong>Der Garten zeigt Natur als Rückzugsort. Die Idylle wirkt friedlich, kann aber auch Ausweichbewegung sein.</figcaption>
+</figure>
+<figure class="bildkarte">
+<img alt="08 Portrait: fotorealistische Szene zur Lebenswelt des Biedermeier." class="img-fallback" data-fallbacks="https://burgnetz-wq.github.io/froebel/bilder/08_portraet.png|https://burgnetz-wq.github.io/froebel/bilder/08portrait.png|https://burgnetz-wq.github.io/froebel/bilder/08portraet.png|https://burgnetz-wq.github.io/froebel/bilder/portrait.png" src="https://burgnetz-wq.github.io/froebel/bilder/08_portrait.png"/>
+<figcaption><strong>08 Portrait</strong>Das Porträt zeigt bürgerliches Selbstbild: Würde, Sittsamkeit und kontrollierte Außendarstellung.</figcaption>
+</figure>
+<figure class="bildkarte">
+<img alt="09 Kinderzimmer: fotorealistische Szene zur Lebenswelt des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/09_kinderzimmer.png"/>
+<figcaption><strong>09 Kinderzimmer</strong>Familie und Erziehung galten als Kern des bürgerlichen Lebens: Ordnung beginnt im Kleinen.</figcaption>
+</figure>
+<figure class="bildkarte">
+<img alt="10 Gesellschaft: fotorealistische Szene zur Lebenswelt des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/10_gesellschaft.png"/>
+<figcaption><strong>10 Gesellschaft</strong>Gesellschaft im kleinen Kreis: Austausch, Musik und Gespräch – meist vorsichtig innerhalb erlaubter Grenzen.</figcaption>
+</figure>
+</div>
+
+<h3>Weitere Bildquellen aus Wikipedia/Wikimedia</h3>
+<p class="lead">Diese Bilder ergänzen die bereits vorhandenen KI-/GitHub-Bilder durch historische Bildquellen.</p>
+<div class="wikipedia-reihe">
+<figure class="bildkarte quellenbild">
+<img alt="Gottlieb Biedermaier, fiktive Figur aus den Fliegenden Blättern." src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Gottlieb_Biedermaier.jpg/500px-Gottlieb_Biedermaier.jpg"/>
+<figcaption><strong>Begriffsgeschichte</strong> Die Spottfigur Gottlieb Biedermaier erklärt, warum der Begriff zunächst ironisch klang.</figcaption>
+</figure>
+<figure class="bildkarte quellenbild">
+<img alt="Eduard Gaertner: Zimmerbild, biedermeierliches Interieur." src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Zimmerbild_96.jpg/500px-Zimmerbild_96.jpg"/>
+<figcaption><strong>Wohnkultur</strong> Das Zimmerbild zeigt genau die Welt der guten Stube: Möbel, Ordnung, Bilder, Dinge.</figcaption>
+</figure>
+<figure class="bildkarte quellenbild">
+<img alt="Carl Spitzweg: Der Sonntagsspaziergang, 1841." src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Carl_Spitzweg_-_Sonntagsspaziergang.jpg/500px-Carl_Spitzweg_-_Sonntagsspaziergang.jpg"/>
+<figcaption><strong>Familie und Freizeit</strong> Spaziergang, Kleidung und Rollenordnung lassen sich hier gut beobachten.</figcaption>
+</figure>
+<figure class="bildkarte quellenbild">
+<img alt="Biedermeier-Mode als historische Darstellung." src="https://upload.wikimedia.org/wikipedia/commons/d/db/Biedermeier_Mode_1.jpg"/>
+<figcaption><strong>Mode</strong> Kleidung wird zur Quelle: Wer trägt was, wie steif wirkt die Haltung, was soll gezeigt werden?</figcaption>
+</figure>
+</div>
+
+<h3 id="bildpaare">Bildpaare zum Vergleichen</h3>
+<p class="lead">Diese Bildpaare machen den Gegensatz klarer: privat und ruhig auf der einen Seite, öffentlich und politisch auf der anderen Seite.</p>
+<div class="bildpaar-grid">
+<figure class="bildpaar">
+  <div class="bilder">
+    <img alt="Biedermeier-Stube als privater Rückzugsort." src="https://burgnetz-wq.github.io/froebel/bilder/01_stube.png"/>
+    <img alt="Zensur als politische Kontrolle im Vormärz." src="https://burgnetz-wq.github.io/froebel/bilder/13_zensur.png"/>
+  </div>
+  <figcaption><strong>Innenraum gegen Außenwelt:</strong> Die gute Stube bietet Sicherheit. Die Zensur erklärt, warum Öffentlichkeit für viele gefährlich wirkte.</figcaption>
+</figure>
+<figure class="bildpaar">
+  <div class="bilder">
+    <img alt="Carl Spitzweg Sonntagsspaziergang als Familien- und Freizeitszene." src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Carl_Spitzweg_-_Sonntagsspaziergang.jpg/500px-Carl_Spitzweg_-_Sonntagsspaziergang.jpg"/>
+    <img alt="Hambacher Fest 1832 als öffentliche politische Versammlung." src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Hambacher_Fest_1832.jpg/500px-Hambacher_Fest_1832.jpg"/>
+  </div>
+  <figcaption><strong>Spaziergang oder Demonstration:</strong> Beide Bilder zeigen Menschen in Gruppen. Entscheidend ist der Raum: private Ordnung hier, politische Öffentlichkeit dort.</figcaption>
+</figure>
+<figure class="bildpaar">
+  <div class="bilder">
+    <img alt="Hausmusik am Klavier als private bürgerliche Freizeit." src="https://burgnetz-wq.github.io/froebel/bilder/03_klavier.png"/>
+    <img alt="Friedrich Ludwig Jahn als Symbol der Turnbewegung und Vereinswelt." class="portrait-fit" src="https://commons.wikimedia.org/wiki/Special:FilePath/Friedrich%20Ludwig%20Jahn%20%282%29.jpg?width=600"/>
+  </div>
+  <figcaption><strong>Geselligkeit mit zwei Richtungen:</strong> Hausmusik bleibt im privaten Salon. Turnvereine und Burschenschaften konnten dagegen Gemeinschaft politisch aufladen.</figcaption>
+</figure>
+</div>
+
+</section>
+<!-- 4. BILDANALYSE -->
+<section id="bild">
+<span class="kicker">Quellenarbeit Bild</span>
+<h2>Bildanalyse: Carl Spitzweg, „Der arme Poet“</h2>
+<div class="bild-block">
+<figure>
+<img alt="Carl Spitzweg: Der arme Poet, 1839. Der Dichter liegt in einer ärmlichen Dachkammer." src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Carl_Spitzweg_-_Der_arme_Poet_%28Neue_Pinakothek%29.jpg/330px-Carl_Spitzweg_-_Der_arme_Poet_%28Neue_Pinakothek%29.jpg"/>
+<figcaption>Carl Spitzweg, „Der arme Poet“ (1839). Eingebettete Datei nach gemeinfreier Wikimedia-Vorlage.</figcaption>
+</figure>
+<div class="methode-box">
+<h3>Was zeigt dieses Bild?</h3>
+<p>Spitzwegs berühmtes Gemälde gilt als Sinnbild des Biedermeier: der zurückgezogene Künstler in der engen
+      Dachkammer. Doch ist es nur gemütlich – oder auch eine stille Kritik?</p>
+<p>Untersuche das Bild selbst mit der geschichtsdidaktischen Dreischritt-Methode.</p>
+<button class="btn-methode" onclick="oeffneModal()">📖 Methode zur Bildinterpretation öffnen</button>
+</div>
+</div>
+</section>
+<!-- 5. TEXTE -->
+<section id="texte">
+<span class="kicker">Quellenarbeit Text</span>
+<h2>Zwei Stimmen einer Epoche</h2>
+<p class="lead">Vergleiche, wie verschieden Sprache und Haltung in derselben Zeit sein konnten.</p>
+<div id="text-quellen">
+<div class="text-grid">
+<div>
+<h3>Biedermeier: Geborgenheit in der Natur</h3>
+<blockquote>
+        „Wer hat dich, du schöner Wald, aufgebaut so hoch da droben? […]
+        O du Land voll dunkler Wälder […], wo ich bin und wo ich gehe, in dem stillen Frieden auch.“
+        <cite>Joseph von Eichendorff, „Der Jäger Abschied“ (1810) – ein typisch innerliches Naturgedicht</cite>
+</blockquote>
+<p style="font-size:.9em;color:var(--tinte-weich)">Hier wendet sich der Blick nach innen: Wald, Stille und Heimat
+      bieten Trost. Von Politik ist keine Rede.</p>
+<figure class="bildkarte quellenbild atmosphaere" style="margin-top:14px;">
+<img alt="Romantischer deutscher Wald mit hohen Bäumen, Sonnenstrahlen und stillem Weg, ohne Menschen." src="https://burgnetz-wq.github.io/froebel/bilder/12_wald.png"/>
+<figcaption><strong>Wald-Idylle</strong>Das Bild unterstützt Eichendorffs Naturton: Stille, Rückzug und innere Sammlung statt offener politischer Aktion.</figcaption>
+</figure>
+</div>
+<div>
+<h3>Vormärz: Aufruf zum Widerstand</h3>
+<blockquote class="kampf">
+        „Friede den Hütten! Krieg den Palästen!“
+        <cite>Georg Büchner, „Der Hessische Landbote“ (1834) – eine verbotene Flugschrift gegen die Fürstenherrschaft</cite>
+</blockquote>
+<p style="font-size:.9em;color:var(--tinte-weich)">Hier wird Sprache zur Waffe: Büchner vertritt den radikal-revolutionären Flügel des Vormärz, klagt soziale Ungleichheit an und ruft die Bauern zum Aufstand. Für solche Worte drohte das Gefängnis.</p>
+<div class="quellenreihe" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-top:14px;">
+<figure class="bildkarte quellenbild">
+<img alt="Porträt Georg Büchners, Bleistiftzeichnung um 1835." class="img-fallback" data-fallbacks="https://burgnetz-wq.github.io/froebel/bilder/buechner.png|https://burgnetz-wq.github.io/froebel/bilder/georg_buechner.png" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Georg_B%C3%BCchner.png/500px-Georg_B%C3%BCchner.png"/>
+<figcaption><strong>Georg Büchner</strong>Schriftsteller, Mediziner und Revolutionär des Vormärz.<span class="quelle">Quelle: Wikimedia/Wikipedia.</span></figcaption>
+</figure>
+<figure class="bildkarte quellenbild">
+<img alt="Erste Seite der Flugschrift Der Hessische Landbote von 1834 mit dem Aufruf Friede den Hütten! Krieg den Palästen!" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Landbote.jpg/500px-Landbote.jpg"/>
+<figcaption><strong>Der Hessische Landbote</strong>Illegale Flugschrift von 1834: soziale Anklage und politischer Aufruf.<span class="quelle">Quelle: Wikimedia/Wikipedia.</span></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="vorlese-leiste">
+<button class="btn-vorlesen" data-vorlesen="text-quellen">▶ Beide Quellen vorlesen</button>
+<button class="btn-stop" onclick="stoppeVorlesen()">■ Stopp</button>
+</div>
+</section>
+<!-- 6. QUIZ -->
+<section id="quiz">
+<span class="kicker">Sichere dein Wissen</span>
+<h2>Kompetenz-Check</h2>
+<p class="lead">Wähle jeweils die zutreffende Antwort. Du erhältst sofort eine Begründung.</p>
+<div id="quiz-feld"></div>
+</section>
+<!-- 7. AUFGABEN -->
+<section id="aufgaben">
+<span class="kicker">Vertiefung · gestaffelt nach Anforderungsbereichen</span>
+<h2>Komplexe Arbeitsaufträge</h2>
+<div class="afb afb1">
+<span class="stufe">AFB I · Rekonstruktion</span>
+<ol>
+<li>Nenne vier Maßnahmen der Karlsbader Beschlüsse von 1819.</li>
+<li>Beschreibe in eigenen Worten, was man unter „Biedermeier“ und was man unter „Vormärz“ versteht.</li>
+<li>Erkläre kurz die Begriffe „liberal“ und „konservativ“.</li>
+</ol>
+</div>
+<div class="afb afb2">
+<span class="stufe">AFB II · Analyse</span>
+<ol start="3">
+<li>Erläutere am Beispiel der Zensur, wie der Staat versuchte, die öffentliche Meinung zu kontrollieren.</li>
+<li>Vergleiche das Eichendorff-Gedicht und Büchners Flugschrift hinsichtlich Thema, Sprache und Absicht.</li>
+</ol>
+</div>
+<div class="afb afb3">
+<span class="stufe">AFB III · Werturteil</span>
+<ol start="5">
+<li>Beurteile, ob der Rückzug ins Biedermeier Feigheit oder eine logische Schutzstrategie gegen den
+      Terror des Metternich-Systems war. Beziehe die Begriffe „liberal“ und „konservativ“ in deine Begründung ein.</li>
+<li>Erörtere die These: „Ohne den Druck der Restauration hätte es den Vormärz nie gegeben.“ Wäge
+      Argumente dafür und dagegen ab und komm zu einem eigenen Urteil.</li>
+</ol>
+</div>
+</section>
+</div>
+<!-- Modal Bildmethode -->
+<div aria-labelledby="modal-titel" aria-modal="true" class="modal-bg" id="modal" role="dialog">
+<div class="modal">
+<h3 id="modal-titel">Dreischritt zur Bildinterpretation</h3>
+<ol>
+<li><span class="schritt">1. Beschreiben:</span> Was sehe ich? Halte nüchtern fest, was dargestellt ist –
+      der Raum, die Person, ihre Tätigkeit, die Gegenstände (Matratze, Bücher, Ofen, der aufgespannte Regenschirm).
+      Noch keine Deutung!</li>
+<li><span class="schritt">2. Deuten:</span> Was bedeuten die Details? Warum spannt der Dichter im Zimmer einen
+      Schirm auf? Was sagt das über das undichte Dach und seine Armut aus? Welche Stimmung erzeugt das Bild?</li>
+<li><span class="schritt">3. Schlussfolgern:</span> Was sagt das Bild über die Epoche? Zeigt Spitzweg den
+      Rückzug ins Private mit Sympathie, mit feinem Spott oder als versteckte Kritik an einer Zeit, die ihre
+      Künstler im Elend lässt? Begründe dein Urteil.</li>
+</ol>
+<button class="schliessen" onclick="schliesseModal()">Schließen</button>
+</div>
+</div>
+
+<!-- Modal Begriffs-Popups -->
+<div aria-labelledby="begriff-modal-titel" aria-modal="true" class="modal-bg" id="begriff-modal" role="dialog">
+<div class="modal begriff-modal">
+<h3 id="begriff-modal-titel">Begriff</h3>
+<p id="begriff-modal-text">Hier erscheint die Erklärung.</p>
+<div class="beispiel" id="begriff-modal-beispiel"></div>
+<button class="schliessen" onclick="schliesseBegriffModal()">Schließen</button>
+</div>
+</div>
+
+<footer>
+  Interaktives Lernmodul für den Geschichtsunterricht · Sekundarstufe, Klasse 8–11 ·
+  Bilder eingebettet: Biedermeier-Szenen 01–10, Spitzweg-Bild 11 nach gemeinfreier Wikimedia-Vorlage.
+<br/>Bilder 01_stube.png bis 13_wald.png werden aus dem GitHub-Ordner /froebel/bilder/ geladen.<br/>Fallback-Pfade für fehlende Bilder ergänzt (Wald/Zensur, Karikatur, Hambacher Fest, Portrait, Poet).<br/>Karikatur, Hambacher Fest und Spitzweg-Bild wurden auf geprüfte Direktlinks gesetzt.<br/>Wartburgfest und Hambacher Fest in einem gemeinsamen Einordnungsblock zusammengeführt; doppelte Festbilder reduziert.<br/>Jahn-Bild auf stabilen Wikimedia-Special-FilePath gesetzt und in Vereine/Lebenswelt/Bildpaaren eingebunden.<br/>Lebenswelt-Kategorien ergänzt: Mode, Familienstruktur, Wohnen, Werte, Freizeit, Kunst, Politik, Frauenbild, Erziehung, Natur.<br/>Erklärvideo, Begriffsgeschichte und besser zugeordnete Lebensstil-Bildkarten ergänzt.<br/>Zusätzliche Wikipedia/Wikimedia-Bilder: Gottlieb Biedermaier, Zimmerbild, Sonntagsspaziergang, Biedermeier-Mode, Friedrich Ludwig Jahn/Turnbewegung.<br/>Bildpaare zum Vergleich ergänzt: gute Stube/Zensur, Sonntagsspaziergang/Hambach, Hausmusik/Turnbewegung.
+<br/>Vereinswesen ergänzt: Gesangsvereine, Lesegesellschaften, Turnvereine und Burschenschaften als Zwischenraum zwischen Biedermeier und Vormärz.<br/>Politische Grundbegriffe ergänzt: liberal und konservativ mit Zuordnung zu Restauration, Vormärz, Vereinen und Urburschenschaft.<br/>Begriffs-Popups ergänzt: Restauration, Biedermeier, Vormärz, liberal, konservativ, Zensur, Burschenschaft, Urburschenschaft, Wartburgfest, Hambacher Fest und weitere Fachbegriffe.</footer>
+<script>
+/* ---------- Vorlesefunktion ---------- */
+function stoppeVorlesen(){
+  if('speechSynthesis' in window){ window.speechSynthesis.cancel(); }
+}
+document.querySelectorAll('.btn-vorlesen').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    if(!('speechSynthesis' in window)){ alert('Die Vorlesefunktion wird von diesem Browser nicht unterstützt.'); return; }
+    window.speechSynthesis.cancel();
+    var quelle=document.getElementById(btn.getAttribute('data-vorlesen'));
+    if(!quelle) return;
+    var text=quelle.innerText.replace(/\s+/g,' ').trim();
+    var u=new SpeechSynthesisUtterance(text);
+    u.lang='de-DE'; u.rate=0.95;
+    window.speechSynthesis.speak(u);
+  });
+});
+
+/* ---------- Modal ---------- */
+function oeffneModal(){ document.getElementById('modal').classList.add('show'); }
+function schliesseModal(){ document.getElementById('modal').classList.remove('show'); }
+document.getElementById('modal').addEventListener('click',function(e){
+  if(e.target===this) schliesseModal();
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape') schliesseModal();
+});
+
+
+
+/* ---------- Begriffs-Popups ---------- */
+var begriffInfos={
+  restauration:{titel:'Restauration',text:'Restauration bedeutet Wiederherstellung. Nach 1815 wollten viele Fürsten die alte Ordnung sichern: Fürstenmacht, Ruhe, Gehorsam und keine Revolution.',beispiel:'Beispiel im Modul: Metternich und die Karlsbader Beschlüsse stehen für diese Politik.'},
+  biedermeier:{titel:'Biedermeier',text:'Biedermeier bezeichnet eine Lebenshaltung und Epoche, in der sich viele Bürger ins Private zurückzogen: Familie, gute Stube, Häuslichkeit, Ordnung und Gemütlichkeit.',beispiel:'Merke: Biedermeier ist nicht einfach „unpolitisch aus Freude“, sondern oft auch eine Reaktion auf Kontrolle und Angst.'},
+  vormaerz:{titel:'Vormärz',text:'Vormärz nennt man die Zeit vor der Märzrevolution von 1848. Gemeint ist besonders die politische Opposition, die Freiheit, Verfassung, Pressefreiheit und nationale Einheit forderte.',beispiel:'Beispiel: Büchners „Hessischer Landbote“, das Hambacher Fest und viele Burschenschaften.'},
+  liberal:{titel:'liberal',text:'Liberal bedeutete im 19. Jahrhundert: Bürgerrechte, Verfassung, Pressefreiheit, politische Mitsprache und Schutz vor willkürlicher Herrschaft.',beispiel:'Nicht mit heutiger Parteipolitik verwechseln: Im Unterricht meint es vor allem Freiheitsrechte und Mitbestimmung.'},
+  konservativ:{titel:'konservativ',text:'Konservativ bedeutete in dieser Epoche: die bestehende Ordnung bewahren, Fürstenmacht sichern, Revolution verhindern und Veränderungen nur vorsichtig zulassen.',beispiel:'Beispiel: Restauration, Metternich-System, Zensur und Karlsbader Beschlüsse.'},
+  zensur:{titel:'Zensur',text:'Zensur bedeutet, dass der Staat Texte, Zeitungen, Bücher oder Theaterstücke kontrolliert und verbietet, bevor oder nachdem sie veröffentlicht werden.',beispiel:'Im Vormärz war Zensur ein wichtiges Mittel, um Kritik an Fürstenherrschaft und sozialer Ungleichheit zu unterdrücken.'},
+  pressefreiheit:{titel:'Pressefreiheit',text:'Pressefreiheit ist das Recht, Nachrichten und Meinungen ohne staatliche Vorzensur zu veröffentlichen.',beispiel:'Liberale forderten Pressefreiheit, weil ohne freie Presse keine offene politische Diskussion möglich ist.'},
+  verfassung:{titel:'Verfassung',text:'Eine Verfassung legt die Grundordnung eines Staates fest. Sie regelt Macht, Rechte, Pflichten und politische Mitwirkung.',beispiel:'Liberale wollten eine Verfassung, damit Fürsten nicht allein und willkürlich entscheiden konnten.'},
+  'nationale-einheit':{titel:'nationale Einheit',text:'Nationale Einheit meinte im 19. Jahrhundert den Wunsch nach einem gemeinsamen deutschen Nationalstaat statt vieler einzelner Fürstentümer.',beispiel:'Schwarz-Rot-Gold, Wartburgfest und Hambacher Fest stehen für diesen Gedanken.'},
+  'deutscher-bund':{titel:'Deutscher Bund',text:'Der Deutsche Bund war ein Zusammenschluss deutscher Staaten nach dem Wiener Kongress 1815. Er war kein einheitlicher Nationalstaat.',beispiel:'Für viele Liberale war der Deutsche Bund zu locker, zu fürstlich und zu wenig demokratisch.'},
+  karlsbader:{titel:'Karlsbader Beschlüsse',text:'Die Karlsbader Beschlüsse von 1819 waren Maßnahmen gegen oppositionelle Bewegungen: Zensur, Überwachung der Universitäten, Verbot von Burschenschaften und Verfolgung politischer Gegner.',beispiel:'Sie zeigen besonders deutlich, wie konservative Politik auf liberale Forderungen reagierte.'},
+  demagogenverfolgung:{titel:'Demagogenverfolgung',text:'So nannte die Obrigkeit die Verfolgung politischer Gegner, die als „Aufwiegler“ oder „Demagogen“ beschimpft wurden.',beispiel:'Betroffen waren zum Beispiel Studenten, Professoren, Journalisten und Schriftsteller.'},
+  spitzelwesen:{titel:'Spitzelwesen',text:'Spitzelwesen bedeutet, dass der Staat durch Informanten Gespräche, Gruppen, Versammlungen oder Briefe überwachen lässt.',beispiel:'Dadurch entsteht Misstrauen: Man weiß nie genau, wer mithört. Sehr gemütlich ist das nicht – eher bieder-unheimlich.'},
+  metternich:{titel:'Fürst Metternich',text:'Klemens von Metternich war österreichischer Staatskanzler und eine zentrale Figur der Restaurationspolitik. Er wollte Revolutionen verhindern und die alte Ordnung sichern.',beispiel:'Im Modul steht er für Kontrolle, Zensur und die Karlsbader Beschlüsse.'},
+  buergertum:{titel:'Bürgertum',text:'Das Bürgertum umfasste städtische, gebildete und besitzende Gruppen wie Beamte, Kaufleute, Professoren, Ärzte, Juristen und Handwerker.',beispiel:'Teile des Bürgertums zogen sich ins Biedermeier zurück; andere unterstützten liberale Forderungen des Vormärz.'},
+  burschenschaft:{titel:'Burschenschaft',text:'Burschenschaften waren studentische Zusammenschlüsse. Viele verbanden Bildung, Gemeinschaft, nationale Einheit und Freiheitsforderungen.',beispiel:'Darum wurden sie nach 1819 von der Obrigkeit misstrauisch beobachtet und verboten.'},
+  urburschenschaft:{titel:'Urburschenschaft Jena',text:'Die Urburschenschaft entstand 1815 in Jena. Sie wollte Studenten aus verschiedenen deutschen Ländern in einer gemeinsamen Burschenschaft sammeln.',beispiel:'Sie passt gut zu den Forderungen nach Einheit, Freiheit und Verfassung.'},
+  wartburgfest:{titel:'Wartburgfest',text:'Das Wartburgfest fand 1817 bei Eisenach statt. Studenten und Professoren forderten nationale Einheit, Freiheit und Verfassung.',beispiel:'Für die Obrigkeit war das ein Warnsignal: Studenten organisierten sich politisch.'},
+  'hambacher-fest':{titel:'Hambacher Fest',text:'Das Hambacher Fest von 1832 war eine große politische Versammlung. Gefordert wurden Freiheit, Bürgerrechte, Pressefreiheit und nationale Einheit.',beispiel:'Schwarz-Rot-Gold wurde dort als Symbol der liberal-nationalen Bewegung sichtbar.'},
+  flugschrift:{titel:'Flugschrift',text:'Eine Flugschrift ist ein kurzer politischer Text, der schnell verbreitet werden soll. Im Vormärz wurden solche Schriften oft heimlich gedruckt.',beispiel:'Büchners „Hessischer Landbote“ ist ein besonders berühmtes Beispiel.'},
+  grundrechte:{titel:'Grundrechte',text:'Grundrechte schützen einzelne Menschen gegenüber dem Staat, zum Beispiel Meinungsfreiheit, Pressefreiheit, Versammlungsfreiheit und Schutz vor Willkür.',beispiel:'Liberale wollten solche Rechte schriftlich in einer Verfassung sichern.'}
+};
+function oeffneBegriffModal(key){
+  var info=begriffInfos[key];
+  if(!info) return;
+  document.getElementById('begriff-modal-titel').textContent=info.titel;
+  document.getElementById('begriff-modal-text').textContent=info.text;
+  var beispiel=document.getElementById('begriff-modal-beispiel');
+  beispiel.innerHTML=info.beispiel ? '<strong>Beispiel:</strong> '+info.beispiel : '';
+  beispiel.style.display=info.beispiel ? 'block' : 'none';
+  document.getElementById('begriff-modal').classList.add('show');
+}
+function schliesseBegriffModal(){ document.getElementById('begriff-modal').classList.remove('show'); }
+document.querySelectorAll('.begriff-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){ oeffneBegriffModal(btn.getAttribute('data-begriff')); });
+});
+document.getElementById('begriff-modal').addEventListener('click',function(e){
+  if(e.target===this) schliesseBegriffModal();
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape') schliesseBegriffModal();
+});
+
+/* ---------- Lebenswelt-Kategorien ---------- */
+var kategorieInfos={
+  mode:{
+    titel:'Mode im Biedermeier',
+    text:'Die Mode zeigte bürgerliche Ordnung und gepflegte Zurückhaltung. Frauen trugen häufig weite Röcke, betonte Taillen, Tücher, Hauben oder Hüte. Männer erschienen oft mit Frack, Weste, Hemd, Halstuch und Zylinder. Kleidung sollte Anstand, Wohlstand und gutes Benehmen zeigen.'
+  },
+  familie:{
+    titel:'Familienstruktur im Biedermeier',
+    text:'Die Familie wurde als sicherer Mittelpunkt des Lebens verstanden. Der Vater galt meist als Haushaltsvorstand, die Mutter als Hüterin von Haushalt und Kindern. Das Familienleben wurde idealisiert: Harmonie, Gehorsam, Fleiß und Ordnung standen im Vordergrund.'
+  },
+  wohnen:{
+    titel:'Wohnen und gute Stube',
+    text:'Das Zuhause wurde besonders wichtig. Die gute Stube war der repräsentative Raum der Familie. Möbel, Bilder, Klavier, Porzellan und Blumen zeigten Geschmack und bürgerliche Gemütlichkeit. Man richtete sich eine kleine, überschaubare Welt ein.'
+  },
+  werte:{
+    titel:'Werte des Biedermeier',
+    text:'Wichtige Werte waren Fleiß, Bescheidenheit, Ordnung, Sparsamkeit, Pflichtgefühl und Anstand. Diese Werte passten gut zum bürgerlichen Lebensideal: nicht auffallen, seine Arbeit tun und ein geordnetes Familienleben führen.'
+  },
+  freizeit:{
+    titel:'Freizeit im Biedermeier',
+    text:'Die Freizeit spielte sich oft im privaten Bereich ab. Man musizierte, las, zeichnete, machte Handarbeiten oder empfing Besuch. Spaziergänge und Gartenaufenthalte waren ebenfalls beliebt. Unterhaltung sollte ruhig, gepflegt und moralisch unbedenklich sein.'
+  },
+  kunst:{
+    titel:'Kunst im Biedermeier',
+    text:'Die Kunst zeigte häufig friedliche Alltagsszenen: Familien, Innenräume, Kinder, Bürgerhäuser, Spaziergänge und Landschaften. Politische Konflikte wurden selten direkt dargestellt. Die Bilder wirken oft ruhig, genau beobachtet und manchmal fast zu ordentlich.'
+  },
+  vereine:{
+    titel:'Vereine im Biedermeier und Vormärz',
+    text:'Vereine waren eine wichtige Zwischenform zwischen privater Geselligkeit und politischem Aufbruch. Gesangsvereine, Lesegesellschaften, Turnvereine und Burschenschaften wirkten nach außen oft kulturell oder sportlich. Die Turnbewegung um Friedrich Ludwig Jahn zeigt: Sport konnte Gemeinschaft stiften und zugleich nationale Ideen fördern. Deshalb beobachtete der Staat solche Zusammenschlüsse aufmerksam.'
+  },
+  burschenschaften:{
+    titel:'Burschenschaften und Urburschenschaft',
+    text:'Burschenschaften waren studentische Zusammenschlüsse. Die 1815 in Jena entstandene Urburschenschaft wollte die alten regionalen Studentengruppen überwinden und Studenten aus verschiedenen deutschen Ländern in einer allgemeinen Burschenschaft sammeln. Diese Idee war mehr als Vereinsleben: Sie stand für Einheit, Freiheit, Verfassung und ein nationales Zusammengehörigkeitsgefühl. Deshalb wurden Burschenschaften nach 1819 verfolgt und verboten.'
+  },
+  politik:{
+    titel:'Politik und Rückzug',
+    text:'Nach dem Wiener Kongress 1815 wurden viele Freiheitsbewegungen unterdrückt. Zensur und Überwachung machten offene Kritik gefährlich. Deshalb zogen sich viele Bürger in das Privatleben zurück. Genau darin liegt der Gegensatz zum politischeren Vormärz.'
+  },
+  frauenbild:{
+    titel:'Frauenbild im Biedermeier',
+    text:'Das Idealbild der Frau war stark häuslich geprägt. Frauen wurden im bürgerlichen Ideal vor allem mit Haushalt, Ehe, Mutterschaft, Kindererziehung, Klavierspiel und Handarbeit verbunden. Das beschreibt ein Idealbild, nicht jede einzelne Lebenswirklichkeit.'
+  },
+  erziehung:{
+    titel:'Erziehung im Biedermeier',
+    text:'Kinder sollten höflich, sauber, fleißig und gehorsam sein. Ziel war nicht zuerst freie Entfaltung, sondern Anpassung an die bürgerliche Ordnung. Der Satz „Sei brav!“ passt ziemlich gut in diese Zeit.'
+  },
+  natur:{
+    titel:'Naturbild im Biedermeier',
+    text:'Die Natur erschien als Ort der Ruhe und inneren Sammlung. Spaziergänge, Gärten und Landschaften boten einen Ausgleich zur politischen Enge. Die Natur wurde meist friedlich, geordnet und idyllisch dargestellt.'
+  }
+};
+document.querySelectorAll('.btn-kategorie').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var info=kategorieInfos[btn.getAttribute('data-kategorie')];
+    var titel=document.getElementById('kategorieTitel');
+    var text=document.getElementById('kategorieText');
+    if(!info || !titel || !text) return;
+    document.querySelectorAll('.lebenskarte').forEach(function(card){ card.classList.remove('aktiv'); });
+    var card=btn.closest('.lebenskarte');
+    if(card) card.classList.add('aktiv');
+    document.querySelectorAll('.btn-kategorie').forEach(function(b){ b.setAttribute('aria-expanded','false'); });
+    btn.setAttribute('aria-expanded','true');
+    titel.textContent=info.titel;
+    text.textContent=info.text;
+  });
+});
+
+/* ---------- Quiz ---------- */
+var fragen=[
+  {
+    q:'1. Welches Ereignis nahm Metternich 1819 zum Anlass für die Karlsbader Beschlüsse?',
+    optionen:[
+      {t:'Die Ermordung des Schriftstellers August von Kotzebue durch einen Burschenschafter',ok:true},
+      {t:'Die Niederlage Napoleons bei Waterloo',ok:false},
+      {t:'Den Ausbruch der Märzrevolution',ok:false},
+      {t:'Die Gründung des Deutschen Reiches',ok:false}
+    ],
+    gut:'Richtig. Das Attentat Karl Ludwig Sands auf Kotzebue lieferte den Vorwand, hart gegen die Opposition vorzugehen.',
+    pruef:'Prüfe noch einmal: Anlass war ein politisches Attentat von 1819, nicht ein Ereignis der napoleonischen Kriege oder von 1848/1871.'
+  },
+  {
+    q:'2. Was kennzeichnet die Biedermeier-Haltung am treffendsten?',
+    optionen:[
+      {t:'Der bewusste Rückzug ins Private und das Meiden politischer Konflikte',ok:true},
+      {t:'Der offene bewaffnete Aufstand gegen die Fürsten',ok:false},
+      {t:'Die Forderung nach sofortiger Pressefreiheit auf den Straßen',ok:false},
+      {t:'Die Verbreitung verbotener Flugschriften',ok:false}
+    ],
+    gut:'Richtig. Das Biedermeier sucht Geborgenheit im Haus und Familienkreis und hält sich aus der Politik heraus.',
+    pruef:'Prüfe noch einmal: Aufstand, Flugschriften und der öffentliche Kampf um Pressefreiheit gehören zum Vormärz, nicht zum Biedermeier.'
+  },
+  {
+    q:'3. Warum war eine Schrift wie Büchners „Hessischer Landbote“ so gefährlich für ihre Verfasser?',
+    optionen:[
+      {t:'Sie verstieß gegen die Zensur und rief offen zum Widerstand gegen die Herrschaft auf',ok:true},
+      {t:'Sie war zu lang und überschritt die erlaubte Seitenzahl',ok:false},
+      {t:'Sie war in einer fremden Sprache verfasst',ok:false},
+      {t:'Sie kritisierte ausschließlich das Wetter und die Ernte',ok:false}
+    ],
+    gut:'Richtig. Solche Schriften umgingen die Zensur und griffen die Fürstenherrschaft direkt an – darauf standen Haft und Verfolgung.',
+    pruef:'Prüfe noch einmal: Das Brisante war nicht die Länge oder Sprache, sondern der verbotene politische Inhalt.'
+  },
+  {
+    q:'4. Welche Aussage über das Verhältnis von Biedermeier und Vormärz trifft zu?',
+    optionen:[
+      {t:'Beide sind Reaktionen auf dieselbe Zeit der Restauration – einmal Rückzug, einmal Widerstand',ok:true},
+      {t:'Sie folgten zeitlich klar nacheinander und hatten nichts miteinander zu tun',ok:false},
+      {t:'Beide forderten die Rückkehr zur absoluten Fürstenherrschaft',ok:false},
+      {t:'Das Biedermeier war eine politische Partei, der Vormärz eine Kunstrichtung',ok:false}
+    ],
+    gut:'Richtig. Es sind zwei gegensätzliche Antworten auf denselben politischen Druck, die parallel nebeneinander bestanden.',
+    pruef:'Prüfe noch einmal: Beide Strömungen bestanden zur selben Zeit nebeneinander und reagierten auf die Restauration.'
+  }
+  ,
+  {
+    q:'5. Warum waren Vereine im Vormärz besonders wichtig?',
+    optionen:[
+      {t:'Sie boten scheinbar harmlose Räume für Austausch, Bildung, Gemeinschaft und politische Ideen',ok:true},
+      {t:'Sie ersetzten vollständig die Fürstenherrschaft',ok:false},
+      {t:'Sie waren ausschließlich private Kaffeekränzchen ohne gesellschaftliche Bedeutung',ok:false},
+      {t:'Sie wurden von Metternich ausdrücklich als politische Parteien gefördert',ok:false}
+    ],
+    gut:'Richtig. Viele Vereine wirkten kulturell oder sportlich, konnten aber politische Wünsche nach Freiheit, Einheit und Mitsprache vorbereiten.',
+    pruef:'Prüfe noch einmal: Gerade weil offene politische Organisationen schwierig waren, wurden Vereine zu wichtigen Ersatzräumen.'
+  }
+
+  ,
+  {
+    q:'6. Welche Zuordnung passt am besten für die Zeit 1815–1848?',
+    optionen:[
+      {t:'Liberal: Verfassung und Pressefreiheit – konservativ: Bewahrung der Fürstenordnung und Zensur',ok:true},
+      {t:'Liberal: absolute Fürstenmacht – konservativ: Revolution und Pressefreiheit',ok:false},
+      {t:'Liberal und konservativ bedeuten in dieser Zeit genau dasselbe',ok:false},
+      {t:'Konservative Gruppen forderten vor allem das Hambacher Fest und die Urburschenschaft',ok:false}
+    ],
+    gut:'Richtig. Liberale verlangten Rechte und Mitsprache; konservative Kräfte wollten die bestehende Ordnung sichern und Revolution verhindern.',
+    pruef:'Prüfe noch einmal: Liberal steht hier für Rechte, Verfassung und Freiheit; konservativ für Bewahrung der alten Ordnung.'
+  }
+
+];
+
+var feld=document.getElementById('quiz-feld');
+fragen.forEach(function(f,i){
+  var div=document.createElement('div'); div.className='frage';
+  var p=document.createElement('p'); p.className='q'; p.textContent=f.q; div.appendChild(p);
+  var opts=document.createElement('div'); opts.className='optionen';
+  var fb=document.createElement('div'); fb.className='feedback';
+  f.optionen.forEach(function(o){
+    var b=document.createElement('button'); b.className='opt'; b.textContent=o.t;
+    b.addEventListener('click',function(){
+      Array.prototype.forEach.call(opts.children,function(c){ c.disabled=true; });
+      if(o.ok){ b.classList.add('richtig'); fb.textContent=f.gut; fb.className='feedback show gut'; }
+      else{
+        b.classList.add('falsch'); fb.textContent=f.pruef; fb.className='feedback show pruef';
+        Array.prototype.forEach.call(opts.children,function(c,idx){
+          if(f.optionen[idx].ok) c.classList.add('richtig');
+        });
+      }
+    });
+    opts.appendChild(b);
+  });
+  div.appendChild(opts); div.appendChild(fb); feld.appendChild(div);
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('img.img-fallback').forEach(function(img){
+    img.dataset.fallbackIndex = "0";
+    img.addEventListener('error', function(){
+      var list = (img.dataset.fallbacks || '').split('|').filter(Boolean);
+      var idx = parseInt(img.dataset.fallbackIndex || '0', 10);
+      if(idx < list.length){
+        img.dataset.fallbackIndex = String(idx + 1);
+        img.src = list[idx];
+      }
+    }, {once:false});
+  });
+});
+</script></body>
+</html>
