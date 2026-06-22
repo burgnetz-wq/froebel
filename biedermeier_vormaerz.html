@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Zwischen Rückzug und Revolution – Biedermeier und Vormärz</title>
+<style>
+:root{
+  --papier:#f3ecdd;
+  --papier-2:#eee3cd;
+  --karte:#fbf7ed;
+  --tinte:#2a2420;
+  --tinte-weich:#5a4f44;
+  --altgold:#9a7b32;
+  --altgold-hell:#c2a24e;
+  --dunkelrot:#7a2218;
+  --dunkelrot-hell:#9b3225;
+  --linie:#d8ccae;
+  --gruen:#3f6b3a;
+  --gruen-bg:#e3ecdd;
+  --rot-bg:#f1ddd8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  background:var(--papier);
+  color:var(--tinte);
+  line-height:1.65;
+  font-size:18px;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px 80px}
+
+/* Kopf */
+header.haupt{
+  background:linear-gradient(160deg,#322a20,#574631);
+  color:#f4ecd9;
+  padding:54px 24px 46px;
+  text-align:center;
+  border-bottom:6px solid var(--altgold);
+}
+header.haupt .epoche{
+  letter-spacing:.32em;text-transform:uppercase;font-size:.78em;
+  color:var(--altgold-hell);margin-bottom:14px;
+}
+header.haupt h1{
+  font-size:2.35em;margin:0 0 6px;line-height:1.2;font-weight:normal;
+}
+header.haupt .jahre{font-size:1.05em;color:#d9cbab;font-style:italic}
+
+/* Navigation */
+nav.modul{
+  position:sticky;top:0;z-index:50;
+  background:var(--papier-2);
+  border-bottom:1px solid var(--linie);
+  display:flex;flex-wrap:wrap;justify-content:center;gap:4px;
+  padding:8px;
+}
+nav.modul a{
+  color:var(--tinte-weich);text-decoration:none;font-size:.8em;
+  padding:7px 12px;border-radius:4px;letter-spacing:.03em;
+}
+nav.modul a:hover{background:var(--altgold);color:#fff}
+
+section{
+  background:var(--karte);
+  margin:34px 0;padding:30px 32px;
+  border:1px solid var(--linie);
+  border-radius:6px;
+  box-shadow:0 2px 10px rgba(60,45,25,.06);
+}
+h2{
+  font-size:1.6em;font-weight:normal;color:var(--dunkelrot);
+  border-bottom:2px solid var(--altgold);
+  padding-bottom:8px;margin-top:0;
+}
+h3{color:var(--tinte);font-weight:normal;font-size:1.22em}
+.kicker{
+  display:inline-block;font-size:.72em;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--altgold);margin-bottom:6px;
+}
+p{margin:.6em 0}
+.lead{font-size:1.08em;color:var(--tinte-weich)}
+mark.b{background:var(--altgold-hell);padding:0 3px;border-radius:2px}
+
+/* Vorlesen */
+.vorlese-leiste{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+button{
+  font-family:inherit;cursor:pointer;border:none;border-radius:5px;
+  font-size:.92em;padding:10px 16px;line-height:1.2;
+}
+.btn-vorlesen{background:var(--altgold);color:#fff}
+.btn-vorlesen:hover{background:var(--altgold-hell)}
+.btn-stop{background:#6b6258;color:#fff}
+.btn-stop:hover{background:#857a6d}
+button:focus-visible,a:focus-visible{outline:3px solid var(--dunkelrot);outline-offset:2px}
+
+/* Beschlüsse */
+.beschluss-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:18px}
+.beschluss{
+  background:var(--papier-2);border-left:4px solid var(--dunkelrot);
+  padding:14px 16px;border-radius:0 5px 5px 0;
+}
+.beschluss h4{margin:0 0 6px;color:var(--dunkelrot);font-size:1.05em}
+.beschluss p{margin:0;font-size:.94em}
+
+/* Spaltung */
+.spaltung{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:20px}
+.saeule{border-radius:6px;padding:20px 22px;border:1px solid var(--linie)}
+.saeule.bieder{background:#f1ead7;border-top:5px solid var(--altgold)}
+.saeule.vor{background:#f0e0db;border-top:5px solid var(--dunkelrot)}
+.saeule h3{margin-top:0}
+.saeule .signum{font-size:.74em;letter-spacing:.18em;text-transform:uppercase;color:var(--tinte-weich)}
+.saeule ul{padding-left:1.15em;margin:.5em 0}
+.saeule li{margin:.35em 0;font-size:.96em}
+.kontrast-pfeil{text-align:center;color:var(--altgold);font-size:1.4em;margin:8px 0}
+
+
+
+/* Eingefügte Bildwelt */
+.bildreihe{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:18px;
+  margin-top:22px;
+}
+.bildkarte{
+  margin:0;
+  background:var(--papier-2);
+  border:1px solid var(--linie);
+  border-radius:6px;
+  overflow:hidden;
+  box-shadow:0 2px 10px rgba(60,45,25,.08);
+}
+.bildkarte img{
+  display:block;
+  width:100%;
+  height:auto;
+  background:#efe4cc;
+}
+.bildkarte figcaption{
+  padding:12px 14px 14px;
+  font-size:.86em;
+  color:var(--tinte-weich);
+  line-height:1.45;
+}
+.bildkarte figcaption strong{
+  display:block;
+  color:var(--dunkelrot);
+  font-size:1.02em;
+  margin-bottom:4px;
+}
+.bild-hinweis{
+  background:#f6eedc;
+  border-left:4px solid var(--altgold);
+  padding:12px 14px;
+  border-radius:0 5px 5px 0;
+  margin:16px 0 0;
+  color:var(--tinte-weich);
+  font-size:.94em;
+}
+
+
+.quellenreihe{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+  gap:18px;
+  margin:20px 0 4px;
+}
+.quellenbild{
+  background:#f6eedc;
+  border-top:4px solid var(--dunkelrot);
+}
+.quellenbild img{
+  max-height:390px;
+  object-fit:contain;
+  background:#fffdf6;
+}
+.quellenbild.breit img{
+  max-height:340px;
+}
+.quellenbild.atmosphaere{
+  border-top-color:var(--altgold);
+}
+.quellenbild .quelle{
+  display:block;
+  font-size:.86em;
+  color:var(--tinte-weich);
+  margin-top:4px;
+}
+
+/* Bildanalyse */
+.bild-block{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;margin-top:18px}
+.bild-block figure{margin:0}
+.bild-block img{
+  width:100%;height:auto;border:8px solid #fff;
+  box-shadow:0 4px 16px rgba(50,40,25,.25);border-radius:2px;
+}
+.bild-block figcaption{font-size:.84em;color:var(--tinte-weich);margin-top:8px;font-style:italic}
+.methode-box{background:var(--papier-2);padding:18px;border-radius:6px;border:1px solid var(--linie)}
+.btn-methode{background:var(--dunkelrot);color:#fff;margin-top:10px}
+.btn-methode:hover{background:var(--dunkelrot-hell)}
+
+/* Texte */
+.text-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:18px}
+blockquote{
+  margin:0;padding:16px 20px;border-radius:6px;font-style:italic;
+  background:var(--papier-2);border-left:4px solid var(--altgold);
+}
+blockquote.kampf{border-left-color:var(--dunkelrot);background:#f0e0db}
+blockquote cite{display:block;margin-top:10px;font-style:normal;font-size:.84em;color:var(--tinte-weich)}
+
+/* Quiz */
+.frage{border-bottom:1px dashed var(--linie);padding:18px 0}
+.frage:last-child{border-bottom:none}
+.frage p.q{font-weight:bold;margin-bottom:10px}
+.optionen{display:flex;flex-direction:column;gap:8px}
+.opt{
+  text-align:left;background:var(--papier-2);color:var(--tinte);
+  border:1px solid var(--linie);width:100%;
+}
+.opt:hover{background:#e7dcc2}
+.opt.richtig{background:var(--gruen-bg);border-color:var(--gruen);color:var(--gruen)}
+.opt.falsch{background:var(--rot-bg);border-color:var(--dunkelrot);color:var(--dunkelrot)}
+.opt:disabled{cursor:default}
+.feedback{margin-top:10px;font-size:.92em;display:none;padding:10px 12px;border-radius:5px}
+.feedback.show{display:block}
+.feedback.gut{background:var(--gruen-bg);color:var(--gruen)}
+.feedback.pruef{background:var(--rot-bg);color:var(--dunkelrot)}
+
+/* Aufgaben */
+.afb{margin:16px 0;padding:16px 18px;border-radius:6px;background:var(--papier-2);border-left:4px solid var(--altgold)}
+.afb .stufe{display:inline-block;font-size:.72em;letter-spacing:.14em;text-transform:uppercase;
+  background:var(--altgold);color:#fff;padding:2px 9px;border-radius:10px;margin-bottom:8px}
+.afb.afb2 .stufe{background:#8a6f2c}
+.afb.afb3{border-left-color:var(--dunkelrot)}
+.afb.afb3 .stufe{background:var(--dunkelrot)}
+.afb ol{margin:.4em 0 0;padding-left:1.3em}
+.afb li{margin:.45em 0}
+
+/* Modal */
+.modal-bg{
+  display:none;position:fixed;inset:0;z-index:100;
+  background:rgba(35,28,18,.66);
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-bg.show{display:flex}
+.modal{
+  background:var(--karte);max-width:600px;width:100%;border-radius:8px;
+  padding:28px 30px;border-top:6px solid var(--dunkelrot);
+  max-height:86vh;overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.4);
+}
+.modal h3{margin-top:0;color:var(--dunkelrot)}
+.modal ol{padding-left:1.2em}
+.modal ol li{margin:.6em 0}
+.modal .schritt{font-weight:bold;color:var(--altgold)}
+.modal .schliessen{background:var(--tinte);color:#fff;margin-top:14px}
+
+footer{text-align:center;color:var(--tinte-weich);font-size:.82em;padding:20px;font-style:italic}
+
+@media (max-width:760px){
+  .spaltung,.bild-block,.text-grid{grid-template-columns:1fr}
+  header.haupt h1{font-size:1.8em}
+  body{font-size:17px}
+}
+
+/* Druckansicht */
+@media print{
+  body{background:#fff;color:#000;font-size:12pt}
+  nav.modul,.vorlese-leiste,.btn-methode,.modal-bg,footer button{display:none !important}
+  header.haupt{background:none;color:#000;border-bottom:2px solid #000;padding:0 0 12px}
+  header.haupt .epoche,header.haupt .jahre{color:#000}
+  section{box-shadow:none;border:1px solid #999;page-break-inside:avoid;margin:14px 0;padding:14px}
+  .opt{border:1px solid #000;background:#fff;color:#000}
+  .bild-block img{box-shadow:none;border:1px solid #000}
+  h2{color:#000;border-bottom:1px solid #000}
+  a[href^="#"]{color:#000;text-decoration:none}
+  .feedback{display:none !important}
+}
+</style>
+</head>
+<body>
+<header class="haupt">
+<div class="epoche">Restauration · Bürgertum · Aufbegehren</div>
+<h1>Zwischen Rückzug und Revolution</h1>
+<div class="jahre">Biedermeier und Vormärz im Spannungsfeld · 1815 – 1848</div>
+</header>
+<nav aria-label="Modulnavigation" class="modul">
+<a href="#einstieg">Einstieg</a>
+<a href="#kontext">Karlsbader Beschlüsse</a>
+<a href="#spaltung">Zwei Welten</a><a href="#wartburgfest">Wartburgfest</a>
+<a href="#bilderwelt">Bilderwelt</a>
+<a href="#bild">Bildanalyse</a>
+<a href="#texte">Textzeugnisse</a>
+<a href="#quiz">Kompetenz-Check</a>
+<a href="#aufgaben">Arbeitsaufträge</a>
+</nav>
+<div class="wrap">
+<!-- 1. EINSTIEG -->
+<section id="einstieg">
+<span class="kicker">Problemstellung</span>
+<h2>Eine Epoche mit zwei Gesichtern</h2>
+<div id="text-einstieg">
+<p class="lead">Nach dem Wiener Kongress 1815 ordneten die Fürsten Europa neu. Die alte Ordnung sollte
+    wiederhergestellt werden – diese Politik nennt man <mark class="b">Restauration</mark>. Doch die Ideen
+    der Französischen Revolution – Freiheit, Gleichheit, ein einiges Vaterland – ließen sich nicht zurückdrängen.</p>
+<p>So zerfiel die Zeit von 1815 bis 1848 in zwei Lager. Auf der einen Seite zog sich ein verängstigtes,
+    politikmüdes Bürgertum ins Private zurück: in die gute Stube, den Familienkreis, den heimischen Garten.
+    Diese Haltung bekam später den Namen <mark class="b">Biedermeier</mark>. Auf der anderen Seite formierte sich
+    ein wachsender Widerstand, der heimlich und offen für Pressefreiheit, Verfassung und nationale Einheit
+    kämpfte – der <mark class="b">Vormärz</mark>, benannt nach der Zeit vor der Märzrevolution 1848.</p>
+<p>Die Leitfrage dieses Moduls lautet: War der Rückzug ins häusliche Glück eine verständliche Schutzreaktion
+    gegen Überwachung und Zensur – oder eine Flucht vor politischer Verantwortung?</p>
+</div>
+<figure class="bildkarte" style="max-width:760px;margin:20px auto 6px;">
+<img alt="Biedermeier-Stube mit warmem Licht, Möbeln, Bildern und häuslicher Atmosphäre." src="https://burgnetz-wq.github.io/froebel/bilder/01_stube.png"/>
+<figcaption><strong>01 Stube:</strong> Die gute Stube steht für den Rückzug ins Private: Schutzraum, Ordnung und Geborgenheit statt politischem Risiko.</figcaption>
+</figure>
+<div class="vorlese-leiste">
+<button class="btn-vorlesen" data-vorlesen="text-einstieg">▶ Einstieg vorlesen</button>
+<button class="btn-stop" onclick="stoppeVorlesen()">■ Stopp</button>
+</div>
+</section>
+<!-- 2. KONTEXT -->
+<section id="kontext">
+<span class="kicker">Der Druck von oben</span>
+<h2>Die Karlsbader Beschlüsse 1819</h2>
+<div id="text-kontext">
+<p>Nach der Ermordung des Schriftstellers August von Kotzebue durch den Burschenschafter Karl Ludwig Sand
+    nutzte der österreichische Staatskanzler <mark class="b">Fürst Metternich</mark> die Gelegenheit. 1819 setzte er
+    im Deutschen Bund die Karlsbader Beschlüsse durch – ein Maßnahmenpaket gegen jede oppositionelle Bewegung.</p>
+</div>
+<div class="vorlese-leiste">
+<button class="btn-vorlesen" data-vorlesen="text-kontext">▶ Abschnitt vorlesen</button>
+<button class="btn-stop" onclick="stoppeVorlesen()">■ Stopp</button>
+</div>
+<div class="quellenreihe">
+<figure class="bildkarte quellenbild breit">
+<img alt="Metaphorische Darstellung der Zensur: Ein großer Stempel mit dem Wort ZENSUR drückt auf Zeitungen und Flugschriften; im Hintergrund beobachtet ein Spitzel die Szene." src="https://burgnetz-wq.github.io/froebel/bilder/13_zensur.png"/>
+<figcaption><strong>Zensur als Druckmittel</strong>Metternichs System setzte auf Vorzensur, Überwachung und Einschüchterung. Das Bild macht sichtbar: Öffentliche Meinung sollte nicht frei entstehen, sondern kontrolliert werden.</figcaption>
+</figure>
+<figure class="bildkarte quellenbild breit">
+<img alt="Historische Karikatur Der Denker-Club von 1819: Gelehrte sitzen mit Maulkörben in einem Klubraum." src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Bildarchiv_Preu%C3%9Fischer_Kulturbesitz.jpg/250px-Bildarchiv_Preu%C3%9Fischer_Kulturbesitz.jpg"/>
+<figcaption><strong>Der Denker-Club, 1819</strong>Zeitgenössische Karikatur zur Unterdrückung der Meinungsfreiheit nach den Karlsbader Beschlüssen. Die Maulkörbe zeigen: Sprechen wird gefährlich, Denken bleibt gerade noch erlaubt.<span class="quelle">Quelle: Wikimedia/Wikipedia, gemeinfreie historische Karikatur.</span></figcaption>
+</figure>
+</div>
+<div class="beschluss-grid">
+<div class="beschluss">
+<h4>Zensur</h4>
+<p>Druckschriften unter 320 Seiten mussten vor dem Erscheinen geprüft werden. Kritische Inhalte
+      wurden gestrichen oder ganz verboten.</p>
+</div>
+<div class="beschluss">
+<h4>Demagogenverfolgung</h4>
+<p>Eine zentrale Kommission verfolgte „Aufwiegler“. Professoren wurden entlassen, Studenten
+      verhaftet, Burschenschaften verboten.</p>
+</div>
+<div class="beschluss">
+<h4>Universitätsaufsicht</h4>
+<p>Staatliche Bevollmächtigte überwachten die Hochschulen und das, was dort gelehrt wurde.</p>
+</div>
+<div class="beschluss">
+<h4>Spitzelwesen</h4>
+<p>Ein dichtes Netz von Informanten beobachtete Versammlungen, Briefe und Gespräche. Misstrauen
+      prägte das öffentliche Leben.</p>
+</div>
+</div>
+</section>
+<!-- 3. SPALTUNG -->
+<section id="spaltung">
+<span class="kicker">Zwei Antworten auf dieselbe Zeit</span>
+<h2>Die Spaltung der Gesellschaft</h2>
+<p class="lead">Dieselbe Unterdrückung führte zu zwei gegensätzlichen Lebenshaltungen. Vergleiche beide Spalten.</p>
+<figure class="quellenbild" id="wartburgfest">
+<img alt="Historische Darstellung des Wartburgfestes 1817: Studenten ziehen mit Fahne zur Wartburg bei Eisenach." src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8f/Wartburg_demonstration_1817.jpg/330px-Wartburg_demonstration_1817.jpg"/>
+<figcaption>Wartburgfest 1817: Studentenzug zur Wartburg. Historische Darstellung, Wikimedia Commons.</figcaption>
+<p class="hinweis"><strong>Einordnung:</strong> Das Wartburgfest von 1817 war ein frühes Signal der national-liberalen Bewegung. Studenten forderten Einheit, Freiheit und Verfassung. Die Obrigkeit sah darin eine Bedrohung; zusammen mit dem Kotzebue-Attentat von 1819 lieferte diese Bewegung den Hintergrund für die späteren Karlsbader Beschlüsse.</p>
+</figure>
+
+<div class="spaltung">
+<div class="saeule bieder">
+<span class="signum">Spalte A</span>
+<h3>Biedermeier – Rückzug ins Private</h3>
+<ul>
+<li><strong>Häusliche Idylle:</strong> Die Wohnung wird zum Schutzraum vor der bedrohlichen Außenwelt.</li>
+<li><strong>Familie und Gemüt:</strong> Geborgenheit, Beständigkeit und Pflichtgefühl stehen im Mittelpunkt.</li>
+<li><strong>Wohnkultur:</strong> Bequeme, schlichte Möbel, Biedermeier-Sofa, Zimmerpflanzen, Hausmusik.</li>
+<li><strong>Salonkultur:</strong> Man trifft sich im kleinen Kreis zu Musik, Lesungen und Gesprächen – fern der Politik.</li>
+<li><strong>Unpolitische Kunst:</strong> Stillleben, Naturbilder, gemütvolle Genreszenen statt politischer Botschaften.</li>
+</ul>
+</div>
+<div class="saeule vor">
+<span class="signum">Spalte B</span>
+<h3>Vormärz – Aufbegehren für die Freiheit</h3>
+<ul>
+<li><strong>Politisierung:</strong> Dichter und Bürger mischen sich bewusst in die Politik ein.</li>
+<li><strong>Flugschriften:</strong> Verbotene Schriften werden heimlich gedruckt und verbreitet.</li>
+<li><strong>Burschenschaften:</strong> Studenten fordern Einheit und Freiheit, etwa beim Hambacher Fest 1832.</li>
+<li><strong>Pressefreiheit:</strong> Der Kampf gegen die Zensur wird zum zentralen Anliegen.</li>
+<li><strong>Grundrechte:</strong> Verfassung, Volksvertretung und ein einiger Nationalstaat werden gefordert.</li>
+</ul>
+</div>
+</div>
+<div class="kontrast-pfeil">◆ derselbe Druck – zwei Wege ◆</div>
+<div class="quellenreihe">
+<figure class="bildkarte quellenbild breit">
+<img alt="Zeitgenössische Darstellung des Hambacher Festes 1832 mit Menschenmenge, Schlossberg und schwarz-rot-goldenen Fahnen." src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Hambacher_Fest_1832.jpg/250px-Hambacher_Fest_1832.jpg"/>
+<figcaption><strong>Hambacher Fest, 1832</strong>Der Vormärz wurde öffentlich sichtbar: Bürger forderten nationale Einheit, Freiheit und politische Mitsprache. Schwarz-Rot-Gold stand für die liberale Nationalbewegung.<span class="quelle">Quelle: Wikimedia/Wikipedia, zeitgenössische Darstellung.</span></figcaption>
+</figure>
+</div>
+</section>
+<!-- 3b. BILDERWELT -->
+<section id="bilderwelt">
+<span class="kicker">Anschauliche Bildquellen</span>
+<h2>Bilderwelt des Biedermeier</h2>
+<p class="lead">Die folgenden Bilder zeigen typische Motive der bürgerlichen Lebenswelt. </p>
+<div class="bild-hinweis"><strong>Arbeitsidee:</strong> Wähle ein Bild aus und erkläre in drei Sätzen, ob es eher Rückzug, Geborgenheit, Kontrolle oder stille Kritik ausdrückt.</div>
+<div class="bildreihe">
+<figure class="bildkarte">
+<img alt="02 Teestunde: fotorealistische Szene zur Lebenswelt des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/02_teestunde.png"/>
+<figcaption><strong>02 Teestunde</strong>Teetrinken, feine Umgangsformen und häusliche Geselligkeit zeigen die bürgerliche Alltagskultur des Biedermeier.</figcaption>
+</figure>
+<figure class="bildkarte">
+<img alt="03 Klavier: fotorealistische Szene zur Lebenswelt des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/03_klavier.png"/>
+<figcaption><strong>03 Klavier</strong>Hausmusik war ein zentrales Element der Salonkultur: Bildung, Gefühl und Gemeinschaft ohne offene Politik.</figcaption>
+</figure>
+<figure class="bildkarte">
+<img alt="04 Leser: fotorealistische Szene zur Lebenswelt des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/04_leser.png"/>
+<figcaption><strong>04 Leser</strong>Lesen verweist auf Bildung und Innerlichkeit, aber auch auf die Frage: Welche Texte durfte man überhaupt lesen?</figcaption>
+</figure>
+<figure class="bildkarte">
+<img alt="05 Handarbeit: fotorealistische Szene zur Lebenswelt des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/05_handarbeit.png"/>
+<figcaption><strong>05 Handarbeit</strong>Handarbeit steht für häusliche Ordnung, Fleiß und die stark geregelte Rollenwelt der Zeit.</figcaption>
+</figure>
+<figure class="bildkarte">
+<img alt="06 Straße: fotorealistische Szene zur Lebenswelt des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/06_strasse.png"/>
+<figcaption><strong>06 Straße</strong>Die Straßenszene bildet den Kontrast zum privaten Raum: Öffentlichkeit, Begegnung und mögliche politische Unruhe.</figcaption>
+</figure>
+<figure class="bildkarte">
+<img alt="07 Garten: fotorealistische Szene zur Lebenswelt des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/07_garten.png"/>
+<figcaption><strong>07 Garten</strong>Der Garten zeigt Natur als Rückzugsort. Die Idylle wirkt friedlich, kann aber auch Ausweichbewegung sein.</figcaption>
+</figure>
+<figure class="bildkarte">
+<img alt="08 Portrait: fotorealistische Szene zur Lebenswelt des Biedermeier." class="img-fallback" data-fallbacks="https://burgnetz-wq.github.io/froebel/bilder/08_portraet.png|https://burgnetz-wq.github.io/froebel/bilder/08portrait.png|https://burgnetz-wq.github.io/froebel/bilder/08portraet.png|https://burgnetz-wq.github.io/froebel/bilder/portrait.png" src="https://burgnetz-wq.github.io/froebel/bilder/08_portrait.png"/>
+<figcaption><strong>08 Portrait</strong>Das Porträt zeigt bürgerliches Selbstbild: Würde, Sittsamkeit und kontrollierte Außendarstellung.</figcaption>
+</figure>
+<figure class="bildkarte">
+<img alt="09 Kinderzimmer: fotorealistische Szene zur Lebenswelt des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/09_kinderzimmer.png"/>
+<figcaption><strong>09 Kinderzimmer</strong>Familie und Erziehung galten als Kern des bürgerlichen Lebens: Ordnung beginnt im Kleinen.</figcaption>
+</figure>
+<figure class="bildkarte">
+<img alt="10 Gesellschaft: fotorealistische Szene zur Lebenswelt des Biedermeier." src="https://burgnetz-wq.github.io/froebel/bilder/10_gesellschaft.png"/>
+<figcaption><strong>10 Gesellschaft</strong>Gesellschaft im kleinen Kreis: Austausch, Musik und Gespräch – meist vorsichtig innerhalb erlaubter Grenzen.</figcaption>
+</figure>
+</div>
+</section>
+<!-- 4. BILDANALYSE -->
+<section id="bild">
+<span class="kicker">Quellenarbeit Bild</span>
+<h2>Bildanalyse: Carl Spitzweg, „Der arme Poet“</h2>
+<div class="bild-block">
+<figure>
+<img alt="Carl Spitzweg: Der arme Poet, 1839. Der Dichter liegt in einer ärmlichen Dachkammer." src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Carl_Spitzweg_-_Der_arme_Poet_%28Neue_Pinakothek%29.jpg/330px-Carl_Spitzweg_-_Der_arme_Poet_%28Neue_Pinakothek%29.jpg"/>
+<figcaption>Carl Spitzweg, „Der arme Poet“ (1839). Eingebettete Datei nach gemeinfreier Wikimedia-Vorlage.</figcaption>
+</figure>
+<div class="methode-box">
+<h3>Was zeigt dieses Bild?</h3>
+<p>Spitzwegs berühmtes Gemälde gilt als Sinnbild des Biedermeier: der zurückgezogene Künstler in der engen
+      Dachkammer. Doch ist es nur gemütlich – oder auch eine stille Kritik?</p>
+<p>Untersuche das Bild selbst mit der geschichtsdidaktischen Dreischritt-Methode.</p>
+<button class="btn-methode" onclick="oeffneModal()">📖 Methode zur Bildinterpretation öffnen</button>
+</div>
+</div>
+</section>
+<!-- 5. TEXTE -->
+<section id="texte">
+<span class="kicker">Quellenarbeit Text</span>
+<h2>Zwei Stimmen einer Epoche</h2>
+<p class="lead">Vergleiche, wie verschieden Sprache und Haltung in derselben Zeit sein konnten.</p>
+<div id="text-quellen">
+<div class="text-grid">
+<div>
+<h3>Biedermeier: Geborgenheit in der Natur</h3>
+<blockquote>
+        „Wer hat dich, du schöner Wald, aufgebaut so hoch da droben? […]
+        O du Land voll dunkler Wälder […], wo ich bin und wo ich gehe, in dem stillen Frieden auch.“
+        <cite>Joseph von Eichendorff, „Der Jäger Abschied“ (1810) – ein typisch innerliches Naturgedicht</cite>
+</blockquote>
+<p style="font-size:.9em;color:var(--tinte-weich)">Hier wendet sich der Blick nach innen: Wald, Stille und Heimat
+      bieten Trost. Von Politik ist keine Rede.</p>
+<figure class="bildkarte quellenbild atmosphaere" style="margin-top:14px;">
+<img alt="Romantischer deutscher Wald mit hohen Bäumen, Sonnenstrahlen und stillem Weg, ohne Menschen." src="https://burgnetz-wq.github.io/froebel/bilder/12_wald.png"/>
+<figcaption><strong>Wald-Idylle</strong>Das Bild unterstützt Eichendorffs Naturton: Stille, Rückzug und innere Sammlung statt offener politischer Aktion.</figcaption>
+</figure>
+</div>
+<div>
+<h3>Vormärz: Aufruf zum Widerstand</h3>
+<blockquote class="kampf">
+        „Friede den Hütten! Krieg den Palästen!“
+        <cite>Georg Büchner, „Der Hessische Landbote“ (1834) – eine verbotene Flugschrift gegen die Fürstenherrschaft</cite>
+</blockquote>
+<p style="font-size:.9em;color:var(--tinte-weich)">Hier wird Sprache zur Waffe: Büchner vertritt den radikal-revolutionären Flügel des Vormärz, klagt soziale Ungleichheit an und ruft die Bauern zum Aufstand. Für solche Worte drohte das Gefängnis.</p>
+<div class="quellenreihe" style="grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-top:14px;">
+<figure class="bildkarte quellenbild">
+<img alt="Porträt Georg Büchners, Bleistiftzeichnung um 1835." class="img-fallback" data-fallbacks="https://burgnetz-wq.github.io/froebel/bilder/buechner.png|https://burgnetz-wq.github.io/froebel/bilder/georg_buechner.png" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Georg_B%C3%BCchner.png/500px-Georg_B%C3%BCchner.png"/>
+<figcaption><strong>Georg Büchner</strong>Schriftsteller, Mediziner und Revolutionär des Vormärz.<span class="quelle">Quelle: Wikimedia/Wikipedia.</span></figcaption>
+</figure>
+<figure class="bildkarte quellenbild">
+<img alt="Erste Seite der Flugschrift Der Hessische Landbote von 1834 mit dem Aufruf Friede den Hütten! Krieg den Palästen!" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Landbote.jpg/500px-Landbote.jpg"/>
+<figcaption><strong>Der Hessische Landbote</strong>Illegale Flugschrift von 1834: soziale Anklage und politischer Aufruf.<span class="quelle">Quelle: Wikimedia/Wikipedia.</span></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="vorlese-leiste">
+<button class="btn-vorlesen" data-vorlesen="text-quellen">▶ Beide Quellen vorlesen</button>
+<button class="btn-stop" onclick="stoppeVorlesen()">■ Stopp</button>
+</div>
+</section>
+<!-- 6. QUIZ -->
+<section id="quiz">
+<span class="kicker">Sichere dein Wissen</span>
+<h2>Kompetenz-Check</h2>
+<p class="lead">Wähle jeweils die zutreffende Antwort. Du erhältst sofort eine Begründung.</p>
+<div id="quiz-feld"></div>
+</section>
+<!-- 7. AUFGABEN -->
+<section id="aufgaben">
+<span class="kicker">Vertiefung · gestaffelt nach Anforderungsbereichen</span>
+<h2>Komplexe Arbeitsaufträge</h2>
+<div class="afb afb1">
+<span class="stufe">AFB I · Rekonstruktion</span>
+<ol>
+<li>Nenne vier Maßnahmen der Karlsbader Beschlüsse von 1819.</li>
+<li>Beschreibe in eigenen Worten, was man unter „Biedermeier“ und was man unter „Vormärz“ versteht.</li>
+</ol>
+</div>
+<div class="afb afb2">
+<span class="stufe">AFB II · Analyse</span>
+<ol start="3">
+<li>Erläutere am Beispiel der Zensur, wie der Staat versuchte, die öffentliche Meinung zu kontrollieren.</li>
+<li>Vergleiche das Eichendorff-Gedicht und Büchners Flugschrift hinsichtlich Thema, Sprache und Absicht.</li>
+</ol>
+</div>
+<div class="afb afb3">
+<span class="stufe">AFB III · Werturteil</span>
+<ol start="5">
+<li>Beurteile, ob der Rückzug ins Biedermeier Feigheit oder eine logische Schutzstrategie gegen den
+      Terror des Metternich-Systems war. Begründe deine Position mit Argumenten aus dem Modul.</li>
+<li>Erörtere die These: „Ohne den Druck der Restauration hätte es den Vormärz nie gegeben.“ Wäge
+      Argumente dafür und dagegen ab und komm zu einem eigenen Urteil.</li>
+</ol>
+</div>
+</section>
+</div>
+<!-- Modal Bildmethode -->
+<div aria-labelledby="modal-titel" aria-modal="true" class="modal-bg" id="modal" role="dialog">
+<div class="modal">
+<h3 id="modal-titel">Dreischritt zur Bildinterpretation</h3>
+<ol>
+<li><span class="schritt">1. Beschreiben:</span> Was sehe ich? Halte nüchtern fest, was dargestellt ist –
+      der Raum, die Person, ihre Tätigkeit, die Gegenstände (Matratze, Bücher, Ofen, der aufgespannte Regenschirm).
+      Noch keine Deutung!</li>
+<li><span class="schritt">2. Deuten:</span> Was bedeuten die Details? Warum spannt der Dichter im Zimmer einen
+      Schirm auf? Was sagt das über das undichte Dach und seine Armut aus? Welche Stimmung erzeugt das Bild?</li>
+<li><span class="schritt">3. Schlussfolgern:</span> Was sagt das Bild über die Epoche? Zeigt Spitzweg den
+      Rückzug ins Private mit Sympathie, mit feinem Spott oder als versteckte Kritik an einer Zeit, die ihre
+      Künstler im Elend lässt? Begründe dein Urteil.</li>
+</ol>
+<button class="schliessen" onclick="schliesseModal()">Schließen</button>
+</div>
+</div>
+<footer>
+  Interaktives Lernmodul für den Geschichtsunterricht · Sekundarstufe, Klasse 8–11 ·
+  Bilder eingebettet: Biedermeier-Szenen 01–10, Spitzweg-Bild 11 nach gemeinfreier Wikimedia-Vorlage.
+<br/>Bilder 01_stube.png bis 13_wald.png werden aus dem GitHub-Ordner /froebel/bilder/ geladen.<br/>Fallback-Pfade für fehlende Bilder ergänzt (Wald/Zensur, Karikatur, Hambacher Fest, Portrait, Poet).<br/>Karikatur, Hambacher Fest und Spitzweg-Bild wurden auf geprüfte Direktlinks gesetzt.<br/>Wartburgfest-Bild ergänzt: Wikimedia Commons.</footer>
+<script>
+/* ---------- Vorlesefunktion ---------- */
+function stoppeVorlesen(){
+  if('speechSynthesis' in window){ window.speechSynthesis.cancel(); }
+}
+document.querySelectorAll('.btn-vorlesen').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    if(!('speechSynthesis' in window)){ alert('Die Vorlesefunktion wird von diesem Browser nicht unterstützt.'); return; }
+    window.speechSynthesis.cancel();
+    var quelle=document.getElementById(btn.getAttribute('data-vorlesen'));
+    if(!quelle) return;
+    var text=quelle.innerText.replace(/\s+/g,' ').trim();
+    var u=new SpeechSynthesisUtterance(text);
+    u.lang='de-DE'; u.rate=0.95;
+    window.speechSynthesis.speak(u);
+  });
+});
+
+/* ---------- Modal ---------- */
+function oeffneModal(){ document.getElementById('modal').classList.add('show'); }
+function schliesseModal(){ document.getElementById('modal').classList.remove('show'); }
+document.getElementById('modal').addEventListener('click',function(e){
+  if(e.target===this) schliesseModal();
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape') schliesseModal();
+});
+
+/* ---------- Quiz ---------- */
+var fragen=[
+  {
+    q:'1. Welches Ereignis nahm Metternich 1819 zum Anlass für die Karlsbader Beschlüsse?',
+    optionen:[
+      {t:'Die Ermordung des Schriftstellers August von Kotzebue durch einen Burschenschafter',ok:true},
+      {t:'Die Niederlage Napoleons bei Waterloo',ok:false},
+      {t:'Den Ausbruch der Märzrevolution',ok:false},
+      {t:'Die Gründung des Deutschen Reiches',ok:false}
+    ],
+    gut:'Richtig. Das Attentat Karl Ludwig Sands auf Kotzebue lieferte den Vorwand, hart gegen die Opposition vorzugehen.',
+    pruef:'Prüfe noch einmal: Anlass war ein politisches Attentat von 1819, nicht ein Ereignis der napoleonischen Kriege oder von 1848/1871.'
+  },
+  {
+    q:'2. Was kennzeichnet die Biedermeier-Haltung am treffendsten?',
+    optionen:[
+      {t:'Der bewusste Rückzug ins Private und das Meiden politischer Konflikte',ok:true},
+      {t:'Der offene bewaffnete Aufstand gegen die Fürsten',ok:false},
+      {t:'Die Forderung nach sofortiger Pressefreiheit auf den Straßen',ok:false},
+      {t:'Die Verbreitung verbotener Flugschriften',ok:false}
+    ],
+    gut:'Richtig. Das Biedermeier sucht Geborgenheit im Haus und Familienkreis und hält sich aus der Politik heraus.',
+    pruef:'Prüfe noch einmal: Aufstand, Flugschriften und der öffentliche Kampf um Pressefreiheit gehören zum Vormärz, nicht zum Biedermeier.'
+  },
+  {
+    q:'3. Warum war eine Schrift wie Büchners „Hessischer Landbote“ so gefährlich für ihre Verfasser?',
+    optionen:[
+      {t:'Sie verstieß gegen die Zensur und rief offen zum Widerstand gegen die Herrschaft auf',ok:true},
+      {t:'Sie war zu lang und überschritt die erlaubte Seitenzahl',ok:false},
+      {t:'Sie war in einer fremden Sprache verfasst',ok:false},
+      {t:'Sie kritisierte ausschließlich das Wetter und die Ernte',ok:false}
+    ],
+    gut:'Richtig. Solche Schriften umgingen die Zensur und griffen die Fürstenherrschaft direkt an – darauf standen Haft und Verfolgung.',
+    pruef:'Prüfe noch einmal: Das Brisante war nicht die Länge oder Sprache, sondern der verbotene politische Inhalt.'
+  },
+  {
+    q:'4. Welche Aussage über das Verhältnis von Biedermeier und Vormärz trifft zu?',
+    optionen:[
+      {t:'Beide sind Reaktionen auf dieselbe Zeit der Restauration – einmal Rückzug, einmal Widerstand',ok:true},
+      {t:'Sie folgten zeitlich klar nacheinander und hatten nichts miteinander zu tun',ok:false},
+      {t:'Beide forderten die Rückkehr zur absoluten Fürstenherrschaft',ok:false},
+      {t:'Das Biedermeier war eine politische Partei, der Vormärz eine Kunstrichtung',ok:false}
+    ],
+    gut:'Richtig. Es sind zwei gegensätzliche Antworten auf denselben politischen Druck, die parallel nebeneinander bestanden.',
+    pruef:'Prüfe noch einmal: Beide Strömungen bestanden zur selben Zeit nebeneinander und reagierten auf die Restauration.'
+  }
+];
+
+var feld=document.getElementById('quiz-feld');
+fragen.forEach(function(f,i){
+  var div=document.createElement('div'); div.className='frage';
+  var p=document.createElement('p'); p.className='q'; p.textContent=f.q; div.appendChild(p);
+  var opts=document.createElement('div'); opts.className='optionen';
+  var fb=document.createElement('div'); fb.className='feedback';
+  f.optionen.forEach(function(o){
+    var b=document.createElement('button'); b.className='opt'; b.textContent=o.t;
+    b.addEventListener('click',function(){
+      Array.prototype.forEach.call(opts.children,function(c){ c.disabled=true; });
+      if(o.ok){ b.classList.add('richtig'); fb.textContent=f.gut; fb.className='feedback show gut'; }
+      else{
+        b.classList.add('falsch'); fb.textContent=f.pruef; fb.className='feedback show pruef';
+        Array.prototype.forEach.call(opts.children,function(c,idx){
+          if(f.optionen[idx].ok) c.classList.add('richtig');
+        });
+      }
+    });
+    opts.appendChild(b);
+  });
+  div.appendChild(opts); div.appendChild(fb); feld.appendChild(div);
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('img.img-fallback').forEach(function(img){
+    img.dataset.fallbackIndex = "0";
+    img.addEventListener('error', function(){
+      var list = (img.dataset.fallbacks || '').split('|').filter(Boolean);
+      var idx = parseInt(img.dataset.fallbackIndex || '0', 10);
+      if(idx < list.length){
+        img.dataset.fallbackIndex = String(idx + 1);
+        img.src = list[idx];
+      }
+    }, {once:false});
+  });
+});
+</script></body>
+</html>
