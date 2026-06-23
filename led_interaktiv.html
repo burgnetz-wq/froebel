@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interaktive Lernseite zur LED</title>
+  <style>
+    :root {
+      --bg1: #0f172a;
+      --bg2: #111827;
+      --card: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.14);
+      --text: #ecf3ff;
+      --muted: #b9c4db;
+      --accent: #38bdf8;
+      --good: #22c55e;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+      --shadow: 0 18px 40px rgba(0,0,0,0.35);
+      --led-color: #ff3b30;
+      --led-rgb: 255,59,48;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(56,189,248,0.18), transparent 28%),
+        radial-gradient(circle at left, rgba(168,85,247,0.14), transparent 25%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      min-height: 100vh;
+    }
+
+    .wrap {
+      width: min(1100px, calc(100% - 32px));
+      margin: 32px auto 56px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.05;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+      max-width: 70ch;
+      line-height: 1.6;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-top: 22px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    h2 {
+      margin-top: 0;
+      font-size: 1.35rem;
+    }
+
+    p, li {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    ul {
+      padding-left: 18px;
+      margin: 10px 0 0;
+    }
+
+    .sim-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+
+    @media (max-width: 850px) {
+      .sim-layout { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 18px;
+    }
+
+    .circuit {
+      position: relative;
+      min-height: 340px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .circuit svg {
+      width: 100%;
+      max-width: 460px;
+      height: auto;
+      overflow: visible;
+    }
+
+    .wire {
+      stroke: rgba(255,255,255,0.8);
+      stroke-width: 8;
+      stroke-linecap: round;
+      fill: none;
+    }
+
+    .led-bulb {
+      transition: all 0.25s ease;
+      filter: drop-shadow(0 0 0 rgba(var(--led-rgb), 0));
+    }
+
+    .controls {
+      display: grid;
+      gap: 14px;
+    }
+
+    .control {
+      display: grid;
+      gap: 8px;
+    }
+
+    .control label {
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .hint {
+      font-size: 0.92rem;
+      color: #dbe5f7;
+      opacity: 0.9;
+    }
+
+    select, input[type="range"], button {
+      width: 100%;
+    }
+
+    select, button {
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    option {
+      color: #111827;
+    }
+
+    button {
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.15s ease, background 0.2s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+
+    .toggle.on {
+      background: linear-gradient(135deg, rgba(34,197,94,0.35), rgba(34,197,94,0.18));
+      border-color: rgba(34,197,94,0.35);
+    }
+
+    .toggle.off {
+      background: linear-gradient(135deg, rgba(239,68,68,0.28), rgba(239,68,68,0.12));
+      border-color: rgba(239,68,68,0.28);
+    }
+
+    input[type="range"] {
+      appearance: none;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.25), rgba(56,189,248,0.8));
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: white;
+      border: 3px solid var(--accent);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .stat {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      margin-top: 10px;
+    }
+
+    .badge.good { background: rgba(34,197,94,0.18); color: #baf7c9; }
+    .badge.warn { background: rgba(245,158,11,0.18); color: #fde7b0; }
+    .badge.bad { background: rgba(239,68,68,0.18); color: #ffc4c4; }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .pill {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 10px 12px;
+      border-radius: 999px;
+      color: #e8efff;
+      font-size: 0.95rem;
+    }
+
+    .quiz .q {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .quiz label {
+      display: block;
+      padding: 8px 0;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 12px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #f1f6ff;
+      min-height: 52px;
+    }
+
+    .footer-note {
+      margin-top: 22px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .mini-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      overflow: hidden;
+      border-radius: 14px;
+    }
+
+    .mini-table th, .mini-table td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted);
+    }
+
+    .mini-table th {
+      color: #f4f8ff;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .stepper {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .step-btn {
+      width: auto;
+      padding: 10px 14px;
+    }
+
+    .fact {
+      font-size: 1rem;
+      color: #f5f8ff;
+      margin-top: 8px;
+      min-height: 44px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <h1>Interaktive Lernseite zur LED</h1>
+      <p class="subtitle">
+        Lerne spielerisch, wie eine LED funktioniert. Du kannst eine LED virtuell ein- und ausschalten,
+        Farbe und Stromstärke verändern und am Ende dein Wissen in einem kleinen Quiz testen.
+      </p>
+      <div class="pill-row">
+        <span class="pill">⚡ Strom beeinflusst die Helligkeit</span>
+        <span class="pill">🎨 Verschiedene LED-Farben</span>
+        <span class="pill">🧠 Quiz mit Sofortauswertung</span>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Was ist eine LED?</h2>
+        <p>
+          LED steht für <strong>Leuchtdiode</strong>. Sie ist ein elektronisches Bauteil, das Licht erzeugt,
+          wenn elektrischer Strom in der richtigen Richtung hindurchfließt.
+        </p>
+        <ul>
+          <li>Sie ist sehr energieeffizient.</li>
+          <li>Sie wird in Lampen, Displays, Autos und Elektronik verwendet.</li>
+          <li>Eine LED braucht meist einen <strong>Vorwiderstand</strong>, damit nicht zu viel Strom fließt.</li>
+        </ul>
+
+        <table class="mini-table">
+          <thead>
+            <tr>
+              <th>Eigenschaft</th>
+              <th>LED</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Energieverbrauch</td>
+              <td>niedrig</td>
+            </tr>
+            <tr>
+              <td>Lebensdauer</td>
+              <td>hoch</td>
+            </tr>
+            <tr>
+              <td>Stromrichtung wichtig?</td>
+              <td>Ja</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="card">
+        <h2>Merksätze</h2>
+        <ul>
+          <li><strong>Anode (+)</strong> und <strong>Kathode (−)</strong> dürfen nicht vertauscht werden.</li>
+          <li>Mehr Strom bedeutet meist mehr Helligkeit – aber nur bis zur sicheren Grenze.</li>
+          <li>Zu viel Strom kann eine LED beschädigen.</li>
+          <li>Die Farbe hängt vom Material der LED ab.</li>
+        </ul>
+
+        <div class="stepper">
+          <button class="step-btn" id="prevFact">◀ Vorheriger Tipp</button>
+          <button class="step-btn" id="nextFact">Nächster Tipp ▶</button>
+        </div>
+        <div class="fact" id="factBox"></div>
+      </section>
+    </div>
+
+    <section class="card" style="margin-top: 20px;">
+      <h2>Aufbau einer LED: Anode und Kathode</h2>
+      <div class="sim-layout">
+        <div class="panel circuit">
+          <svg viewBox="0 0 540 340" aria-label="Aufbau einer LED mit Anode und Kathode">
+            <defs>
+              <linearGradient id="ledBodyGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="rgba(255,255,255,0.95)" />
+                <stop offset="100%" stop-color="rgba(56,189,248,0.35)" />
+              </linearGradient>
+              <marker id="arrowTip" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+                <path d="M0,0 L12,6 L0,12 Z" fill="#f8fafc"></path>
+              </marker>
+            </defs>
+
+            <line x1="215" y1="190" x2="215" y2="315" stroke="#dbeafe" stroke-width="7" stroke-linecap="round" />
+            <line x1="315" y1="190" x2="315" y2="295" stroke="#dbeafe" stroke-width="7" stroke-linecap="round" />
+
+            <path d="M180 175 Q180 70 270 55 Q360 70 360 175 L360 190 L180 190 Z"
+                  fill="url(#ledBodyGrad)" stroke="rgba(255,255,255,0.85)" stroke-width="4" />
+
+            <rect x="188" y="168" width="60" height="22" rx="4" fill="rgba(210,210,220,0.9)" stroke="rgba(255,255,255,0.7)" stroke-width="2" />
+            <line x1="215" y1="168" x2="215" y2="130" stroke="#dbeafe" stroke-width="5" stroke-linecap="round" />
+
+            <rect x="285" y="145" width="30" height="45" rx="4" fill="rgba(210,210,220,0.9)" stroke="rgba(255,255,255,0.7)" stroke-width="2" />
+            <circle cx="292" cy="130" r="8" fill="#ffd166" stroke="#fff4c2" stroke-width="2" />
+            <line x1="292" y1="130" x2="215" y2="130" stroke="#ffd166" stroke-width="3" stroke-linecap="round" />
+
+            <path d="M180 175 L165 175 L165 110 Q165 85 190 85" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="4" />
+
+            <line x1="85" y1="90" x2="178" y2="92" stroke="#f8fafc" stroke-width="3" marker-end="url(#arrowTip)" />
+            <text x="40" y="84" fill="#f8fafc" font-size="18" font-weight="700">Kunststofflinse</text>
+
+            <line x1="435" y1="120" x2="302" y2="126" stroke="#f8fafc" stroke-width="3" marker-end="url(#arrowTip)" />
+            <text x="376" y="112" fill="#f8fafc" font-size="18" font-weight="700">LED-Chip</text>
+
+            <line x1="430" y1="170" x2="312" y2="170" stroke="#f8fafc" stroke-width="3" marker-end="url(#arrowTip)" />
+            <text x="375" y="162" fill="#f8fafc" font-size="18" font-weight="700">Kathode (−)</text>
+            <text x="380" y="185" fill="#cbd5e1" font-size="14">kürzeres Beinchen</text>
+
+            <line x1="95" y1="225" x2="206" y2="214" stroke="#f8fafc" stroke-width="3" marker-end="url(#arrowTip)" />
+            <text x="42" y="220" fill="#f8fafc" font-size="18" font-weight="700">Anode (+)</text>
+            <text x="35" y="243" fill="#cbd5e1" font-size="14">längeres Beinchen</text>
+
+            <line x1="430" y1="75" x2="300" y2="140" stroke="#f8fafc" stroke-width="3" marker-end="url(#arrowTip)" />
+            <text x="350" y="68" fill="#f8fafc" font-size="18" font-weight="700">Bonddraht</text>
+
+            <line x1="425" y1="225" x2="248" y2="179" stroke="#f8fafc" stroke-width="3" marker-end="url(#arrowTip)" />
+            <text x="345" y="255" fill="#f8fafc" font-size="18" font-weight="700">Reflektor</text>
+          </svg>
+        </div>
+
+        <div class="panel">
+          <h3 style="margin-top:0;">Woran erkennt man was?</h3>
+          <ul>
+            <li><strong>Anode (+):</strong> meist das längere Beinchen.</li>
+            <li><strong>Kathode (−):</strong> meist das kürzere Beinchen.</li>
+            <li>Oft hat die LED an der <strong>Kathodenseite</strong> zusätzlich eine <strong>flache Stelle</strong> am Gehäuse.</li>
+            <li>Im Inneren ist das größere Metallteil oft die <strong>Kathode</strong>.</li>
+          </ul>
+          <div class="pill-row">
+            <span class="pill">Anode = Pluspol</span>
+            <span class="pill">Kathode = Minuspol</span>
+            <span class="pill">Polung beachten</span>
+          </div>
+          <p style="margin-top:14px;">
+            Wenn Anode und Kathode vertauscht werden, leuchtet eine normale LED in der Regel nicht.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top: 20px;">
+      <h2>LED-Simulation</h2>
+      <div class="sim-layout">
+        <div class="panel circuit">
+          <svg viewBox="0 0 540 340" aria-label="LED-Schaltung">
+            <path class="wire" d="M40 170 H160" />
+            <path class="wire" d="M380 170 H500" />
+            <path class="wire" d="M40 170 V280 H500 V170" opacity="0.35" />
+
+            <rect x="160" y="145" width="85" height="50" rx="14" fill="rgba(255,255,255,0.10)" stroke="rgba(255,255,255,0.4)" stroke-width="3" />
+            <text x="202.5" y="176" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="700">R</text>
+            <text x="202.5" y="205" text-anchor="middle" fill="#d7e4ff" font-size="14">Widerstand</text>
+
+            <line x1="245" y1="170" x2="280" y2="170" class="wire" />
+
+            <line x1="280" y1="130" x2="280" y2="210" stroke="rgba(255,255,255,0.85)" stroke-width="8" stroke-linecap="round" />
+            <polygon points="280,170 340,135 340,205" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.9)" stroke-width="6" stroke-linejoin="round" />
+            <line x1="348" y1="130" x2="348" y2="210" stroke="rgba(255,255,255,0.85)" stroke-width="8" stroke-linecap="round" />
+
+            <line x1="316" y1="105" x2="342" y2="79" stroke="rgba(255,255,255,0.8)" stroke-width="5" stroke-linecap="round" />
+            <polygon points="342,79 330,82 339,91" fill="rgba(255,255,255,0.9)" />
+            <line x1="338" y1="116" x2="364" y2="90" stroke="rgba(255,255,255,0.8)" stroke-width="5" stroke-linecap="round" />
+            <polygon points="364,90 352,93 361,102" fill="rgba(255,255,255,0.9)" />
+
+            <circle id="ledGlow" class="led-bulb" cx="314" cy="170" r="34" fill="rgba(var(--led-rgb), 0.22)" stroke="rgba(var(--led-rgb), 0.65)" stroke-width="3" />
+            <circle id="ledCore" class="led-bulb" cx="314" cy="170" r="21" fill="var(--led-color)" opacity="0.25" />
+
+            <rect x="12" y="138" width="28" height="64" rx="10" fill="rgba(56,189,248,0.25)" stroke="rgba(56,189,248,0.8)" stroke-width="3" />
+            <text x="26" y="131" text-anchor="middle" fill="#bfeeff" font-size="18" font-weight="700">+</text>
+            <text x="26" y="227" text-anchor="middle" fill="#bfeeff" font-size="18" font-weight="700">−</text>
+            <text x="70" y="110" fill="#dce9ff" font-size="16">Spannungsquelle</text>
+
+            <text x="285" y="255" fill="#dce9ff" font-size="16">LED</text>
+          </svg>
+        </div>
+
+        <div class="panel">
+          <div class="controls">
+            <button id="toggleBtn" class="toggle off">LED ist AUS</button>
+
+            <div class="control">
+              <label for="colorSelect">Farbe <span class="hint" id="colorLabel">Rot</span></label>
+              <select id="colorSelect">
+                <option value="red">Rot</option>
+                <option value="green">Grün</option>
+                <option value="blue">Blau</option>
+                <option value="yellow">Gelb</option>
+                <option value="white">Weiß</option>
+              </select>
+            </div>
+
+            <div class="control">
+              <label for="currentRange">Stromstärke <span class="hint"><span id="currentValue">8</span> mA</span></label>
+              <input id="currentRange" type="range" min="0" max="30" step="1" value="8" />
+            </div>
+
+            <div class="control">
+              <label for="voltageRange">Versorgungsspannung <span class="hint"><span id="voltageValue">5</span> V</span></label>
+              <input id="voltageRange" type="range" min="2" max="12" step="1" value="5" />
+            </div>
+
+            <div class="control">
+              <label for="resistorRange">Vorwiderstand <span class="hint"><span id="resistorValue">330</span> Ω</span></label>
+              <input id="resistorRange" type="range" min="100" max="1000" step="10" value="330" />
+            </div>
+
+            <div class="stats">
+              <div class="stat">
+                <strong id="brightnessValue">27%</strong>
+                Helligkeit
+              </div>
+              <div class="stat">
+                <strong id="safeValue">Sicher</strong>
+                Zustand
+              </div>
+              <div class="stat">
+                <strong id="powerValue">0.04 W</strong>
+                Leistung
+              </div>
+            </div>
+
+            <div id="statusBadge" class="badge good">Guter Bereich: Die LED arbeitet in einer sicheren Zone.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Wie wirkt der Widerstand?</h2>
+        <p>
+          Der <strong>Vorwiderstand</strong> begrenzt den Strom. Wenn der Widerstand kleiner wird,
+          kann mehr Strom fließen. Dadurch leuchtet die LED heller – aber das Risiko für Schäden steigt.
+        </p>
+        <p>
+          In dieser Simulation beeinflussen Spannung und Widerstand den berechneten Stromwert.
+          Der Helligkeitsregler zeigt zusätzlich, wie stark die LED wahrgenommen wird.
+        </p>
+      </section>
+
+      <section class="card quiz">
+        <h2>Quiz: Teste dein Wissen</h2>
+
+        <div class="q">
+          <p><strong>1.</strong> Wofür steht LED?</p>
+          <label><input type="radio" name="q1" value="0"> Licht-Energie-Draht</label>
+          <label><input type="radio" name="q1" value="1"> Leuchtdiode</label>
+          <label><input type="radio" name="q1" value="0"> Leitende Elektronen-Dose</label>
+        </div>
+
+        <div class="q">
+          <p><strong>2.</strong> Warum braucht eine LED oft einen Widerstand?</p>
+          <label><input type="radio" name="q2" value="0"> Damit sie schwerer wird</label>
+          <label><input type="radio" name="q2" value="1"> Damit nicht zu viel Strom fließt</label>
+          <label><input type="radio" name="q2" value="0"> Damit die Farbe verschwindet</label>
+        </div>
+
+        <div class="q">
+          <p><strong>3.</strong> Was passiert meist bei höherem Strom?</p>
+          <label><input type="radio" name="q3" value="0"> Die LED wird dunkler</label>
+          <label><input type="radio" name="q3" value="1"> Die LED leuchtet stärker</label>
+          <label><input type="radio" name="q3" value="0"> Die LED wird automatisch blau</label>
+        </div>
+
+        <button id="checkQuiz">Quiz auswerten</button>
+        <div class="result" id="quizResult">Wähle Antworten und klicke auf „Quiz auswerten“.</div>
+      </section>
+    </div>
+
+    <p class="footer-note">
+      Diese Datei ist komplett lokal nutzbar und enthält HTML, CSS und JavaScript in einer einzigen Seite.
+    </p>
+  </div>
+
+  <script>
+    const ledGlow = document.getElementById('ledGlow');
+    const ledCore = document.getElementById('ledCore');
+    const toggleBtn = document.getElementById('toggleBtn');
+    const colorSelect = document.getElementById('colorSelect');
+    const currentRange = document.getElementById('currentRange');
+    const voltageRange = document.getElementById('voltageRange');
+    const resistorRange = document.getElementById('resistorRange');
+
+    const currentValue = document.getElementById('currentValue');
+    const voltageValue = document.getElementById('voltageValue');
+    const resistorValue = document.getElementById('resistorValue');
+    const brightnessValue = document.getElementById('brightnessValue');
+    const safeValue = document.getElementById('safeValue');
+    const powerValue = document.getElementById('powerValue');
+    const statusBadge = document.getElementById('statusBadge');
+    const colorLabel = document.getElementById('colorLabel');
+
+    const checkQuiz = document.getElementById('checkQuiz');
+    const quizResult = document.getElementById('quizResult');
+
+    const facts = [
+      'LEDs sind deutlich effizienter als klassische Glühlampen.',
+      'Eine LED leuchtet nur, wenn der Strom in der richtigen Richtung fließt.',
+      'Rote LEDs brauchen oft eine niedrigere Durchlassspannung als blaue oder weiße LEDs.',
+      'Der Widerstand schützt die LED vor zu hohem Strom.',
+      'LEDs werden in Ampeln, Taschenlampen, Fernsehern und Mikrocontrollern eingesetzt.'
+    ];
+
+    let factIndex = 0;
+    let isOn = false;
+
+    const colors = {
+      red:   { name: 'Rot',   hex: '#ff3b30', rgb: '255,59,48', vf: 2.0 },
+      green: { name: 'Grün',  hex: '#22c55e', rgb: '34,197,94', vf: 2.2 },
+      blue:  { name: 'Blau',  hex: '#3b82f6', rgb: '59,130,246', vf: 3.0 },
+      yellow:{ name: 'Gelb',  hex: '#facc15', rgb: '250,204,21', vf: 2.1 },
+      white: { name: 'Weiß',  hex: '#f8fafc', rgb: '248,250,252', vf: 3.1 }
+    };
+
+    function clamp(n, min, max) {
+      return Math.max(min, Math.min(max, n));
+    }
+
+    function formatPower(watt) {
+      return watt.toFixed(2) + ' W';
+    }
+
+    function updateFact() {
+      document.getElementById('factBox').textContent = facts[factIndex];
+    }
+
+    function updateLED() {
+      const selected = colors[colorSelect.value];
+      colorLabel.textContent = selected.name;
+      document.documentElement.style.setProperty('--led-color', selected.hex);
+      document.documentElement.style.setProperty('--led-rgb', selected.rgb);
+
+      const manualCurrent = Number(currentRange.value);
+      const voltage = Number(voltageRange.value);
+      const resistor = Number(resistorRange.value);
+      const calculatedCurrent = Math.max(0, ((voltage - selected.vf) / resistor) * 1000);
+      const effectiveCurrent = Math.min(manualCurrent, calculatedCurrent);
+
+      currentValue.textContent = manualCurrent;
+      voltageValue.textContent = voltage;
+      resistorValue.textContent = resistor;
+
+      let brightness = clamp((effectiveCurrent / 30) * 100, 0, 100);
+      if (!isOn || effectiveCurrent <= 0) brightness = 0;
+
+      brightnessValue.textContent = Math.round(brightness) + '%';
+      powerValue.textContent = formatPower((selected.vf * effectiveCurrent) / 1000);
+
+      const glowAlpha = isOn ? clamp(0.18 + brightness / 120, 0.18, 0.95) : 0.08;
+      const coreOpacity = isOn ? clamp(0.18 + brightness / 100, 0.18, 1) : 0.12;
+      const glowRadius = isOn ? 34 + brightness * 0.12 : 30;
+
+      ledGlow.setAttribute('r', glowRadius.toFixed(1));
+      ledGlow.setAttribute('fill', `rgba(${selected.rgb}, ${glowAlpha.toFixed(2)})`);
+      ledGlow.setAttribute('stroke', `rgba(${selected.rgb}, ${Math.min(glowAlpha + 0.25, 1).toFixed(2)})`);
+      ledCore.setAttribute('fill', selected.hex);
+      ledCore.setAttribute('opacity', coreOpacity.toFixed(2));
+      ledGlow.style.filter = isOn
+        ? `drop-shadow(0 0 ${12 + brightness * 0.45}px rgba(${selected.rgb}, ${Math.min(glowAlpha + 0.15, 1).toFixed(2)}))`
+        : 'drop-shadow(0 0 0 rgba(0,0,0,0))';
+
+      let safety = 'Sicher';
+      let badgeClass = 'good';
+      let badgeText = 'Guter Bereich: Die LED arbeitet in einer sicheren Zone.';
+
+      if (!isOn || effectiveCurrent === 0) {
+        safety = 'Aus';
+        badgeClass = 'warn';
+        badgeText = 'Die LED ist derzeit ausgeschaltet oder bekommt keinen Strom.';
+      } else if (effectiveCurrent > 20 && effectiveCurrent <= 25) {
+        safety = 'Hoch';
+        badgeClass = 'warn';
+        badgeText = 'Achtung: Hoher Strom. Das kann die Lebensdauer der LED verkürzen.';
+      } else if (effectiveCurrent > 25) {
+        safety = 'Kritisch';
+        badgeClass = 'bad';
+        badgeText = 'Zu hoher Strom: In einer echten Schaltung könnte die LED beschädigt werden.';
+      }
+
+      safeValue.textContent = safety;
+      statusBadge.className = 'badge ' + badgeClass;
+      statusBadge.textContent = badgeText;
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      isOn = !isOn;
+      toggleBtn.textContent = isOn ? 'LED ist EIN' : 'LED ist AUS';
+      toggleBtn.className = 'toggle ' + (isOn ? 'on' : 'off');
+      updateLED();
+    });
+
+    [colorSelect, currentRange, voltageRange, resistorRange].forEach(el => {
+      el.addEventListener('input', updateLED);
+    });
+
+    document.getElementById('prevFact').addEventListener('click', () => {
+      factIndex = (factIndex - 1 + facts.length) % facts.length;
+      updateFact();
+    });
+
+    document.getElementById('nextFact').addEventListener('click', () => {
+      factIndex = (factIndex + 1) % facts.length;
+      updateFact();
+    });
+
+    checkQuiz.addEventListener('click', () => {
+      let score = 0;
+      const total = 3;
+      ['q1', 'q2', 'q3'].forEach(name => {
+        const selected = document.querySelector(`input[name="${name}"]:checked`);
+        if (selected) score += Number(selected.value);
+      });
+
+      let message = `Du hast ${score} von ${total} Punkten erreicht. `;
+      if (score === total) {
+        message += 'Perfekt! Du hast die Grundlagen der LED sehr gut verstanden.';
+      } else if (score >= 2) {
+        message += 'Gut gemacht! Du kennst schon wichtige Eigenschaften einer LED.';
+      } else {
+        message += 'Kein Problem – probiere die Simulation noch einmal und teste dich erneut.';
+      }
+      quizResult.textContent = message;
+    });
+
+    updateFact();
+    updateLED();
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a106448d0fa8a5b6',t:'MTc4MjI0NjgwNg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
