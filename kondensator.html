@@ -1,0 +1,2014 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elektronik-Labor: Elko & zwei LEDs (Lade- und Entladekreis)</title>
+  <style>
+    /* Global Styles & Variables */
+    :root {
+      --bg-dark: #070a13;
+      --bg-card: rgba(15, 23, 42, 0.75);
+      --border-color: rgba(51, 65, 85, 0.45);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      
+      --color-cyan: #06b6d4;
+      --color-cyan-glow: rgba(6, 182, 212, 0.4);
+      --color-orange: #f59e0b;
+      --color-orange-glow: rgba(245, 158, 11, 0.4);
+      --color-red: #ef4444;
+      --color-red-glow: rgba(239, 68, 68, 0.4);
+      --color-green: #10b981;
+      --color-green-glow: rgba(16, 185, 129, 0.4);
+      
+      --font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-family);
+      line-height: 1.6;
+      padding: 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar Style */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e293b;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #334155;
+    }
+
+    /* Container & Layout */
+    .container {
+      max-width: 1280px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Header Design */
+    header {
+      text-align: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 1rem;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--color-cyan), #3b82f6, var(--color-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.05em;
+      text-transform: uppercase;
+      display: inline-block;
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    /* Lab Dashboard Grid */
+    .lab-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      width: 100%;
+    }
+
+    @media (min-width: 1024px) {
+      .lab-grid {
+        grid-template-columns: 1.3fr 0.7fr;
+      }
+    }
+
+    /* Card Component (Glassmorphism) */
+    .glass-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .glass-card:hover {
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Interactive Switch Controls */
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .btn {
+      font-family: var(--font-family);
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 1rem 1.5rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    /* Toggle Button States */
+    .btn-toggle-switch {
+      background-color: rgba(16, 185, 129, 0.1);
+      border: 2px solid var(--color-green);
+      color: var(--color-green);
+    }
+
+    .btn-toggle-switch:hover {
+      background-color: rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-toggle-switch.discharging {
+      background-color: rgba(239, 68, 68, 0.15);
+      border-color: var(--color-red);
+      color: var(--color-red);
+      box-shadow: 0 0 15px var(--color-red-glow);
+    }
+
+    .btn-toggle-switch.discharging:hover {
+      background-color: rgba(239, 68, 68, 0.25);
+    }
+
+    /* Slider Container */
+    .slider-container {
+      margin-top: 1.5rem;
+      background: rgba(15, 23, 42, 0.5);
+      padding: 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .slider-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .slider-label {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .slider-value {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--color-cyan);
+      background: rgba(6, 182, 212, 0.15);
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+    }
+
+    .range-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 5px;
+      background: #1e293b;
+      outline: none;
+      margin: 0.5rem 0;
+      cursor: pointer;
+    }
+
+    .range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--color-cyan);
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--color-cyan-glow);
+      transition: transform 0.1s ease;
+    }
+
+    .range-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .slider-ticks {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      padding: 0 0.2rem;
+    }
+
+    /* Oscilloscope Live Graph Canvas */
+    .oscilloscope-card {
+      min-height: 250px;
+    }
+
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      height: 180px;
+      background: #040712;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #1e293b;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .scope-overlay {
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: #10b981;
+      pointer-events: none;
+      text-transform: uppercase;
+      text-shadow: 0 0 4px rgba(16, 185, 129, 0.5);
+    }
+
+    .scope-voltage-text {
+      position: absolute;
+      bottom: 8px;
+      right: 12px;
+      font-family: monospace;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--color-green);
+      pointer-events: none;
+      text-shadow: 0 0 8px var(--color-green-glow);
+      background: rgba(0, 0, 0, 0.7);
+      padding: 2px 6px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .scope-voltage-text.discharging {
+      color: var(--color-red);
+      text-shadow: 0 0 8px var(--color-red-glow);
+    }
+
+    /* Live Explainer Panel */
+    .live-status-panel {
+      margin-top: 1rem;
+      padding: 0.8rem 1rem;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.4);
+      border-left: 4px solid var(--color-green);
+      font-size: 0.95rem;
+      color: var(--text-main);
+      transition: all 0.3s ease;
+    }
+
+    .live-status-panel.discharging {
+      border-left-color: var(--color-red);
+    }
+
+    .live-status-panel.idle {
+      border-left-color: var(--text-muted);
+    }
+
+    /* Tab Analogies Section */
+    .analogy-section {
+      margin-top: 0.5rem;
+    }
+
+    .analogy-tabs {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .tab-btn {
+      background: #1e293b;
+      color: var(--text-muted);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: #334155;
+    }
+
+    .tab-btn.active {
+      background: var(--color-cyan);
+      color: #0b0f19;
+      font-weight: 700;
+      box-shadow: 0 0 10px var(--color-cyan-glow);
+    }
+
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out forwards;
+      font-size: 0.95rem;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .analogy-box {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.3);
+      padding: 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .analogy-icon {
+      font-size: 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 60px;
+      height: 60px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+    }
+
+    .analogy-text h4 {
+      margin-bottom: 0.25rem;
+      color: #38bdf8;
+      font-size: 1rem;
+    }
+
+    .analogy-text p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Virtual Breadboard SVG styling */
+    .svg-container {
+      background-color: #0b0f19;
+      border-radius: 12px;
+      border: 1px solid #1e293b;
+      overflow: hidden;
+      width: 100%;
+      position: relative;
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Interactive Quiz Section styling */
+    .quiz-card {
+      background: linear-gradient(135deg, rgba(20, 29, 47, 0.8), rgba(15, 23, 42, 0.8));
+    }
+
+    .quiz-progress-bar {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .quiz-step {
+      flex: 1;
+      height: 6px;
+      background: #1e293b;
+      border-radius: 3px;
+      transition: all 0.3s ease;
+    }
+
+    .quiz-step.active {
+      background: var(--color-cyan);
+      box-shadow: 0 0 8px var(--color-cyan-glow);
+    }
+
+    .quiz-step.correct {
+      background: var(--color-green);
+    }
+
+    .quiz-step.wrong {
+      background: var(--color-red);
+    }
+
+    .quiz-question {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+      color: var(--text-main);
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .quiz-option {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-align: left;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      color: var(--text-main);
+    }
+
+    .quiz-option:hover {
+      background: rgba(51, 65, 85, 0.6);
+      border-color: #64748b;
+      transform: translateY(-1px);
+    }
+
+    .quiz-option-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: var(--text-muted);
+    }
+
+    .quiz-option.correct {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: var(--color-green);
+      box-shadow: 0 0 10px var(--color-green-glow);
+      color: #34d399;
+    }
+
+    .quiz-option.correct .quiz-option-letter {
+      background: var(--color-green);
+      color: #fff;
+    }
+
+    .quiz-option.wrong {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: var(--color-red);
+      color: #f87171;
+      animation: shake 0.4s ease;
+    }
+
+    .quiz-option.wrong .quiz-option-letter {
+      background: var(--color-red);
+      color: #fff;
+    }
+
+    .quiz-feedback {
+      margin-top: 1.2rem;
+      padding: 1rem;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      display: none;
+      animation: slideDown 0.3s ease-out forwards;
+    }
+
+    .quiz-feedback.correct {
+      background: rgba(16, 185, 129, 0.1);
+      border-left: 4px solid var(--color-green);
+      color: #a7f3d0;
+      display: block;
+    }
+
+    .quiz-feedback.wrong {
+      background: rgba(239, 68, 68, 0.1);
+      border-left: 4px solid var(--color-red);
+      color: #fca5a5;
+      display: block;
+    }
+
+    .quiz-next-btn {
+      margin-top: 1.2rem;
+      background: var(--color-green);
+      color: #0b0f19;
+      border: none;
+      font-weight: bold;
+      align-self: flex-end;
+    }
+
+    .quiz-next-btn:hover {
+      background: #34d399;
+      box-shadow: 0 0 15px var(--color-green-glow);
+    }
+
+    /* Confetti Canvas overlay */
+    #confetti-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+    /* SVG specific classes */
+    .wire-glow {
+      transition: stroke-width 0.3s ease, filter 0.3s ease;
+    }
+    
+    .electron {
+      transition: opacity 0.2s ease;
+    }
+
+    /* Physical Tactile Switch Pressed Animation */
+    .switch-button {
+      transition: transform 0.1s ease, fill 0.1s ease;
+      cursor: pointer;
+    }
+
+    .switch-button:hover {
+      fill: #475569;
+    }
+
+    .switch-button.pressed {
+      transform: translate(0, 1.5px);
+      fill: #1e293b;
+    }
+
+    .click-target {
+      cursor: pointer;
+    }
+
+    /* Info Badge */
+    .info-badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .info-badge.primary {
+      background: rgba(6, 182, 212, 0.15);
+      color: #22d3ee;
+    }
+
+    .info-badge.accent {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: auto;
+      padding: 2rem 0 1rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border-color);
+      width: 100%;
+    }
+
+    footer a {
+      color: var(--color-cyan);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    
+    <!-- Header -->
+    <header>
+      <h1>🧪 Das Elektronik-Labor</h1>
+      <p>Lerne spielerisch mit zwei LEDs, wie ein Kondensator (Elko) Strom lädt und im Entladekreis wieder freisetzt!</p>
+    </header>
+
+    <!-- Lab Grid -->
+    <div class="lab-grid">
+      
+      <!-- LEFT COL: Simulation & Breadboard -->
+      <div class="glass-card">
+        <div class="card-title">
+          <span>🖥️ Interaktive Laborschaltung</span>
+          <span style="margin-left:auto; font-size:0.8rem; color:var(--text-muted); text-transform:none;">Klicke auf den Taster im Bild!</span>
+        </div>
+        
+        <!-- SVG Container -->
+        <div class="svg-container">
+          <svg viewBox="0 0 800 500" id="circuit-svg">
+            <defs>
+              <!-- Glowing effects -->
+              <filter id="glow-cyan" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              <filter id="glow-orange" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="6" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              <filter id="glow-green" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              <filter id="glow-red" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur stdDeviation="5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              <filter id="glow-led" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="10" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              
+              <!-- Gradients -->
+              <linearGradient id="cap-body-grad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#1e3a8a" />
+                <stop offset="30%" stop-color="#3b82f6" />
+                <stop offset="70%" stop-color="#2563eb" />
+                <stop offset="100%" stop-color="#1d4ed8" />
+              </linearGradient>
+              <linearGradient id="cap-charge-grad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#06b6d4" />
+                <stop offset="50%" stop-color="#22d3ee" />
+                <stop offset="100%" stop-color="#0891b2" />
+              </linearGradient>
+              <radialGradient id="led-red-glow-radial" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(239, 68, 68, 0.85)" />
+                <stop offset="40%" stop-color="rgba(239, 68, 68, 0.4)" />
+                <stop offset="100%" stop-color="rgba(239, 68, 68, 0)" />
+              </radialGradient>
+              <radialGradient id="led-green-glow-radial" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="rgba(16, 185, 129, 0.85)" />
+                <stop offset="40%" stop-color="rgba(16, 185, 129, 0.4)" />
+                <stop offset="100%" stop-color="rgba(16, 185, 129, 0)" />
+              </radialGradient>
+            </defs>
+
+            <!-- Grid Backdrop Pattern (Decorative) -->
+            <rect width="800" height="500" fill="#090d16" />
+            
+            <!-- ====== ARDUINO BOARD ====== -->
+            <g id="arduino-board">
+              <!-- Board Outline -->
+              <rect x="30" y="60" rx="12" ry="12" width="220" height="320" fill="#0d2b45" stroke="#1e293b" stroke-width="3" />
+              <rect x="33" y="63" rx="9" ry="9" width="214" height="314" fill="none" stroke="#14b8a6" stroke-width="1.5" opacity="0.4" />
+              
+              <!-- USB Port -->
+              <rect x="10" y="80" rx="4" ry="4" width="55" height="40" fill="#64748b" stroke="#475569" stroke-width="2" />
+              <rect x="10" y="88" width="12" height="24" fill="#cbd5e1" />
+              
+              <!-- Power Connector -->
+              <rect x="15" y="280" rx="3" ry="3" width="50" height="45" fill="#1e293b" />
+              <circle cx="45" cy="302" r="12" fill="#0f172a" />
+              
+              <!-- Main Chip (ATmega) -->
+              <rect x="135" y="150" rx="3" ry="3" width="26" height="110" fill="#1e293b" stroke="#0f172a" stroke-width="2" />
+              <!-- Legs of ATmega -->
+              <path d="M 130 155 h 5 M 130 165 h 5 M 130 175 h 5 M 130 185 h 5 M 130 195 h 5 M 130 205 h 5 M 130 215 h 5 M 130 225 h 5 M 130 235 h 5 M 130 245 h 5 M 130 255 h 5
+                       M 161 155 h 5 M 161 165 h 5 M 161 175 h 5 M 161 185 h 5 M 161 195 h 5 M 161 205 h 5 M 161 215 h 5 M 161 225 h 5 M 161 235 h 5 M 161 245 h 5 M 161 255 h 5" 
+                    stroke="#94a3b8" stroke-width="2" />
+              
+              <!-- Pin Headers Top (Digital) -->
+              <rect x="75" y="65" width="160" height="14" fill="#1e293b" rx="2" />
+              <g fill="#94a3b8">
+                <rect x="80" y="69" width="6" height="6" />
+                <rect x="92" y="69" width="6" height="6" />
+                <rect x="104" y="69" width="6" height="6" />
+                <rect x="116" y="69" width="6" height="6" />
+                <rect x="128" y="69" width="6" height="6" />
+                <rect x="140" y="69" width="6" height="6" />
+                <rect x="152" y="69" width="6" height="6" />
+                <rect x="164" y="69" width="6" height="6" />
+                <rect x="176" y="69" width="6" height="6" />
+                <rect x="188" y="69" width="6" height="6" />
+                <rect x="200" y="69" width="6" height="6" />
+                <rect x="212" y="69" width="6" height="6" fill="#f8fafc" stroke="#38bdf8" stroke-width="1" /> <!-- GND Pin highlighted -->
+                <rect x="224" y="69" width="6" height="6" />
+              </g>
+              <text x="145" y="90" fill="#94a3b8" font-size="8" font-family="monospace" text-anchor="middle">DIGITAL (PWM ~)</text>
+
+              <!-- Pin Headers Bottom (Power/Analog) -->
+              <rect x="75" y="341" width="160" height="14" fill="#1e293b" rx="2" />
+              <g fill="#94a3b8">
+                <rect x="80" y="345" width="6" height="6" />
+                <rect x="92" y="345" width="6" height="6" />
+                <rect x="104" y="345" width="6" height="6" />
+                <rect x="116" y="345" width="6" height="6" />
+                <rect x="128" y="345" width="6" height="6" fill="#ef4444" stroke="#f87171" stroke-width="0.5" /> <!-- 5V Pin -->
+                <rect x="140" y="345" width="6" height="6" fill="#f8fafc" stroke="#3b82f6" stroke-width="1" /> <!-- GND Pin -->
+                <rect x="152" y="345" width="6" height="6" /> <!-- GND Pin 2 -->
+                <rect x="164" y="345" width="6" height="6" />
+                <rect x="176" y="345" width="6" height="6" />
+                <rect x="200" y="345" width="6" height="6" />
+                <rect x="212" y="345" width="6" height="6" />
+                <rect x="224" y="345" width="6" height="6" />
+              </g>
+              <text x="128" y="333" fill="#ef4444" font-size="9" font-family="monospace" font-weight="bold" text-anchor="middle">5V</text>
+              <text x="146" y="333" fill="#38bdf8" font-size="9" font-family="monospace" font-weight="bold" text-anchor="middle">GND</text>
+              <text x="145" y="125" fill="#38bdf8" font-size="12" font-family="monospace" font-weight="bold">ARDUINO UNO</text>
+              
+              <!-- Power Indicator LED -->
+              <circle cx="85" cy="110" r="4" fill="#22c55e" filter="url(#glow-green)" />
+              <text x="85" y="122" fill="#94a3b8" font-size="7" font-family="monospace" text-anchor="middle">ON</text>
+            </g>
+
+            <!-- ====== BREADBOARD ====== -->
+            <g id="breadboard">
+              <!-- Breadboard Body (Vertical!) -->
+              <rect x="290" y="40" rx="14" ry="14" width="340" height="440" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="4" />
+              
+              <!-- Vertical center divider groove -->
+              <rect x="445" y="40" width="8" height="440" fill="#94a3b8" opacity="0.4" />
+              
+              <!-- Left and Right Vertical Power Rails (Swapped: Minus is outer, Plus is inner!) -->
+              <!-- Left negative blue rail line (outer) -->
+              <line x1="310" y1="55" x2="310" y2="465" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" opacity="0.8" />
+              <text x="310" y="50" fill="#3b82f6" font-size="14" font-weight="bold" font-family="monospace" text-anchor="middle">-</text>
+              <text x="310" y="478" fill="#3b82f6" font-size="14" font-weight="bold" font-family="monospace" text-anchor="middle">-</text>
+
+              <!-- Left positive red rail line (inner) -->
+              <line x1="325" y1="55" x2="325" y2="465" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" opacity="0.8" />
+              <text x="325" y="50" fill="#ef4444" font-size="12" font-weight="bold" font-family="monospace" text-anchor="middle">+</text>
+              <text x="325" y="478" fill="#ef4444" font-size="12" font-weight="bold" font-family="monospace" text-anchor="middle">+</text>
+              
+              <!-- Right positive red rail line (inner) -->
+              <line x1="545" y1="55" x2="545" y2="465" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" opacity="0.8" />
+              <text x="545" y="50" fill="#ef4444" font-size="12" font-weight="bold" font-family="monospace" text-anchor="middle">+</text>
+              <text x="545" y="478" fill="#ef4444" font-size="12" font-weight="bold" font-family="monospace" text-anchor="middle">+</text>
+
+              <!-- Right negative blue rail line (outer) -->
+              <line x1="560" y1="55" x2="560" y2="465" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" opacity="0.8" />
+              <text x="560" y="50" fill="#3b82f6" font-size="14" font-weight="bold" font-family="monospace" text-anchor="middle">-</text>
+              <text x="560" y="478" fill="#3b82f6" font-size="14" font-weight="bold" font-family="monospace" text-anchor="middle">-</text>
+
+              <!-- Main Pin Grid Holes (A-J and 1-30) will be generated by JavaScript for performance and accuracy. -->
+              <g id="breadboard-holes" fill="#0f172a"></g>
+              
+              <!-- Letters Header labels at the top (a-e, f-j) -->
+              <g fill="#475569" font-size="8" font-family="monospace" text-anchor="middle">
+                <text x="340" y="53">a</text>
+                <text x="355" y="53">b</text>
+                <text x="370" y="53">c</text>
+                <text x="385" y="53">d</text>
+                <text x="400" y="53">e</text>
+                
+                <text x="470" y="53">f</text>
+                <text x="485" y="53">g</text>
+                <text x="500" y="53">h</text>
+                <text x="515" y="53">i</text>
+                <text x="530" y="53">j</text>
+              </g>
+
+              <!-- Row Numbers labels on left and right -->
+              <g fill="#475569" font-size="8" font-family="monospace" text-anchor="middle" opacity="0.8">
+                <text x="298" y="73">1</text>
+                <text x="298" y="125">5</text>
+                <text x="298" y="190">10</text>
+                <text x="298" y="255">15</text>
+                <text x="298" y="320">20</text>
+                <text x="298" y="385">25</text>
+                <text x="298" y="450">30</text>
+              </g>
+            </g>
+
+            <!-- ====== JUMPER WIRES ====== -->
+            <g id="wires">
+              <!-- Wire 1 (Red): Arduino 5V -> Top-Left Positive Rail (Row 1) -->
+              <path id="wire-5v-main" d="M 128 345 C 110 470, 240 160, 325 70" fill="none" stroke="#ef4444" stroke-width="4.5" stroke-linecap="round" class="wire-glow" />
+              <path d="M 128 345 C 110 470, 240 160, 325 70" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" />
+              <circle cx="128" cy="345" r="3" fill="#991b1b" />
+              <circle cx="325" cy="70" r="3" fill="#991b1b" />
+
+              <!-- Wire 2 (Black): Arduino GND -> Left Negative Rail (Row 30) -->
+              <path id="wire-gnd-main" d="M 140 345 C 150 430, 260 450, 310 447" fill="none" stroke="#000000" stroke-width="5" stroke-linecap="round" class="wire-glow" />
+              <path d="M 140 345 C 150 430, 260 450, 310 447" fill="none" stroke="#1e293b" stroke-width="2.5" stroke-linecap="round" />
+              <circle cx="140" cy="345" r="3.5" fill="#1e293b" />
+              <circle cx="310" cy="447" r="3" fill="#1e293b" />
+
+              <!-- Jumper 3 (Red, direct 5V to Resistor): Left Positive Rail (Row 7) -> Row 7 Column d (Left Resistor Top) -->
+              <path id="jumper-rail-to-r7" d="M 325 148 C 340 140, 370 140, 385 148" fill="none" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round" />
+              <circle cx="325" cy="148" r="2.2" fill="#7f1d1d" />
+              <circle cx="385" cy="148" r="2.2" fill="#7f1d1d" />
+
+              <!-- Jumper 5 (Black): Green LED Cathode Row 18 Column c -> Left Negative Rail (Row 18) -->
+              <path id="jumper-ledg-to-gnd" d="M 370 291 C 355 285, 330 285, 310 291" fill="none" stroke="#000000" stroke-width="3.2" stroke-linecap="round" />
+              <circle cx="370" cy="291" r="2.2" fill="#1e293b" />
+              <circle cx="310" cy="291" r="2.2" fill="#1e293b" />
+
+              <!-- Jumper 6 (Black): Capacitor (-) Row 3 Column j -> Right Negative Rail (Row 3) -->
+              <path id="jumper-cap-to-gnd" d="M 530 96 C 540 85, 550 85, 560 96" fill="none" stroke="#000000" stroke-width="3.2" stroke-linecap="round" />
+              <circle cx="530" cy="96" r="2.2" fill="#1e293b" />
+              <circle cx="560" cy="96" r="2.2" fill="#1e293b" />
+
+              <!-- Jumper 7 (Black): Capacitor (+) Row 3 Column f -> Switch Left Row 11 Column g -->
+              <path id="jumper-cap-to-sw" d="M 470 96 C 460 120, 475 160, 485 200" fill="none" stroke="#000000" stroke-width="3.5" stroke-linecap="round" />
+              <circle cx="470" cy="96" r="2.2" fill="#1e293b" />
+              <circle cx="485" cy="200" r="2.2" fill="#1e293b" />
+
+              <!-- Jumper 8 (Black): Red LED Cathode Row 26 Column h -> Right Negative Rail (Row 26) -->
+              <path id="jumper-ledr-to-gnd" d="M 500 395 C 520 385, 540 385, 560 395" fill="none" stroke="#000000" stroke-width="3.2" stroke-linecap="round" />
+              <circle cx="500" cy="395" r="2.2" fill="#1e293b" />
+              <circle cx="560" cy="395" r="2.2" fill="#1e293b" />
+
+              <!-- Jumper 9 (Black): Bridge bottom Left Negative Rail (Row 30) to Right Negative Rail (Row 30) -->
+              <path id="jumper-bridge-gnd" d="M 310 447 C 380 470, 500 470, 560 447" fill="none" stroke="#000000" stroke-width="4" stroke-linecap="round" />
+              <circle cx="310" cy="447" r="2.2" fill="#1e293b" />
+              <circle cx="560" cy="447" r="2.2" fill="#1e293b" />
+
+              <!-- Jumper 10 (Green Dotted! - Charging line): Row 15 Column e -> Row 3 Column f (Capacitor +) -->
+              <path id="jumper-charge-green" d="M 400 252 C 420 220, 450 150, 470 96" fill="none" stroke="#10b981" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="2,3" />
+              <circle cx="400" cy="252" r="2.5" fill="#065f46" />
+              <circle cx="470" cy="96" r="2.5" fill="#065f46" />
+            </g>
+
+            <!-- ====== COMPONENT: LEFT RESISTOR (VORWIDERSTAND 2,2 kΩ) ====== -->
+            <!-- Position: Row 7 Col d to Row 15 Col d -->
+            <g id="resistor-left">
+              <!-- Metal Legs -->
+              <line x1="385" y1="148" x2="385" y2="165" stroke="#cbd5e1" stroke-width="2" />
+              <line x1="385" y1="235" x2="385" y2="252" stroke="#cbd5e1" stroke-width="2" />
+              <!-- Resistor Body (Vertical) -->
+              <rect x="376" y="165" rx="5" ry="5" width="18" height="70" fill="#f5f5dc" stroke="#92400e" stroke-width="1" />
+              <!-- Bands (Red-Red-Red-Gold = 2,2 kΩ) -->
+              <rect x="376" y="178" width="18" height="4" fill="#ef4444" />
+              <rect x="376" y="188" width="18" height="4" fill="#ef4444" />
+              <rect x="376" y="198" width="18" height="4" fill="#ef4444" />
+              <rect x="376" y="215" width="18" height="4" fill="#fbbf24" />
+              <!-- Text -->
+              <text x="365" y="205" fill="#a7f3d0" font-size="8" font-family="monospace" text-anchor="end" font-weight="bold">2.2 kΩ</text>
+            </g>
+
+            <!-- ====== COMPONENT: RIGHT RESISTOR (VORWIDERSTAND 2,2 kΩ) ====== -->
+            <!-- Position: Row 11 Col i to Row 18 Col i -->
+            <g id="resistor-right">
+              <!-- Metal Legs -->
+              <line x1="515" y1="200" x2="515" y2="215" stroke="#cbd5e1" stroke-width="2" />
+              <line x1="515" y1="275" x2="515" y2="291" stroke="#cbd5e1" stroke-width="2" />
+              <!-- Resistor Body (Vertical) -->
+              <rect x="506" y="215" rx="5" ry="5" width="18" height="60" fill="#f5f5dc" stroke="#92400e" stroke-width="1" />
+              <!-- Bands (Red-Red-Red-Gold = 2,2 kΩ) -->
+              <rect x="506" y="228" width="18" height="4" fill="#ef4444" />
+              <rect x="506" y="238" width="18" height="4" fill="#ef4444" />
+              <rect x="506" y="248" width="18" height="4" fill="#ef4444" />
+              <rect x="506" y="263" width="18" height="4" fill="#fbbf24" />
+              <!-- Text -->
+              <text x="529" y="250" fill="#fbcfe8" font-size="8" font-family="monospace" text-anchor="start" font-weight="bold">2.2 kΩ</text>
+            </g>
+
+            <!-- ====== COMPONENT: ELECTROLYTIC CAPACITOR (ELKO 470 µF) ====== -->
+            <!-- Position: Row 3 Col f (+) to Col j (-) -->
+            <g id="capacitor-container">
+              <!-- Physical Metal Legs -->
+              <path id="cap-leg-pos" d="M 490 85 C 490 92, 470 90, 470 96" fill="none" stroke="#cbd5e1" stroke-width="2.5" stroke-linecap="round" />
+              <path id="cap-leg-neg" d="M 510 85 C 510 92, 530 90, 530 96" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" />
+
+              <!-- Main Capacitor Can Body (Animated with JS) -->
+              <rect id="cap-body" x="482" y="15" rx="4" ry="4" width="36" height="70" fill="url(#cap-body-grad)" stroke="#0f172a" stroke-width="1.5" />
+              
+              <!-- Charge Level indicator bar inside capacitor (Animated height) -->
+              <rect id="cap-charge-bar" x="485" y="18" width="30" height="0" fill="url(#cap-charge-grad)" opacity="0.85" rx="1" />
+              
+              <!-- Silver Top Cap -->
+              <rect id="cap-top" x="482" y="11" rx="2" ry="2" width="36" height="7" fill="#cbd5e1" stroke="#475569" stroke-width="1" />
+              
+              <!-- Minus Stripe (Polarity indicator) -->
+              <rect id="cap-stripe" x="506" y="18" width="10" height="64" fill="#94a3b8" opacity="0.6" />
+              <!-- Minus symbols inside strip -->
+              <g id="cap-minus-symbols" fill="#0f172a" font-size="10" font-family="monospace" font-weight="bold" text-anchor="middle">
+                <text x="511" y="31">-</text>
+                <text x="511" y="48">-</text>
+                <text x="511" y="65">-</text>
+                <text x="511" y="79">-</text>
+              </g>
+
+              <!-- Capacity Label Text Overlay (Rotated sideways on the Elko or above) -->
+              <text id="cap-capacity-text" x="500" y="5" fill="#38bdf8" font-size="10" font-family="monospace" font-weight="bold" text-anchor="middle">470 µF</text>
+              <!-- Polarity Marks -->
+              <text x="473" y="35" fill="#ef4444" font-size="11" font-weight="bold" font-family="monospace">+</text>
+              <text x="522" y="35" fill="#3b82f6" font-size="12" font-weight="bold" font-family="monospace">-</text>
+            </g>
+
+            <!-- ====== COMPONENT: TACTILE PUSH BUTTON ====== -->
+            <!-- Position: Centered at Row 11 Col h (Pins on Left/Right at Col g and i) -->
+            <g id="tactile-switch" class="click-target" onclick="toggleSwitchPhysically()">
+              <!-- Switch Body Housing (Dark Grey Square) -->
+              <rect x="485" y="185" rx="3" ry="3" width="30" height="30" fill="#334155" stroke="#1e293b" stroke-width="1.5" />
+              <!-- Metal Trim Rings -->
+              <circle cx="500" cy="200" r="11" fill="#475569" />
+              <circle cx="500" cy="200" r="9" fill="#1e293b" />
+              <!-- Red/Bronze round push actuator button (ANIMATED: translates slightly in CSS on click) -->
+              <circle id="switch-actuator" cx="500" cy="200" r="6" fill="#f59e0b" stroke="#b45309" stroke-width="1.5" class="switch-button" />
+              
+              <!-- Pins (plugged into Left Row 11 Col g and Right Row 11 Col i) -->
+              <line x1="480" y1="200" x2="485" y2="200" stroke="#94a3b8" stroke-width="2" />
+              <line x1="515" y1="200" x2="520" y2="200" stroke="#94a3b8" stroke-width="2" />
+              
+              <!-- Switch Label text -->
+              <text x="500" y="178" fill="#f59e0b" font-size="8" font-family="monospace" font-weight="bold" text-anchor="middle">TASTER</text>
+            </g>
+
+            <!-- ====== COMPONENT: GREEN LED (LED LADEN) ====== -->
+            <!-- Position: Row 15 Col c to Row 18 Col c -->
+            <g id="led-green-group">
+              <!-- Solid Near-Black Outline for Absolute Contrast against White Board -->
+              <path d="M 370 252 C 370 260, 366 262, 366 271" fill="none" stroke="#0f172a" stroke-width="6.5" stroke-linecap="round" />
+              <path d="M 370 291 C 370 282, 374 280, 374 271" fill="none" stroke="#0f172a" stroke-width="6.5" stroke-linecap="round" />
+
+              <!-- Core Polished Silver/White Wire -->
+              <path d="M 370 252 C 370 260, 366 262, 366 271" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+              <path d="M 370 291 C 370 282, 374 280, 374 271" fill="none" stroke="#f1f5f9" stroke-width="3" stroke-linecap="round" />
+
+              <!-- Metal Pin heads at insertion points (plugged in look) -->
+              <circle cx="370" cy="252" r="3.5" fill="#475569" stroke="#0f172a" stroke-width="1" />
+              <circle cx="370" cy="291" r="3.5" fill="#475569" stroke="#0f172a" stroke-width="1" />
+
+              <!-- LED Glow Background Gradient Radial -->
+              <circle id="led-g-radial-glow" cx="370" cy="258" r="40" fill="url(#led-green-glow-radial)" opacity="0" filter="url(#glow-led)" />
+
+              <!-- LED Plastic Dome Base Ring -->
+              <ellipse cx="370" cy="271" rx="12" ry="3.5" fill="#047857" stroke="#065f46" stroke-width="1" />
+
+              <!-- LED Plastic Dome Body (Off State) -->
+              <path id="led-g-dome-off" d="M 358 271 a 12 12 0 0 1 24 0 v 1 z" fill="#10b981" opacity="0.3" stroke="#047857" stroke-width="1" />
+              
+              <!-- LED Plastic Dome Body (On/Glow State) -->
+              <path id="led-g-dome-on" d="M 358 271 a 12 12 0 0 1 24 0 v 1 z" fill="#a7f3d0" filter="url(#glow-green)" opacity="0" />
+
+              <!-- Label text -->
+              <text x="370" y="243" fill="#a7f3d0" font-size="9" font-family="monospace" font-weight="bold" text-anchor="middle">LADEN (GRÜN)</text>
+              <!-- Dotted helper arrow for Charging path -->
+              <path d="M 405 240 Q 425 240 435 240" fill="none" stroke="#10b981" stroke-width="1.5" stroke-dasharray="2,2" opacity="0.6" />
+              <text x="413" y="235" fill="#10b981" font-size="7" font-family="monospace">lädt sich auf</text>
+            </g>
+
+            <!-- ====== COMPONENT: RED LED (LED ENTLADEN) ====== -->
+            <!-- Position: Row 18 Col h to Row 26 Col h -->
+            <g id="led-red-group">
+              <!-- Solid Near-Black Outline for Absolute Contrast against White Board -->
+              <path d="M 500 291 C 500 310, 496 320, 496 343" fill="none" stroke="#0f172a" stroke-width="6.5" stroke-linecap="round" />
+              <path d="M 500 395 C 500 375, 504 365, 504 343" fill="none" stroke="#0f172a" stroke-width="6.5" stroke-linecap="round" />
+
+              <!-- Core Polished Silver/White Wire -->
+              <path d="M 500 291 C 500 310, 496 320, 496 343" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+              <path d="M 500 395 C 500 375, 504 365, 504 343" fill="none" stroke="#f1f5f9" stroke-width="3" stroke-linecap="round" />
+
+              <!-- Metal Pin heads at insertion points -->
+              <circle cx="500" cy="291" r="3.5" fill="#475569" stroke="#0f172a" stroke-width="1" />
+              <circle cx="500" cy="395" r="3.5" fill="#475569" stroke="#0f172a" stroke-width="1" />
+
+              <!-- LED Glow Background Gradient Radial -->
+              <circle id="led-r-radial-glow" cx="500" cy="330" r="40" fill="url(#led-red-glow-radial)" opacity="0" filter="url(#glow-led)" />
+
+              <!-- LED Plastic Dome Base Ring -->
+              <ellipse cx="500" cy="343" rx="12" ry="3.5" fill="#991b1b" stroke="#7f1d1d" stroke-width="1" />
+
+              <!-- LED Plastic Dome Body (Off State) -->
+              <path id="led-r-dome-off" d="M 488 343 a 12 12 0 0 1 24 0 v 1 z" fill="#ef4444" opacity="0.3" stroke="#991b1b" stroke-width="1" />
+              
+              <!-- LED Plastic Dome Body (On/Glow State) -->
+              <path id="led-r-dome-on" d="M 488 343 a 12 12 0 0 1 24 0 v 1 z" fill="#fca5a5" filter="url(#glow-red)" opacity="0" />
+
+              <!-- Label text -->
+              <text x="500" y="315" fill="#fca5a5" font-size="9" font-family="monospace" font-weight="bold" text-anchor="middle">ENTLADEN (ROT)</text>
+              <!-- Dashed helper arrow for Discharging path -->
+              <path d="M 465 310 Q 450 310 440 310" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="2,2" opacity="0.6" />
+              <text x="458" y="305" fill="#ef4444" font-size="7" font-family="monospace" text-anchor="end">entlädt sich</text>
+            </g>
+
+            <!-- ====== INVISIBLE HELPER PATHS FOR PARTICLES ====== -->
+            <g opacity="0" fill="none">
+              <!-- Charging Loop Path 1: Arduino 5V -> Resistor left -> Green LED -> GND -->
+              <path id="path-charge-main" d="M 128 345 C 110 470, 240 160, 325 70 L 325 148 C 340 140, 370 140, 385 148 L 385 252 L 370 252 C 370 260, 366 262, 366 271 L 370 291 C 355 285, 330 285, 310 291 L 310 447 C 260 450, 150 430, 140 345" />
+              
+              <!-- Charging Loop Path 2: Splitting from Node 15 Left -> Green Wire -> Capacitor -> GND -->
+              <path id="path-charge-branch" d="M 385 252 L 400 252 C 420 220, 450 150, 470 96 H 530 L 530 96 C 540 85, 550 85, 560 96 L 560 447 C 500 470, 380 470, 310 447 C 260 450, 150 430, 140 345" />
+
+              <!-- Discharging Loop Path: Capacitor (+) -> Switch -> Resistor Right -> Red LED -> GND -> Capacitor (-) -->
+              <path id="path-discharge-loop" d="M 470 96 C 460 120, 475 160, 485 200 L 515 200 L 515 291 L 500 291 C 500 310, 496 320, 496 343 C 496 355, 500 375, 500 395 C 520 385, 540 385, 560 395 L 560 96 C 545 85, 540 85, 530 96 L 470 96 Z" />
+            </g>
+
+            <!-- ====== ELECTRON PARTICLES CONTAINER ====== -->
+            <g id="particles-container"></g>
+          </svg>
+        </div>
+
+        <!-- Buttons Controls -->
+        <div class="controls">
+          <button id="btn-toggle" class="btn btn-toggle-switch" onclick="toggleMainSwitchState()">
+            🔌 Schalter loslassen (Laden)
+          </button>
+        </div>
+
+        <!-- Capacitor Capacity Slider -->
+        <div class="slider-container">
+          <div class="slider-header">
+            <span class="slider-label">💾 Kapazität des Kondensators:</span>
+            <span id="slider-value-display" class="slider-value">Mittel (470 µF)</span>
+          </div>
+          <input type="range" id="capacity-slider" class="range-slider" min="1" max="3" value="2" oninput="changeCapacity(this.value)">
+          <div class="slider-ticks">
+            <span>Klein (100 µF)</span>
+            <span>Mittel (470 µF)</span>
+            <span>Riesig (1000 µF)</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COL: Oscilloscope & Explanation -->
+      <div style="display:flex; flex-direction:column; gap:1.5rem;">
+        
+        <!-- Live Graph (Oszilloskop) -->
+        <div class="glass-card oscilloscope-card">
+          <div class="card-title">
+            <span>📈 Live-Scope (Spannung)</span>
+          </div>
+          <div class="canvas-container">
+            <div class="scope-overlay">CH1: ELKO SPANNUNG (5.0V/DIV)<br>TIMEBASE: AUTO</div>
+            <div id="scope-voltage-value" class="scope-voltage-text">0.00 V</div>
+            <canvas id="oscilloscope-canvas"></canvas>
+          </div>
+          
+          <!-- Live Status Explanation Text (Updates with status) -->
+          <div id="live-status" class="live-status-panel idle">
+            Kondensator lädt... Die grüne LED leuchtet!
+          </div>
+        </div>
+
+        <!-- Interactive Explainers (Water Analogy) -->
+        <div class="glass-card">
+          <div class="card-title">
+            <span>💡 Die Wasser-Analogie</span>
+          </div>
+          <div class="analogy-section">
+            <div class="analogy-tabs">
+              <button class="tab-btn active" onclick="switchTab(0, this)">Kondensator</button>
+              <button class="tab-btn" onclick="switchTab(1, this)">LEDs</button>
+              <button class="tab-btn" onclick="switchTab(2, this)">Widerstand</button>
+              <button class="tab-btn" onclick="switchTab(3, this)">Arduino</button>
+            </div>
+            
+            <div id="tab-0" class="tab-content active">
+              <div class="analogy-box">
+                <div class="analogy-icon">🪣</div>
+                <div class="analogy-text">
+                  <h4>Kondensator = Wassereimer</h4>
+                  <p>Er speichert die elektrische Ladung. Je größer die Kapazität (µF), desto größer ist der Eimer und desto mehr Wasser (Strom) kann er aufnehmen und wieder abgeben!</p>
+                  <p style="margin-top: 0.5rem; font-size: 0.85rem; color: #38bdf8; border-top: 1px solid rgba(56, 189, 248, 0.2); padding-top: 0.5rem;">
+                    🔌 <strong>Labor-Tipp zur Polung:</strong> Am echten Bauteil erkennst du den Pluspol am <strong>längeren Beinchen</strong>. Das <strong>kürzere Beinchen</strong> ist der Minuspol (zudem ist diese Seite auf dem Gehäuse mit einem grauen Streifen markiert)!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div id="tab-1" class="tab-content">
+              <div class="analogy-box">
+                <div class="analogy-icon">🎡</div>
+                <div class="analogy-text">
+                  <h4>LEDs = Wasserräder</h4>
+                  <p>In unserem Experiment haben wir zwei Wasserräder: Das <strong>grüne LED-Rad</strong> dreht sich, während die Pumpe Wasser in den Eimer drückt. Das <strong>rote LED-Rad</strong> dreht sich nur, wenn wir per Taster den Eimer direkt entladen.</p>
+                </div>
+              </div>
+            </div>
+
+            <div id="tab-2" class="tab-content">
+              <div class="analogy-box">
+                <div class="analogy-icon">🔀</div>
+                <div class="analogy-text">
+                  <h4>Widerstand = Engstelle im Rohr</h4>
+                  <p>Ein extrem wichtiger Schutz! Das Rohr wird verengt, damit nicht das ganze Wasser auf einmal durch die empfindlichen LED-Wasserräder schießt und sie zerstört. Er bremst die Elektronen auf ein sicheres Tempo.</p>
+                </div>
+              </div>
+            </div>
+
+            <div id="tab-3" class="tab-content">
+              <div class="analogy-box">
+                <div class="analogy-icon">🔌</div>
+                <div class="analogy-text">
+                  <h4>Arduino = Starke Wasserpumpe</h4>
+                  <p>Das Arduino-Board liefert einen konstanten Druck (5 Volt Spannung). Sie pumpt die Elektronen im Ladekreis kraftvoll über den linken Widerstand in den Elko hinein, bis dieser voll ist.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div> <!-- End Lab Grid -->
+
+    <!-- Quiz Section (Gamified) -->
+    <div class="glass-card quiz-card" style="margin-top:0.5rem;">
+      <div class="card-title">
+        <span>🏆 Wissenstest (Quiz)</span>
+        <span id="quiz-score" style="margin-left:auto; font-size:0.95rem; color:var(--color-cyan); font-weight:bold;">Punkte: 0/3</span>
+      </div>
+      
+      <div class="quiz-progress-bar">
+        <div id="step-0" class="quiz-step active"></div>
+        <div id="step-1" class="quiz-step"></div>
+        <div id="step-2" class="quiz-step"></div>
+      </div>
+
+      <div id="quiz-question-container">
+        <!-- Will be filled by JS -->
+        <p class="quiz-question" id="quiz-question">Frage lädt...</p>
+        <div class="quiz-options" id="quiz-options">
+          <!-- Options go here -->
+        </div>
+        <div id="quiz-feedback" class="quiz-feedback">Feedback</div>
+        <button id="quiz-next-btn" class="btn quiz-next-btn" style="display:none;" onclick="nextQuestion()">Nächste Frage ➔</button>
+      </div>
+
+      <div id="quiz-result-container" style="display:none; text-align:center; padding:1rem 0;">
+        <h2 style="font-size:2rem; margin-bottom:0.5rem;">🎓 Quiz beendet!</h2>
+        <p id="quiz-final-text" style="color:var(--text-muted); font-size:1.1rem; margin-bottom:1.5rem;">Dein Ergebnis lädt...</p>
+        <button class="btn btn-charge" style="margin: 0 auto; display:inline-flex;" onclick="resetQuiz()">Wiederholen 🔄</button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>Entwickelt mit ❤️ für junge Entdecker. Elektronik macht Spaß! &copy; 2026</p>
+    </footer>
+
+  </div>
+
+  <!-- Confetti Canvas overlay -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- JavaScript logic -->
+  <script {nonce}>
+    // ====== SIMULATION STATE VARIABLES ======
+    let switchState = 'charging'; // Default charging mode
+    let capVoltage = 0.0;         // Current Capacitor Voltage (0V - 5V)
+    let selectedCapacity = 470;     // 100, 470, 1000 µF
+    let C_factor = 3.5;           // Speed factor for charging/discharging math
+    
+    // Dynamic particles list
+    let particles = [];
+    const MAX_PARTICLES_CHARGE = 12;
+    const MAX_PARTICLES_DISCHARGE = 16;
+    
+    // SVG References
+    const svg = document.getElementById('circuit-svg');
+    const switchActuator = document.getElementById('switch-actuator');
+    const capBody = document.getElementById('cap-body');
+    const capChargeBar = document.getElementById('cap-charge-bar');
+    const capTop = document.getElementById('cap-top');
+    const capStripe = document.getElementById('cap-stripe');
+    const capMinusSymbols = document.getElementById('cap-minus-symbols');
+    const capCapacityText = document.getElementById('cap-capacity-text');
+    
+    // LED glows
+    const ledG_radialGlow = document.getElementById('led-g-radial-glow');
+    const ledG_domeOn = document.getElementById('led-g-dome-on');
+    const ledR_radialGlow = document.getElementById('led-r-radial-glow');
+    const ledR_domeOn = document.getElementById('led-r-dome-on');
+    
+    const particlesContainer = document.getElementById('particles-container');
+    const liveStatusText = document.getElementById('live-status');
+    const scopeVoltageDisplay = document.getElementById('scope-voltage-value');
+    
+    // Oscilloscope settings
+    const canvas = document.getElementById('oscilloscope-canvas');
+    const ctx = canvas.getContext('2d');
+    let scopeHistory = [];
+    const maxHistoryPoints = 160;
+    let lastHistoryUpdate = 0;
+    
+    // Physics Delta Time tracking
+    let lastTime = performance.now();
+
+    // ====== BREADBOARD HOLE GENERATION ======
+    function generateBreadboardHoles() {
+      const holesGroup = document.getElementById('breadboard-holes');
+      let holesHTML = '';
+      
+      const leftColStart = 340;
+      const rightColStart = 470;
+      const colStep = 15;
+      const numColsHalf = 5;
+      const rowStep = 13;
+      const numRows = 30;
+      const rowStart = 70;
+      
+      // Draw grid holes
+      for (let r = 0; r < numRows; r++) {
+        const y = rowStart + r * rowStep;
+        
+        // Left side holes (a, b, c, d, e)
+        for (let c = 0; c < numColsHalf; c++) {
+          const x = leftColStart + c * colStep;
+          holesHTML += `<circle cx="${x}" cy="${y}" r="2.1" opacity="0.85" />`;
+        }
+        // Right side holes (f, g, h, i, j)
+        for (let c = 0; c < numColsHalf; c++) {
+          const x = rightColStart + c * colStep;
+          holesHTML += `<circle cx="${x}" cy="${y}" r="2.1" opacity="0.85" />`;
+        }
+      }
+      
+      // Left power rails (- and +) holes
+      for (let r = 0; r < numRows; r += 2) {
+        const y = rowStart + r * rowStep;
+        holesHTML += `<circle cx="310" cy="${y}" r="2.3" fill="#0f172a" />`; // - (Blue, outer)
+        holesHTML += `<circle cx="325" cy="${y}" r="2.3" fill="#0f172a" />`; // + (Red, inner)
+      }
+
+      // Right power rails (+ and -) holes
+      for (let r = 0; r < numRows; r += 2) {
+        const y = rowStart + r * rowStep;
+        holesHTML += `<circle cx="545" cy="${y}" r="2.3" fill="#0f172a" />`; // + (Red, inner)
+        holesHTML += `<circle cx="560" cy="${y}" r="2.3" fill="#0f172a" />`; // - (Blue, outer)
+      }
+      
+      holesGroup.innerHTML = holesHTML;
+    }
+
+    // ====== MAIN STATE CONTROLLER ======
+    function setSwitchState(state) {
+      switchState = state;
+      
+      // Update toggle button text and color scheme
+      const btn = document.getElementById('btn-toggle');
+      if (switchState === 'charging') {
+        btn.innerText = "🔌 Schalter loslassen (Laden)";
+        btn.className = "btn btn-toggle-switch";
+        switchActuator.classList.remove('pressed');
+      } else {
+        btn.innerText = "🚨 Schalter gedrückt (Entladen)";
+        btn.className = "btn btn-toggle-switch discharging";
+        switchActuator.classList.add('pressed');
+      }
+      
+      initializeParticles();
+    }
+
+    function toggleMainSwitchState() {
+      if (switchState === 'charging') {
+        setSwitchState('discharging');
+      } else {
+        setSwitchState('charging');
+      }
+    }
+
+    // Direct click handler on the tactile button in the SVG
+    function toggleSwitchPhysically() {
+      toggleMainSwitchState();
+    }
+
+    // ====== DYNAMIC COMPONENT SIZE CHANGER ======
+    function changeCapacity(value) {
+      const idx = parseInt(value);
+      if (idx === 1) {
+        selectedCapacity = 100;
+        C_factor = 0.8;
+        document.getElementById('slider-value-display').innerText = "Klein (100 µF)";
+        capCapacityText.textContent = "100 µF";
+        
+        // Redraw SVG dimensions for small Elko
+        capBody.setAttribute('width', '24');
+        capBody.setAttribute('height', '50');
+        capBody.setAttribute('x', '488');
+        capBody.setAttribute('y', '35');
+        
+        capTop.setAttribute('width', '24');
+        capTop.setAttribute('height', '5');
+        capTop.setAttribute('x', '488');
+        capTop.setAttribute('y', '32');
+        
+        capStripe.setAttribute('width', '7');
+        capStripe.setAttribute('height', '45');
+        capStripe.setAttribute('x', '504');
+        capStripe.setAttribute('y', '38');
+        
+        capMinusSymbols.innerHTML = `
+          <text x="507" y="47" font-size="7">-</text>
+          <text x="507" y="59" font-size="7">-</text>
+          <text x="507" y="71" font-size="7">-</text>
+        `;
+        capCapacityText.setAttribute('y', '25');
+      } else if (idx === 2) {
+        selectedCapacity = 470;
+        C_factor = 3.5;
+        document.getElementById('slider-value-display').innerText = "Mittel (470 µF)";
+        capCapacityText.textContent = "470 µF";
+        
+        // Redraw SVG dimensions for medium Elko
+        capBody.setAttribute('width', '36');
+        capBody.setAttribute('height', '70');
+        capBody.setAttribute('x', '482');
+        capBody.setAttribute('y', '15');
+        
+        capTop.setAttribute('width', '36');
+        capTop.setAttribute('height', '7');
+        capTop.setAttribute('x', '482');
+        capTop.setAttribute('y', '11');
+        
+        capStripe.setAttribute('width', '10');
+        capStripe.setAttribute('height', '64');
+        capStripe.setAttribute('x', '506');
+        capStripe.setAttribute('y', '18');
+        
+        capMinusSymbols.innerHTML = `
+          <text x="511" y="31">-</text>
+          <text x="511" y="48">-</text>
+          <text x="511" y="65">-</text>
+          <text x="511" y="79">-</text>
+        `;
+        capCapacityText.setAttribute('y', '5');
+      } else {
+        selectedCapacity = 1000;
+        C_factor = 8.0;
+        document.getElementById('slider-value-display').innerText = "Riesig (1000 µF)";
+        capCapacityText.textContent = "1000 µF";
+        
+        // Redraw SVG dimensions for giant Elko
+        capBody.setAttribute('width', '46');
+        capBody.setAttribute('height', '90');
+        capBody.setAttribute('x', '477');
+        capBody.setAttribute('y', '-5');
+        
+        capTop.setAttribute('width', '46');
+        capTop.setAttribute('height', '9');
+        capTop.setAttribute('x', '477');
+        capTop.setAttribute('y', '-11');
+        
+        capStripe.setAttribute('width', '12');
+        capStripe.setAttribute('height', '84');
+        capStripe.setAttribute('x', '509');
+        capStripe.setAttribute('y', '-2');
+        
+        capMinusSymbols.innerHTML = `
+          <text x="515" y="12">-</text>
+          <text x="515" y="32">-</text>
+          <text x="515" y="52">-</text>
+          <text x="515" y="72">-</text>
+          <text x="515" y="81">-</text>
+        `;
+        capCapacityText.setAttribute('y', '-16');
+      }
+      
+      updateLiveStatusDescription();
+      initializeParticles();
+    }
+
+    // ====== ELECTRON FLOW SIMULATION (PARTICLES ENGINE) ======
+    const pathChargeMain = document.getElementById('path-charge-main');
+    const pathChargeBranch = document.getElementById('path-charge-branch');
+    const pathDischargeLoop = document.getElementById('path-discharge-loop');
+
+    function initializeParticles() {
+      particlesContainer.innerHTML = '';
+      particles = [];
+      
+      if (switchState === 'charging') {
+        // Main Loop: Red resistor to green LED path
+        for (let i = 0; i < MAX_PARTICLES_CHARGE; i++) {
+          const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          circle.setAttribute("r", "3.0");
+          circle.setAttribute("fill", "var(--color-cyan)");
+          circle.setAttribute("filter", "url(#glow-cyan)");
+          circle.setAttribute("class", "electron");
+          particlesContainer.appendChild(circle);
+          
+          particles.push({
+            element: circle,
+            path: pathChargeMain,
+            progress: i / MAX_PARTICLES_CHARGE,
+            type: 'charge-main'
+          });
+        }
+        
+        // Branch Loop: Red resistor split into Capacitor path
+        for (let i = 0; i < MAX_PARTICLES_CHARGE; i++) {
+          const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          circle.setAttribute("r", "3.0");
+          circle.setAttribute("fill", "var(--color-cyan)");
+          circle.setAttribute("filter", "url(#glow-cyan)");
+          circle.setAttribute("class", "electron");
+          particlesContainer.appendChild(circle);
+          
+          particles.push({
+            element: circle,
+            path: pathChargeBranch,
+            progress: i / MAX_PARTICLES_CHARGE,
+            type: 'charge-branch'
+          });
+        }
+      } else if (switchState === 'discharging') {
+        // Complete Discharge Loop (Right side: Elko -> switch -> resistor -> LED)
+        for (let i = 0; i < MAX_PARTICLES_DISCHARGE; i++) {
+          const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          circle.setAttribute("r", "3.3");
+          circle.setAttribute("fill", "var(--color-orange)");
+          circle.setAttribute("filter", "url(#glow-orange)");
+          circle.setAttribute("class", "electron");
+          particlesContainer.appendChild(circle);
+          
+          particles.push({
+            element: circle,
+            path: pathDischargeLoop,
+            progress: i / MAX_PARTICLES_DISCHARGE,
+            type: 'discharge'
+          });
+        }
+      }
+    }
+
+    function updateParticles(currentFlowRate) {
+      if (particles.length === 0) return;
+      
+      particles.forEach(p => {
+        let deltaSpeed = 0;
+        
+        if (p.type === 'charge-main') {
+          // Green LED loop flows constantly during active supply
+          deltaSpeed = 0.006;
+        } else if (p.type === 'charge-branch') {
+          // Branch to Elko slows down and stops as Cap gets full!
+          deltaSpeed = currentFlowRate * 0.012;
+        } else {
+          // Discharge flows along the exponential curve
+          const baseline = currentFlowRate > 0.02 ? 0.003 : 0;
+          deltaSpeed = (currentFlowRate * 0.45 + baseline) * 0.012;
+        }
+        
+        p.progress += deltaSpeed;
+        if (p.progress > 1.0) {
+          p.progress -= 1.0;
+        }
+        
+        try {
+          const pathLength = p.path.getTotalLength();
+          const point = p.path.getPointAtLength(p.progress * pathLength);
+          p.element.setAttribute("cx", point.x);
+          p.element.setAttribute("cy", point.y);
+          
+          // Adjust transparency
+          if (p.type === 'charge-branch') {
+            p.element.setAttribute("opacity", Math.min(1, currentFlowRate * 3.0).toString());
+          } else if (p.type === 'discharge') {
+            p.element.setAttribute("opacity", Math.min(1, currentFlowRate * 2.5).toString());
+          } else {
+            p.element.setAttribute("opacity", "0.85");
+          }
+        } catch (e) {
+          // Fallback
+        }
+      });
+    }
+
+    // ====== REAL-TIME MATHEMATICAL SIMULATION TOCK ======
+    function runSimulationStep(time) {
+      const dt = (time - lastTime) / 1000.0; // In seconds
+      lastTime = time;
+      
+      // Bound delta time
+      const dtClamped = Math.min(dt, 0.1);
+      
+      let currentFlow = 0;
+      
+      if (switchState === 'charging') {
+        // Charging: dV = (5V - V) * (dt / RC)
+        const RC = C_factor * 0.35; 
+        const dV = (5.0 - capVoltage) * (dtClamped / RC);
+        capVoltage += dV;
+        if (capVoltage > 4.98) capVoltage = 5.0;
+        
+        // Charging current
+        currentFlow = (5.0 - capVoltage) / 5.0;
+        
+      } else if (switchState === 'discharging') {
+        // Discharging: dV = (0.0 - V) * (dt / RC)
+        const RC = C_factor * 1.5;
+        const dV = (0.0 - capVoltage) * (dtClamped / RC);
+        capVoltage += dV;
+        if (capVoltage < 0.02) capVoltage = 0.0;
+        
+        // Discharging current
+        currentFlow = capVoltage / 5.0;
+      }
+      
+      // ====== DYNAMIC LED BRIGHTNESS ======
+      let ledGBrightness = 0.0;
+      let ledRBrightness = 0.0;
+      
+      if (switchState === 'charging') {
+        // Green charging LED is ON while supply is attached.
+        // It flickers slightly brighter during maximum current flow at the start of charge.
+        ledGBrightness = 0.4 + (currentFlow * 0.6);
+        ledRBrightness = 0.0;
+      } else {
+        // Red discharging LED flashes as capacitor empties.
+        // Realistically doesn't conduct below its forward voltage (~1.8V).
+        ledGBrightness = 0.0;
+        if (capVoltage > 1.8) {
+          const norm = (capVoltage - 1.8) / (5.0 - 1.8);
+          ledRBrightness = Math.pow(norm, 0.7); // scale for initial peak
+        } else {
+          ledRBrightness = 0.0;
+        }
+      }
+      
+      // Apply LED glows
+      ledG_radialGlow.setAttribute('opacity', (ledGBrightness * 0.9).toString());
+      ledG_domeOn.setAttribute('opacity', ledGBrightness.toString());
+      
+      ledR_radialGlow.setAttribute('opacity', (ledRBrightness * 0.9).toString());
+      ledR_domeOn.setAttribute('opacity', ledRBrightness.toString());
+      
+      // Update Capacitor internal charge bar visual height
+      const yMax = parseFloat(capBody.getAttribute('y'));
+      const hMax = parseFloat(capBody.getAttribute('height'));
+      const fillPercent = capVoltage / 5.0;
+      const barHeight = (hMax - 6) * fillPercent;
+      
+      capChargeBar.setAttribute('height', barHeight.toString());
+      // Grow upwards from bottom
+      capChargeBar.setAttribute('y', (yMax + hMax - 3 - barHeight).toString());
+      // Update bar width matching body
+      capChargeBar.setAttribute('width', (parseFloat(capBody.getAttribute('width')) - 6).toString());
+      capChargeBar.setAttribute('x', (parseFloat(capBody.getAttribute('x')) + 3).toString());
+
+      // Update particle flows
+      updateParticles(currentFlow);
+      
+      // Update Oscilloscope Screen history values
+      const now = performance.now();
+      if (now - lastHistoryUpdate > 40) { 
+        scopeHistory.push(capVoltage);
+        if (scopeHistory.length > maxHistoryPoints) {
+          scopeHistory.shift();
+        }
+        lastHistoryUpdate = now;
+      }
+      
+      // Render components
+      drawOscilloscope();
+      updateLiveTexts();
+      
+      requestAnimationFrame(runSimulationStep);
+    }
+
+    // ====== DIGITAL VOLTMETER & EXPLAINERS OVERLAYS ======
+    function updateLiveTexts() {
+      // Voltage digital readout
+      scopeVoltageDisplay.textContent = capVoltage.toFixed(2) + " V";
+      scopeVoltageDisplay.className = "scope-voltage-text " + (switchState === 'discharging' ? 'discharging' : '');
+      
+      updateLiveStatusDescription();
+    }
+
+    function updateLiveStatusDescription() {
+      let descHTML = "";
+      
+      if (switchState === 'charging') {
+        if (capVoltage >= 4.95) {
+          descHTML = `🔋 <strong>Elko geladen (5.00 V)!</strong> Der Kondensator ist voll. Es fließt kein Ladestrom mehr in den Speicher, aber die <strong>grüne LED</strong> leuchtet weiter, da die 5V-Versorgung anliegt. Klicke auf <strong>"Taster drücken"</strong> zum Entladen!`;
+          liveStatusText.className = "live-status-panel active";
+        } else {
+          descHTML = `⚡ <strong>Kondensator lädt auf... (${((capVoltage/5)*100).toFixed(0)}%)</strong>. Die Elektronen fließen durch die <strong>grüne LED</strong> und füllen den Kondensator auf. Der Elko füllt sich wie ein kleiner Wassertank!`;
+          liveStatusText.className = "live-status-panel active";
+        }
+      } else if (switchState === 'discharging') {
+        if (capVoltage <= 0.02) {
+          descHTML = `📉 <strong>Elko komplett leer!</strong> Die Energie ist verbraucht. Die rote LED ist aus. Lass den Taster wieder los (Klick auf <strong>"Schalter loslassen"</strong>), um den Ladevorgang neu zu starten!`;
+          liveStatusText.className = "live-status-panel idle";
+        } else if (capVoltage < 1.8) {
+          descHTML = `⏳ <strong>Fast leer (${capVoltage.toFixed(2)}V)</strong>. Die Spannung ist unter die Schwellenspannung der roten LED (ca. 1.8V) gesunken. Die LED erlischt, obwohl noch eine kleine Restladung im Eimer ist.`;
+          liveStatusText.className = "live-status-panel discharging";
+        } else {
+          descHTML = `🚨 <strong>Entladevorgang läuft!</strong> Der Taster trennt den Ladekreis und schließt den Entladekreis. Der Elko wirkt wie eine Batterie und lässt die <strong>rote LED</strong> hell aufblitzen, die dann langsam verblasst.`;
+          liveStatusText.className = "live-status-panel discharging";
+        }
+      }
+      
+      liveStatusText.innerHTML = descHTML;
+    }
+
+    // ====== OSCILLOSCOPE DRAWING ======
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+
+    function drawOscilloscope() {
+      const width = canvas.width;
+      const height = canvas.height;
+      
+      // Clear screen
+      ctx.fillStyle = '#040712';
+      ctx.fillRect(0, 0, width, height);
+      
+      // Draw Grid Lines (10x6)
+      ctx.strokeStyle = 'rgba(51, 65, 85, 0.2)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([4, 4]);
+      
+      const cols = 10;
+      for (let i = 1; i < cols; i++) {
+        const x = (width / cols) * i;
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      
+      const rows = 6;
+      for (let i = 1; i < rows; i++) {
+        const y = (height / rows) * i;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+      ctx.setLineDash([]); // Reset
+      
+      // Draw Voltage Curve Line
+      if (scopeHistory.length < 2) return;
+      
+      ctx.beginPath();
+      ctx.lineWidth = 3.5;
+      
+      // Glow colors match action
+      if (switchState === 'charging') {
+        ctx.strokeStyle = 'var(--color-green)';
+        ctx.shadowColor = 'var(--color-green)';
+      } else if (switchState === 'discharging') {
+        ctx.strokeStyle = 'var(--color-red)';
+        ctx.shadowColor = 'var(--color-red)';
+      } else {
+        ctx.strokeStyle = '#64748b';
+        ctx.shadowColor = 'rgba(100, 116, 139, 0.5)';
+      }
+      ctx.shadowBlur = 10;
+      
+      const yMargin = 15;
+      const usableHeight = height - 2 * yMargin;
+      
+      for (let i = 0; i < scopeHistory.length; i++) {
+        const x = (width / maxHistoryPoints) * i;
+        const v = scopeHistory[i];
+        const y = height - yMargin - (v / 5.0) * usableHeight;
+        
+        if (i === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      }
+      ctx.stroke();
+      ctx.shadowBlur = 0; // Reset
+      
+      // Draw live pulsing pointer on the edge of the graph
+      if (scopeHistory.length > 0) {
+        const lastIdx = scopeHistory.length - 1;
+        const pointerX = (width / maxHistoryPoints) * lastIdx;
+        const pointerY = height - yMargin - (scopeHistory[lastIdx] / 5.0) * usableHeight;
+        
+        ctx.beginPath();
+        ctx.arc(pointerX, pointerY, 5, 0, 2 * Math.PI);
+        ctx.fillStyle = switchState === 'charging' ? 'var(--color-green)' : 'var(--color-red)';
+        ctx.fill();
+      }
+    }
+
+    // ====== WATER ANALOGY TABS ======
+    function switchTab(index, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      
+      btn.classList.add('active');
+      document.getElementById('tab-' + index).classList.add('active');
+    }
+
+    // ====== INTERACTIVE QUIZ DATA ======
+    const quizData = [
+      {
+        question: "1. Ein Elektrolytkondensator (Elko) besitzt eine Polung (Plus und Minus). Was passiert, wenn man ihn falsch herum an die Spannung anschließt?",
+        options: [
+          "Er funktioniert trotzdem einwandfrei, da Wechselstrom fließt.",
+          "Er kann beschädigt werden, furchtbar heiß werden oder im echten Leben sogar mit einem Knall platzen!",
+          "Die LED leuchtet dann einfach in einer anderen Farbe (z.B. blau)."
+        ],
+        answer: 1,
+        explanation: "<strong>Richtig gelöst!</strong> Elkos sind im Gegensatz zu Keramikkondensatoren polarisiert. Im Inneren befindet sich eine empfindliche Chemikalie (Elektrolyt). Schließt man ihn falsch herum an, entsteht Gas, wodurch der Elko platzen kann. Im echten Leben gibt es zwei goldene Regeln: 1) Das <strong>längere Beinchen ist immer PLUS (+)</strong>, das kürzere ist MINUS (-). 2) Auf dem Gehäuse befindet sich ein <strong>grauer Streifen</strong> auf der MINUS-Seite!"
+      },
+      {
+        question: "2. Warum blitzt die rote LED beim Entladen sofort ganz hell auf und verblasst dann langsam immer mehr, anstatt schlagartig auszugehen?",
+        options: [
+          "Weil die LED-Birne abkühlen muss, um dunkler zu werden.",
+          "Weil der Kondensator an Ladung verliert und die elektrische Spannung im Laufe der Entladungskurve exponentiell absinkt.",
+          "Weil der Schutzwiderstand den Stromfluss im Sekundentakt drosselt."
+        ],
+        answer: 1,
+        explanation: "<strong>Super!</strong> Am Anfang der Entladung hat der Kondensator die volle Ladung und 5 Volt Spannung. Es fließt viel Strom durch die rote LED – sie leuchtet hell. Da der Speicher sich leert, sinkt die Spannung. Weniger Spannung bedeutet weniger fließende Elektronen, weshalb die LED langsam verblasst!"
+      },
+      {
+        question: "3. Welche wichtige Aufgabe haben die Vorwiderstände (2.2 kΩ) in unseren LED-Schaltkreisen?",
+        options: [
+          "Sie dienen als eine Engstelle (Schutz), damit nicht schlagartig zu viel Strom fließt und die empfindlichen LEDs zerstört werden.",
+          "Sie dienen dazu, überschüssige Ladung im Kreis einzusaugen und für später zu speichern.",
+          "Sie wandeln den Gleichstrom des Elkos in Wechselstrom um."
+        ],
+        answer: 0,
+        explanation: "<strong>Hervorragend, das ist korrekt!</strong> LEDs sind extrem empfindlich. Schließt man sie direkt an eine Spannungsquelle oder einen geladenen Kondensator an, fließt kurzzeitig ein extrem hoher Strom. Die LEDs würden sofort durchbrennen. Vorwiderstände bremsen diesen Stromfluss sicher ab!"
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let quizScore = 0;
+    let quizAnswered = false;
+
+    function loadQuizQuestion() {
+      quizAnswered = false;
+      document.getElementById('quiz-feedback').style.display = 'none';
+      document.getElementById('quiz-next-btn').style.display = 'none';
+      
+      const data = quizData[currentQuestionIndex];
+      document.getElementById('quiz-question').textContent = data.question;
+      
+      for (let i = 0; i < 3; i++) {
+        const step = document.getElementById('step-' + i);
+        step.className = "quiz-step";
+        if (i < currentQuestionIndex) {
+          step.classList.add('correct');
+        } else if (i === currentQuestionIndex) {
+          step.classList.add('active');
+        }
+      }
+
+      const optionsContainer = document.getElementById('quiz-options');
+      optionsContainer.innerHTML = '';
+      
+      const letters = ['A', 'B', 'C'];
+      data.options.forEach((opt, idx) => {
+        const button = document.createElement('button');
+        button.className = 'quiz-option';
+        button.innerHTML = `
+          <span class="quiz-option-letter">${letters[idx]}</span>
+          <span class="quiz-option-text">${opt}</span>
+        `;
+        button.onclick = () => selectOption(idx, button);
+        optionsContainer.appendChild(button);
+      });
+    }
+
+    function selectOption(selectedIndex, optionElement) {
+      if (quizAnswered) return; 
+      
+      const data = quizData[currentQuestionIndex];
+      const feedbackBox = document.getElementById('quiz-feedback');
+      const stepBar = document.getElementById('step-' + currentQuestionIndex);
+      
+      if (selectedIndex === data.answer) {
+        quizAnswered = true;
+        quizScore++;
+        document.getElementById('quiz-score').textContent = `Punkte: ${quizScore}/3`;
+        optionElement.classList.add('correct');
+        feedbackBox.innerHTML = data.explanation;
+        feedbackBox.className = "quiz-feedback correct";
+        stepBar.className = "quiz-step correct";
+        
+        document.getElementById('quiz-next-btn').style.display = 'inline-flex';
+        
+        if (currentQuestionIndex === 2 && quizScore === 3) {
+          triggerConfetti();
+        }
+      } else {
+        optionElement.classList.add('wrong');
+        feedbackBox.innerHTML = "❌ <strong>Versuch's nochmal!</strong> Das war leider nicht die richtige Erklärung. Überlege nochmal genau mit Hilfe der Wasser-Analogie!";
+        feedbackBox.className = "quiz-feedback wrong";
+        
+        optionElement.style.animation = 'none';
+        optionElement.offsetHeight; 
+        optionElement.style.animation = null; 
+      }
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < quizData.length) {
+        loadQuizQuestion();
+      } else {
+        document.getElementById('quiz-question-container').style.display = 'none';
+        const resultContainer = document.getElementById('quiz-result-container');
+        resultContainer.style.display = 'block';
+        
+        const finalText = document.getElementById('quiz-final-text');
+        if (quizScore === 3) {
+          finalText.innerHTML = `🎉 <strong>Perfekt! 3 von 3 Punkten!</strong> Du bist jetzt ein zertifizierter <strong>Elko-Experte</strong>. Du hast vollkommen verstanden, wie Kondensatoren und LEDs zusammenarbeiten! 🏆`;
+          triggerConfetti();
+        } else if (quizScore === 2) {
+          finalText.innerHTML = `👍 <strong>Klasse gemacht! 2 von 3 Punkten!</strong> Du hast fast alles richtig verstanden. Lies dir die Erklärungen noch einmal durch, um auch den letzten Punkt zu holen!`;
+        } else {
+          finalText.innerHTML = `⚡ <strong>Ergebnis: ${quizScore} von 3 Punkten.</strong> Kein Meister fällt vom Himmel! Spiele die Simulation noch etwas und versuche das Quiz einfach noch einmal. Du schaffst das!`;
+        }
+      }
+    }
+
+    function resetQuiz() {
+      currentQuestionIndex = 0;
+      quizScore = 0;
+      document.getElementById('quiz-score').textContent = `Punkte: 0/3`;
+      document.getElementById('quiz-question-container').style.display = 'block';
+      document.getElementById('quiz-result-container').style.display = 'none';
+      loadQuizQuestion();
+    }
+
+    // ====== PURE JS CONFETTI ENGINE ======
+    const confettiCanvas = document.getElementById('confetti-canvas');
+    const confettiCtx = confettiCanvas.getContext('2d');
+    let confettiParticles = [];
+    let confettiActive = false;
+
+    function resizeConfetti() {
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
+    }
+
+    function triggerConfetti() {
+      resizeConfetti();
+      confettiActive = true;
+      confettiParticles = [];
+      const colors = ['#06b6d4', '#22d3ee', '#fbbf24', '#f59e0b', '#10b981', '#34d399', '#ec4899', '#a855f7'];
+      
+      for (let i = 0; i < 120; i++) {
+        confettiParticles.push({
+          x: Math.random() * confettiCanvas.width,
+          y: Math.random() * confettiCanvas.height - confettiCanvas.height,
+          size: Math.random() * 8 + 6,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rotation: Math.random() * 360,
+          rotationSpeed: Math.random() * 4 - 2,
+          speedX: Math.random() * 4 - 2,
+          speedY: Math.random() * 5 + 4,
+          opacity: 1
+        });
+      }
+      
+      animateConfetti();
+    }
+
+    function animateConfetti() {
+      if (!confettiActive) return;
+      
+      confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      let activeCount = 0;
+      
+      confettiParticles.forEach(p => {
+        p.y += p.speedY;
+        p.x += p.speedX;
+        p.rotation += p.rotationSpeed;
+        
+        if (p.y < confettiCanvas.height) {
+          activeCount++;
+          confettiCtx.save();
+          confettiCtx.translate(p.x, p.y);
+          confettiCtx.rotate(p.rotation * Math.PI / 180);
+          confettiCtx.fillStyle = p.color;
+          confettiCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+          confettiCtx.restore();
+        }
+      });
+      
+      if (activeCount > 0) {
+        requestAnimationFrame(animateConfetti);
+      } else {
+        confettiActive = false;
+        confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      }
+    }
+
+    // ====== INITIALIZATION OVER LOAD ======
+    window.addEventListener('load', () => {
+      generateBreadboardHoles();
+      resizeCanvas();
+      initializeParticles();
+      resetQuiz();
+      
+      // Initialize Scope history with 0V
+      for (let i = 0; i < maxHistoryPoints; i++) {
+        scopeHistory.push(0);
+      }
+      
+      requestAnimationFrame(runSimulationStep);
+    });
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      resizeConfetti();
+    });
+  </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a105d89f3fe2e523',t:'MTc4MjI0MjM4NQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
