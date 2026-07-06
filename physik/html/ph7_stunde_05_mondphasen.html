@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mondphasen und Finsternisse</title>
+<style>
+:root{
+  --blau:#2c5f8a; --dblau:#1d4260; --gelb:#f5c542; --gruen:#2e7d32;
+  --rot:#c0392b; --papier:#fbfaf7; --tinte:#22303c; --hell:#eef3f8;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{font-family:"Segoe UI",Verdana,Arial,sans-serif;background:var(--papier);color:var(--tinte);font-size:19px;line-height:1.6;}
+header{position:sticky;top:0;z-index:50;background:var(--dblau);color:#fff;padding:8px 12px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;}
+header .titel{font-weight:bold;font-size:1.05em;margin-right:auto;}
+header .fortschritt{font-size:.95em;background:rgba(255,255,255,.15);padding:4px 10px;border-radius:14px;}
+.knopf{font-size:1em;padding:10px 14px;min-height:44px;border:none;border-radius:8px;background:var(--blau);color:#fff;cursor:pointer;}
+.knopf:hover,.knopf:focus{background:#3d7ab0;outline:3px solid var(--gelb);}
+.knopf.neben{background:#5b7c99;}
+.knopf.gruen{background:var(--gruen);}
+.knopf.rot{background:var(--rot);}
+.knopf.gelb{background:var(--gelb);color:#3a2e00;}
+main{max-width:1050px;margin:0 auto;padding:16px;}
+.karte{display:none;background:#fff;border:1px solid #d8dee5;border-radius:14px;padding:22px 26px;margin:14px 0;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.karte.aktiv{display:block;}
+.karte h2{color:var(--dblau);margin-top:0;border-bottom:3px solid var(--gelb);padding-bottom:6px;}
+.karte h3{color:var(--blau);}
+.untertitel{color:#5b6b7a;font-size:1.05em;margin-top:-4px;}
+.impuls{background:var(--hell);border-left:6px solid var(--blau);padding:10px 14px;border-radius:8px;margin:12px 0;}
+.merksatz{background:#fff8dc;border:2px solid #d4b106;border-radius:10px;padding:14px 18px;font-size:1.1em;margin:12px 0;}
+.sicherheit{background:#fdecea;border:2px solid var(--rot);border-radius:10px;padding:12px 16px;margin:12px 0;}
+.material{background:#f2eefb;border-left:6px solid #6b4fa0;padding:10px 14px;border-radius:8px;margin:12px 0;}
+.arduinobox{background:#e8f4fb;border:2px solid #1a7ab5;border-radius:10px;padding:12px 16px;margin:12px 0;}
+.lehrer{display:none;background:#f0f0f0;border:2px dashed #777;border-radius:10px;padding:12px 16px;margin:12px 0;}
+body.lehrermodus .lehrer{display:block;}
+.niveau{border-radius:10px;padding:12px 16px;margin:10px 0;}
+.niveau.g{background:#e8f4fb;border-left:6px solid #1a7ab5;}
+.niveau.r{background:#eaf6ea;border-left:6px solid var(--gruen);}
+.niveau.e{background:#fdeef7;border-left:6px solid #b03a8c;}
+.tafel{background:#1d3b2a;color:#f5f5f0;border:12px solid #6d4c2f;border-radius:8px;padding:18px 24px;}
+.tafel h3{color:#fff;}
+.kreide{font-family:"Segoe Print","Comic Sans MS",cursive;font-size:1.15em;margin:14px 0;display:none;}
+.kreide.sichtbar{display:block;}
+.kreide.weiss{color:#f5f5f0;}.kreide.gelb{color:#ffe27a;}
+.kreide.blau{color:#9fd0ff;}.kreide.gruen{color:#a8e6a1;}
+table{border-collapse:collapse;width:100%;margin:12px 0;}
+th,td{border:1px solid #b8c2cc;padding:8px 10px;text-align:left;}
+th{background:var(--hell);}
+td input{font-size:1em;padding:6px;width:100%;max-width:140px;border:1px solid #9ab;border-radius:6px;}
+ol li,ul li{margin:6px 0;}
+img.bild{max-width:100%;border-radius:10px;border:1px solid #cdd6df;cursor:zoom-in;display:block;margin:10px auto;}
+figure{margin:12px 0;text-align:center;}
+figcaption{font-size:.9em;color:#5b6b7a;margin-top:4px;}
+.bild-fehler{background:var(--hell);border:1px dashed #9ab;border-radius:10px;padding:14px;color:#445;}
+.quiz .frage{margin:14px 0;padding:12px 14px;background:var(--hell);border-radius:10px;}
+.quiz label{display:block;padding:8px 10px;margin:4px 0;border-radius:8px;cursor:pointer;border:2px solid transparent;}
+.quiz label:hover{background:#dde8f2;}
+.quiz label.richtig{background:#d9f2d9;border-color:var(--gruen);}
+.quiz label.falsch{background:#fbdad5;border-color:var(--rot);}
+.quiz-feedback{font-weight:bold;margin-top:10px;}
+input.luecke{font-size:1em;padding:6px 8px;border:2px solid #9ab;border-radius:6px;max-width:180px;}
+input.luecke.richtig{border-color:var(--gruen);background:#d9f2d9;}
+input.luecke.falsch{border-color:var(--rot);background:#fbdad5;}
+.loesung{display:none;background:#fff8dc;border:2px solid #d4b106;border-radius:10px;padding:12px 16px;margin:10px 0;}
+.loesung.offen{display:block;}
+.zuordnung{display:flex;flex-wrap:wrap;gap:18px;}
+.zuordnung .spalte{flex:1;min-width:230px;}
+.zknopf{display:block;width:100%;text-align:left;font-size:1em;padding:10px 12px;margin:6px 0;border-radius:8px;border:2px solid #9ab;background:#fff;cursor:pointer;min-height:44px;}
+.zknopf.gewaehlt{border-color:var(--gelb);background:#fff4c7;}
+.zknopf.vergeben{opacity:.45;}
+.zknopf.richtig{border-color:var(--gruen);background:#d9f2d9;}
+.zknopf.falsch{border-color:var(--rot);background:#fbdad5;}
+.zknopf .zug{display:block;font-weight:bold;color:var(--dblau);}
+.timer{font-size:1.6em;font-weight:bold;background:var(--dblau);color:#fff;display:inline-block;padding:8px 18px;border-radius:10px;margin-right:10px;}
+.checkliste label{display:block;padding:8px 10px;margin:4px 0;background:var(--hell);border-radius:8px;cursor:pointer;}
+.checkliste input{transform:scale(1.4);margin-right:10px;}
+pre.code{background:#212b36;color:#e6edf3;padding:14px;border-radius:10px;overflow-x:auto;font-size:.85em;line-height:1.45;}
+.begriff{background:#dbe7f5;border:none;border-bottom:2px dotted var(--blau);font-size:1em;padding:2px 6px;border-radius:6px;cursor:help;color:var(--dblau);font-weight:bold;}
+.svgrahmen{background:#fff;border:1px solid #cdd6df;border-radius:10px;padding:6px;margin:10px 0;}
+.modal{display:none;position:fixed;inset:0;background:rgba(10,20,30,.85);z-index:100;padding:20px;overflow:auto;}
+.modal.offen{display:flex;align-items:center;justify-content:center;flex-direction:column;}
+.modal img{max-width:92vw;max-height:78vh;border-radius:10px;background:#fff;}
+.modal .mtext{color:#fff;max-width:800px;background:var(--dblau);padding:18px 22px;border-radius:12px;font-size:1.1em;}
+.modal .muschrift{color:#fff;margin:12px;text-align:center;}
+.uliste button{display:block;width:100%;text-align:left;font-size:1.05em;padding:12px 14px;margin:6px 0;border-radius:10px;border:2px solid #cdd6df;background:#fff;cursor:pointer;}
+.uliste button:hover{background:var(--hell);}
+footer{max-width:1050px;margin:0 auto;padding:10px 16px 40px;color:#5b6b7a;font-size:.9em;}
+@media (max-width:640px){body{font-size:17px;}header .titel{width:100%;}.karte{padding:16px;}}
+@media print{
+  header,.knopf,.timer,.modal{display:none !important;}
+  .karte{display:block !important;box-shadow:none;border:1px solid #999;page-break-inside:avoid;}
+  .lehrer{display:none !important;}
+  .loesung{display:none !important;}
+  .kreide{display:block !important;}
+  .tafel{background:#fff;color:#000;border-color:#000;}
+  .kreide.weiss,.kreide.gelb,.kreide.blau,.kreide.gruen{color:#000;}
+  body{font-size:12pt;background:#fff;}
+}
+</style>
+
+<style id="froebel-differenzierung-styles">
+/* Fröbel-Spielgaben als Zeichen für differenzierte Aufgaben
+   Reihenfolge der Aufgaben: Kugel – Walze – Würfel
+   gelbe Kugel = höhere Anforderungen
+   rote Walze  = mittlere Anforderungen
+   blauer Würfel = grundlegende Anforderungen */
+
+.froebel-task-symbol{
+  display:inline-block;
+  position:relative;
+  width:1.75rem;
+  height:1.75rem;
+  margin-right:.70rem;
+  vertical-align:-.36rem;
+  flex:0 0 auto;
+  pointer-events:none;
+  box-sizing:border-box;
+}
+
+.froebel-task{ position:relative; }
+
+/* Gelbe Kugel */
+.froebel-sphere{
+  width:1.45rem;
+  height:1.45rem;
+  margin-left:.05rem;
+  margin-right:.76rem;
+  border-radius:50%;
+  border:2px solid #927100;
+  background:
+    radial-gradient(circle at 28% 24%,
+      #fffde7 0%,
+      #fff9c4 12%,
+      #fff176 24%,
+      #ffeb3b 42%,
+      #fdd835 60%,
+      #d4a600 82%,
+      #9b7700 100%);
+  box-shadow:
+    .12rem .18rem .24rem rgba(0,0,0,.30),
+    inset -.10rem -.12rem .16rem rgba(110,80,0,.18);
+  transform:translateY(.12rem);
+}
+
+/* Rote Walze – stärker 3D */
+.froebel-cylinder{
+  width:1.42rem;
+  height:1.38rem;
+  margin-left:.09rem;
+  margin-right:.82rem;
+  background:
+    linear-gradient(90deg,
+      #710000 0%,
+      #a51414 10%,
+      #d32f2f 28%,
+      #ff867c 48%,
+      #ffc2bc 55%,
+      #ef5350 62%,
+      #c62828 78%,
+      #7f0000 100%);
+  border:2px solid #6e0000;
+  border-radius:.20rem / .55rem;
+  box-shadow:
+    .12rem .18rem .24rem rgba(0,0,0,.34),
+    inset .12rem 0 .12rem rgba(255,255,255,.20),
+    inset -.14rem 0 .16rem rgba(70,0,0,.34);
+  transform:translateY(.17rem);
+  overflow:visible;
+}
+
+.froebel-cylinder::before,
+.froebel-cylinder::after{
+  content:"";
+  position:absolute;
+  left:-2px;
+  width:calc(100% + 4px);
+  height:.48rem;
+  border:2px solid #6e0000;
+  border-radius:50%;
+  box-sizing:border-box;
+}
+
+.froebel-cylinder::before{
+  top:-.27rem;
+  z-index:3;
+  background:
+    radial-gradient(ellipse at 34% 24%,
+      #ffe4e1 0%,
+      #ffab91 18%,
+      #ef5350 42%,
+      #c62828 72%,
+      #850000 100%);
+  box-shadow:
+    inset 0 -.08rem .11rem rgba(80,0,0,.34),
+    .02rem .02rem .04rem rgba(255,255,255,.22);
+}
+
+.froebel-cylinder::after{
+  bottom:-.27rem;
+  z-index:1;
+  background:
+    radial-gradient(ellipse at 46% 34%,
+      #e57373 0%,
+      #c62828 46%,
+      #8c0000 100%);
+  box-shadow:0 .08rem .14rem rgba(0,0,0,.28);
+}
+
+/* Blauer Würfel – Referenzbild des Nutzers */
+.froebel-cube{
+  width:1.55rem;
+  height:1.55rem;
+  margin-left:.02rem;
+  margin-right:.90rem;
+  background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAADhUlEQVR4XlWT+1PUVRiHv39BKOmILCBkSDDTDDPpNJPmWKRopaVc1BKCVVblEi63AAUWQxJwIUEC5U7chuW6CSggBEOFoJhJKPGDNcUUy67ssrtclOHpQNlMZ+b94Vw+z+d9z3uOtLS0xMowmmYZG3tER1cPX9c2kpBbxTaFGk/5F3iFZ+ETcwmFKo/4y5VcKmuivLmTyb+mke78NEZpQztnS9pQFH3HgYL7eGbewyN1AI/kHtziO3CNbsE5oh6HkxVsDMjjRd90bLzjeM0vAqmgVkvpzxBzU8+xut/ZXfCIbZnDeKT04Rp/k5eiW3H5VMOm0BpkJ4qx9c/A5v1zvLDvM+zfkSOpK1uYMMFD/TNGp54x9MdTOiesVI/MkNnzJ8qGCT4uvodTSDE2B1WsOZDM2v1JrP0gGfs9IUipxc08FIChyUV6Hz+lfXyB+gcWKn80UTBkJHtAgAZMbAmvwNbnAut9L7DuUBprfNLZ6HUCKaOshbsG6P51Ee0vC9SNzlEyYiZv0EhG/wwpt/TEdxt4JbKWDR+psTuSxbrDWdgeycZhJYO4/CZ6J6FZOFc/mOfaXSuXB82k9xk52/2EqHY9YdcFQFmPfUAuG0SsP5aLXeAVHPecRIr4soFvHkOlEBeOzJE9aOXz/lkShfhMh4GQ1mkCm/S4xzYhk1/DTn4Vu6ACZMFFOO0VgLAcDdXj8JVwzrptJbXfIlI2EXHjCcdb9RzV6PiwXo9brBbZqXIcFKU4hpQiEy118j6FFJyhofA+ZHxvRdVnIbbLTFibieAWA/5CuL9Kh1eFDteEDpzCanAW7XQMrcIhrO4fgF9aLeo7kCTE0d1mTrfPEthixE9j4L3qaXaVT7G9RIdbQjcuZxpxVjbgFClC2cymfaeRjl7UoLoNUbfMKG7MEtBqwkczw94aA28J5x2lU7xRPIV7Ui+bRRku0VoB0YpLzMNXmY70ZngOcq2RkK5FAq8vcLDBine1ibcr9Ows07H9X8DKy3w5ro3NcR3IPrnCu6EqLJZ5pK7BUfwSr+IWkMmrUXW8fnGYnUU64W5kV4WBHeV6UcI0Hqp+XBM7cQzKxz9WzfzC4uonlJ7/xjmx8O3IOKklWnYrc3EOULMlsg7PtB/Ymv8b7in9q+Lj5wuZn19YFf8PsDJZgT0HThvNNPYMo8ypYmvQeRwOnSMmp2Z1f3l5+b9zfwMFY8hWZi/2mAAAAFF0RVh0Q29tbWVudABDb3B5cmlnaHQgSU5DT1JTIEdtYkggKHd3dy5pY29uZXhwZXJpZW5jZS5jb20pIC0gVW5saWNlbnNlZCBwcmV2aWV3IGltYWdltppppgAAADh0RVh0Q29weXJpZ2h0AENvcHlyaWdodCBJTkNPUlMgR21iSCAod3d3Lmljb25leHBlcmllbmNlLmNvbSlOzplOAAAAWnpUWHRDb21tZW50AAB4nHPOL6gsykzPKFHw9HP2DwpWcM9N8lDQKC8v18tMzs9LrShILcpMzUtO1UvOz9VU0FUIzcvJTE7NK05NUSgoSi3LTC1XyMxNTE8FALiPGiScvJjjAAAAQXpUWHRDb3B5cmlnaHQAAHicc84vqCzKTM8oUfD0c/YPClZwz03yUNAoLy/Xy0zOz0utKEgtykzNS07VS87P1QQAfTYQaBzd5o8AAAAASUVORK5CYII=");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+  border:none;
+  box-shadow:.10rem .14rem .20rem rgba(0,0,0,.24);
+  transform:translateY(.12rem);
+}
+
+.froebel-cube::before,
+.froebel-cube::after{
+  content:none;
+}
+
+.froebel-differenzierte-aufgaben{
+  margin:1.35rem 0;
+}
+
+.froebel-differenzierte-aufgaben > h2{
+  margin-bottom:.75rem;
+}
+
+.froebel-task-card{
+  display:flex;
+  align-items:flex-start;
+  gap:.20rem;
+  margin:.72rem 0;
+  padding:.88rem 1rem;
+  border:1px solid #c8d2dc;
+  border-radius:.72rem;
+  background:#fff;
+  box-shadow:0 .12rem .32rem rgba(25,45,65,.08);
+  break-inside:avoid;
+}
+
+.froebel-level-high{
+  border-left:5px solid #d4a600;
+  background:linear-gradient(90deg,#fffbe7 0%,#fff 42%);
+}
+
+.froebel-level-medium{
+  border-left:5px solid #c62828;
+  background:linear-gradient(90deg,#fff0f0 0%,#fff 42%);
+}
+
+.froebel-level-easy{
+  border-left:5px solid #1976d2;
+  background:linear-gradient(90deg,#edf6ff 0%,#fff 42%);
+}
+
+.froebel-task-content{
+  flex:1 1 auto;
+  min-width:0;
+  line-height:1.55;
+}
+
+.froebel-task > .froebel-task-symbol:first-child{ margin-top:0; }
+li.froebel-task > .froebel-task-symbol:first-child{ margin-left:.05rem; }
+
+@media (max-width:600px){
+  .froebel-task-card{ padding:.72rem .78rem; }
+  .froebel-task-symbol{
+    transform:scale(.90);
+    transform-origin:top center;
+  }
+}
+
+@media print{
+  .froebel-task-symbol,
+  .froebel-task-card{
+    print-color-adjust:exact;
+    -webkit-print-color-adjust:exact;
+  }
+  .froebel-task-card{ box-shadow:none; }
+}
+</style>
+</head>
+<body>
+<header>
+  <span class="titel">Ph7 · Stunde 5: Mondphasen</span>
+  <span class="fortschritt" id="fortschritt">Karte 1</span>
+  <button class="knopf neben" onclick="oeffneUebersicht()">📑 Übersicht</button>
+  <button class="knopf" onclick="zurueck()">◀ Zurück</button>
+  <button class="knopf" onclick="weiter()">Weiter ▶</button>
+  <button class="knopf neben" onclick="vorlesenStoppen()">🔇 Stopp</button>
+  <button class="knopf neben" onclick="vollbild()">⛶ Vollbild</button>
+  <button class="knopf neben" onclick="window.print()">🖨 Drucken</button>
+  <button class="knopf gelb" onclick="lehrermodus()" id="lehrerknopf">👩‍🏫 Lehrkraft</button>
+</header>
+
+<main id="buehne">
+<section class="karte" data-titel="Start">
+<h2>Mondphasen und Finsternisse</h2>
+<p class="untertitel">Physik Klasse 7 · Optik · Stunde 5</p>
+<div id="ziele05"><p><strong>Lernziele:</strong></p>
+<ol><li>Mondphasen mit Sonne-Erde-Mond-Stellung erklären.</li>
+<li>Sonnen- und Mondfinsternisse als Schattenphänomene verstehen.</li></ol></div>
+<button class="knopf" onclick="vorlesen('ziele05')">🔊 Vorlesen</button></section>
+
+<section class="karte" data-titel="Einstieg"><h2>Die sich wandelnde Mondgestalt</h2>
+<div class="impuls" id="eins05">Der Mond hat über einen Monat unterschiedliche Formen. Wächst und schrumpft er wirklich – oder täuschen wir uns?</div>
+<button class="knopf" onclick="vorlesen('eins05')">🔊 Vorlesen</button></section>
+
+<section class="karte" data-titel="Wissen"><h2>Mondphasen und ihre Ursache</h2>
+<p id="wis05">Der Mond sendet kein eigenes Licht aus – er wirft Sonnenlicht zurück. Je nachdem, wie Sonne, Erde und Mond zueinander stehen, sehen wir unterschiedlich viel von der beleuchteten Seite. Das sind die Mondphasen: Neumond (Mond zwischen Sonne und Erde), zunehmend Halbmond, Vollmond (Erde zwischen Sonne und Mond), abnehmend Halbmond – alle 29,5 Tage wiederholt sich das.</p>
+<button class="knopf" onclick="vorlesen('wis05')">🔊 Vorlesen</button></section>
+
+<section class="karte" data-titel="Finsternisse"><h2>Sonnen- und Mondfinsternisse</h2>
+<p><strong>Mondfinsternis:</strong> Der Mond läuft in den Kernschatten der Erde. Er wird dunkelrot sichtbar.</p>
+<p><strong>Sonnenfinsternis:</strong> Der Mond steht zwischen Sonne und Erde. Sein Kernschatten fällt auf die Erde – wer darin sitzt, sieht die Sonne ganz verdeckt.</p></section>
+
+<section class="karte" data-titel="Merksatz"><h2>✅ Merksatz</h2>
+<div class="merksatz" id="merk05">Der Mond durchläuft neun Phasen in 29,5 Tagen, weil sich die Winkelstellung Sonne–Erde–Mond ändert. Mondfinsternis: Mond im Kernschatten der Erde. Sonnenfinsternis: Mond zwischen Sonne und Erde.</div>
+<button class="knopf" onclick="vorlesen('merk05')">🔊 Vorlesen</button></section>
+
+<section class="karte" data-titel="Aufgaben"><h2>🧩 Aufgaben</h2>
+<div class="niveau g lueckenbereich"><h3>🔵 Grundaufgabe</h3>
+<p>Der Mond hat <input class="luecke" data-loesung="keine eigene|kein eigenes" aria-label="Lücke"> Lichtquelle. Er wirft nur <input class="luecke" data-loesung="sonnenlicht|licht" aria-label="Lücke"> zurück.</p>
+<button class="knopf gruen" onclick="auswertenLuecken(this)">✔ Prüfen</button>
+<button class="knopf rot" onclick="lueckenZuruecksetzen(this)">↺ Zurücksetzen</button><div class="quiz-feedback"></div></div></section>
+
+<section class="karte" data-titel="Quiz"><h2>🧠 Lernkontrolle</h2>
+<div class="quiz"><div class="frage"><p><strong>1. In welcher Stellung seht ihr den Mond als Vollmond?</strong></p>
+<label><input type="radio" name="q05a"> Mond zwischen Sonne und Erde</label>
+<label><input type="radio" name="q05a" data-richtig="1"> Erde zwischen Sonne und Mond</label>
+<label><input type="radio" name="q05a"> Sonne zwischen Erde und Mond</label></div></div>
+<button class="knopf gruen" onclick="auswertenQuiz(this)">✔ Auswerten</button>
+<div class="quiz-feedback"></div></section>
+
+<section class="karte" data-titel="Quellen"><h2>Quellen</h2>
+<p>Skizzen: eigene SVG-Grafiken. Lehrplan: Thüringer Regelschule 2012.</p></section>
+<!-- FROEBEL-AUFGABEN-START -->
+<section class="froebel-differenzierte-aufgaben">
+<h2>🧩 Differenzierte Aufgaben</h2>
+
+
+
+
+
+
+<div class="froebel-task-card froebel-level-high" data-level="high">
+<span class="froebel-task-symbol froebel-sphere" aria-hidden="true"></span>
+<div class="froebel-task-content">Entwickle eine optische Anwendung oder einen Versuchsaufbau zu „Mondphasen und Finsternisse – Schatten im Weltall“. Begründe Bauteilwahl, Strahlenverlauf und erwartetes Bild.</div>
+</div>
+
+<div class="froebel-task-card froebel-level-medium" data-level="medium">
+<span class="froebel-task-symbol froebel-cylinder" aria-hidden="true"></span>
+<div class="froebel-task-content">Konstruiere oder erkläre den Strahlenverlauf bei „Mondphasen und Finsternisse – Schatten im Weltall“ und begründe das Ergebnis mit einem optischen Gesetz.</div>
+</div>
+
+<div class="froebel-task-card froebel-level-easy" data-level="easy">
+<span class="froebel-task-symbol froebel-cube" aria-hidden="true"></span>
+<div class="froebel-task-content">Beschrifte eine Skizze zu „Mondphasen und Finsternisse – Schatten im Weltall“ mit den wichtigsten Lichtstrahlen, Winkeln, Brennpunkten oder Bauteilen.</div>
+</div>
+</section>
+<!-- FROEBEL-AUFGABEN-ENDE -->
+</main>
+
+<footer>
+Physik Klasse 7 · Stunde 05 · Thüringer Regelschule
+</footer>
+
+<div class="modal" id="bildModal" onclick="modalHintergrund(event, this)">
+  <img id="modalBild" src="" alt="">
+  <div class="muschrift" id="modalUnterschrift"></div>
+  <button class="knopf rot" onclick="schliesseModale()">✖ Schließen</button>
+</div>
+
+<div class="modal" id="textModal" onclick="modalHintergrund(event, this)">
+  <div class="mtext" id="modalText"></div>
+  <button class="knopf rot" style="margin-top:14px" onclick="schliesseModale()">✖ Schließen</button>
+</div>
+
+<div class="modal" id="uebersichtModal" onclick="modalHintergrund(event, this)">
+  <div class="mtext" style="background:#fff;color:var(--tinte);width:min(680px,92vw)">
+    <h2 style="margin-top:0;color:var(--dblau)">Übersicht der Stunde</h2>
+    <div class="uliste" id="uebersichtListe"></div>
+  </div>
+  <button class="knopf rot" style="margin-top:14px" onclick="schliesseModale()">✖ Schließen</button>
+</div>
+
+<script>
+"use strict";
+
+/* ---------- Kartennavigation ---------- */
+var karten = [];
+var aktuelleKarte = 0;
+
+function zeigeKarte(index){
+  if(index < 0 || index >= karten.length){ return; }
+  karten[aktuelleKarte].classList.remove("aktiv");
+  aktuelleKarte = index;
+  karten[aktuelleKarte].classList.add("aktiv");
+  document.getElementById("fortschritt").textContent =
+    "Karte " + (aktuelleKarte + 1) + " von " + karten.length + ": " +
+    (karten[aktuelleKarte].getAttribute("data-titel") || "");
+  window.scrollTo(0,0);
+  vorlesenStoppen();
+}
+function weiter(){ zeigeKarte(aktuelleKarte + 1); }
+function zurueck(){ zeigeKarte(aktuelleKarte - 1); }
+
+function baueUebersicht(){
+  var liste = document.getElementById("uebersichtListe");
+  liste.innerHTML = "";
+  karten.forEach(function(k, i){
+    var b = document.createElement("button");
+    b.textContent = (i + 1) + ". " + (k.getAttribute("data-titel") || "Abschnitt");
+    b.onclick = function(){ schliesseModale(); zeigeKarte(i); };
+    liste.appendChild(b);
+  });
+}
+function oeffneUebersicht(){ document.getElementById("uebersichtModal").classList.add("offen"); }
+
+/* ---------- Vorlesen (Web Speech API) ---------- */
+function vorlesen(id){
+  if(!("speechSynthesis" in window)){
+    alert("Dieser Browser unterstützt die Vorlesefunktion nicht.");
+    return;
+  }
+  window.speechSynthesis.cancel();
+  var element = document.getElementById(id);
+  if(!element){
+    alert("Der gewünschte Textabschnitt wurde nicht gefunden.");
+    return;
+  }
+  var text = element.innerText.trim();
+  var ausgabe = new SpeechSynthesisUtterance(text);
+  ausgabe.lang = "de-DE";
+  ausgabe.rate = 0.9;
+  ausgabe.pitch = 1;
+  window.speechSynthesis.speak(ausgabe);
+}
+function vorlesenStoppen(){
+  if("speechSynthesis" in window){ window.speechSynthesis.cancel(); }
+}
+
+/* ---------- Modale ---------- */
+function bildVergroessern(quelle, beschreibung){
+  document.getElementById("modalBild").src = quelle;
+  document.getElementById("modalBild").alt = beschreibung;
+  document.getElementById("modalUnterschrift").textContent = beschreibung;
+  document.getElementById("bildModal").classList.add("offen");
+}
+function begriffZeigen(knopf){
+  document.getElementById("modalText").innerHTML =
+    "<strong>" + knopf.textContent + "</strong><br>" + knopf.getAttribute("data-erklaerung");
+  document.getElementById("textModal").classList.add("offen");
+}
+function modalHintergrund(ereignis, modal){
+  if(ereignis.target === modal){ schliesseModale(); }
+}
+function schliesseModale(){
+  document.querySelectorAll(".modal.offen").forEach(function(m){ m.classList.remove("offen"); });
+}
+
+/* ---------- Lösungen ---------- */
+function toggleLoesung(id, knopf){
+  var l = document.getElementById(id);
+  if(!l){ return; }
+  l.classList.toggle("offen");
+  if(knopf){
+    knopf.textContent = l.classList.contains("offen") ? "Lösung verbergen" : "💡 Lösung anzeigen";
+  }
+}
+
+/* ---------- Quiz (Multiple Choice) ---------- */
+function auswertenQuiz(knopf){
+  var quiz = knopf.closest(".quiz");
+  var fragen = quiz.querySelectorAll(".frage");
+  var richtig = 0;
+  var beantwortet = 0;
+  fragen.forEach(function(f){
+    var gewaehlt = f.querySelector("input:checked");
+    f.querySelectorAll("label").forEach(function(l){ l.classList.remove("richtig","falsch"); });
+    if(gewaehlt){
+      beantwortet = beantwortet + 1;
+      var label = gewaehlt.closest("label");
+      if(gewaehlt.getAttribute("data-richtig") === "1"){
+        richtig = richtig + 1;
+        label.classList.add("richtig");
+      } else {
+        label.classList.add("falsch");
+        var korrekt = f.querySelector("input[data-richtig='1']");
+        if(korrekt){ korrekt.closest("label").classList.add("richtig"); }
+      }
+    }
+  });
+  var fb = quiz.querySelector(".quiz-feedback");
+  if(beantwortet < fragen.length){
+    fb.textContent = "Bitte beantworte zuerst alle Fragen (" + beantwortet + " von " + fragen.length + ").";
+    fb.style.color = "#8a6d00";
+  } else if(richtig === fragen.length){
+    fb.textContent = "Sehr gut! " + richtig + " von " + fragen.length + " richtig. 🎉";
+    fb.style.color = "#2e7d32";
+  } else {
+    fb.textContent = richtig + " von " + fragen.length + " richtig. Schau dir die markierten Antworten an und versuche es noch einmal.";
+    fb.style.color = "#c0392b";
+  }
+}
+function quizZuruecksetzen(knopf){
+  var quiz = knopf.closest(".quiz");
+  quiz.querySelectorAll("input[type=radio]").forEach(function(i){ i.checked = false; });
+  quiz.querySelectorAll("label").forEach(function(l){ l.classList.remove("richtig","falsch"); });
+  var fb = quiz.querySelector(".quiz-feedback");
+  fb.textContent = "";
+}
+
+/* ---------- Lückentext ---------- */
+function auswertenLuecken(knopf){
+  var bereich = knopf.closest(".lueckenbereich");
+  var felder = bereich.querySelectorAll("input.luecke");
+  var richtig = 0;
+  felder.forEach(function(f){
+    var soll = f.getAttribute("data-loesung").toLowerCase().split("|");
+    var ist = f.value.trim().toLowerCase();
+    f.classList.remove("richtig","falsch");
+    if(soll.indexOf(ist) !== -1 && ist !== ""){
+      f.classList.add("richtig");
+      richtig = richtig + 1;
+    } else {
+      f.classList.add("falsch");
+    }
+  });
+  var fb = bereich.querySelector(".quiz-feedback");
+  if(richtig === felder.length){
+    fb.textContent = "Alle " + felder.length + " Lücken richtig! 🎉";
+    fb.style.color = "#2e7d32";
+  } else {
+    fb.textContent = richtig + " von " + felder.length + " Lücken richtig. Rot markierte Felder noch einmal prüfen.";
+    fb.style.color = "#c0392b";
+  }
+}
+function lueckenZuruecksetzen(knopf){
+  var bereich = knopf.closest(".lueckenbereich");
+  bereich.querySelectorAll("input.luecke").forEach(function(f){
+    f.value = "";
+    f.classList.remove("richtig","falsch");
+  });
+  bereich.querySelector(".quiz-feedback").textContent = "";
+}
+
+/* ---------- Klick-Zuordnung (ohne Drag-and-drop) ---------- */
+var gewaehlterBegriff = null;
+function zuordnenWaehle(knopf){
+  if(knopf.classList.contains("vergeben")){ return; }
+  var bereich = knopf.closest(".zuordnung");
+  bereich.querySelectorAll(".zknopf.begriffseite").forEach(function(b){ b.classList.remove("gewaehlt"); });
+  knopf.classList.add("gewaehlt");
+  gewaehlterBegriff = knopf;
+}
+function zuordnenZiel(knopf){
+  if(!gewaehlterBegriff){ return; }
+  if(gewaehlterBegriff.closest(".zuordnung") !== knopf.closest(".zuordnung")){ return; }
+  var alt = knopf.getAttribute("data-zug");
+  if(alt){
+    var bereich = knopf.closest(".zuordnung");
+    bereich.querySelectorAll(".zknopf.begriffseite").forEach(function(b){
+      if(b.getAttribute("data-paar") === alt){ b.classList.remove("vergeben"); }
+    });
+  }
+  knopf.setAttribute("data-zug", gewaehlterBegriff.getAttribute("data-paar"));
+  knopf.querySelector(".zug").textContent = "→ " + gewaehlterBegriff.getAttribute("data-name");
+  gewaehlterBegriff.classList.remove("gewaehlt");
+  gewaehlterBegriff.classList.add("vergeben");
+  gewaehlterBegriff = null;
+  knopf.classList.remove("richtig","falsch");
+}
+function zuordnungPruefen(knopf){
+  var bereich = knopf.closest(".zaufgabe").querySelector(".zuordnung");
+  var ziele = bereich.querySelectorAll(".zknopf.zielseite");
+  var richtig = 0;
+  var belegt = 0;
+  ziele.forEach(function(z){
+    z.classList.remove("richtig","falsch");
+    var zug = z.getAttribute("data-zug");
+    if(zug){
+      belegt = belegt + 1;
+      if(zug === z.getAttribute("data-paar")){
+        z.classList.add("richtig");
+        richtig = richtig + 1;
+      } else {
+        z.classList.add("falsch");
+      }
+    }
+  });
+  var fb = knopf.closest(".zaufgabe").querySelector(".quiz-feedback");
+  if(belegt < ziele.length){
+    fb.textContent = "Bitte ordne zuerst alle Begriffe zu (" + belegt + " von " + ziele.length + ").";
+    fb.style.color = "#8a6d00";
+  } else if(richtig === ziele.length){
+    fb.textContent = "Alle Zuordnungen richtig! 🎉";
+    fb.style.color = "#2e7d32";
+  } else {
+    fb.textContent = richtig + " von " + ziele.length + " richtig. Falsche Felder erneut belegen und wieder prüfen.";
+    fb.style.color = "#c0392b";
+  }
+}
+function zuordnungReset(knopf){
+  var aufgabe = knopf.closest(".zaufgabe");
+  aufgabe.querySelectorAll(".zknopf.zielseite").forEach(function(z){
+    z.removeAttribute("data-zug");
+    z.classList.remove("richtig","falsch");
+    z.querySelector(".zug").textContent = "";
+  });
+  aufgabe.querySelectorAll(".zknopf.begriffseite").forEach(function(b){
+    b.classList.remove("vergeben","gewaehlt");
+  });
+  aufgabe.querySelector(".quiz-feedback").textContent = "";
+  gewaehlterBegriff = null;
+}
+
+/* ---------- Experimenttimer ---------- */
+var timerSekunden = 0;
+var timerLaeuft = null;
+function timerAnzeigen(){
+  var m = Math.floor(timerSekunden / 60);
+  var s = timerSekunden % 60;
+  var anzeige = document.getElementById("timerAnzeige");
+  if(anzeige){ anzeige.textContent = (m < 10 ? "0" : "") + m + ":" + (s < 10 ? "0" : "") + s; }
+}
+function timerStart(){
+  if(timerLaeuft){ return; }
+  timerLaeuft = setInterval(function(){ timerSekunden = timerSekunden + 1; timerAnzeigen(); }, 1000);
+}
+function timerPause(){
+  clearInterval(timerLaeuft);
+  timerLaeuft = null;
+}
+function timerReset(){
+  timerPause();
+  timerSekunden = 0;
+  timerAnzeigen();
+}
+
+/* ---------- Tafelbild schrittweise ---------- */
+function tafelWeiter(knopf){
+  var tafel = knopf.closest(".karte").querySelector(".tafel");
+  var zeilen = tafel.querySelectorAll(".kreide");
+  for(var i = 0; i < zeilen.length; i = i + 1){
+    if(!zeilen[i].classList.contains("sichtbar")){
+      zeilen[i].classList.add("sichtbar");
+      return;
+    }
+  }
+}
+function tafelReset(knopf){
+  var tafel = knopf.closest(".karte").querySelector(".tafel");
+  tafel.querySelectorAll(".kreide").forEach(function(z){ z.classList.remove("sichtbar"); });
+}
+
+/* ---------- Aufbaukontrolle (Checkliste) ---------- */
+function checklistePruefen(knopf){
+  var liste = knopf.closest(".checkbereich");
+  var alle = liste.querySelectorAll("input[type=checkbox]");
+  var ok = 0;
+  alle.forEach(function(c){ if(c.checked){ ok = ok + 1; } });
+  var fb = liste.querySelector(".quiz-feedback");
+  if(ok === alle.length){
+    fb.textContent = "✔ Alle Punkte geprüft. Jetzt darf das USB-Kabel angeschlossen werden.";
+    fb.style.color = "#2e7d32";
+  } else {
+    fb.textContent = "Noch nicht startklar: " + ok + " von " + alle.length + " Punkten geprüft. Erst prüfen, dann einschalten!";
+    fb.style.color = "#c0392b";
+  }
+}
+
+/* ---------- Sonstiges ---------- */
+function vollbild(){
+  if(document.fullscreenElement){
+    document.exitFullscreen();
+  } else if(document.documentElement.requestFullscreen){
+    document.documentElement.requestFullscreen();
+  } else {
+    alert("Vollbild wird von diesem Browser nicht unterstützt. Taste F11 versuchen.");
+  }
+}
+function lehrermodus(){
+  document.body.classList.toggle("lehrermodus");
+  var k = document.getElementById("lehrerknopf");
+  k.textContent = document.body.classList.contains("lehrermodus") ? "👩‍🏫 Lehrkraft AN" : "👩‍🏫 Lehrkraft";
+}
+function bildFehler(bild){
+  bild.style.display = "none";
+  var ersatz = bild.nextElementSibling;
+  if(ersatz){ ersatz.hidden = false; }
+}
+
+document.addEventListener("keydown", function(e){
+  if(e.key === "Escape"){ schliesseModale(); return; }
+  if(document.querySelector(".modal.offen")){ return; }
+  var ziel = e.target.tagName;
+  if(ziel === "INPUT" || ziel === "TEXTAREA"){ return; }
+  if(e.key === "ArrowRight"){ weiter(); }
+  if(e.key === "ArrowLeft"){ zurueck(); }
+});
+
+window.addEventListener("DOMContentLoaded", function(){
+  karten = Array.prototype.slice.call(document.querySelectorAll(".karte"));
+  if(karten.length > 0){
+    karten[0].classList.add("aktiv");
+    document.getElementById("fortschritt").textContent =
+      "Karte 1 von " + karten.length + ": " + (karten[0].getAttribute("data-titel") || "");
+  }
+  baueUebersicht();
+});
+</script>
+
+<script id="froebel-differenzierung-script">
+
+(function(){
+"use strict";
+
+function norm(value){
+  return (value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+const RX = {
+  explicitHigh: /(erweiterung|erweitert|experten?(aufgabe|niveau)?|hohere anforderung|anspruchsvoll|transfer(aufgabe)?|afb\s*iii|anforderungsbereich\s*iii)/,
+  explicitMedium: /(regelstandard|regelaufgabe|mittelniveau|mittlere anforderung|standardaufgabe|afb\s*ii|anforderungsbereich\s*ii)/,
+  explicitEasy: /(grundniveau|grundaufgabe|basis(aufgabe|niveau)?|leichte? anforderung|einfach(e|es)?|afb\s*i(?!i)|anforderungsbereich\s*i(?!i))/,
+
+  highOperator: /^(beurteile|bewerte|diskutiere|entwickle|plane|entwirf|ubertrage|erortere|reflektiere|optimiere|nimm stellung|prufe kritisch|interpretiere|analysiere|erstelle ein modell|formuliere eine hypothese)\b/,
+  mediumOperator: /^(beschreibe|erklare|berechne|vergleiche|begrunde|untersuche|werte aus|bestimme|ermittle|protokolliere|stelle dar|formuliere|leite ab|weise nach|ordne begrundet|skizziere und erklare)\b/,
+  easyOperator: /^(nenne|benenne|gib an|lies ab|ordne zu|markiere|beschrifte|notiere|erganze|wahle|kreuze|zeichne|wiederhole|setze ein|miss|baue auf|beobachte)\b/,
+
+  easyQuestion: /^(was ist|was sind|welche|welcher|welches|wann|wo|wer|womit|wie heisst|wie lautet)\b/,
+  mediumQuestion: /^(warum|wie erklart|wie verandert|wodurch|inwiefern)\b/,
+  taskContext: /(aufgabe|arbeitsauftrag|beobachtungsauftrag|messauftrag|forscherauftrag|denkauftrag|auftrag|ubung|station|lernkontrolle|auswertung|experiment|sicherung|transfer|reflexion|quiz|prufung|bearbeite)/
+};
+
+function explicitLevel(text){
+  const value = norm(text);
+  if(RX.explicitHigh.test(value)) return "high";
+  if(RX.explicitMedium.test(value)) return "medium";
+  if(RX.explicitEasy.test(value)) return "easy";
+  return null;
+}
+
+function operatorLevel(text){
+  let value = norm(text)
+    .replace(/^[\d\s.:;()\-–—]+/,"")
+    .replace(/^(aufgabe|arbeitsauftrag|auftrag)\s*\d*\s*[:.\-–—]?\s*/,"");
+  if(RX.highOperator.test(value)) return "high";
+  if(RX.mediumOperator.test(value)) return "medium";
+  if(RX.easyOperator.test(value)) return "easy";
+  if(RX.mediumQuestion.test(value)) return "medium";
+  if(RX.easyQuestion.test(value)) return "easy";
+  return null;
+}
+
+function directHeading(element){
+  if(!element || !element.children) return "";
+  for(const child of element.children){
+    if(/^H[1-4]$/.test(child.tagName)) return child.textContent || "";
+  }
+  return "";
+}
+
+function contextText(element){
+  const parts = [];
+  let current = element ? element.parentElement : null;
+  let depth = 0;
+  while(current && depth < 6){
+    if(current.dataset){
+      if(current.dataset.name) parts.push(current.dataset.name);
+      if(current.dataset.titel) parts.push(current.dataset.titel);
+      if(current.dataset.title) parts.push(current.dataset.title);
+    }
+    const heading = directHeading(current);
+    if(heading) parts.push(heading);
+    current = current.parentElement;
+    depth++;
+  }
+  return parts.join(" ");
+}
+
+function ancestorLevel(element){
+  let current = element;
+  let depth = 0;
+  while(current && depth < 7){
+    const cls = " " + (current.className || "") + " ";
+    if(/\bniveau\b/.test(cls)){
+      if(/\b(e|erweitert|experte)\b/.test(cls)) return "high";
+      if(/\b(r|regel|mittel)\b/.test(cls)) return "medium";
+      if(/\b(g|grund|basis)\b/.test(cls)) return "easy";
+    }
+    const dataLevel = current.getAttribute && current.getAttribute("data-level");
+    if(dataLevel && /^(easy|medium|high)$/.test(dataLevel)) return dataLevel;
+    const fromHeading = explicitLevel(directHeading(current));
+    if(fromHeading) return fromHeading;
+    current = current.parentElement;
+    depth++;
+  }
+  return null;
+}
+
+function excluded(element){
+  return !!element.closest(
+    "script,style,nav,header,footer,dialog,.solution,.loesung,.teacher,.teacher-note,.quellen,.sources,.froebel-ignore"
+  );
+}
+
+function icon(level){
+  const span = document.createElement("span");
+  span.className = "froebel-task-symbol " +
+    (level === "easy" ? "froebel-cube" :
+     level === "high" ? "froebel-sphere" : "froebel-cylinder");
+  span.setAttribute("aria-hidden","true");
+  return span;
+}
+
+function decorate(element, level){
+  if(!element || element.dataset.froebelMarked || excluded(element)) return;
+  const text = (element.textContent || "").trim();
+  if(!text) return;
+  element.insertBefore(icon(level), element.firstChild);
+  element.classList.add("froebel-task");
+  element.dataset.froebelMarked = level;
+}
+
+function isTaskHeading(element){
+  const value = norm(element.textContent);
+  return RX.taskContext.test(value) || !!explicitLevel(value);
+}
+
+function isTaskCandidate(element){
+  if(excluded(element) || element.dataset.froebelMarked) return false;
+  const text = (element.textContent || "").trim();
+  if(text.length < 3 || text.length > 900) return false;
+
+  if(/^H[3-4]$/.test(element.tagName)){
+    return isTaskHeading(element);
+  }
+
+  const op = operatorLevel(text);
+  if(op) return true;
+
+  if(element.tagName === "P"){
+    const strong = element.querySelector(":scope > strong:first-child");
+    if(strong && /(^\s*\d+[.)]|aufgabe|auftrag|frage)/i.test(strong.textContent || "")) return true;
+    return RX.taskContext.test(norm(contextText(element))) && text.length < 600;
+  }
+
+  if(element.tagName === "LI"){
+    return RX.taskContext.test(norm(contextText(element)));
+  }
+
+  return false;
+}
+
+function decorateExplicit(root){
+  const groups = [
+    ["easy", ".niveau.g,.niveau.grund,.grundniveau,.grundaufgabe,.basisaufgabe,.basisniveau,[data-level='easy']"],
+    ["medium", ".niveau.r,.niveau.regel,.regelstandard,.regelaufgabe,.mittelniveau,.standardaufgabe,[data-level='medium']"],
+    ["high", ".niveau.e,.niveau.erweitert,.erweiterung,.expertenaufgabe,.expertenniveau,[data-level='high']"]
+  ];
+
+  for(const pair of groups){
+    const level = pair[0], selector = pair[1];
+    root.querySelectorAll(selector).forEach(function(block){
+      const target = block.matches("h1,h2,h3,h4,p,li")
+        ? block
+        : block.querySelector("h1,h2,h3,h4,p,li");
+      decorate(target, level);
+    });
+  }
+
+  root.querySelectorAll("h2,h3,h4").forEach(function(heading){
+    const level = explicitLevel(heading.textContent);
+    if(level) decorate(heading, level);
+  });
+}
+
+function decorateTasks(root){
+  root.querySelectorAll("li,p,h3,h4").forEach(function(element){
+    if(!isTaskCandidate(element)) return;
+    const level =
+      ancestorLevel(element) ||
+      explicitLevel(element.textContent) ||
+      operatorLevel(element.textContent) ||
+      "medium";
+    decorate(element, level);
+  });
+}
+
+function scan(root){
+  const scopes = [];
+  if(root && root.matches && root.matches(".tc-tiddler-body,main,body")) scopes.push(root);
+  if(root && root.querySelectorAll){
+    root.querySelectorAll(".tc-tiddler-body,main").forEach(function(scope){ scopes.push(scope); });
+  }
+  if(!scopes.length && document.body) scopes.push(document.body);
+
+  scopes.forEach(function(scope){
+    decorateExplicit(scope);
+    decorateTasks(scope);
+  });
+}
+
+function start(){
+  scan(document);
+  const observer = new MutationObserver(function(records){
+    records.forEach(function(record){
+      record.addedNodes.forEach(function(node){
+        if(node.nodeType === 1) scan(node);
+      });
+    });
+  });
+  observer.observe(document.body,{childList:true,subtree:true});
+}
+
+if(document.readyState === "loading"){
+  document.addEventListener("DOMContentLoaded",start,{once:true});
+}else{
+  start();
+}
+})();
+
+</script>
+</body>
+</html>
