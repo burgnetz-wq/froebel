@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Brechung und Linsen – Licht ändert die Richtung in Glas · Lehrer-Vorbereitung</title><style>
+:root{--ink:#17212b;--paper:#f2f0e9;--card:#fff;--blue:#174f78;--green:#2d7a48;--gold:#c58b20;--line:#d3dce2;--board:#153d30}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:var(--paper);color:var(--ink);line-height:1.5}
+button,a{font:inherit}.top{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);padding:.65rem;display:flex;gap:.55rem;flex-wrap:wrap;align-items:center}
+.top a,.top button{padding:.55rem .75rem;border:1px solid var(--line);border-radius:.6rem;background:#fff;color:var(--ink);text-decoration:none;cursor:pointer}
+.progress{margin-left:auto;min-width:250px}.bar{height:11px;background:#e5e9ec;border-radius:99px;overflow:hidden}.bar span{display:block;height:100%;width:0;background:var(--green)}
+.hero{background:linear-gradient(120deg,#123d5d,#236f9c);color:#fff}.hero-inner{max-width:1180px;margin:auto;padding:2.2rem 1.2rem;display:grid;grid-template-columns:1.15fr .85fr;gap:1.2rem;align-items:center}
+.hero img{width:100%;height:300px;object-fit:cover;border-radius:1rem;box-shadow:0 16px 40px rgba(0,0,0,.25)}h1{font-size:clamp(2rem,5vw,3.7rem);line-height:1.05;margin:.3rem 0}
+main{max-width:1180px;margin:auto;padding:1.1rem}.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1rem}.card{background:var(--card);border:1px solid var(--line);border-radius:1rem;padding:1rem;box-shadow:0 10px 26px rgba(20,40,55,.09)}
+.s12{grid-column:span 12}.s8{grid-column:span 8}.s4{grid-column:span 4}.phase{border:1px solid var(--line);border-radius:.8rem;margin:.7rem 0;overflow:hidden}.phase.done{opacity:.52;background:#eef1f2}.phase.done .pc{text-decoration:line-through}.ph{display:flex;gap:.7rem;align-items:center;padding:.7rem;background:#f7f9fa}.ph strong{flex:1}.check{width:46px;height:42px;border:1px solid var(--line);border-radius:.55rem;background:#fff;color:transparent;font-size:1.4rem;font-weight:900}.phase.done .check{background:var(--green);color:#fff}.pc{padding:.85rem}
+table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{border:1px solid var(--line);padding:.55rem;vertical-align:top}th{background:#e5f0f7}
+.info{border-left:5px solid var(--gold);background:#fff8e7;padding:.8rem;border-radius:.4rem;margin:.6rem 0}.sum{border-left:5px solid var(--green);background:#e8f4eb;padding:.8rem;border-radius:.4rem}
+.board{background:var(--board);color:#f7f0dc;border:10px solid #765238;border-radius:.8rem;padding:1rem;font-family:"Comic Sans MS","Segoe Print",cursive}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:99;display:flex;align-items:center;justify-content:center;padding:1rem}.modal[hidden]{display:none}.modal .board{width:min(1100px,100%);max-height:92vh;overflow:auto;font-size:clamp(1.1rem,2.2vw,1.8rem)}
+.actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}.primary{background:var(--blue)!important;color:#fff!important}.timer{font-size:2rem;font-weight:900;color:var(--blue)}
+@media(max-width:820px){.hero-inner{grid-template-columns:1fr}.s8,.s4{grid-column:span 12}.progress{margin-left:0;width:100%}}@media print{.top,.actions,.modal{display:none!important}.card{box-shadow:none}}
+</style></head>
+<body data-key="ph_k7_st08_brechung_und_linsen_licht_andert_die_richtung_in_glas">
+<nav class="top"><a class="primary" href="https://burgnetz-wq.github.io/froebel/physik/html/ph7_stunde_08_brechung_linsen.html" target="_blank" rel="noopener">Schüler-Modul öffnen</a>
+<button onclick="window.print()">Drucken</button><button id="reset">Status zurücksetzen</button>
+<div class="progress"><strong id="pt">0 von 4 Phasen</strong><div class="bar"><span></span></div></div></nav>
+<header class="hero"><div class="hero-inner"><div><div>Physik · Klasse 7 · Stunde 8 · Optik</div>
+<h1>Brechung und Linsen – Licht ändert die Richtung in Glas</h1><p><strong>Leitfrage:</strong> Wie lässt sich das Phänomen beobachten, messen und physikalisch erklären?</p></div>
+<img src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/physik/006_lichtbrechung.jpg" alt="Brechung und Linsen – Licht ändert die Richtung in Glas"></div></header>
+<main><div class="grid">
+<section class="card s12"><h2>Ziele und Vorbereitung</h2><div class="sum"><strong>Kompetenz:</strong> Lichtbrechung erklären und mit Linsen experimentieren</div>
+<p><strong>Lehrplanbezug:</strong> Optik – Brechung und Linsensysteme (sinngemäß)</p>
+<p><strong>Material:</strong> Material entsprechend Demonstrations- und Schülerexperiment vorbereiten.</p></section>
+<section class="card s8"><h2>Interaktive Grobgliederung</h2><section class="phase"><div class="ph"><strong>Einstieg und Problemfrage</strong><button class="check" type="button" aria-label="Einstieg und Problemfrage abschließen">✓</button></div><div class="pc">Vorwissen aktivieren, Phänomen beobachten und eine prüfbare Frage formulieren.</div></section><section class="phase"><div class="ph"><strong>Erarbeitung und Experiment</strong><button class="check" type="button" aria-label="Erarbeitung und Experiment abschließen">✓</button></div><div class="pc">Demonstration und Schülerexperiment durchführen; Beobachtungen oder Messwerte sichern.</div></section><section class="phase"><div class="ph"><strong>Auswertung und Sicherung</strong><button class="check" type="button" aria-label="Auswertung und Sicherung abschließen">✓</button></div><div class="pc">Ergebnisse vergleichen, Zusammenhang erklären und Tafelbild entwickeln.</div></section><section class="phase"><div class="ph"><strong>Transfer und Lernkontrolle</strong><button class="check" type="button" aria-label="Transfer und Lernkontrolle abschließen">✓</button></div><div class="pc">Fachwissen auf eine neue Situation übertragen und Lernergebnis prüfen.</div></section>
+<h2>Detaillierter Stundenverlauf</h2><table><thead><tr><th>Zeit</th><th>Phase</th><th>Lehrkraft</th><th>Lernende</th><th>Ergebnis</th></tr></thead><tbody><tr><td>5 min</td><td>Einstieg</td><td>zeigt Stift im Wasserglas – sieht geknickt aus</td><td>beschreiben Beobachtung: Der Stift sieht aus wie zwei Teile</td><td>Plenum</td></tr><tr><td>5 min</td><td>Problemfrage</td><td>Warum sieht der Stift geknickt aus, obwohl er gerade ist?</td><td>Vermutungen (Wasser bricht Licht? Glas bricht Licht?)</td><td>Plenum</td></tr><tr><td>8 min</td><td>Lehrerdemonstrationsexperiment</td><td>Laserstrahl in schräg aufgestelltes Wasserglas schießen, Weg verfolgbar</td><td>beobachten: Strahl ändert Richtung an der Wasseroberfläche</td><td>Plenum</td></tr><tr><td>7 min</td><td>Lehrtext</td><td>erklärt Brechung: Licht ist in Glas oder Wasser langsamer als in Luft</td><td>verstehen die Ursache: unterschiedliche Lichtgeschwindigkeit</td><td>Plenum</td></tr><tr><td>16 min</td><td>Schülerexperiment</td><td>betreut Linsenversuch: Sammellinse, Licht, Schirm; Brennpunkt finden</td><td>positionieren Linse, suchen auf Schirm das scharfe Bild, messen Brennweite</td><td>Gruppenarbeit</td></tr><tr><td>8 min</td><td>Auswertung</td><td>sammelt Brennweiten-Ergebnisse, ordnet Linsen nach Stärke</td><td>erkennen: dünnere Linsen = größere Brennweite</td><td>Plenum</td></tr><tr><td>8 min</td><td>Vertiefung</td><td>erklärt Sammel- und Zerstreuungslinsen, Anwendungen (Auge, Brille, Kamera)</td><td>verstehen die Funktion in optischen Geräten</td><td>Plenum</td></tr><tr><td>2 min</td><td>Sicherung</td><td>Merksatz</td><td>übernehmen ins Heft</td><td>Plenum</td></tr></tbody></table></section>
+<aside class="card s4"><h2>Unterrichtssteuerung</h2><div id="timer" class="timer">05:00</div>
+<div class="actions"><button class="primary" id="start">Start</button><button id="pause">Pause</button><button id="treset">5 Min.</button></div>
+<h3>Differenzierung</h3><div class="info"><strong>HSA/Basis:</strong> Beobachten, dass Linsen ein Bild erzeugen. Sammel- vs. Zerstreuungslinse kennen. Brennpunkt qualitativ verstehen.</div>
+<div class="info"><strong>RSA/Erweiterung:</strong> Brennweite messen und vergleichen. Erkennen: dünnere Linse = längere Brennweite. Reelle und virtuelle Bilder unterscheiden. Linsengleichung 1/f = 1/a + 1/b verstehen (optional). Linsenkombinationen (Teleskop, Mikroskop-Optik) besprechen.</div>
+<h3>Sicherheit</h3><p>Gefährdungen vor dem Versuch prüfen; Geräte nur nach Freigabe einschalten.</p></aside>
+<section class="card s12"><h2>Experimente</h2><p><strong>Lehrerdemonstration:</strong> Stift im Wasser – Brechung zeigen</p>
+<p><strong>Schülerexperiment:</strong> Linsenversuch – Brennpunkt finden</p>
+<p><strong>Arduino:</strong> keiner · <strong>Sensor/Aktor:</strong> keiner</p></section>
+<section class="card s12"><h2>Tafelbild und Teilzusammenfassung</h2><div class="board">Brechung und Linsen – Licht ändert die Richtung in Glas – Lichtbrechung erklären und mit Linsen experimentieren</div>
+<div class="actions"><button class="primary boardOpen">Tafelbild projizieren</button></div>
+<div class="sum"><strong>Teilzusammenfassung:</strong> Lichtbrechung erklären und mit Linsen experimentieren</div></section>
+</div></main>
+<div class="modal" id="modal" hidden><div class="board"><div class="actions"><button id="close">Schließen</button></div><h2>Brechung und Linsen – Licht ändert die Richtung in Glas</h2><p>Brechung und Linsen – Licht ändert die Richtung in Glas – Lichtbrechung erklären und mit Linsen experimentieren</p></div></div>
+<script>
+(()=>{const key=document.body.dataset.key,ph=[...document.querySelectorAll('.phase')],bar=document.querySelector('.bar span'),pt=document.getElementById('pt');
+function upd(){const d=ph.filter(x=>x.classList.contains('done')).length;bar.style.width=(100*d/ph.length)+'%';pt.textContent=d+' von '+ph.length+' Phasen'}
+ph.forEach((p,i)=>{const b=p.querySelector('.check');if(localStorage.getItem(key+':'+i)==='1')p.classList.add('done');b.onclick=()=>{p.classList.toggle('done');localStorage.setItem(key+':'+i,p.classList.contains('done')?'1':'0');upd()}});upd();
+document.getElementById('reset').onclick=()=>{if(confirm('Phasenstatus zurücksetzen?')){ph.forEach((p,i)=>{p.classList.remove('done');localStorage.removeItem(key+':'+i)});upd()}};
+const m=document.getElementById('modal');document.querySelectorAll('.boardOpen').forEach(b=>b.onclick=()=>m.hidden=false);document.getElementById('close').onclick=()=>m.hidden=true;m.onclick=e=>{if(e.target===m)m.hidden=true};
+let r=300,id=null,disp=document.getElementById('timer');function show(){disp.textContent=String(Math.floor(r/60)).padStart(2,'0')+':'+String(r%60).padStart(2,'0')}
+document.getElementById('start').onclick=()=>{if(id)return;id=setInterval(()=>{if(r<=0){clearInterval(id);id=null;alert('Zeit abgelaufen.');return}r--;show()},1000)};
+document.getElementById('pause').onclick=()=>{clearInterval(id);id=null};document.getElementById('treset').onclick=()=>{clearInterval(id);id=null;r=300;show()};show();
+})();
+</script></body></html>
