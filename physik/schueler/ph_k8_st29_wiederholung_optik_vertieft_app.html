@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wiederholung Optik vertieft – Physik Klasse 8, Stunde 29</title><style>
+:root{
+  --blau:#345f8c;--blau-dunkel:#244664;--hellblau:#eaf3fb;--gruen:#2e7d32;
+  --hellgruen:#eaf6ea;--gelb:#f0c84b;--hellgelb:#fff8d9;--rot:#b8352d;
+  --violett:#7a4d9b;--papier:#f5f7fa;--karte:#ffffff;--text:#1f2a35;--grau:#66727e;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--papier);color:var(--text);font-family:"Segoe UI",Arial,sans-serif;line-height:1.55;font-size:18px}
+a{color:var(--blau-dunkel)}
+.kopf{background:linear-gradient(120deg,var(--blau-dunkel),var(--blau));color:#fff;padding:14px 20px;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.kopf h1{margin:0;font-size:1.35rem}.kopf .meta{font-size:.92rem;opacity:.94}
+.fortschrittsleiste{height:8px;background:#dce3ea;position:sticky;top:0;z-index:81}.fortschritt{height:100%;width:0;background:var(--gruen);transition:width .25s}
+.steuerung{position:sticky;top:8px;z-index:80;background:#edf2f7;border-bottom:2px solid var(--blau);padding:9px 14px;display:flex;flex-wrap:wrap;gap:7px}
+button,.button{font:inherit;border:1px solid var(--blau);border-radius:8px;padding:8px 12px;background:#fff;color:var(--blau-dunkel);cursor:pointer;text-decoration:none;display:inline-block}
+button:hover,button:focus,.button:hover,.button:focus{background:var(--blau);color:#fff;outline:3px solid rgba(240,200,75,.7);outline-offset:1px}
+button:disabled{cursor:default;opacity:.88}
+main{max-width:1080px;margin:0 auto;padding:16px}
+.karte{background:var(--karte);border-radius:13px;padding:20px 24px;margin:0 0 20px;box-shadow:0 2px 8px rgba(15,30,45,.09);border-left:6px solid var(--blau)}
+.karte h2{margin-top:0;color:var(--blau-dunkel);border-bottom:2px solid #d9e3ec;padding-bottom:7px}
+.karte h3{color:var(--blau-dunkel)}
+.karte.experiment{border-left-color:var(--gruen);background:#f4fbf4}.karte.vertiefung{border-left-color:var(--violett);background:#faf6fd}.karte.merksatz{border-left-color:var(--gelb);background:var(--hellgelb)}.karte.sicherheit{border:2px solid var(--rot);background:#fff1ef}.karte.abschluss{border-left-color:#d78818;background:#fff8ea}
+.zeit{float:right;background:#e4ecf5;border-radius:20px;padding:3px 10px;font-size:.82rem;color:var(--blau-dunkel)}
+.zielbox{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.ziel{background:var(--hellblau);padding:12px;border-radius:9px;border:1px solid #c8dced}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.bildkarte{background:#fff;border:1px solid #cbd6df;border-radius:10px;padding:8px;text-align:center}.bildkarte img{width:100%;height:190px;object-fit:contain;background:#f8fafc;border-radius:7px}.bildkarte figcaption{font-size:.86rem;color:#46535f;margin-top:6px}
+.diagramm{max-width:720px;margin:12px auto;background:#fff;border:1px solid #cbd6df;border-radius:10px;padding:10px}.diagramm svg{width:100%;height:auto;display:block}
+.formel{font-family:Cambria,"Times New Roman",serif;font-size:1.25em;background:#eef4fa;border-radius:8px;padding:8px 12px;display:inline-block;margin:4px 0}
+.mini{font-size:.88rem;color:var(--grau)}
+.info{background:var(--hellblau);border-left:5px solid var(--blau);padding:11px 14px;border-radius:7px;margin:10px 0}.warnung{background:#fff0ed;border-left:5px solid var(--rot);padding:11px 14px;border-radius:7px}.erfolg{background:var(--hellgruen);border-left:5px solid var(--gruen);padding:11px 14px;border-radius:7px}
+.aufgabe{background:#f8fafc;border:1px solid #ccd6df;border-radius:9px;padding:12px;margin:10px 0}.aufgabe strong:first-child{color:var(--blau-dunkel)}
+input[type=number],input[type=text],textarea,select{font:inherit;border:1px solid #aebbc7;border-radius:7px;padding:7px 9px;background:#fff}input[type=number]{width:110px}textarea{width:100%;min-height:80px;resize:vertical}
+.choice-row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}.choice-row button{flex:1;min-width:150px;text-align:left}.choice-row button.richtig,.quiz-option.richtig{background:#d9f2d5;border-color:var(--gruen);color:#204b22}.choice-row button.falsch,.quiz-option.falsch{background:#f9d8d4;border-color:var(--rot);color:#6c211c}
+.feedback{font-weight:650;min-height:1.5em;margin-top:5px}.loesung{display:none;background:#fff7ce;border:2px solid var(--gelb);border-radius:8px;padding:12px;margin-top:9px}
+.quiz-question{border-top:1px solid #d5dee6;padding-top:13px;margin-top:13px}.quiz-question:first-child{border-top:0;padding-top:0}.quiz-option{display:block;width:100%;text-align:left;margin:6px 0}.quizstand{font-size:1.1rem;font-weight:700;background:var(--hellblau);padding:10px 14px;border-radius:9px;position:sticky;top:62px;z-index:20}
+.statuszeile{display:flex;align-items:center;gap:8px;margin-top:12px;border-top:1px dashed #aebbc7;padding-top:9px}.statuszeile input{width:21px;height:21px}.statuszeile label{font-weight:650;color:var(--gruen)}
+.tafelbild{background:#173c2a;color:#f5f5ee;border:10px solid #735138;border-radius:8px;padding:18px 22px;font-family:"Segoe Print","Comic Sans MS",cursive}.tafelbild h2{color:#fff;border-bottom-color:#fff}.tafelbild .gelb{color:#ffe078}.tafelbild .blau{color:#a8d6ff}.tafelbild .gruen{color:#aee8a6}
+.formel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}.formelkarte{border:1px solid #cbd6df;background:#fff;border-radius:10px;padding:13px}.formelkarte button{width:100%;font-weight:700}.formel-details{display:none;margin-top:8px;font-size:.92rem}
+.match-card{border:1px solid #cbd6df;border-radius:9px;padding:11px;background:#fff;margin:8px 0}.match-card .choice-row button{min-width:135px}
+.checkliste{columns:2;column-gap:28px}.checkliste li{margin-bottom:7px;break-inside:avoid}
+.pass{border:3px double var(--blau);border-radius:12px;padding:18px;background:#fff;text-align:center}.pass h3{font-size:1.4rem;margin-top:0}.pass input{width:min(360px,100%)}
+.range-output{font-weight:700;color:var(--blau-dunkel)}
+footer{text-align:center;color:#5d6873;padding:20px;font-size:.85rem}
+@media(max-width:760px){body{font-size:17px}.grid2,.grid3,.grid4{grid-template-columns:1fr}.kopf h1{font-size:1.12rem}.karte{padding:15px 16px}.bildkarte img{height:220px}.checkliste{columns:1}.zeit{float:none;display:inline-block;margin-bottom:6px}.quizstand{position:static}}
+@media print{.steuerung,.fortschrittsleiste,.vorlesen,.statuszeile,.nur-bildschirm{display:none!important}.karte{box-shadow:none;break-inside:avoid;margin-bottom:12px}.loesung{display:block!important}body{background:#fff;font-size:12pt}.kopf{background:#fff;color:#000;border-bottom:2px solid #000}.bildkarte img{max-height:160px}.quizstand{position:static}}
+</style>
+<style id="froebel-differenzierung-styles">
+/* Fröbel-Spielgaben als Zeichen für differenzierte Aufgaben
+   Reihenfolge der Aufgaben: Kugel – Walze – Würfel
+   gelbe Kugel = höhere Anforderungen
+   rote Walze  = mittlere Anforderungen
+   blauer Würfel = grundlegende Anforderungen */
+
+.froebel-task-symbol{
+  display:inline-block;
+  position:relative;
+  width:1.75rem;
+  height:1.75rem;
+  margin-right:.70rem;
+  vertical-align:-.36rem;
+  flex:0 0 auto;
+  pointer-events:none;
+  box-sizing:border-box;
+}
+
+.froebel-task{ position:relative; }
+
+/* Gelbe Kugel */
+.froebel-sphere{
+  width:1.45rem;
+  height:1.45rem;
+  margin-left:.05rem;
+  margin-right:.76rem;
+  border-radius:50%;
+  border:2px solid #927100;
+  background:
+    radial-gradient(circle at 28% 24%,
+      #fffde7 0%,
+      #fff9c4 12%,
+      #fff176 24%,
+      #ffeb3b 42%,
+      #fdd835 60%,
+      #d4a600 82%,
+      #9b7700 100%);
+  box-shadow:
+    .12rem .18rem .24rem rgba(0,0,0,.30),
+    inset -.10rem -.12rem .16rem rgba(110,80,0,.18);
+  transform:translateY(.12rem);
+}
+
+/* Rote Walze – stärker 3D */
+.froebel-cylinder{
+  width:1.42rem;
+  height:1.38rem;
+  margin-left:.09rem;
+  margin-right:.82rem;
+  background:
+    linear-gradient(90deg,
+      #710000 0%,
+      #a51414 10%,
+      #d32f2f 28%,
+      #ff867c 48%,
+      #ffc2bc 55%,
+      #ef5350 62%,
+      #c62828 78%,
+      #7f0000 100%);
+  border:2px solid #6e0000;
+  border-radius:.20rem / .55rem;
+  box-shadow:
+    .12rem .18rem .24rem rgba(0,0,0,.34),
+    inset .12rem 0 .12rem rgba(255,255,255,.20),
+    inset -.14rem 0 .16rem rgba(70,0,0,.34);
+  transform:translateY(.17rem);
+  overflow:visible;
+}
+
+.froebel-cylinder::before,
+.froebel-cylinder::after{
+  content:"";
+  position:absolute;
+  left:-2px;
+  width:calc(100% + 4px);
+  height:.48rem;
+  border:2px solid #6e0000;
+  border-radius:50%;
+  box-sizing:border-box;
+}
+
+.froebel-cylinder::before{
+  top:-.27rem;
+  z-index:3;
+  background:
+    radial-gradient(ellipse at 34% 24%,
+      #ffe4e1 0%,
+      #ffab91 18%,
+      #ef5350 42%,
+      #c62828 72%,
+      #850000 100%);
+  box-shadow:
+    inset 0 -.08rem .11rem rgba(80,0,0,.34),
+    .02rem .02rem .04rem rgba(255,255,255,.22);
+}
+
+.froebel-cylinder::after{
+  bottom:-.27rem;
+  z-index:1;
+  background:
+    radial-gradient(ellipse at 46% 34%,
+      #e57373 0%,
+      #c62828 46%,
+      #8c0000 100%);
+  box-shadow:0 .08rem .14rem rgba(0,0,0,.28);
+}
+
+/* Blauer Würfel – Referenzbild des Nutzers */
+.froebel-cube{
+  width:1.55rem;
+  height:1.55rem;
+  margin-left:.02rem;
+  margin-right:.90rem;
+  background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAADhUlEQVR4XlWT+1PUVRiHv39BKOmILCBkSDDTDDPpNJPmWKRopaVc1BKCVVblEi63AAUWQxJwIUEC5U7chuW6CSggBEOFoJhJKPGDNcUUy67ssrtclOHpQNlMZ+b94Vw+z+d9z3uOtLS0xMowmmYZG3tER1cPX9c2kpBbxTaFGk/5F3iFZ+ETcwmFKo/4y5VcKmuivLmTyb+mke78NEZpQztnS9pQFH3HgYL7eGbewyN1AI/kHtziO3CNbsE5oh6HkxVsDMjjRd90bLzjeM0vAqmgVkvpzxBzU8+xut/ZXfCIbZnDeKT04Rp/k5eiW3H5VMOm0BpkJ4qx9c/A5v1zvLDvM+zfkSOpK1uYMMFD/TNGp54x9MdTOiesVI/MkNnzJ8qGCT4uvodTSDE2B1WsOZDM2v1JrP0gGfs9IUipxc08FIChyUV6Hz+lfXyB+gcWKn80UTBkJHtAgAZMbAmvwNbnAut9L7DuUBprfNLZ6HUCKaOshbsG6P51Ee0vC9SNzlEyYiZv0EhG/wwpt/TEdxt4JbKWDR+psTuSxbrDWdgeycZhJYO4/CZ6J6FZOFc/mOfaXSuXB82k9xk52/2EqHY9YdcFQFmPfUAuG0SsP5aLXeAVHPecRIr4soFvHkOlEBeOzJE9aOXz/lkShfhMh4GQ1mkCm/S4xzYhk1/DTn4Vu6ACZMFFOO0VgLAcDdXj8JVwzrptJbXfIlI2EXHjCcdb9RzV6PiwXo9brBbZqXIcFKU4hpQiEy118j6FFJyhofA+ZHxvRdVnIbbLTFibieAWA/5CuL9Kh1eFDteEDpzCanAW7XQMrcIhrO4fgF9aLeo7kCTE0d1mTrfPEthixE9j4L3qaXaVT7G9RIdbQjcuZxpxVjbgFClC2cymfaeRjl7UoLoNUbfMKG7MEtBqwkczw94aA28J5x2lU7xRPIV7Ui+bRRku0VoB0YpLzMNXmY70ZngOcq2RkK5FAq8vcLDBine1ibcr9Ows07H9X8DKy3w5ro3NcR3IPrnCu6EqLJZ5pK7BUfwSr+IWkMmrUXW8fnGYnUU64W5kV4WBHeV6UcI0Hqp+XBM7cQzKxz9WzfzC4uonlJ7/xjmx8O3IOKklWnYrc3EOULMlsg7PtB/Ymv8b7in9q+Lj5wuZn19YFf8PsDJZgT0HThvNNPYMo8ypYmvQeRwOnSMmp2Z1f3l5+b9zfwMFY8hWZi/2mAAAAFF0RVh0Q29tbWVudABDb3B5cmlnaHQgSU5DT1JTIEdtYkggKHd3dy5pY29uZXhwZXJpZW5jZS5jb20pIC0gVW5saWNlbnNlZCBwcmV2aWV3IGltYWdltppppgAAADh0RVh0Q29weXJpZ2h0AENvcHlyaWdodCBJTkNPUlMgR21iSCAod3d3Lmljb25leHBlcmllbmNlLmNvbSlOzplOAAAAWnpUWHRDb21tZW50AAB4nHPOL6gsykzPKFHw9HP2DwpWcM9N8lDQKC8v18tMzs9LrShILcpMzUtO1UvOz9VU0FUIzcvJTE7NK05NUSgoSi3LTC1XyMxNTE8FALiPGiScvJjjAAAAQXpUWHRDb3B5cmlnaHQAAHicc84vqCzKTM8oUfD0c/YPClZwz03yUNAoLy/Xy0zOz0utKEgtykzNS07VS87P1QQAfTYQaBzd5o8AAAAASUVORK5CYII=");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+  border:none;
+  box-shadow:.10rem .14rem .20rem rgba(0,0,0,.24);
+  transform:translateY(.12rem);
+}
+
+.froebel-cube::before,
+.froebel-cube::after{
+  content:none;
+}
+
+.froebel-differenzierte-aufgaben{
+  margin:1.35rem 0;
+}
+
+.froebel-differenzierte-aufgaben > h2{
+  margin-bottom:.75rem;
+}
+
+.froebel-task-card{
+  display:flex;
+  align-items:flex-start;
+  gap:.20rem;
+  margin:.72rem 0;
+  padding:.88rem 1rem;
+  border:1px solid #c8d2dc;
+  border-radius:.72rem;
+  background:#fff;
+  box-shadow:0 .12rem .32rem rgba(25,45,65,.08);
+  break-inside:avoid;
+}
+
+.froebel-level-high{
+  border-left:5px solid #d4a600;
+  background:linear-gradient(90deg,#fffbe7 0%,#fff 42%);
+}
+
+.froebel-level-medium{
+  border-left:5px solid #c62828;
+  background:linear-gradient(90deg,#fff0f0 0%,#fff 42%);
+}
+
+.froebel-level-easy{
+  border-left:5px solid #1976d2;
+  background:linear-gradient(90deg,#edf6ff 0%,#fff 42%);
+}
+
+.froebel-task-content{
+  flex:1 1 auto;
+  min-width:0;
+  line-height:1.55;
+}
+
+.froebel-task > .froebel-task-symbol:first-child{ margin-top:0; }
+li.froebel-task > .froebel-task-symbol:first-child{ margin-left:.05rem; }
+
+@media (max-width:600px){
+  .froebel-task-card{ padding:.72rem .78rem; }
+  .froebel-task-symbol{
+    transform:scale(.90);
+    transform-origin:top center;
+  }
+}
+
+@media print{
+  .froebel-task-symbol,
+  .froebel-task-card{
+    print-color-adjust:exact;
+    -webkit-print-color-adjust:exact;
+  }
+  .froebel-task-card{ box-shadow:none; }
+}
+</style>
+</head>
+<body data-store-prefix="ph8-s29">
+<header class="kopf"><h1>Stunde 29 · Wiederholung Optik vertieft</h1><div class="meta">Physik Klasse 8 · Optik · 60 Minuten · Wiederholung und Anwendung</div></header>
+<div class="fortschrittsleiste"><div class="fortschritt"></div></div>
+<nav class="steuerung"><button onclick="scrollTo(0,0)">⬆ Anfang</button><button onclick="say('lerntext')">🔊 Überblick vorlesen</button><button onclick="stopSpeech()">🔇 Stopp</button><button onclick="toggleFullscreen()">⛶ Vollbild</button><button onclick="print()">🖨 Drucken</button><button onclick="resetPage()">↺ Zurücksetzen</button><a class="button" href="ph_k8_st30_gesamtwiederholung_klasse_8_app.html">Stunde 30 ➜</a></nav>
+<main>
+<section class="karte" id="lerntext"><span class="zeit">5 min</span><h2>1. Ziel und Einstieg: Vier Wege des Lichts</h2>
+<div class="zielbox"><div class="ziel">Du wendest das <strong>Reflexionsgesetz</strong> sicher an.</div><div class="ziel">Du erklärst die <strong>Brechung</strong> an Stoffgrenzen.</div><div class="ziel">Du unterscheidest <strong>Sammel- und Zerstreuungslinsen</strong>.</div><div class="ziel">Du vergleichst <strong>Auge und Kamera</strong>.</div></div>
+<p><strong>Problemfrage:</strong> Was passiert mit Licht, wenn es auf einen Spiegel, Wasser, eine Linse oder das Auge trifft?</p>
+<div class="grid4"><figure class="bildkarte"><a href="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/physik/035_reflexion_spiegel.jpg" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/physik/035_reflexion_spiegel.jpg" alt="Reflexion am ebenen Spiegel" loading="lazy"></a><figcaption>Reflexion: Licht wird zurückgeworfen.<br><span class="mini">Bildarchiv: 035_reflexion_spiegel.jpg</span></figcaption></figure><figure class="bildkarte"><a href="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/physik/006_lichtbrechung.jpg" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/physik/006_lichtbrechung.jpg" alt="Lichtbrechung an einer Stoffgrenze" loading="lazy"></a><figcaption>Brechung: Licht ändert an einer Stoffgrenze seine Richtung.<br><span class="mini">Bildarchiv: 006_lichtbrechung.jpg</span></figcaption></figure><figure class="bildkarte"><a href="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/physik/029_linse_sammellinse.jpg" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/physik/029_linse_sammellinse.jpg" alt="Strahlen an einer Sammellinse" loading="lazy"></a><figcaption>Sammellinse: parallele Strahlen werden gebündelt.<br><span class="mini">Bildarchiv: 029_linse_sammellinse.jpg</span></figcaption></figure><figure class="bildkarte"><a href="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/physik/030_zerstreuungslinse.jpg" target="_blank" rel="noopener"><img src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/physik/030_zerstreuungslinse.jpg" alt="Strahlen an einer Zerstreuungslinse" loading="lazy"></a><figcaption>Zerstreuungslinse: parallele Strahlen laufen auseinander.<br><span class="mini">Bildarchiv: 030_zerstreuungslinse.jpg</span></figcaption></figure></div>
+<div class="statuszeile"><input class="done-check" type="checkbox" id="done-8118089939083508200"><label for="done-8118089939083508200">✓ Einstieg besprochen</label></div></section>
+
+<section class="karte vertiefung"><span class="zeit">10 min</span><h2>2. Station A: Reflexion – Winkel richtig messen</h2>
+<div class="diagramm"><svg viewBox="0 0 700 340" role="img" aria-label="Spiegelgesetz mit Einfallslot"><rect width="700" height="340" fill="#fff"/><line x1="80" y1="250" x2="620" y2="250" stroke="#345f8c" stroke-width="9"/><text x="535" y="280" font-size="22">Spiegel</text><line x1="350" y1="45" x2="350" y2="300" stroke="#555" stroke-width="3" stroke-dasharray="9 8"/><text x="362" y="70" font-size="20">Einfallslot</text><line x1="135" y1="65" x2="350" y2="250" stroke="#c0392b" stroke-width="6" marker-end="url(#pfeil)"/><line x1="350" y1="250" x2="565" y2="65" stroke="#2e7d32" stroke-width="6" marker-end="url(#pfeil)"/><path d="M350 175 A75 75 0 0 0 293 201" fill="none" stroke="#7a4d9b" stroke-width="4"/><path d="M350 175 A75 75 0 0 1 407 201" fill="none" stroke="#7a4d9b" stroke-width="4"/><text x="302" y="178" font-size="23">α</text><text x="385" y="178" font-size="23">β</text><defs><marker id="pfeil" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#333"/></marker></defs></svg></div>
+<div class="merksatz info"><strong>Spiegelgesetz:</strong> Einfallswinkel α = Reflexionswinkel β. Beide Winkel werden <strong>zum Einfallslot</strong> gemessen, nicht zur Spiegeloberfläche.</div>
+<div class="aufgabe"><strong>Winkelrechner:</strong> Ein Lichtstrahl trifft mit α = <input id="alpha" type="number" min="0" max="90" value="37">° auf den Spiegel. Wie groß ist β? <button onclick="calcReflection()">Berechnen</button><div id="reflection-feedback" class="feedback"></div></div>
+<div class="aufgabe"><strong>Fehlerdetektiv:</strong> Ein Schüler misst 30° zur Spiegeloberfläche. Welcher Einfallswinkel gehört in das Spiegelgesetz?
+<div class="choice-row"><button onclick="choice(this,false)">30°</button><button onclick="choice(this,true,'Richtig: 90° − 30° = 60°.')">60°</button><button onclick="choice(this,false)">90°</button></div><div class="feedback"></div></div>
+<div class="statuszeile"><input class="done-check" type="checkbox" id="done-6152157555055641810"><label for="done-6152157555055641810">✓ Reflexion sicher angewendet</label></div></section>
+
+<section class="karte vertiefung"><span class="zeit">10 min</span><h2>3. Station B: Brechung – zum Lot oder vom Lot?</h2>
+<div class="diagramm"><svg viewBox="0 0 700 360" role="img" aria-label="Brechung von Luft in Glas"><rect width="700" height="180" fill="#eef7ff"/><rect y="180" width="700" height="180" fill="#dce9ef"/><line x1="40" y1="180" x2="660" y2="180" stroke="#345f8c" stroke-width="4"/><text x="55" y="65" font-size="22">Luft – optisch dünner</text><text x="55" y="325" font-size="22">Glas – optisch dichter</text><line x1="350" y1="25" x2="350" y2="335" stroke="#555" stroke-width="3" stroke-dasharray="9 8"/><line x1="160" y1="40" x2="350" y2="180" stroke="#c0392b" stroke-width="6"/><line x1="350" y1="180" x2="440" y2="335" stroke="#2e7d32" stroke-width="6"/><text x="458" y="286" font-size="21">zum Lot gebrochen</text></svg></div>
+<ul><li>Optisch dünn → optisch dicht: Brechung <strong>zum Lot</strong>.</li><li>Optisch dicht → optisch dünn: Brechung <strong>vom Lot</strong>.</li><li>Senkrechter Einfall: keine Richtungsänderung.</li></ul>
+<div class="aufgabe"><strong>Entscheidung:</strong> Licht tritt von Glas in Luft über.
+<div class="choice-row"><button onclick="choice(this,false)">Es wird zum Lot gebrochen.</button><button onclick="choice(this,true,'Richtig: Von optisch dicht nach optisch dünn wird vom Lot gebrochen.')">Es wird vom Lot gebrochen.</button><button onclick="choice(this,false)">Es wird immer vollständig absorbiert.</button></div><div class="feedback"></div></div>
+<div class="aufgabe"><strong>Anwendung:</strong> Warum erscheint ein Strohhalm im Wasserglas geknickt? <textarea data-store placeholder="Erklärung mit den Begriffen Lichtstrahl, Wasser, Luft und Brechung …"></textarea><button onclick="toggleSolution('sol-brechung')">Lösungshinweis</button><div class="loesung" id="sol-brechung">Lichtstrahlen vom untergetauchten Teil werden beim Übergang von Wasser zu Luft vom Lot weg gebrochen. Das Auge verlängert die Strahlen geradlinig zurück und ordnet den Teil an einer scheinbar verschobenen Position ein.</div></div>
+<div class="statuszeile"><input class="done-check" type="checkbox" id="done-1052919389605058122"><label for="done-1052919389605058122">✓ Brechungsrichtung erklärt</label></div></section>
+
+<section class="karte vertiefung"><span class="zeit">12 min</span><h2>4. Station C: Linsen und Bildentstehung</h2>
+<div class="grid2"><div><h3>Sammellinse</h3><ul><li>in der Mitte dicker</li><li>bündelt parallele Strahlen</li><li>besitzt einen reellen Brennpunkt</li><li>kann ein reelles Bild auf einem Schirm erzeugen</li></ul></div><div><h3>Zerstreuungslinse</h3><ul><li>in der Mitte dünner</li><li>zerstreut parallele Strahlen</li><li>besitzt einen virtuellen Brennpunkt</li><li>liefert ein virtuelles, aufrechtes, verkleinertes Bild</li></ul></div></div>
+<div class="match-card"><strong>1. „In der Mitte dicker und kann Sonnenlicht bündeln.“</strong><div class="choice-row"><button onclick="choice(this,true)">Sammellinse</button><button onclick="choice(this,false)">Zerstreuungslinse</button></div><div class="feedback"></div></div>
+<div class="match-card"><strong>2. „Korrigiert Kurzsichtigkeit.“</strong><div class="choice-row"><button onclick="choice(this,false)">Sammellinse</button><button onclick="choice(this,true,'Richtig: Kurzsichtigkeit wird mit einer Zerstreuungslinse korrigiert.')">Zerstreuungslinse</button></div><div class="feedback"></div></div>
+<div class="match-card"><strong>3. „Erzeugt bei geeignetem Gegenstandsabstand ein umgekehrtes Bild auf einem Schirm.“</strong><div class="choice-row"><button onclick="choice(this,true)">Sammellinse</button><button onclick="choice(this,false)">Zerstreuungslinse</button></div><div class="feedback"></div></div>
+<div class="aufgabe"><strong>Vertiefung:</strong> Ein Gegenstand steht weit außerhalb der doppelten Brennweite einer Sammellinse. Beschreibe das Bild. <textarea data-store placeholder="Lage, Größe, Orientierung, reell oder virtuell …"></textarea><button onclick="toggleSolution('sol-linse')">Lösung</button><div class="loesung" id="sol-linse">Das Bild entsteht zwischen einfacher und doppelter Brennweite. Es ist reell, umgekehrt und verkleinert.</div></div>
+<div class="statuszeile"><input class="done-check" type="checkbox" id="done-7827514753179563272"><label for="done-7827514753179563272">✓ Linsen verglichen</label></div></section>
+
+<section class="karte"><span class="zeit">8 min</span><h2>5. Station D: Auge und Kamera – zwei ähnliche Systeme</h2>
+<table><thead><tr><th>Auge</th><th>Kamera</th><th>Funktion</th></tr></thead><tbody><tr><td>Hornhaut und Augenlinse</td><td>Objektiv</td><td>brechen und bündeln Licht</td></tr><tr><td>Iris und Pupille</td><td>Blende</td><td>regeln die Lichtmenge</td></tr><tr><td>Netzhaut</td><td>Bildsensor</td><td>nehmen das reelle Bild auf</td></tr><tr><td>Akkommodation</td><td>Fokussierung</td><td>stellen scharf</td></tr></tbody></table>
+<div class="aufgabe"><strong>Zuordnung:</strong> Welcher Teil der Kamera entspricht am ehesten der Netzhaut?<div class="choice-row"><button onclick="choice(this,false)">Blende</button><button onclick="choice(this,true)">Bildsensor</button><button onclick="choice(this,false)">Gehäuse</button></div><div class="feedback"></div></div>
+<div class="info"><strong>Wichtig:</strong> Auf Netzhaut und Bildsensor entsteht zunächst ein reelles, umgekehrtes Bild. Beim Sehen verarbeitet das Gehirn die Signale zu unserer Wahrnehmung.</div>
+<div class="statuszeile"><input class="done-check" type="checkbox" id="done-7019029827076919566"><label for="done-7019029827076919566">✓ Auge und Kamera zugeordnet</label></div></section>
+
+<section class="karte experiment"><span class="zeit">8 min</span><h2>6. Schülerexperiment: Brennweite einer Sammellinse</h2>
+<div class="grid2"><div><h3>Material</h3><ul><li>Sammellinse</li><li>weißer Schirm oder Papier</li><li>weit entferntes helles Objekt, zum Beispiel Fenster</li><li>Lineal</li></ul><div class="warnung"><strong>Sicherheit:</strong> Niemals mit der Linse in die Sonne schauen oder Sonnenlicht auf Personen richten.</div></div><div><h3>Durchführung</h3><ol><li>Richte die Linse auf ein weit entferntes Objekt.</li><li>Verschiebe den Schirm, bis das Bild scharf ist.</li><li>Miss den Abstand zwischen Linsenmitte und Schirm.</li><li>Dieser Abstand ist näherungsweise die Brennweite.</li></ol></div></div>
+<div class="aufgabe">Gemessene Brennweite: <input type="number" data-store min="1" step="0.1"> cm. Beobachtung des Bildes: <input type="text" data-store placeholder="z. B. umgekehrt und verkleinert" style="width:min(430px,100%)"></div>
+<div class="statuszeile"><input class="done-check" type="checkbox" id="done-5902135828068644406"><label for="done-5902135828068644406">✓ Experiment durchgeführt oder ausgewertet</label></div></section>
+
+<section class="karte merksatz"><h2>7. Tafelbild und Merksätze</h2><div class="tafelbild"><p class="gelb">Reflexion: α = β – Winkel immer zum Lot.</p><p class="blau">Brechung: zum Lot bei dünn → dicht; vom Lot bei dicht → dünn.</p><p class="gruen">Sammellinse bündelt; Zerstreuungslinse zerstreut.</p><p>Auge und Kamera erzeugen ein reelles, umgekehrtes Bild auf Netzhaut beziehungsweise Sensor.</p></div><div class="statuszeile"><input class="done-check" type="checkbox" id="done-2614264236995763123"><label for="done-2614264236995763123">✓ Merksätze gesichert</label></div></section>
+
+<section class="karte abschluss"><span class="zeit">7 min</span><h2>8. Abschlussquiz Optik</h2><div class="quizstand">Ergebnis: <span data-quiz-score>0 von 8 richtig · 0 beantwortet</span></div>
+<div class="quiz-question"><p><strong>1.</strong> Einfallswinkel 42°. Wie groß ist der Reflexionswinkel?</p><button class="quiz-option" onclick="quiz(this,false)">48°</button><button class="quiz-option" onclick="quiz(this,true)">42°</button><button class="quiz-option" onclick="quiz(this,false)">84°</button><div class="feedback"></div></div>
+<div class="quiz-question"><p><strong>2.</strong> Von Luft nach Glas wird Licht …</p><button class="quiz-option" onclick="quiz(this,true)">zum Lot gebrochen.</button><button class="quiz-option" onclick="quiz(this,false)">vom Lot gebrochen.</button><button class="quiz-option" onclick="quiz(this,false)">nie gebrochen.</button><div class="feedback"></div></div>
+<div class="quiz-question"><p><strong>3.</strong> Welche Linse ist in der Mitte dicker?</p><button class="quiz-option" onclick="quiz(this,true)">Sammellinse</button><button class="quiz-option" onclick="quiz(this,false)">Zerstreuungslinse</button><div class="feedback"></div></div>
+<div class="quiz-question"><p><strong>4.</strong> Wo kann ein reelles Bild sichtbar gemacht werden?</p><button class="quiz-option" onclick="quiz(this,false)">Nur im Spiegel</button><button class="quiz-option" onclick="quiz(this,true)">Auf einem Schirm</button><button class="quiz-option" onclick="quiz(this,false)">Nur direkt in der Linse</button><div class="feedback"></div></div>
+<div class="quiz-question"><p><strong>5.</strong> Die Pupille entspricht bei der Kamera am ehesten …</p><button class="quiz-option" onclick="quiz(this,true)">der Blendenöffnung.</button><button class="quiz-option" onclick="quiz(this,false)">dem Bildsensor.</button><button class="quiz-option" onclick="quiz(this,false)">dem Auslöser.</button><div class="feedback"></div></div>
+<div class="quiz-question"><p><strong>6.</strong> Kurzsichtigkeit wird meist korrigiert durch …</p><button class="quiz-option" onclick="quiz(this,false)">eine Sammellinse.</button><button class="quiz-option" onclick="quiz(this,true)">eine Zerstreuungslinse.</button><div class="feedback"></div></div>
+<div class="quiz-question"><p><strong>7.</strong> Bei senkrechtem Lichteinfall auf eine Stoffgrenze …</p><button class="quiz-option" onclick="quiz(this,true)">ändert sich die Richtung nicht.</button><button class="quiz-option" onclick="quiz(this,false)">wird immer um 90° gebrochen.</button><div class="feedback"></div></div>
+<div class="quiz-question"><p><strong>8.</strong> Das Bild auf der Netzhaut ist zunächst …</p><button class="quiz-option" onclick="quiz(this,false)">virtuell und aufrecht.</button><button class="quiz-option" onclick="quiz(this,true)">reell und umgekehrt.</button><div class="feedback"></div></div>
+<p><button onclick="toggleSolution('quiz29-hinweise')">Lösungshinweise anzeigen</button></p><div class="loesung" id="quiz29-hinweise">1: Spiegelgesetz α = β. 2: Zum Lot. 3: Sammellinse. 4: Reelle Bilder sind auf einem Schirm auffangbar. 5: Blendenöffnung. 6: Zerstreuungslinse. 7: Keine Richtungsänderung. 8: Reell und umgekehrt.</div>
+<div class="statuszeile"><input class="done-check" type="checkbox" id="done-428160863173923148"><label for="done-428160863173923148">✓ Abschlussquiz beendet</label></div></section>
+
+<section class="karte"><h2>9. Exit-Ticket</h2><p>Formuliere je einen Satz:</p><label>Das kann ich sicher:</label><textarea data-store></textarea><label>Das muss ich vor einer Leistungskontrolle noch üben:</label><textarea data-store></textarea><div class="statuszeile"><input class="done-check" type="checkbox" id="done-5332916157553781894"><label for="done-5332916157553781894">✓ Exit-Ticket ausgefüllt</label></div></section>
+<!-- FROEBEL-AUFGABEN-START -->
+<section class="froebel-differenzierte-aufgaben">
+<h2>🧩 Differenzierte Aufgaben</h2>
+
+
+
+
+
+
+<div class="froebel-task-card froebel-level-high" data-level="high">
+<span class="froebel-task-symbol froebel-sphere" aria-hidden="true"></span>
+<div class="froebel-task-content">Entwickle eine vernetzende Prüfungsaufgabe zu „Wiederholung Optik vertieft“, die mindestens zwei physikalische Zusammenhänge verbindet. Formuliere auch eine vollständige Musterlösung.</div>
+</div>
+
+<div class="froebel-task-card froebel-level-medium" data-level="medium">
+<span class="froebel-task-symbol froebel-cylinder" aria-hidden="true"></span>
+<div class="froebel-task-content">Löse eine mehrschrittige Aufgabe zu „Wiederholung Optik vertieft“. Notiere einen vollständigen Lösungsweg und begründe jede verwendete Formel oder fachliche Zuordnung.</div>
+</div>
+
+<div class="froebel-task-card froebel-level-easy" data-level="easy">
+<span class="froebel-task-symbol froebel-cube" aria-hidden="true"></span>
+<div class="froebel-task-content">Ordne die zentralen Fachbegriffe, physikalischen Größen und Einheiten aus „Wiederholung Optik vertieft“ den passenden Bedeutungen zu.</div>
+</div>
+</section>
+<!-- FROEBEL-AUFGABEN-ENDE -->
+</main><footer>Paket 15 · Physik Klasse 8 · Stunde 29 · Thüringer Regelschule</footer>
+<script>
+const STORE_PREFIX = document.body.dataset.storePrefix || 'ph8';
+function say(id){
+  if(!('speechSynthesis' in window)){alert('Dieser Browser unterstützt die Vorlesefunktion nicht.');return;}
+  speechSynthesis.cancel(); const el=document.getElementById(id); if(!el)return;
+  const u=new SpeechSynthesisUtterance(el.innerText.trim());u.lang='de-DE';u.rate=.92;speechSynthesis.speak(u);
+}
+function stopSpeech(){if('speechSynthesis' in window)speechSynthesis.cancel();}
+function toggleFullscreen(){if(!document.fullscreenElement){document.documentElement.requestFullscreen?.();}else{document.exitFullscreen?.();}}
+function toggleSolution(id){const box=document.getElementById(id);if(box)box.style.display=box.style.display==='block'?'none':'block';}
+function choice(btn,correct,messageRight='Richtig!',messageWrong='Noch nicht. Prüfe den Merksatz und versuche die nächste Aufgabe.'){
+  const row=btn.closest('.choice-row'); if(!row||row.dataset.answered==='1')return; row.dataset.answered='1';
+  row.querySelectorAll('button').forEach(b=>b.disabled=true);btn.classList.add(correct?'richtig':'falsch');
+  const f=row.parentElement.querySelector('.feedback');if(f){f.textContent=correct?messageRight:messageWrong;f.style.color=correct?'#2e7d32':'#b8352d';}
+  updateProgress();
+}
+function quiz(btn,correct){
+  const q=btn.closest('.quiz-question');if(!q||q.dataset.answered==='1')return;q.dataset.answered='1';q.dataset.correct=correct?'1':'0';
+  q.querySelectorAll('.quiz-option').forEach(b=>b.disabled=true);btn.classList.add(correct?'richtig':'falsch');
+  const f=q.querySelector('.feedback');if(f){f.textContent=correct?'✓ Richtig':'✗ Nicht richtig – nutze später die Lösungshinweise.';f.style.color=correct?'#2e7d32':'#b8352d';}
+  updateQuizScore();updateProgress();
+}
+function updateQuizScore(){
+  const qs=[...document.querySelectorAll('.quiz-question')];const answered=qs.filter(q=>q.dataset.answered==='1').length;const correct=qs.filter(q=>q.dataset.correct==='1').length;
+  document.querySelectorAll('[data-quiz-score]').forEach(el=>el.textContent=`${correct} von ${qs.length} richtig · ${answered} beantwortet`);
+}
+function updateProgress(){
+  const checks=[...document.querySelectorAll('.done-check')];const answered=[...document.querySelectorAll('.quiz-question,.choice-row')].filter(x=>x.dataset.answered==='1');
+  const total=checks.length+document.querySelectorAll('.quiz-question,.choice-row').length;const done=checks.filter(c=>c.checked).length+answered.length;
+  const pct=total?Math.round(done/total*100):0;const bar=document.querySelector('.fortschritt');if(bar)bar.style.width=pct+'%';
+  localStorage.setItem(STORE_PREFIX+'-checks',JSON.stringify(checks.map(c=>c.checked)));
+}
+function saveFields(){document.querySelectorAll('[data-store]').forEach((el,i)=>localStorage.setItem(STORE_PREFIX+'-field-'+i,el.value));}
+function loadState(){
+  const checks=[...document.querySelectorAll('.done-check')];try{const s=JSON.parse(localStorage.getItem(STORE_PREFIX+'-checks')||'[]');checks.forEach((c,i)=>c.checked=!!s[i]);}catch(e){}
+  document.querySelectorAll('[data-store]').forEach((el,i)=>{const v=localStorage.getItem(STORE_PREFIX+'-field-'+i);if(v!==null)el.value=v;el.addEventListener('input',saveFields);});
+  checks.forEach(c=>c.addEventListener('change',updateProgress));updateProgress();updateQuizScore();
+}
+function resetPage(){
+  if(!confirm('Alle Eingaben, Lösungen und Ergebnisse dieser Seite zurücksetzen?'))return;
+  Object.keys(localStorage).filter(k=>k.startsWith(STORE_PREFIX)).forEach(k=>localStorage.removeItem(k));
+  document.querySelectorAll('input,textarea').forEach(el=>{if(el.type==='checkbox')el.checked=false;else if(!el.readOnly)el.value='';});
+  document.querySelectorAll('.loesung').forEach(x=>x.style.display='none');
+  document.querySelectorAll('.quiz-question,.choice-row').forEach(x=>{delete x.dataset.answered;delete x.dataset.correct;x.querySelectorAll('button').forEach(b=>{b.disabled=false;b.classList.remove('richtig','falsch')});});
+  document.querySelectorAll('.feedback').forEach(x=>x.textContent='');updateProgress();updateQuizScore();scrollTo(0,0);
+}
+function toggleFormula(id){const el=document.getElementById(id);if(el)el.style.display=el.style.display==='block'?'none':'block';}
+function setRange(input,outId){document.getElementById(outId).textContent=input.value+' / 5';}
+window.addEventListener('DOMContentLoaded',loadState);
+
+function calcReflection(){const a=Number(document.getElementById('alpha').value);const f=document.getElementById('reflection-feedback');if(!Number.isFinite(a)||a<0||a>90){f.textContent='Bitte einen Winkel zwischen 0° und 90° eingeben.';f.style.color='#b8352d';return;}f.textContent=`β = ${a}°, denn nach dem Spiegelgesetz gilt α = β.`;f.style.color='#2e7d32';}
+</script>
+<script id="froebel-differenzierung-script">
+
+(function(){
+"use strict";
+
+function norm(value){
+  return (value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+const RX = {
+  explicitHigh: /(erweiterung|erweitert|experten?(aufgabe|niveau)?|hohere anforderung|anspruchsvoll|transfer(aufgabe)?|afb\s*iii|anforderungsbereich\s*iii)/,
+  explicitMedium: /(regelstandard|regelaufgabe|mittelniveau|mittlere anforderung|standardaufgabe|afb\s*ii|anforderungsbereich\s*ii)/,
+  explicitEasy: /(grundniveau|grundaufgabe|basis(aufgabe|niveau)?|leichte? anforderung|einfach(e|es)?|afb\s*i(?!i)|anforderungsbereich\s*i(?!i))/,
+
+  highOperator: /^(beurteile|bewerte|diskutiere|entwickle|plane|entwirf|ubertrage|erortere|reflektiere|optimiere|nimm stellung|prufe kritisch|interpretiere|analysiere|erstelle ein modell|formuliere eine hypothese)\b/,
+  mediumOperator: /^(beschreibe|erklare|berechne|vergleiche|begrunde|untersuche|werte aus|bestimme|ermittle|protokolliere|stelle dar|formuliere|leite ab|weise nach|ordne begrundet|skizziere und erklare)\b/,
+  easyOperator: /^(nenne|benenne|gib an|lies ab|ordne zu|markiere|beschrifte|notiere|erganze|wahle|kreuze|zeichne|wiederhole|setze ein|miss|baue auf|beobachte)\b/,
+
+  easyQuestion: /^(was ist|was sind|welche|welcher|welches|wann|wo|wer|womit|wie heisst|wie lautet)\b/,
+  mediumQuestion: /^(warum|wie erklart|wie verandert|wodurch|inwiefern)\b/,
+  taskContext: /(aufgabe|arbeitsauftrag|beobachtungsauftrag|messauftrag|forscherauftrag|denkauftrag|auftrag|ubung|station|lernkontrolle|auswertung|experiment|sicherung|transfer|reflexion|quiz|prufung|bearbeite)/
+};
+
+function explicitLevel(text){
+  const value = norm(text);
+  if(RX.explicitHigh.test(value)) return "high";
+  if(RX.explicitMedium.test(value)) return "medium";
+  if(RX.explicitEasy.test(value)) return "easy";
+  return null;
+}
+
+function operatorLevel(text){
+  let value = norm(text)
+    .replace(/^[\d\s.:;()\-–—]+/,"")
+    .replace(/^(aufgabe|arbeitsauftrag|auftrag)\s*\d*\s*[:.\-–—]?\s*/,"");
+  if(RX.highOperator.test(value)) return "high";
+  if(RX.mediumOperator.test(value)) return "medium";
+  if(RX.easyOperator.test(value)) return "easy";
+  if(RX.mediumQuestion.test(value)) return "medium";
+  if(RX.easyQuestion.test(value)) return "easy";
+  return null;
+}
+
+function directHeading(element){
+  if(!element || !element.children) return "";
+  for(const child of element.children){
+    if(/^H[1-4]$/.test(child.tagName)) return child.textContent || "";
+  }
+  return "";
+}
+
+function contextText(element){
+  const parts = [];
+  let current = element ? element.parentElement : null;
+  let depth = 0;
+  while(current && depth < 6){
+    if(current.dataset){
+      if(current.dataset.name) parts.push(current.dataset.name);
+      if(current.dataset.titel) parts.push(current.dataset.titel);
+      if(current.dataset.title) parts.push(current.dataset.title);
+    }
+    const heading = directHeading(current);
+    if(heading) parts.push(heading);
+    current = current.parentElement;
+    depth++;
+  }
+  return parts.join(" ");
+}
+
+function ancestorLevel(element){
+  let current = element;
+  let depth = 0;
+  while(current && depth < 7){
+    const cls = " " + (current.className || "") + " ";
+    if(/\bniveau\b/.test(cls)){
+      if(/\b(e|erweitert|experte)\b/.test(cls)) return "high";
+      if(/\b(r|regel|mittel)\b/.test(cls)) return "medium";
+      if(/\b(g|grund|basis)\b/.test(cls)) return "easy";
+    }
+    const dataLevel = current.getAttribute && current.getAttribute("data-level");
+    if(dataLevel && /^(easy|medium|high)$/.test(dataLevel)) return dataLevel;
+    const fromHeading = explicitLevel(directHeading(current));
+    if(fromHeading) return fromHeading;
+    current = current.parentElement;
+    depth++;
+  }
+  return null;
+}
+
+function excluded(element){
+  return !!element.closest(
+    "script,style,nav,header,footer,dialog,.solution,.loesung,.teacher,.teacher-note,.quellen,.sources,.froebel-ignore"
+  );
+}
+
+function icon(level){
+  const span = document.createElement("span");
+  span.className = "froebel-task-symbol " +
+    (level === "easy" ? "froebel-cube" :
+     level === "high" ? "froebel-sphere" : "froebel-cylinder");
+  span.setAttribute("aria-hidden","true");
+  return span;
+}
+
+function decorate(element, level){
+  if(!element || element.dataset.froebelMarked || excluded(element)) return;
+  const text = (element.textContent || "").trim();
+  if(!text) return;
+  element.insertBefore(icon(level), element.firstChild);
+  element.classList.add("froebel-task");
+  element.dataset.froebelMarked = level;
+}
+
+function isTaskHeading(element){
+  const value = norm(element.textContent);
+  return RX.taskContext.test(value) || !!explicitLevel(value);
+}
+
+function isTaskCandidate(element){
+  if(excluded(element) || element.dataset.froebelMarked) return false;
+  const text = (element.textContent || "").trim();
+  if(text.length < 3 || text.length > 900) return false;
+
+  if(/^H[3-4]$/.test(element.tagName)){
+    return isTaskHeading(element);
+  }
+
+  const op = operatorLevel(text);
+  if(op) return true;
+
+  if(element.tagName === "P"){
+    const strong = element.querySelector(":scope > strong:first-child");
+    if(strong && /(^\s*\d+[.)]|aufgabe|auftrag|frage)/i.test(strong.textContent || "")) return true;
+    return RX.taskContext.test(norm(contextText(element))) && text.length < 600;
+  }
+
+  if(element.tagName === "LI"){
+    return RX.taskContext.test(norm(contextText(element)));
+  }
+
+  return false;
+}
+
+function decorateExplicit(root){
+  const groups = [
+    ["easy", ".niveau.g,.niveau.grund,.grundniveau,.grundaufgabe,.basisaufgabe,.basisniveau,[data-level='easy']"],
+    ["medium", ".niveau.r,.niveau.regel,.regelstandard,.regelaufgabe,.mittelniveau,.standardaufgabe,[data-level='medium']"],
+    ["high", ".niveau.e,.niveau.erweitert,.erweiterung,.expertenaufgabe,.expertenniveau,[data-level='high']"]
+  ];
+
+  for(const pair of groups){
+    const level = pair[0], selector = pair[1];
+    root.querySelectorAll(selector).forEach(function(block){
+      const target = block.matches("h1,h2,h3,h4,p,li")
+        ? block
+        : block.querySelector("h1,h2,h3,h4,p,li");
+      decorate(target, level);
+    });
+  }
+
+  root.querySelectorAll("h2,h3,h4").forEach(function(heading){
+    const level = explicitLevel(heading.textContent);
+    if(level) decorate(heading, level);
+  });
+}
+
+function decorateTasks(root){
+  root.querySelectorAll("li,p,h3,h4").forEach(function(element){
+    if(!isTaskCandidate(element)) return;
+    const level =
+      ancestorLevel(element) ||
+      explicitLevel(element.textContent) ||
+      operatorLevel(element.textContent) ||
+      "medium";
+    decorate(element, level);
+  });
+}
+
+function scan(root){
+  const scopes = [];
+  if(root && root.matches && root.matches(".tc-tiddler-body,main,body")) scopes.push(root);
+  if(root && root.querySelectorAll){
+    root.querySelectorAll(".tc-tiddler-body,main").forEach(function(scope){ scopes.push(scope); });
+  }
+  if(!scopes.length && document.body) scopes.push(document.body);
+
+  scopes.forEach(function(scope){
+    decorateExplicit(scope);
+    decorateTasks(scope);
+  });
+}
+
+function start(){
+  scan(document);
+  const observer = new MutationObserver(function(records){
+    records.forEach(function(record){
+      record.addedNodes.forEach(function(node){
+        if(node.nodeType === 1) scan(node);
+      });
+    });
+  });
+  observer.observe(document.body,{childList:true,subtree:true});
+}
+
+if(document.readyState === "loading"){
+  document.addEventListener("DOMContentLoaded",start,{once:true});
+}else{
+  start();
+}
+})();
+
+</script>
+</body></html>

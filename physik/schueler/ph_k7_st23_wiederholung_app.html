@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wiederholung: Arbeit, Leistung, Energie</title>
+<style>
+:root{
+  --blau:#4a6fa5; --blau-dunkel:#33507a; --gruen:#3d8b3d; --gelb:#c9a800;
+  --rot:#c0392b; --hintergrund:#f7f9fb; --karte:#ffffff; --text:#1f2a33;
+}
+*{box-sizing:border-box;}
+body{
+  font-family:"Segoe UI",Arial,sans-serif; margin:0; padding:0;
+  background:var(--hintergrund); color:var(--text); line-height:1.5;
+}
+header.kopf{
+  background:var(--blau); color:#fff; padding:14px 20px;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px;
+}
+header.kopf h1{ margin:0; font-size:1.3em; }
+header.kopf .meta{ font-size:0.9em; opacity:0.9; }
+nav.steuerung{
+  display:flex; flex-wrap:wrap; gap:8px; padding:10px 16px;
+  background:#eef2f7; position:sticky; top:0; z-index:50; border-bottom:2px solid var(--blau);
+}
+nav.steuerung button{
+  font-size:0.95em; padding:9px 14px; border:1px solid var(--blau);
+  border-radius:8px; background:#fff; color:var(--blau-dunkel); cursor:pointer;
+}
+nav.steuerung button:hover{ background:var(--blau); color:#fff; }
+main{ max-width:900px; margin:0 auto; padding:16px; }
+.karte{
+  background:var(--karte); border-radius:12px; padding:20px 24px; margin-bottom:20px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08); border-left:6px solid var(--blau);
+}
+.karte h2{ margin-top:0; border-bottom:2px solid var(--blau); padding-bottom:6px; }
+.karte.le{ border-left-color:#d99a1b; background:#fff7e6; }
+.karte.se{ border-left-color:var(--gruen); background:#eaf6ea; }
+.karte.arduino{ border-left-color:#1a7ab5; background:#e8f4fb; }
+.karte.merksatz{ border-left-color:var(--gelb); background:#fff9d6; font-size:1.08em; }
+.karte.sicherheit{ border:2px solid var(--rot); background:#fdecea; }
+.tafelbild{
+  background:#1d3b2a; color:#f5f5f0; padding:18px 22px; border:10px solid #6d4c2f;
+  border-radius:8px; font-family:"Segoe Print","Comic Sans MS",cursive;
+}
+.tafelbild h2{ color:#fff; border-bottom:2px solid #fff; }
+.tafelbild .zeile{ margin:10px 0; font-size:1.1em; }
+.zeile.gelb{ color:#ffe27a; } .zeile.blau{ color:#9fd0ff; } .zeile.gruen{ color:#a8e6a1; }
+.vorlese-btn{
+  background:none; border:1px solid var(--blau); color:var(--blau-dunkel);
+  border-radius:6px; padding:5px 10px; font-size:0.85em; cursor:pointer; margin-bottom:8px;
+}
+.vorlese-btn:hover{ background:var(--blau); color:#fff; }
+table{ border-collapse:collapse; width:100%; margin:10px 0; }
+th, td{ border:1px solid #b9c4d0; padding:8px; text-align:center; }
+th{ background:#e4ecf5; }
+input[type=text], input[type=number]{
+  width:80px; padding:6px; border:1px solid #b9c4d0; border-radius:6px; text-align:center;
+}
+.niveau{ padding:8px 12px; border-radius:6px; margin:8px 0; }
+.grund{ background:#e8f4fb; border-left:5px solid #1a7ab5; }
+.regel{ background:#eaf6ea; border-left:5px solid var(--gruen); }
+.erweitert{ background:#fdeef7; border-left:5px solid #b03a8c; }
+.quiz-frage{ margin:14px 0; }
+.quiz-frage .optionen button{
+  display:block; width:100%; text-align:left; margin:4px 0; padding:9px 12px;
+  border:1px solid #b9c4d0; border-radius:8px; background:#fff; cursor:pointer; font-size:1em;
+}
+.quiz-frage .optionen button.richtig{ background:#d7f2d2; border-color:var(--gruen); }
+.quiz-frage .optionen button.falsch{ background:#fbdada; border-color:var(--rot); }
+.rueckmeldung{ font-weight:bold; margin-top:6px; }
+.loesung-btn{
+  background:var(--blau); color:#fff; border:none; border-radius:8px; padding:9px 14px; cursor:pointer;
+}
+.loesung-box{
+  display:none; background:#fff9d6; border:2px solid var(--gelb); border-radius:8px;
+  padding:12px 16px; margin-top:10px;
+}
+footer{ text-align:center; padding:16px; font-size:0.85em; color:#5a6672; }
+@media print{
+  nav.steuerung, .vorlese-btn, .loesung-btn{ display:none; }
+  .karte{ break-inside:avoid; box-shadow:none; }
+}
+@media (max-width:600px){
+  header.kopf h1{ font-size:1.05em; }
+  main{ padding:10px; }
+  .karte{ padding:14px 16px; }
+}
+</style>
+</head>
+<body>
+<header class="kopf">
+  <h1>Wiederholung: Arbeit, Leistung, Energie</h1>
+  <div class="meta">Klasse 7 · Physik · Mechanik · 60 Minuten</div>
+</header>
+<nav class="steuerung">
+  <button onclick="window.scrollTo(0,0)">⬆ Anfang</button>
+  <button onclick="vorlesenStoppen()">🔇 Vorlesen stoppen</button>
+  <button onclick="vollbild()">⛶ Vollbild</button>
+  <button onclick="window.print()">🖨 Drucken</button>
+  <button onclick="seiteZuruecksetzen()">↺ Zurücksetzen</button>
+</nav>
+<main>
+<section class="karte ">
+<h2>1. Einstieg</h2>
+<button class="vorlese-btn" onclick="vorlesen('text-einstieg23')">🔊 Vorlesen</button>
+<div id="text-einstieg23">
+
+<p>Die Kugelbahn aus Stunde 21 rollt noch einmal.</p>
+<p><strong>Frage:</strong> Welche drei physikalischen Größen aus den letzten Stunden
+stecken in diesem einen Versuch?</p>
+
+</div>
+</section>
+<section class="karte ">
+<h2>2. Begriffsübersicht</h2>
+<button class="vorlese-btn" onclick="vorlesen('text-uebersicht23')">🔊 Vorlesen</button>
+<div id="text-uebersicht23">
+
+<p><strong>Arbeit:</strong> W = F · s &nbsp;&nbsp; (Einheit: Joule)</p>
+<p><strong>Leistung:</strong> P = W / t &nbsp;&nbsp; (Einheit: Watt)</p>
+<p><strong>Energie:</strong> Lageenergie ⇄ Bewegungsenergie, Energieerhaltungssatz</p>
+
+</div>
+</section>
+<section class="karte le">
+<h2>3. Lehrerdemonstrationsexperiment: Alles an einer Bahn</h2>
+
+<div>
+
+<p>Kugel wird auf Starthöhe gehoben (Arbeit), rollt herab (Zeit → Leistung),
+rollt aus (Energieumwandlung sichtbar am Ausrollweg).</p>
+<p><strong>Beobachtungsauftrag:</strong> Ordne jedem Teil des Versuchs die passende
+Größe zu.</p>
+
+</div>
+</section>
+<section class="karte se">
+<h2>4. Stationenlernen</h2>
+
+<div>
+
+<p><strong>Station 1 – Arbeit:</strong> Berechnet W für F = 8 N, s = 1,5 m.</p>
+<p><strong>Station 2 – Leistung:</strong> Berechnet P für W = 120 J, t = 6 s.</p>
+<p><strong>Station 3 – Energieumwandlung:</strong> Beschreibt die Energieform am
+Anfang und am Ende einer Wasserrutsche.</p>
+<p><strong>Station 4 – Alltagsaufgabe:</strong> Ein Schüler hebt eine 5-kg-Kiste
+(F ≈ 50 N) 0,8 m hoch in 2 s. Berechnet zuerst die Arbeit, dann die Leistung.</p>
+<textarea rows="4" style="width:100%;" placeholder="Eure Lösungswege..."></textarea>
+
+</div>
+</section>
+<section class="karte merksatz">
+<h2>5. Merksatz</h2>
+<button class="vorlese-btn" onclick="vorlesen('text-merksatz23')">🔊 Vorlesen</button>
+<div id="text-merksatz23">
+
+<p>Arbeit (W = F · s) beschreibt, wie viel insgesamt bewegt wurde. Leistung
+(P = W/t) beschreibt, wie schnell das geschah. Energie beschreibt, in welcher
+Form ein Körper die Fähigkeit besitzt, Arbeit zu verrichten – sie wird
+umgewandelt, aber nicht erzeugt oder vernichtet.</p>
+
+</div>
+</section>
+<section class="karte tafelbild">
+<h2>Tafelbild: Wiederholung Arbeit – Leistung – Energie</h2>
+<div class="zeile">1. Problemfrage: Welche drei Größen stecken in einem Kugelbahn-Versuch?</div>
+<div class="zeile gelb">2. Merksatz: Arbeit: wie viel. Leistung: wie schnell. Energie: in welcher Form.</div>
+<div class="zeile blau">3. Formeln: W = F · s &nbsp;&nbsp; P = W/t</div>
+<div class="zeile gruen">4. Beispiel: Hochheben (Arbeit) → Herabrollen (Leistung) → Ausrollen (Energieumwandlung)</div>
+</section>
+<section class="karte ">
+<h2>6. Lernkontrolle</h2>
+
+<div>
+<div class="quiz-frage">
+<p><strong>1.</strong> Ein Motor verrichtet in 5 Sekunden eine Arbeit von 200 J. Wie groß ist die Leistung?</p>
+<div class="optionen"><button onclick="pruefeAntwort(this,true)">40 W</button>
+<button onclick="pruefeAntwort(this,false)">1000 W</button>
+<button onclick="pruefeAntwort(this,false)">0,025 W</button>
+<button onclick="pruefeAntwort(this,false)">205 W</button>
+</div>
+<p class="rueckmeldung"></p>
+</div>
+<div class="quiz-frage">
+<p><strong>2.</strong> Welche Größe beschreibt, WIE SCHNELL eine Arbeit verrichtet wird?</p>
+<div class="optionen"><button onclick="pruefeAntwort(this,false)">Arbeit</button>
+<button onclick="pruefeAntwort(this,false)">Kraft</button>
+<button onclick="pruefeAntwort(this,true)">Leistung</button>
+<button onclick="pruefeAntwort(this,false)">Weg</button>
+</div>
+<p class="rueckmeldung"></p>
+</div>
+<div class="quiz-frage">
+<p><strong>3.</strong> Was passiert mit der Energie, wenn eine Kugel eine Rampe hinabrollt und schließlich stehen bleibt?</p>
+<div class="optionen"><button onclick="pruefeAntwort(this,false)">Sie verschwindet vollständig</button>
+<button onclick="pruefeAntwort(this,true)">Sie wird durch Reibung als Wärme abgegeben</button>
+<button onclick="pruefeAntwort(this,false)">Sie wird zu Masse</button>
+<button onclick="pruefeAntwort(this,false)">Sie wird zu Kraft</button>
+</div>
+<p class="rueckmeldung"></p>
+</div>
+
+</div>
+</section>
+<section class="karte ">
+<h2>7. Zusammenfassung und Hausaufgabe</h2>
+
+<div>
+
+<p>Heute habt ihr die Größen Arbeit, Leistung und Energie noch einmal zusammen
+angewendet und in gemischten Aufgaben geübt.</p>
+<p><strong>Hausaufgabe:</strong> Wiederhole die Formeln und Einheiten aus den Stunden
+19 bis 22 anhand deines Hefteintrags und bringe eine offene Frage mit.</p>
+
+</div>
+</section>
+</main>
+<footer>Interaktive Unterrichtspräsentation · Physik Klasse 7 · Thüringer Regelschule</footer>
+<script>
+function vorlesen(id){
+  if(!("speechSynthesis" in window)){
+    alert("Dieser Browser unterstützt die Vorlesefunktion nicht.");
+    return;
+  }
+  window.speechSynthesis.cancel();
+  var el = document.getElementById(id);
+  if(!el){ alert("Textabschnitt nicht gefunden."); return; }
+  var text = el.innerText.trim();
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = "de-DE"; u.rate = 0.9; u.pitch = 1;
+  window.speechSynthesis.speak(u);
+}
+function vorlesenStoppen(){ window.speechSynthesis.cancel(); }
+
+function loesungZeigen(id){
+  var box = document.getElementById(id);
+  box.style.display = (box.style.display === "block") ? "none" : "block";
+}
+
+function vollbild(){
+  var el = document.documentElement;
+  if(!document.fullscreenElement){ el.requestFullscreen && el.requestFullscreen(); }
+  else{ document.exitFullscreen && document.exitFullscreen(); }
+}
+
+function pruefeAntwort(btn, richtig, gruppe){
+  var opts = btn.parentElement.querySelectorAll("button");
+  opts.forEach(function(b){ b.disabled = true; });
+  var rueck = btn.parentElement.parentElement.querySelector(".rueckmeldung");
+  if(richtig){
+    btn.classList.add("richtig");
+    rueck.textContent = "Richtig!";
+    rueck.style.color = "#3d8b3d";
+  } else {
+    btn.classList.add("falsch");
+    rueck.textContent = "Leider nicht richtig. Versuch es bei der nächsten Frage weiter!";
+    rueck.style.color = "#c0392b";
+  }
+}
+
+function seiteZuruecksetzen(){
+  document.querySelectorAll(".quiz-frage .optionen button").forEach(function(b){
+    b.disabled = false; b.classList.remove("richtig","falsch");
+  });
+  document.querySelectorAll(".rueckmeldung").forEach(function(r){ r.textContent = ""; });
+  document.querySelectorAll(".loesung-box").forEach(function(b){ b.style.display = "none"; });
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Das Auge und optische Geräte</title>
+<style>
+:root{
+  --blau:#4a6fa5; --blau-dunkel:#33507a; --gruen:#3d8b3d; --gelb:#c9a800;
+  --rot:#c0392b; --hintergrund:#f7f9fb; --karte:#ffffff; --text:#1f2a33;
+}
+*{box-sizing:border-box;}
+body{
+  font-family:"Segoe UI",Arial,sans-serif; margin:0; padding:0;
+  background:var(--hintergrund); color:var(--text); line-height:1.5;
+}
+header.kopf{
+  background:var(--blau); color:#fff; padding:14px 20px;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px;
+}
+header.kopf h1{ margin:0; font-size:1.3em; }
+header.kopf .meta{ font-size:0.9em; opacity:0.9; }
+nav.steuerung{
+  display:flex; flex-wrap:wrap; gap:8px; padding:10px 16px;
+  background:#eef2f7; position:sticky; top:0; z-index:50; border-bottom:2px solid var(--blau);
+}
+nav.steuerung button{
+  font-size:0.95em; padding:9px 14px; border:1px solid var(--blau);
+  border-radius:8px; background:#fff; color:var(--blau-dunkel); cursor:pointer;
+}
+nav.steuerung button:hover{ background:var(--blau); color:#fff; }
+main{ max-width:900px; margin:0 auto; padding:16px; }
+.karte{
+  background:var(--karte); border-radius:12px; padding:20px 24px; margin-bottom:20px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08); border-left:6px solid var(--blau);
+}
+.karte h2{ margin-top:0; border-bottom:2px solid var(--blau); padding-bottom:6px; }
+.karte.le{ border-left-color:#d99a1b; background:#fff7e6; }
+.karte.se{ border-left-color:var(--gruen); background:#eaf6ea; }
+.karte.arduino{ border-left-color:#1a7ab5; background:#e8f4fb; }
+.karte.merksatz{ border-left-color:var(--gelb); background:#fff9d6; font-size:1.08em; }
+.karte.sicherheit{ border:2px solid var(--rot); background:#fdecea; }
+.tafelbild{
+  background:#1d3b2a; color:#f5f5f0; padding:18px 22px; border:10px solid #6d4c2f;
+  border-radius:8px; font-family:"Segoe Print","Comic Sans MS",cursive;
+}
+.tafelbild h2{ color:#fff; border-bottom:2px solid #fff; }
+.tafelbild .zeile{ margin:10px 0; font-size:1.1em; }
+.zeile.gelb{ color:#ffe27a; } .zeile.blau{ color:#9fd0ff; } .zeile.gruen{ color:#a8e6a1; }
+.vorlese-btn{
+  background:none; border:1px solid var(--blau); color:var(--blau-dunkel);
+  border-radius:6px; padding:5px 10px; font-size:0.85em; cursor:pointer; margin-bottom:8px;
+}
+.vorlese-btn:hover{ background:var(--blau); color:#fff; }
+table{ border-collapse:collapse; width:100%; margin:10px 0; }
+th, td{ border:1px solid #b9c4d0; padding:8px; text-align:center; }
+th{ background:#e4ecf5; }
+input[type=text], input[type=number]{
+  width:80px; padding:6px; border:1px solid #b9c4d0; border-radius:6px; text-align:center;
+}
+.niveau{ padding:8px 12px; border-radius:6px; margin:8px 0; }
+.grund{ background:#e8f4fb; border-left:5px solid #1a7ab5; }
+.regel{ background:#eaf6ea; border-left:5px solid var(--gruen); }
+.erweitert{ background:#fdeef7; border-left:5px solid #b03a8c; }
+.quiz-frage{ margin:14px 0; }
+.quiz-frage .optionen button{
+  display:block; width:100%; text-align:left; margin:4px 0; padding:9px 12px;
+  border:1px solid #b9c4d0; border-radius:8px; background:#fff; cursor:pointer; font-size:1em;
+}
+.quiz-frage .optionen button.richtig{ background:#d7f2d2; border-color:var(--gruen); }
+.quiz-frage .optionen button.falsch{ background:#fbdada; border-color:var(--rot); }
+.rueckmeldung{ font-weight:bold; margin-top:6px; }
+.loesung-btn{
+  background:var(--blau); color:#fff; border:none; border-radius:8px; padding:9px 14px; cursor:pointer;
+}
+.loesung-box{
+  display:none; background:#fff9d6; border:2px solid var(--gelb); border-radius:8px;
+  padding:12px 16px; margin-top:10px;
+}
+footer{ text-align:center; padding:16px; font-size:0.85em; color:#5a6672; }
+.lehrbild{ margin:14px 0; text-align:center; }
+.lehrbild img{
+  max-width:100%; border-radius:10px; cursor:zoom-in; border:1px solid #b9c4d0;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+.lehrbild figcaption{ font-size:0.9em; color:#5a6672; margin-top:6px; }
+.bild-fehler{
+  padding:14px; background:#f0f0f0; border:2px dashed #999; border-radius:8px;
+  color:#555; font-size:0.9em;
+}
+.bild-modal{
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85);
+  z-index:200; align-items:center; justify-content:center; flex-direction:column;
+  padding:20px;
+}
+.bild-modal.aktiv{ display:flex; }
+.bild-modal img{ max-width:92vw; max-height:80vh; border-radius:8px; }
+.bild-modal figcaption{ color:#fff; margin-top:10px; text-align:center; max-width:90vw; }
+.bild-modal-schliessen{
+  position:absolute; top:16px; right:24px; color:#fff; font-size:2em; cursor:pointer;
+  background:none; border:none; line-height:1;
+}
+@media print{
+  nav.steuerung, .vorlese-btn, .loesung-btn{ display:none; }
+  .karte{ break-inside:avoid; box-shadow:none; }
+}
+@media (max-width:600px){
+  header.kopf h1{ font-size:1.05em; }
+  main{ padding:10px; }
+  .karte{ padding:14px 16px; }
+}
+</style>
+</head>
+<body>
+<header class="kopf">
+  <h1>Das Auge und optische Geräte</h1>
+  <div class="meta">Klasse 8 · Physik · Optik vertieft · 60 Minuten</div>
+</header>
+<nav class="steuerung">
+  <button onclick="window.scrollTo(0,0)">⬆ Anfang</button>
+  <button onclick="vorlesenStoppen()">🔇 Vorlesen stoppen</button>
+  <button onclick="vollbild()">⛶ Vollbild</button>
+  <button onclick="window.print()">🖨 Drucken</button>
+  <button onclick="seiteZuruecksetzen()">↺ Zurücksetzen</button>
+</nav>
+<main>
+<section class="karte ">
+<h2>1. Einstieg</h2>
+<button class="vorlese-btn" onclick="vorlesen('text-einstieg28')">🔊 Vorlesen</button>
+<div id="text-einstieg28">
+
+<p>Eine Person trägt eine Lesebrille, eine andere eine Brille zum Sehen in
+die Ferne.</p>
+<p><strong>Frage:</strong> Warum benötigen unterschiedliche Sehprobleme
+unterschiedliche Brillengläser?</p>
+
+</div>
+</section>
+<figure class="lehrbild">
+<img src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/physik/117_auge_aufbau.jpg" alt="Aufbau des menschlichen Auges" loading="lazy"
+     onclick="bildVergroessern('https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/physik/117_auge_aufbau.jpg', 'Aufbau des menschlichen Auges')"
+     onerror="bildFehler(this)">
+<div class="bild-fehler-box bild-fehler" hidden>Das Bild konnte nicht geladen werden.<br>Beschreibung: Aufbau des menschlichen Auges</div>
+<figcaption>Das Auge funktioniert im Grundprinzip wie eine Sammellinse.</figcaption>
+</figure>
+<section class="karte le">
+<h2>2. Lehrerdemonstrationsexperiment: Der Weg des Lichts im Auge</h2>
+
+<div>
+
+<p><strong>Beobachtung am Modell:</strong> Hornhaut und Augenlinse bündeln
+das Licht, sodass auf der Netzhaut ein scharfes Bild entsteht.</p>
+
+</div>
+</section>
+<section class="karte ">
+<h2>3. Fachwissen: Fehlsichtigkeit</h2>
+<button class="vorlese-btn" onclick="vorlesen('text-fachwissen28')">🔊 Vorlesen</button>
+<div id="text-fachwissen28">
+
+<p><strong>Kurzsichtig:</strong> Brennpunkt vor der Netzhaut ⟶
+Zerstreuungslinse.</p>
+<p><strong>Weitsichtig:</strong> Brennpunkt hinter der Netzhaut ⟶
+Sammellinse.</p>
+
+</div>
+</section>
+<figure class="lehrbild">
+<img src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/physik/093_optische_instrumente.jpg" alt="Optische Instrumente" loading="lazy"
+     onclick="bildVergroessern('https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/physik/093_optische_instrumente.jpg', 'Optische Instrumente')"
+     onerror="bildFehler(this)">
+<div class="bild-fehler-box bild-fehler" hidden>Das Bild konnte nicht geladen werden.<br>Beschreibung: Optische Instrumente</div>
+<figcaption>Lupe, Fernrohr und Mikroskop nutzen Sammellinsen.</figcaption>
+</figure>
+<section class="karte se">
+<h2>4. Schülerexperiment: Optische Geräte im Rotationsprinzip</h2>
+
+<div>
+
+<p><strong>Auftrag:</strong> Untersucht Lupe, Fernrohr und Mikroskop und
+ihr Grundprinzip.</p>
+<table>
+<thead><tr><th>Gerät</th><th>Beobachtung</th><th>Grundprinzip</th></tr></thead>
+<tbody>
+<tr><td>Lupe</td><td><input type="text" style="width:100%;"></td><td><input type="text" style="width:100%;"></td></tr>
+<tr><td>Fernrohr</td><td><input type="text" style="width:100%;"></td><td><input type="text" style="width:100%;"></td></tr>
+<tr><td>Mikroskop</td><td><input type="text" style="width:100%;"></td><td><input type="text" style="width:100%;"></td></tr>
+</tbody>
+</table>
+
+</div>
+</section>
+<section class="karte merksatz">
+<h2>5. Merksatz</h2>
+<button class="vorlese-btn" onclick="vorlesen('text-merksatz28')">🔊 Vorlesen</button>
+<div id="text-merksatz28">
+
+<p>Das Auge funktioniert im Grundprinzip wie eine Sammellinse, die ein Bild
+auf der Netzhaut erzeugt. Bei Kurzsichtigkeit liegt der Brennpunkt vor der
+Netzhaut, bei Weitsichtigkeit dahinter. Lupe, Fernrohr und Mikroskop nutzen
+ebenfalls Sammellinsen.</p>
+
+</div>
+</section>
+<section class="karte tafelbild">
+<h2>Tafelbild: Das Auge und optische Geräte</h2>
+<div class="zeile">1. Problemfrage: Warum brauchen Sehprobleme unterschiedliche Gläser?</div>
+<div class="zeile gelb">2. Merksatz: Das Auge funktioniert wie eine Sammellinse.</div>
+<div class="zeile blau">3. Kurzsichtig: Zerstreuungslinse. Weitsichtig: Sammellinse.</div>
+<div class="zeile gruen">4. Geräte: Lupe, Fernrohr, Mikroskop nutzen Sammellinsen.</div>
+</section>
+<section class="karte ">
+<h2>6. Lernkontrolle</h2>
+
+<div>
+<div class="quiz-frage">
+<p><strong>1.</strong> Welche Rolle spielt die Netzhaut im Auge?</p>
+<div class="optionen"><button onclick="pruefeAntwort(this,true)">Sie wirkt wie ein Schirm, auf dem ein Bild entsteht</button>
+<button onclick="pruefeAntwort(this,false)">Sie bündelt das Licht</button>
+<button onclick="pruefeAntwort(this,false)">Sie ist die äußere Schutzschicht</button>
+<button onclick="pruefeAntwort(this,false)">Sie hat keine besondere Funktion</button>
+</div>
+<p class="rueckmeldung"></p>
+</div>
+<div class="quiz-frage">
+<p><strong>2.</strong> Welche Korrekturlinse braucht man bei Kurzsichtigkeit?</p>
+<div class="optionen"><button onclick="pruefeAntwort(this,false)">Sammellinse</button>
+<button onclick="pruefeAntwort(this,true)">Zerstreuungslinse</button>
+<button onclick="pruefeAntwort(this,false)">Keine Linse</button>
+<button onclick="pruefeAntwort(this,false)">Prisma</button>
+</div>
+<p class="rueckmeldung"></p>
+</div>
+<div class="quiz-frage">
+<p><strong>3.</strong> Nenne zwei optische Geräte, die Sammellinsen nutzen.</p>
+<div class="optionen"><button onclick="pruefeAntwort(this,true)">Lupe und Fernrohr</button>
+<button onclick="pruefeAntwort(this,false)">Batterie und Widerstand</button>
+<button onclick="pruefeAntwort(this,false)">Kompass und Magnet</button>
+<button onclick="pruefeAntwort(this,false)">Transformator und Generator</button>
+</div>
+<p class="rueckmeldung"></p>
+</div>
+
+</div>
+</section>
+<section class="karte ">
+<h2>7. Zusammenfassung und Hausaufgabe</h2>
+
+<div>
+
+<p>Heute habt ihr den Aufbau des Auges und das Grundprinzip optischer
+Geräte kennengelernt.</p>
+<p><strong>Hausaufgabe:</strong> Finde heraus, ob jemand in deiner Familie
+eine Lese- oder eine Fernbrille trägt.</p>
+
+</div>
+</section>
+</main>
+<div class="bild-modal" id="bild-modal" onclick="bildModalHintergrundKlick(event)">
+  <button class="bild-modal-schliessen" onclick="bildSchliessen()" aria-label="Schließen">&times;</button>
+  <img id="bild-modal-img" src="" alt="">
+  <figcaption id="bild-modal-caption"></figcaption>
+</div>
+<footer>Interaktive Unterrichtspräsentation · Physik · Thüringer Regelschule</footer>
+<script>
+function vorlesen(id){
+  if(!("speechSynthesis" in window)){
+    alert("Dieser Browser unterstützt die Vorlesefunktion nicht.");
+    return;
+  }
+  window.speechSynthesis.cancel();
+  var el = document.getElementById(id);
+  if(!el){ alert("Textabschnitt nicht gefunden."); return; }
+  var text = el.innerText.trim();
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = "de-DE"; u.rate = 0.9; u.pitch = 1;
+  window.speechSynthesis.speak(u);
+}
+function vorlesenStoppen(){ window.speechSynthesis.cancel(); }
+
+function loesungZeigen(id){
+  var box = document.getElementById(id);
+  box.style.display = (box.style.display === "block") ? "none" : "block";
+}
+
+function vollbild(){
+  var el = document.documentElement;
+  if(!document.fullscreenElement){ el.requestFullscreen && el.requestFullscreen(); }
+  else{ document.exitFullscreen && document.exitFullscreen(); }
+}
+
+function pruefeAntwort(btn, richtig, gruppe){
+  var opts = btn.parentElement.querySelectorAll("button");
+  opts.forEach(function(b){ b.disabled = true; });
+  var rueck = btn.parentElement.parentElement.querySelector(".rueckmeldung");
+  if(richtig){
+    btn.classList.add("richtig");
+    rueck.textContent = "Richtig!";
+    rueck.style.color = "#3d8b3d";
+  } else {
+    btn.classList.add("falsch");
+    rueck.textContent = "Leider nicht richtig. Versuch es bei der nächsten Frage weiter!";
+    rueck.style.color = "#c0392b";
+  }
+}
+
+function seiteZuruecksetzen(){
+  document.querySelectorAll(".quiz-frage .optionen button").forEach(function(b){
+    b.disabled = false; b.classList.remove("richtig","falsch");
+  });
+  document.querySelectorAll(".rueckmeldung").forEach(function(r){ r.textContent = ""; });
+  document.querySelectorAll(".loesung-box").forEach(function(b){ b.style.display = "none"; });
+  window.scrollTo(0,0);
+}
+
+function bildVergroessern(src, alt){
+  var modal = document.getElementById("bild-modal");
+  var img = document.getElementById("bild-modal-img");
+  var cap = document.getElementById("bild-modal-caption");
+  img.src = src; img.alt = alt; cap.textContent = alt;
+  modal.classList.add("aktiv");
+}
+function bildSchliessen(){
+  document.getElementById("bild-modal").classList.remove("aktiv");
+}
+document.addEventListener("keydown", function(e){
+  if(e.key === "Escape"){ bildSchliessen(); }
+});
+function bildFehler(imgEl){
+  imgEl.style.display = "none";
+  var next = imgEl.nextElementSibling;
+  if(next && next.classList.contains("bild-fehler-box")){ next.hidden = false; }
+}
+function bildModalHintergrundKlick(ev){
+  if(ev.target === ev.currentTarget){ bildSchliessen(); }
+}
+</script>
+</body>
+</html>

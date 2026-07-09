@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lichtbrechung und Totalreflexion</title>
+<style>
+:root{
+  --blau:#4a6fa5; --blau-dunkel:#33507a; --gruen:#3d8b3d; --gelb:#c9a800;
+  --rot:#c0392b; --hintergrund:#f7f9fb; --karte:#ffffff; --text:#1f2a33;
+}
+*{box-sizing:border-box;}
+body{
+  font-family:"Segoe UI",Arial,sans-serif; margin:0; padding:0;
+  background:var(--hintergrund); color:var(--text); line-height:1.5;
+}
+header.kopf{
+  background:var(--blau); color:#fff; padding:14px 20px;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px;
+}
+header.kopf h1{ margin:0; font-size:1.3em; }
+header.kopf .meta{ font-size:0.9em; opacity:0.9; }
+nav.steuerung{
+  display:flex; flex-wrap:wrap; gap:8px; padding:10px 16px;
+  background:#eef2f7; position:sticky; top:0; z-index:50; border-bottom:2px solid var(--blau);
+}
+nav.steuerung button{
+  font-size:0.95em; padding:9px 14px; border:1px solid var(--blau);
+  border-radius:8px; background:#fff; color:var(--blau-dunkel); cursor:pointer;
+}
+nav.steuerung button:hover{ background:var(--blau); color:#fff; }
+main{ max-width:900px; margin:0 auto; padding:16px; }
+.karte{
+  background:var(--karte); border-radius:12px; padding:20px 24px; margin-bottom:20px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08); border-left:6px solid var(--blau);
+}
+.karte h2{ margin-top:0; border-bottom:2px solid var(--blau); padding-bottom:6px; }
+.karte.le{ border-left-color:#d99a1b; background:#fff7e6; }
+.karte.se{ border-left-color:var(--gruen); background:#eaf6ea; }
+.karte.arduino{ border-left-color:#1a7ab5; background:#e8f4fb; }
+.karte.merksatz{ border-left-color:var(--gelb); background:#fff9d6; font-size:1.08em; }
+.karte.sicherheit{ border:2px solid var(--rot); background:#fdecea; }
+.tafelbild{
+  background:#1d3b2a; color:#f5f5f0; padding:18px 22px; border:10px solid #6d4c2f;
+  border-radius:8px; font-family:"Segoe Print","Comic Sans MS",cursive;
+}
+.tafelbild h2{ color:#fff; border-bottom:2px solid #fff; }
+.tafelbild .zeile{ margin:10px 0; font-size:1.1em; }
+.zeile.gelb{ color:#ffe27a; } .zeile.blau{ color:#9fd0ff; } .zeile.gruen{ color:#a8e6a1; }
+.vorlese-btn{
+  background:none; border:1px solid var(--blau); color:var(--blau-dunkel);
+  border-radius:6px; padding:5px 10px; font-size:0.85em; cursor:pointer; margin-bottom:8px;
+}
+.vorlese-btn:hover{ background:var(--blau); color:#fff; }
+table{ border-collapse:collapse; width:100%; margin:10px 0; }
+th, td{ border:1px solid #b9c4d0; padding:8px; text-align:center; }
+th{ background:#e4ecf5; }
+input[type=text], input[type=number]{
+  width:80px; padding:6px; border:1px solid #b9c4d0; border-radius:6px; text-align:center;
+}
+.niveau{ padding:8px 12px; border-radius:6px; margin:8px 0; }
+.grund{ background:#e8f4fb; border-left:5px solid #1a7ab5; }
+.regel{ background:#eaf6ea; border-left:5px solid var(--gruen); }
+.erweitert{ background:#fdeef7; border-left:5px solid #b03a8c; }
+.quiz-frage{ margin:14px 0; }
+.quiz-frage .optionen button{
+  display:block; width:100%; text-align:left; margin:4px 0; padding:9px 12px;
+  border:1px solid #b9c4d0; border-radius:8px; background:#fff; cursor:pointer; font-size:1em;
+}
+.quiz-frage .optionen button.richtig{ background:#d7f2d2; border-color:var(--gruen); }
+.quiz-frage .optionen button.falsch{ background:#fbdada; border-color:var(--rot); }
+.rueckmeldung{ font-weight:bold; margin-top:6px; }
+.loesung-btn{
+  background:var(--blau); color:#fff; border:none; border-radius:8px; padding:9px 14px; cursor:pointer;
+}
+.loesung-box{
+  display:none; background:#fff9d6; border:2px solid var(--gelb); border-radius:8px;
+  padding:12px 16px; margin-top:10px;
+}
+footer{ text-align:center; padding:16px; font-size:0.85em; color:#5a6672; }
+.lehrbild{ margin:14px 0; text-align:center; }
+.lehrbild img{
+  max-width:100%; border-radius:10px; cursor:zoom-in; border:1px solid #b9c4d0;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+.lehrbild figcaption{ font-size:0.9em; color:#5a6672; margin-top:6px; }
+.bild-fehler{
+  padding:14px; background:#f0f0f0; border:2px dashed #999; border-radius:8px;
+  color:#555; font-size:0.9em;
+}
+.bild-modal{
+  display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85);
+  z-index:200; align-items:center; justify-content:center; flex-direction:column;
+  padding:20px;
+}
+.bild-modal.aktiv{ display:flex; }
+.bild-modal img{ max-width:92vw; max-height:80vh; border-radius:8px; }
+.bild-modal figcaption{ color:#fff; margin-top:10px; text-align:center; max-width:90vw; }
+.bild-modal-schliessen{
+  position:absolute; top:16px; right:24px; color:#fff; font-size:2em; cursor:pointer;
+  background:none; border:none; line-height:1;
+}
+@media print{
+  nav.steuerung, .vorlese-btn, .loesung-btn{ display:none; }
+  .karte{ break-inside:avoid; box-shadow:none; }
+}
+@media (max-width:600px){
+  header.kopf h1{ font-size:1.05em; }
+  main{ padding:10px; }
+  .karte{ padding:14px 16px; }
+}
+</style>
+</head>
+<body>
+<header class="kopf">
+  <h1>Lichtbrechung und Totalreflexion</h1>
+  <div class="meta">Klasse 8 · Physik · Optik vertieft · 60 Minuten</div>
+</header>
+<nav class="steuerung">
+  <button onclick="window.scrollTo(0,0)">⬆ Anfang</button>
+  <button onclick="vorlesenStoppen()">🔇 Vorlesen stoppen</button>
+  <button onclick="vollbild()">⛶ Vollbild</button>
+  <button onclick="window.print()">🖨 Drucken</button>
+  <button onclick="seiteZuruecksetzen()">↺ Zurücksetzen</button>
+</nav>
+<main>
+<section class="karte ">
+<h2>1. Einstieg</h2>
+<button class="vorlese-btn" onclick="vorlesen('text-einstieg26')">🔊 Vorlesen</button>
+<div id="text-einstieg26">
+
+<p>Ein Strohhalm in einem Glas Wasser wirkt an der Wasseroberfläche
+scheinbar geknickt.</p>
+<p><strong>Frage:</strong> Der Strohhalm ist doch gerade – warum sieht er im
+Wasser anders aus?</p>
+
+</div>
+</section>
+<figure class="lehrbild">
+<img src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/physik/006_lichtbrechung.jpg" alt="Lichtbrechung beim Übergang zwischen Medien" loading="lazy"
+     onclick="bildVergroessern('https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/physik/006_lichtbrechung.jpg', 'Lichtbrechung beim Übergang zwischen Medien')"
+     onerror="bildFehler(this)">
+<div class="bild-fehler-box bild-fehler" hidden>Das Bild konnte nicht geladen werden.<br>Beschreibung: Lichtbrechung beim Übergang zwischen Medien</div>
+<figcaption>Licht ändert beim Übergang zwischen Medien seine Richtung.</figcaption>
+</figure>
+<section class="karte le">
+<h2>2. Lehrerdemonstrationsexperiment: Licht ändert seine Richtung</h2>
+
+<div>
+
+<p><strong>Aufbau:</strong> Ein Lichtstrahl trifft schräg auf die
+Wasseroberfläche eines Beckens.</p>
+<p><strong>Beobachtung:</strong> Der Lichtstrahl wird beim Eintritt ins
+Wasser zum Lot hin gebrochen.</p>
+
+</div>
+</section>
+<section class="karte ">
+<h2>3. Fachwissen: Brechung und Totalreflexion</h2>
+<button class="vorlese-btn" onclick="vorlesen('text-fachwissen26')">🔊 Vorlesen</button>
+<div id="text-fachwissen26">
+
+<p>Beim Übergang zwischen zwei unterschiedlichen Medien wird Licht
+gebrochen. Ab einem Grenzwinkel tritt Totalreflexion auf: Das gesamte
+Licht wird reflektiert statt gebrochen.</p>
+
+</div>
+</section>
+<section class="karte se">
+<h2>4. Schülerexperiment: Wann tritt Totalreflexion auf?</h2>
+
+<div>
+
+<p><strong>Auftrag:</strong> Leitet einen Lichtstrahl bei zunehmendem
+Winkel durch eine Halbkreisscheibe und beobachtet den Übergang zur
+Totalreflexion.</p>
+<table>
+<thead><tr><th>Winkel</th><th>klein</th><th>mittel</th><th>groß (Totalreflexion?)</th></tr></thead>
+<tbody><tr><td>Beobachtung</td><td><input type="text" style="width:100%;"></td><td><input type="text" style="width:100%;"></td><td><input type="text" style="width:100%;"></td></tr></tbody>
+</table>
+
+</div>
+</section>
+<section class="karte merksatz">
+<h2>5. Merksatz</h2>
+<button class="vorlese-btn" onclick="vorlesen('text-merksatz26')">🔊 Vorlesen</button>
+<div id="text-merksatz26">
+
+<p>Beim Übergang zwischen zwei unterschiedlichen Medien wird Licht
+gebrochen. Ab einem bestimmten Grenzwinkel tritt beim Übergang vom optisch
+dichteren zum optisch dünneren Medium keine Brechung mehr auf, sondern das
+gesamte Licht wird reflektiert (Totalreflexion). Dieser Effekt wird zum
+Beispiel in Glasfaserkabeln genutzt.</p>
+
+</div>
+</section>
+<section class="karte tafelbild">
+<h2>Tafelbild: Lichtbrechung und Totalreflexion</h2>
+<div class="zeile">1. Problemfrage: Warum sieht ein Strohhalm im Wasser geknickt aus?</div>
+<div class="zeile gelb">2. Merksatz: Licht wird beim Übergang zwischen Medien gebrochen.</div>
+<div class="zeile blau">3. Totalreflexion: Ab Grenzwinkel wird alles Licht reflektiert.</div>
+<div class="zeile gruen">4. Anwendung: Glasfaserkabel.</div>
+</section>
+<section class="karte ">
+<h2>6. Lernkontrolle</h2>
+
+<div>
+<div class="quiz-frage">
+<p><strong>1.</strong> Was passiert mit Licht beim Übergang von Luft zu Wasser?</p>
+<div class="optionen"><button onclick="pruefeAntwort(this,false)">Es wird schneller</button>
+<button onclick="pruefeAntwort(this,true)">Es wird gebrochen, ändert seine Richtung</button>
+<button onclick="pruefeAntwort(this,false)">Es verschwindet</button>
+<button onclick="pruefeAntwort(this,false)">Es wird nur reflektiert</button>
+</div>
+<p class="rueckmeldung"></p>
+</div>
+<div class="quiz-frage">
+<p><strong>2.</strong> Was versteht man unter Totalreflexion?</p>
+<div class="optionen"><button onclick="pruefeAntwort(this,false)">Licht wird komplett absorbiert</button>
+<button onclick="pruefeAntwort(this,true)">Ab einem Grenzwinkel wird alles Licht reflektiert</button>
+<button onclick="pruefeAntwort(this,false)">Licht wird immer gebrochen</button>
+<button onclick="pruefeAntwort(this,false)">Ein Spiegeleffekt bei Dunkelheit</button>
+</div>
+<p class="rueckmeldung"></p>
+</div>
+<div class="quiz-frage">
+<p><strong>3.</strong> Nenne eine Anwendung der Totalreflexion.</p>
+<div class="optionen"><button onclick="pruefeAntwort(this,true)">Glasfaserkabel</button>
+<button onclick="pruefeAntwort(this,false)">Batterie</button>
+<button onclick="pruefeAntwort(this,false)">Transformator</button>
+<button onclick="pruefeAntwort(this,false)">Widerstand</button>
+</div>
+<p class="rueckmeldung"></p>
+</div>
+
+</div>
+</section>
+<section class="karte ">
+<h2>7. Zusammenfassung und Hausaufgabe</h2>
+
+<div>
+
+<p>Heute habt ihr die Lichtbrechung und die Totalreflexion untersucht.</p>
+<p><strong>Hausaufgabe:</strong> Beobachte einen Gegenstand teilweise im
+Wasser und beschreibe den Brechungseffekt.</p>
+
+</div>
+</section>
+</main>
+<div class="bild-modal" id="bild-modal" onclick="bildModalHintergrundKlick(event)">
+  <button class="bild-modal-schliessen" onclick="bildSchliessen()" aria-label="Schließen">&times;</button>
+  <img id="bild-modal-img" src="" alt="">
+  <figcaption id="bild-modal-caption"></figcaption>
+</div>
+<footer>Interaktive Unterrichtspräsentation · Physik · Thüringer Regelschule</footer>
+<script>
+function vorlesen(id){
+  if(!("speechSynthesis" in window)){
+    alert("Dieser Browser unterstützt die Vorlesefunktion nicht.");
+    return;
+  }
+  window.speechSynthesis.cancel();
+  var el = document.getElementById(id);
+  if(!el){ alert("Textabschnitt nicht gefunden."); return; }
+  var text = el.innerText.trim();
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = "de-DE"; u.rate = 0.9; u.pitch = 1;
+  window.speechSynthesis.speak(u);
+}
+function vorlesenStoppen(){ window.speechSynthesis.cancel(); }
+
+function loesungZeigen(id){
+  var box = document.getElementById(id);
+  box.style.display = (box.style.display === "block") ? "none" : "block";
+}
+
+function vollbild(){
+  var el = document.documentElement;
+  if(!document.fullscreenElement){ el.requestFullscreen && el.requestFullscreen(); }
+  else{ document.exitFullscreen && document.exitFullscreen(); }
+}
+
+function pruefeAntwort(btn, richtig, gruppe){
+  var opts = btn.parentElement.querySelectorAll("button");
+  opts.forEach(function(b){ b.disabled = true; });
+  var rueck = btn.parentElement.parentElement.querySelector(".rueckmeldung");
+  if(richtig){
+    btn.classList.add("richtig");
+    rueck.textContent = "Richtig!";
+    rueck.style.color = "#3d8b3d";
+  } else {
+    btn.classList.add("falsch");
+    rueck.textContent = "Leider nicht richtig. Versuch es bei der nächsten Frage weiter!";
+    rueck.style.color = "#c0392b";
+  }
+}
+
+function seiteZuruecksetzen(){
+  document.querySelectorAll(".quiz-frage .optionen button").forEach(function(b){
+    b.disabled = false; b.classList.remove("richtig","falsch");
+  });
+  document.querySelectorAll(".rueckmeldung").forEach(function(r){ r.textContent = ""; });
+  document.querySelectorAll(".loesung-box").forEach(function(b){ b.style.display = "none"; });
+  window.scrollTo(0,0);
+}
+
+function bildVergroessern(src, alt){
+  var modal = document.getElementById("bild-modal");
+  var img = document.getElementById("bild-modal-img");
+  var cap = document.getElementById("bild-modal-caption");
+  img.src = src; img.alt = alt; cap.textContent = alt;
+  modal.classList.add("aktiv");
+}
+function bildSchliessen(){
+  document.getElementById("bild-modal").classList.remove("aktiv");
+}
+document.addEventListener("keydown", function(e){
+  if(e.key === "Escape"){ bildSchliessen(); }
+});
+function bildFehler(imgEl){
+  imgEl.style.display = "none";
+  var next = imgEl.nextElementSibling;
+  if(next && next.classList.contains("bild-fehler-box")){ next.hidden = false; }
+}
+function bildModalHintergrundKlick(ev){
+  if(ev.target === ev.currentTarget){ bildSchliessen(); }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Physik 9 – Gleichförmige Bewegung – Gleichungen und Diagramme anwenden</title>
+<style>
+:root{--bg:#eef3f8;--card:#fff;--ink:#17202a;--blue:#145d9c;--green:#176c49;--orange:#b7590c;--red:#a51c30;--violet:#68399b;--yellow:#fff3a4;--shadow:0 12px 32px #13263b22}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);font-size:18px;line-height:1.55}
+button,input,textarea,select{font:inherit} button{min-height:46px;cursor:pointer;border:0;border-radius:.6rem;padding:.65rem .9rem;font-weight:700;background:var(--blue);color:#fff}
+button:hover,button:focus-visible{filter:brightness(1.12);outline:4px solid #ffd54f;outline-offset:2px} .secondary{background:#4b5563} .success{background:var(--green)} .warn{background:var(--orange)} .danger{background:var(--red)}
+header{position:sticky;top:0;z-index:50;background:#102b43;color:white;box-shadow:0 3px 14px #0005} .topbar{display:flex;align-items:center;gap:.5rem;padding:.55rem .8rem;flex-wrap:wrap} .topbar .title{font-weight:800;flex:1;min-width:240px} .progress{height:6px;background:#ffffff33} #progressBar{height:100%;width:0;background:#ffd54f;transition:width .25s}
+main{max-width:1280px;margin:auto;padding:1rem} .slide{display:none;min-height:calc(100vh - 112px);background:var(--card);border-radius:1rem;padding:clamp(1rem,3vw,2.4rem);box-shadow:var(--shadow);margin-bottom:1rem} .slide.active{display:block;animation:fade .2s ease} @keyframes fade{from{opacity:.3;transform:translateY(8px)}}
+h1{font-size:clamp(2rem,5vw,4.3rem);line-height:1.05;margin:.25rem 0 1rem} h2{font-size:clamp(1.6rem,3vw,2.5rem);color:#153a59;border-bottom:3px solid #dce9f5;padding-bottom:.35rem} h3{color:#174d78} .lead{font-size:clamp(1.15rem,2vw,1.55rem)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1rem} .card{background:#f8fbff;border:1px solid #cfe0ef;border-radius:.8rem;padding:1rem} .le{border-left:8px solid var(--orange);background:#fff5eb} .se{border-left:8px solid var(--green);background:#eefaf4} .arduino{border-left:8px solid var(--blue);background:#edf6ff} .safety{border:3px solid var(--red);background:#fff1f3} .merksatz{border:3px solid #bd8b00;background:var(--yellow);font-size:1.2em;font-weight:700}
+figure{margin:0;background:#0d1b2a;border-radius:.8rem;overflow:hidden;color:#fff} figure img{display:block;width:100%;height:min(53vh,520px);object-fit:contain;background:#0d1b2a;cursor:zoom-in} figcaption{padding:.65rem 1rem} .fallback{display:none;padding:2rem;background:#20374b;color:#fff;min-height:220px;align-items:center;justify-content:center;text-align:center}
+.chalk{background:#17271e;color:#f8f5e8;border:10px solid #725133;border-radius:.6rem;padding:1.4rem;box-shadow:inset 0 0 35px #0009;font-family:"Courier New",monospace;font-size:1.15em} .chalk .yellow{color:#fff18e} .chalk .green{color:#9af2b1} .chalk .blue{color:#a8ddff}
+.teacher{display:none;border:3px dashed var(--violet);background:#f7f0ff;padding:1rem;border-radius:.7rem} body.teacher-mode .teacher{display:block} .solution{display:none;background:#effaf3;border:2px solid var(--green);padding:1rem;border-radius:.7rem} .solution.open{display:block}
+label{display:block;font-weight:700;margin-top:.6rem} input[type=number],input[type=text],textarea,select{width:100%;padding:.65rem;border:2px solid #9db3c7;border-radius:.5rem;background:#fff} textarea{min-height:110px} table{border-collapse:collapse;width:100%;overflow:auto;display:block} th,td{border:1px solid #789;padding:.5rem;min-width:130px} th{background:#dcecff} canvas{width:100%;max-width:900px;height:360px;border:1px solid #9ab;background:#fff;border-radius:.5rem}
+.checklist label{font-weight:400;display:flex;gap:.55rem;align-items:flex-start} .checklist input{width:1.25rem;height:1.25rem;flex:0 0 auto} pre{white-space:pre-wrap;overflow:auto;background:#101820;color:#e8f6ff;padding:1rem;border-radius:.6rem;font-size:.86rem} code{font-family:Consolas,monospace} .pill{display:inline-block;border-radius:999px;padding:.25rem .65rem;background:#d9eaf9;margin:.15rem;font-weight:700}
+#overviewDialog,#imageModal{border:0;border-radius:1rem;max-width:min(1000px,94vw);max-height:90vh;padding:1.2rem;box-shadow:0 20px 80px #0008} #imageModal{background:#07101b;color:white} #imageModal img{max-width:88vw;max-height:75vh;object-fit:contain} dialog::backdrop{background:#000b} .slide-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.6rem} .slide-list button{text-align:left}
+.bottomnav{position:sticky;bottom:0;display:flex;justify-content:space-between;gap:.6rem;background:#eef3f8dd;backdrop-filter:blur(8px);padding:.6rem 0;z-index:40} .small{font-size:.88rem;color:#52606d} details{border:1px solid #aac1d5;border-radius:.6rem;padding:.55rem;margin:.55rem 0;background:#fff} summary{cursor:pointer;font-weight:700}
+@media(max-width:700px){body{font-size:16px} .topbar .title{width:100%} .hide-mobile{display:none} main{padding:.5rem} .slide{padding:1rem;min-height:calc(100vh - 145px)}}
+@media print{header,.bottomnav,.no-print,dialog{display:none!important} body{background:#fff;font-size:11pt} main{max-width:none;padding:0} .slide{display:block!important;min-height:0;box-shadow:none;page-break-after:always;margin:0;border-radius:0} .teacher{display:none!important} figure img{max-height:10cm}}
+</style>
+
+<style id="froebel-differenzierung-styles">
+/* Fröbel-Spielgaben als Zeichen für differenzierte Aufgaben
+   Reihenfolge der Aufgaben: Kugel – Walze – Würfel
+   gelbe Kugel = höhere Anforderungen
+   rote Walze  = mittlere Anforderungen
+   blauer Würfel = grundlegende Anforderungen */
+
+.froebel-task-symbol{
+  display:inline-block;
+  position:relative;
+  width:1.75rem;
+  height:1.75rem;
+  margin-right:.70rem;
+  vertical-align:-.36rem;
+  flex:0 0 auto;
+  pointer-events:none;
+  box-sizing:border-box;
+}
+
+.froebel-task{ position:relative; }
+
+/* Gelbe Kugel */
+.froebel-sphere{
+  width:1.45rem;
+  height:1.45rem;
+  margin-left:.05rem;
+  margin-right:.76rem;
+  border-radius:50%;
+  border:2px solid #927100;
+  background:
+    radial-gradient(circle at 28% 24%,
+      #fffde7 0%,
+      #fff9c4 12%,
+      #fff176 24%,
+      #ffeb3b 42%,
+      #fdd835 60%,
+      #d4a600 82%,
+      #9b7700 100%);
+  box-shadow:
+    .12rem .18rem .24rem rgba(0,0,0,.30),
+    inset -.10rem -.12rem .16rem rgba(110,80,0,.18);
+  transform:translateY(.12rem);
+}
+
+/* Rote Walze – stärker 3D */
+.froebel-cylinder{
+  width:1.42rem;
+  height:1.38rem;
+  margin-left:.09rem;
+  margin-right:.82rem;
+  background:
+    linear-gradient(90deg,
+      #710000 0%,
+      #a51414 10%,
+      #d32f2f 28%,
+      #ff867c 48%,
+      #ffc2bc 55%,
+      #ef5350 62%,
+      #c62828 78%,
+      #7f0000 100%);
+  border:2px solid #6e0000;
+  border-radius:.20rem / .55rem;
+  box-shadow:
+    .12rem .18rem .24rem rgba(0,0,0,.34),
+    inset .12rem 0 .12rem rgba(255,255,255,.20),
+    inset -.14rem 0 .16rem rgba(70,0,0,.34);
+  transform:translateY(.17rem);
+  overflow:visible;
+}
+
+.froebel-cylinder::before,
+.froebel-cylinder::after{
+  content:"";
+  position:absolute;
+  left:-2px;
+  width:calc(100% + 4px);
+  height:.48rem;
+  border:2px solid #6e0000;
+  border-radius:50%;
+  box-sizing:border-box;
+}
+
+.froebel-cylinder::before{
+  top:-.27rem;
+  z-index:3;
+  background:
+    radial-gradient(ellipse at 34% 24%,
+      #ffe4e1 0%,
+      #ffab91 18%,
+      #ef5350 42%,
+      #c62828 72%,
+      #850000 100%);
+  box-shadow:
+    inset 0 -.08rem .11rem rgba(80,0,0,.34),
+    .02rem .02rem .04rem rgba(255,255,255,.22);
+}
+
+.froebel-cylinder::after{
+  bottom:-.27rem;
+  z-index:1;
+  background:
+    radial-gradient(ellipse at 46% 34%,
+      #e57373 0%,
+      #c62828 46%,
+      #8c0000 100%);
+  box-shadow:0 .08rem .14rem rgba(0,0,0,.28);
+}
+
+/* Blauer Würfel – Referenzbild des Nutzers */
+.froebel-cube{
+  width:1.55rem;
+  height:1.55rem;
+  margin-left:.02rem;
+  margin-right:.90rem;
+  background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAADhUlEQVR4XlWT+1PUVRiHv39BKOmILCBkSDDTDDPpNJPmWKRopaVc1BKCVVblEi63AAUWQxJwIUEC5U7chuW6CSggBEOFoJhJKPGDNcUUy67ssrtclOHpQNlMZ+b94Vw+z+d9z3uOtLS0xMowmmYZG3tER1cPX9c2kpBbxTaFGk/5F3iFZ+ETcwmFKo/4y5VcKmuivLmTyb+mke78NEZpQztnS9pQFH3HgYL7eGbewyN1AI/kHtziO3CNbsE5oh6HkxVsDMjjRd90bLzjeM0vAqmgVkvpzxBzU8+xut/ZXfCIbZnDeKT04Rp/k5eiW3H5VMOm0BpkJ4qx9c/A5v1zvLDvM+zfkSOpK1uYMMFD/TNGp54x9MdTOiesVI/MkNnzJ8qGCT4uvodTSDE2B1WsOZDM2v1JrP0gGfs9IUipxc08FIChyUV6Hz+lfXyB+gcWKn80UTBkJHtAgAZMbAmvwNbnAut9L7DuUBprfNLZ6HUCKaOshbsG6P51Ee0vC9SNzlEyYiZv0EhG/wwpt/TEdxt4JbKWDR+psTuSxbrDWdgeycZhJYO4/CZ6J6FZOFc/mOfaXSuXB82k9xk52/2EqHY9YdcFQFmPfUAuG0SsP5aLXeAVHPecRIr4soFvHkOlEBeOzJE9aOXz/lkShfhMh4GQ1mkCm/S4xzYhk1/DTn4Vu6ACZMFFOO0VgLAcDdXj8JVwzrptJbXfIlI2EXHjCcdb9RzV6PiwXo9brBbZqXIcFKU4hpQiEy118j6FFJyhofA+ZHxvRdVnIbbLTFibieAWA/5CuL9Kh1eFDteEDpzCanAW7XQMrcIhrO4fgF9aLeo7kCTE0d1mTrfPEthixE9j4L3qaXaVT7G9RIdbQjcuZxpxVjbgFClC2cymfaeRjl7UoLoNUbfMKG7MEtBqwkczw94aA28J5x2lU7xRPIV7Ui+bRRku0VoB0YpLzMNXmY70ZngOcq2RkK5FAq8vcLDBine1ibcr9Ows07H9X8DKy3w5ro3NcR3IPrnCu6EqLJZ5pK7BUfwSr+IWkMmrUXW8fnGYnUU64W5kV4WBHeV6UcI0Hqp+XBM7cQzKxz9WzfzC4uonlJ7/xjmx8O3IOKklWnYrc3EOULMlsg7PtB/Ymv8b7in9q+Lj5wuZn19YFf8PsDJZgT0HThvNNPYMo8ypYmvQeRwOnSMmp2Z1f3l5+b9zfwMFY8hWZi/2mAAAAFF0RVh0Q29tbWVudABDb3B5cmlnaHQgSU5DT1JTIEdtYkggKHd3dy5pY29uZXhwZXJpZW5jZS5jb20pIC0gVW5saWNlbnNlZCBwcmV2aWV3IGltYWdltppppgAAADh0RVh0Q29weXJpZ2h0AENvcHlyaWdodCBJTkNPUlMgR21iSCAod3d3Lmljb25leHBlcmllbmNlLmNvbSlOzplOAAAAWnpUWHRDb21tZW50AAB4nHPOL6gsykzPKFHw9HP2DwpWcM9N8lDQKC8v18tMzs9LrShILcpMzUtO1UvOz9VU0FUIzcvJTE7NK05NUSgoSi3LTC1XyMxNTE8FALiPGiScvJjjAAAAQXpUWHRDb3B5cmlnaHQAAHicc84vqCzKTM8oUfD0c/YPClZwz03yUNAoLy/Xy0zOz0utKEgtykzNS07VS87P1QQAfTYQaBzd5o8AAAAASUVORK5CYII=");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+  border:none;
+  box-shadow:.10rem .14rem .20rem rgba(0,0,0,.24);
+  transform:translateY(.12rem);
+}
+
+.froebel-cube::before,
+.froebel-cube::after{
+  content:none;
+}
+
+.froebel-differenzierte-aufgaben{
+  margin:1.35rem 0;
+}
+
+.froebel-differenzierte-aufgaben > h2{
+  margin-bottom:.75rem;
+}
+
+.froebel-task-card{
+  display:flex;
+  align-items:flex-start;
+  gap:.20rem;
+  margin:.72rem 0;
+  padding:.88rem 1rem;
+  border:1px solid #c8d2dc;
+  border-radius:.72rem;
+  background:#fff;
+  box-shadow:0 .12rem .32rem rgba(25,45,65,.08);
+  break-inside:avoid;
+}
+
+.froebel-level-high{
+  border-left:5px solid #d4a600;
+  background:linear-gradient(90deg,#fffbe7 0%,#fff 42%);
+}
+
+.froebel-level-medium{
+  border-left:5px solid #c62828;
+  background:linear-gradient(90deg,#fff0f0 0%,#fff 42%);
+}
+
+.froebel-level-easy{
+  border-left:5px solid #1976d2;
+  background:linear-gradient(90deg,#edf6ff 0%,#fff 42%);
+}
+
+.froebel-task-content{
+  flex:1 1 auto;
+  min-width:0;
+  line-height:1.55;
+}
+
+.froebel-task > .froebel-task-symbol:first-child{ margin-top:0; }
+li.froebel-task > .froebel-task-symbol:first-child{ margin-left:.05rem; }
+
+@media (max-width:600px){
+  .froebel-task-card{ padding:.72rem .78rem; }
+  .froebel-task-symbol{
+    transform:scale(.90);
+    transform-origin:top center;
+  }
+}
+
+@media print{
+  .froebel-task-symbol,
+  .froebel-task-card{
+    print-color-adjust:exact;
+    -webkit-print-color-adjust:exact;
+  }
+  .froebel-task-card{ box-shadow:none; }
+}
+</style>
+</head>
+<body data-lesson="ph9_stunde_14_gleichfoermige_bewegung_gleichungen_und_diagramme_anwenden">
+<header><div class="topbar"><div class="title">Klasse 9 · Physik · Stunde 14: Gleichförmige Bewegung – Gleichungen und Diagramme anwenden</div><button class="secondary" onclick="openOverview()">☰ Übersicht</button><button class="secondary hide-mobile" onclick="toggleTeacher()">👨‍🏫 Lehrkraft</button><button class="secondary hide-mobile" onclick="toggleFullscreen()">⛶ Vollbild</button><button class="danger" onclick="stopSpeech()">■ Audio</button></div><div class="progress"><div id="progressBar"></div></div></header>
+<main>
+<section class="slide active" data-name="Start"><div class="grid"><div><span class="pill">Physik</span><span class="pill">Klasse 9</span><span class="pill">60 Minuten</span><h1>Gleichförmige Bewegung – Gleichungen und Diagramme anwenden</h1><p class="lead" id="introText">Weg, Zeit und Geschwindigkeit bei gleichförmigen Bewegungen berechnen sowie s-t- und v-t-Diagramme lesen und ineinander übertragen.</p><button onclick="speak('introText')">🔊 Lernziel vorlesen</button><div class="card"><strong>Lernbereich:</strong> Bewegungen und Kräfte<br><strong>Lehrplanstatus:</strong> Verbindlicher Lehrplaninhalt · Übung und Transfer</div></div><figure><img src="https://raw.githubusercontent.com/burgnetz-wq/froebel/main/bilder/physik/023_gleichfoermige_bewegung.jpg" alt="Darstellung einer gleichförmigen Bewegung" onclick="openImage(this)" onerror="imageError(this)"><div class="fallback">Das Webbild konnte nicht geladen werden.<br>Darstellung einer gleichförmigen Bewegung</div><figcaption>Darstellung einer gleichförmigen Bewegung</figcaption></figure></div><div class="teacher"><strong>Lehrerhinweis:</strong> Diese Präsentation ist für einen 60-Minuten-Unterrichtsgang ausgelegt. Lösungen und organisatorische Hinweise bleiben im normalen Unterrichtsmodus verborgen.</div></section>
+<section class="slide" data-name="Ziele & Ablauf"><h2>🎯 Lernziele und Zeitplan</h2><div class="grid"><div class="card"><h3>Nach der Stunde kannst du …</h3><ul><li>Weg, Zeit und Geschwindigkeit bei gleichförmigen Bewegungen berechnen sowie s-t- und v-t-Diagramme lesen und ineinander übertragen.</li><li>Beobachtungen aus einem Experiment geordnet festhalten.</li><li>ein Ergebnis fachsprachlich formulieren und auf eine Anwendung übertragen.</li></ul></div><div class="card"><h3>Exakt 60 Minuten</h3><ol><li>Einstieg – 6 min</li><li>Problemfrage – 5 min</li><li>Lehrerdemonstration – 9 min</li><li>Schülerexperiment einschließlich Material und Aufräumen – 22 min</li><li>Auswertung – 8 min</li><li>Sicherung und Tafelbild – 7 min</li><li>Lernkontrolle – 3 min</li></ol><strong>Kontrollsumme: 60 Minuten</strong></div></div></section>
+<section class="slide" data-name="Einstieg"><h2>🔎 Einstieg und Problemfrage</h2><div class="card"><p id="entryText" class="lead">Im Alltag oder in der Technik begegnet uns das Thema „Gleichförmige Bewegung – Gleichungen und Diagramme anwenden“. Welche Beobachtung lässt sich messen oder durch ein Modell erklären?</p><button onclick="speak('entryText')">🔊 Vorlesen</button></div><label for="hypothesis">Deine Vermutung:</label><textarea id="hypothesis" data-save placeholder="Formuliere: Ich vermute, dass …, weil …"></textarea><details><summary>Hilfekarte</summary>Nutze die Begriffe aus dem Lernziel. Trenne klar zwischen Beobachtung und Erklärung.</details></section>
+<section class="slide" data-name="Lehrerdemonstration"><h2>🧪 Lehrerdemonstrationsexperiment</h2><div class="card le"><h3>Versuch</h3><p id="leText">Live-Diagramm einer gleichförmigen Bewegung zeigen und anhalten; Werte ablesen lassen.</p><button onclick="speak('leText')">🔊 Versuch vorlesen</button><p><strong>Beobachtungsauftrag:</strong> Notiere zuerst nur, was sichtbar oder messbar ist. Erklärungen folgen danach.</p></div><div class="card safety"><h3>⚠ Sicherheit</h3><p id="safetyText">Keine besonderen Gefahren; bei Bewegungsstationen Laufwege freihalten.</p><button onclick="speak('safetyText')">🔊 Sicherheit vorlesen</button></div><label for="leObservation">Beobachtung:</label><textarea id="leObservation" data-save></textarea><div class="teacher"><strong>Erwartung:</strong> Die Demonstration führt zur Problemfrage und bereitet das Schülerexperiment vor. Nachfragen: „Was wurde verändert? Was blieb gleich? Woran erkennt ihr die Wirkung?“</div></section>
+<section class="slide" data-name="Schülerexperiment"><h2>🔬 Schülerexperiment</h2><div class="card se"><p id="seText">Aufgabenstationen mit realen Fahrplänen, Fahrradfahrt und Laufbewegung; Diagramme ergänzen und Rechenwege kontrollieren.</p><button onclick="speak('seText')">🔊 Arbeitsauftrag vorlesen</button><ol><li>Material vollständig und ausgeschaltet bereitlegen.</li><li>Aufbau nach Anleitung erstellen und gegenseitig kontrollieren.</li><li>Eine Einflussgröße verändern; alle anderen Bedingungen möglichst konstant halten.</li><li>Messwerte oder Beobachtungen erfassen.</li><li>Aufbau sicher abbauen und Material sortieren.</li></ol></div><div class="grid"><div class="card"><h3>Experimenttimer</h3><div style="font-size:3rem;font-variant-numeric:tabular-nums" id="timerDisplay">12:00</div><button class="success" onclick="timerStart()">Start</button> <button class="warn" onclick="timerPause()">Pause</button> <button class="secondary" onclick="timerReset()">Reset</button></div><div class="card"><h3>Beobachtung</h3><textarea id="seObservation" data-save placeholder="Messwerte, Auffälligkeiten, Unsicherheiten …"></textarea></div></div></section>
+
+<section class="slide" data-name="Messwerte"><h2>📊 Messwerte und Diagramm</h2><p>Trage Wertepaare ein. Die Achsenbeschriftung wird passend zum Versuch ergänzt.</p><div class="grid"><div class="card"><label>X-Größe / Einheit<input id="xLabel" data-save value="Einflussgröße"></label><label>Y-Größe / Einheit<input id="yLabel" data-save value="Messwert / Beobachtung"></label><table><thead><tr><th>Nr.</th><th>X</th><th>Y</th></tr></thead><tbody><tr><td>1</td><td><input id="mx1" data-save type="number" step="any"></td><td><input id="my1" data-save type="number" step="any"></td></tr><tr><td>2</td><td><input id="mx2" data-save type="number" step="any"></td><td><input id="my2" data-save type="number" step="any"></td></tr><tr><td>3</td><td><input id="mx3" data-save type="number" step="any"></td><td><input id="my3" data-save type="number" step="any"></td></tr><tr><td>4</td><td><input id="mx4" data-save type="number" step="any"></td><td><input id="my4" data-save type="number" step="any"></td></tr><tr><td>5</td><td><input id="mx5" data-save type="number" step="any"></td><td><input id="my5" data-save type="number" step="any"></td></tr><tr><td>6</td><td><input id="mx6" data-save type="number" step="any"></td><td><input id="my6" data-save type="number" step="any"></td></tr></tbody></table><button onclick="drawChart()">Diagramm zeichnen</button> <button class="secondary" onclick="clearMeasurements()">Messwerte löschen</button></div><div class="card"><canvas id="chart" width="900" height="500" aria-label="Diagramm der eingegebenen Messwerte"></canvas></div></div></section>
+<section class="slide" data-name="Simulation"><h2>🧭 Gleichförmige Bewegung</h2><div class="grid"><div class="card"><p><strong>Modellhinweis:</strong> Idealisiertes Modell mit konstanter Geschwindigkeit 1,5 m/s.</p><label for="modelInput">Zeit t in s: <output id="modelXOut">1</output></label><input type="range" id="modelInput" min="0" max="10" value="1" step="0.1" oninput="updateModel()"><div class="merksatz">Weg s in m: <span id="modelResult">—</span></div></div><div class="card"><canvas id="modelCanvas" width="700" height="360"></canvas></div></div></section>
+<section class="slide" data-name="Auswertung"><h2>🧠 Auswertung und Differenzierung</h2><div class="grid"><div class="card"><h3>Grundniveau</h3><p>Beschreibe die wichtigste Beobachtung in einem vollständigen Satz. Nutze: „Wenn …, dann …“</p><textarea data-save id="basicAnswer"></textarea></div><div class="card"><h3>Regelstandard</h3><p>Erkläre die Beobachtung mit mindestens zwei Fachbegriffen.</p><textarea data-save id="standardAnswer"></textarea></div><div class="card"><h3>Erweiterung</h3><p>Hauptschulniveau mit ganzzahligen Werten und Satzstartern; Realschulniveau mit Einheitenumrechnung und unbekannter Größe; Erweiterung mit abschnittsweiser Bewegung.</p><textarea data-save id="advancedAnswer"></textarea></div></div><details><summary>Auswertungshilfe</summary>1. Benenne die veränderte Größe. 2. Beschreibe die Wirkung. 3. Formuliere den Zusammenhang. 4. Nenne eine Messunsicherheit.</details></section>
+<section class="slide" data-name="Tafelbild"><h2>🖍 Digitales Tafelbild</h2><div class="chalk" id="chalkboard"><div class="blue">Gleichförmige Bewegung – Gleichungen und Diagramme anwenden</div><br><strong>Problemfrage:</strong> Wie lässt sich der untersuchte Zusammenhang beobachten, messen und erklären?<br><br><span class="yellow">Merksatz:</span><br>Weg, Zeit und Geschwindigkeit bei gleichförmigen Bewegungen berechnen sowie s-t- und v-t-Diagramme lesen und ineinander übertragen.<br><br><span class="green">Experiment:</span><br>LE: Live-Diagramm einer gleichförmigen Bewegung zeigen und anhalten; Werte ablesen lassen.<br>SE: Aufgabenstationen mit realen Fahrplänen, Fahrradfahrt und Laufbewegung; Diagramme ergänzen und Rechenwege kontrollieren.<br><br><span class="blue">Sicherheit:</span><br>Keine besonderen Gefahren; bei Bewegungsstationen Laufwege freihalten.</div><button class="secondary no-print" onclick="window.print()">🖨 Tafelbild / Seite drucken</button></section>
+<section class="slide" data-name="Lernkontrolle"><h2>✅ Lernkontrolle</h2><form id="quizForm"><div class="card"><p><strong>1.</strong> Was ist das zentrale Ziel der Stunde?</p><label><input type="radio" name="q1" value="1"> Weg, Zeit und Geschwindigkeit bei gleichförmigen Bewegungen berechnen sowie s-t- und v-t-Diagramme lesen und ineinander übertragen.</label><label><input type="radio" name="q1" value="0"> Nur Gerätebezeichnungen auswendig lernen.</label><label><input type="radio" name="q1" value="0"> Ohne Beobachtung sofort eine Erklärung behaupten.</label></div><div class="card"><p><strong>2.</strong> Welcher Auftrag gehört zum Schülerexperiment?</p><label><input type="radio" name="q2" value="1"> Aufgabenstationen mit realen Fahrplänen, Fahrradfahrt und Laufbewegung; Diagramme ergänzen und Rechenwege kontrollieren.</label><label><input type="radio" name="q2" value="0"> Der Versuchsaufbau wird ohne Kontrolle eingeschaltet.</label></div><div class="card"><p><strong>3.</strong> Welche Sicherheitsregel gilt?</p><label><input type="radio" name="q3" value="1"> Keine besonderen Gefahren; bei Bewegungsstationen Laufwege freihalten.</label><label><input type="radio" name="q3" value="0"> Sicherheitshinweise können übersprungen werden.</label></div><button type="button" onclick="checkQuiz()">Quiz auswerten</button> <button type="reset" class="secondary" onclick="document.getElementById('quizResult').textContent=''">Zurücksetzen</button><p id="quizResult" class="lead" aria-live="polite"></p></form><button class="success" onclick="toggleSolution('finalSolution')">Lösung / Zusammenfassung anzeigen</button><div id="finalSolution" class="solution"><strong>Zusammenfassung:</strong> Weg, Zeit und Geschwindigkeit bei gleichförmigen Bewegungen berechnen sowie s-t- und v-t-Diagramme lesen und ineinander übertragen.<br><strong>Experimenteller Kern:</strong> Aufgabenstationen mit realen Fahrplänen, Fahrradfahrt und Laufbewegung; Diagramme ergänzen und Rechenwege kontrollieren.<br><strong>Arduino-Alternative:</strong> —</div></section>
+<section class="slide" data-name="Quellen"><h2>📚 Quellen und Abschluss</h2><div class="card"><p><strong>Bildquelle:</strong> <a href="https://github.com/burgnetz-wq/froebel/blob/main/bilder/physik/023_gleichfoermige_bewegung.jpg" target="_blank" rel="noopener">Wikimedia Commons – Quelldatei</a></p><p><strong>Planungsgrundlage:</strong> Thüringer Lehrplanstruktur gemäß der dem Projekt beigefügten Planungsdatei. Die konkrete Reihenfolge ist eine didaktische Planung.</p><p><strong>Hinweis:</strong> Webbilder können bei fehlender Internetverbindung ausfallen; jede Seite enthält deshalb eine beschreibende Ersatzanzeige.</p></div><button class="danger" onclick="resetAll()">Alle lokalen Eingaben dieser Stunde löschen</button></section>
+<div class="bottomnav no-print"><button class="secondary" onclick="prevSlide()">← Zurück</button><span id="slideCounter" aria-live="polite"></span><button onclick="nextSlide()">Weiter →</button></div>
+<!-- FROEBEL-AUFGABEN-START -->
+<section class="froebel-differenzierte-aufgaben">
+<h2>🧩 Differenzierte Aufgaben</h2>
+
+
+
+
+
+
+<div class="froebel-task-card froebel-level-high" data-level="high">
+<span class="froebel-task-symbol froebel-sphere" aria-hidden="true"></span>
+<div class="froebel-task-content">Übertrage „Gleichförmige Bewegung – Gleichungen und Diagramme anwenden“ auf eine neue Alltagssituation. Entwickle ein physikalisches Modell, benenne Annahmen und beurteile die Grenzen des Modells.</div>
+</div>
+
+<div class="froebel-task-card froebel-level-medium" data-level="medium">
+<span class="froebel-task-symbol froebel-cylinder" aria-hidden="true"></span>
+<div class="froebel-task-content">Erkläre den Zusammenhang bei „Gleichförmige Bewegung – Gleichungen und Diagramme anwenden“ und löse dazu ein eigenes Zahlenbeispiel mit vollständigem Rechenweg.</div>
+</div>
+
+<div class="froebel-task-card froebel-level-easy" data-level="easy">
+<span class="froebel-task-symbol froebel-cube" aria-hidden="true"></span>
+<div class="froebel-task-content">Nenne die für „Gleichförmige Bewegung – Gleichungen und Diagramme anwenden“ wichtigen physikalischen Größen mit Formelzeichen und Einheit.</div>
+</div>
+</section>
+<!-- FROEBEL-AUFGABEN-ENDE -->
+</main>
+<dialog id="overviewDialog"><h2>Stundenübersicht</h2><div class="slide-list" id="slideList"></div><p><button class="secondary" onclick="overviewDialog.close()">Schließen</button></p></dialog>
+<dialog id="imageModal"><button class="danger" onclick="imageModal.close()">✕ Schließen</button><p><img id="modalImage" alt="Vergrößerte Unterrichtsabbildung" onerror="this.alt='Vergrößerte Abbildung konnte nicht geladen werden.'"></p><p id="modalCaption"></p></dialog>
+<script>
+'use strict';
+const lessonKey='klasse9:'+document.body.dataset.lesson+':';
+const slides=[...document.querySelectorAll('.slide')]; let slideIndex=0;
+function storageGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function storageSet(k,v){try{localStorage.setItem(k,v)}catch(e){/* Speicherung im aktuellen Browserkontext nicht verfügbar */}}
+function storageRemovePrefix(prefix){try{Object.keys(localStorage).filter(k=>k.startsWith(prefix)).forEach(k=>localStorage.removeItem(k))}catch(e){/* keine lokale Speicherung */}}
+function showSlide(i){slideIndex=Math.max(0,Math.min(slides.length-1,i));slides.forEach((s,n)=>s.classList.toggle('active',n===slideIndex));document.getElementById('slideCounter').textContent=(slideIndex+1)+' / '+slides.length;document.getElementById('progressBar').style.width=((slideIndex+1)/slides.length*100)+'%';window.scrollTo(0,0);storageSet(lessonKey+'slide',slideIndex);}
+function nextSlide(){showSlide(slideIndex+1)} function prevSlide(){showSlide(slideIndex-1)}
+function openOverview(){const list=document.getElementById('slideList');list.innerHTML='';slides.forEach((s,i)=>{const b=document.createElement('button');b.textContent=(i+1)+'. '+s.dataset.name;b.onclick=()=>{showSlide(i);overviewDialog.close()};list.appendChild(b)});overviewDialog.showModal()}
+function toggleTeacher(){document.body.classList.toggle('teacher-mode')}
+function toggleFullscreen(){if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()}
+function speak(id){if(!('speechSynthesis' in window)){alert('Dieser Browser unterstützt die Vorlesefunktion nicht.');return}const el=document.getElementById(id);if(!el)return;stopSpeech();const u=new SpeechSynthesisUtterance(el.innerText);u.lang='de-DE';u.rate=.9;speechSynthesis.speak(u)} function stopSpeech(){if('speechSynthesis' in window)speechSynthesis.cancel()}
+function openImage(img){modalImage.src=img.src;modalImage.alt=img.alt;modalCaption.textContent=img.alt;imageModal.showModal()} function imageError(img){img.style.display='none';img.nextElementSibling.style.display='flex'}
+function toggleSolution(id){document.getElementById(id).classList.toggle('open')}
+let timerSeconds=720,timerHandle=null;function timerRender(){const m=Math.floor(timerSeconds/60),s=timerSeconds%60;timerDisplay.textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}function timerStart(){if(timerHandle)return;timerHandle=setInterval(()=>{if(timerSeconds>0){timerSeconds--;timerRender()}else{timerPause();alert('Experimentzeit beendet. Bitte Ergebnisse sichern und aufräumen.')}},1000)}function timerPause(){clearInterval(timerHandle);timerHandle=null}function timerReset(){timerPause();timerSeconds=720;timerRender()}
+function drawChart(){const xs=[],ys=[];for(let i=1;i<=6;i++){const x=parseFloat(document.getElementById('mx'+i).value),y=parseFloat(document.getElementById('my'+i).value);if(Number.isFinite(x)&&Number.isFinite(y)){xs.push(x);ys.push(y)}}const c=chart,ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);ctx.strokeStyle='#223';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(75,30);ctx.lineTo(75,430);ctx.lineTo(860,430);ctx.stroke();if(!xs.length){ctx.fillStyle='#555';ctx.font='24px Arial';ctx.fillText('Messwerte eingeben und „Diagramm zeichnen“ wählen.',110,220);return}const xmin=Math.min(...xs),xmax=Math.max(...xs),ymin=Math.min(...ys),ymax=Math.max(...ys);const sx=x=>75+(x-xmin)/(xmax-xmin||1)*760,sy=y=>430-(y-ymin)/(ymax-ymin||1)*360;ctx.strokeStyle='#145d9c';ctx.fillStyle='#145d9c';ctx.beginPath();xs.map((x,i)=>[sx(x),sy(ys[i])]).sort((a,b)=>a[0]-b[0]).forEach((p,i)=>i?ctx.lineTo(...p):ctx.moveTo(...p));ctx.stroke();xs.forEach((x,i)=>{ctx.beginPath();ctx.arc(sx(x),sy(ys[i]),6,0,Math.PI*2);ctx.fill()});ctx.fillStyle='#111';ctx.font='18px Arial';ctx.fillText(xLabel.value,690,475);ctx.save();ctx.translate(25,300);ctx.rotate(-Math.PI/2);ctx.fillText(yLabel.value,0,0);ctx.restore();}
+function clearMeasurements(){for(let i=1;i<=6;i++){document.getElementById('mx'+i).value='';document.getElementById('my'+i).value=''}drawChart();saveInputs()}
+function updateModel(){const x=parseFloat(modelInput.value);modelXOut.textContent=x.toFixed(1);let y=0;y = x * 1.5;modelResult.textContent=Number(y).toFixed(2);drawModel(x,y)}
+function drawModel(x,y){const c=modelCanvas,ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#f8fbff';ctx.fillRect(0,0,c.width,c.height);ctx.strokeStyle='#334';ctx.beginPath();ctx.moveTo(60,30);ctx.lineTo(60,310);ctx.lineTo(660,310);ctx.stroke();ctx.fillStyle='#176c49';const h=Math.max(2,Math.min(250,Math.abs(y)*2));ctx.fillRect(270,310-h,160,h);ctx.fillStyle='#111';ctx.font='20px Arial';ctx.fillText('Eingabe: '+x.toFixed(1),80,345);ctx.fillText('Modellergebnis: '+Number(y).toFixed(2),350,345)}
+function checkQuiz(){let score=0;for(const q of ['q1','q2','q3']){const v=document.querySelector('input[name="'+q+'"]:checked');if(v)score+=Number(v.value)}quizResult.textContent=score===3?'3/3 – Sehr gut. Du hast die Kernaussagen sicher erkannt.':score+'/3 – Prüfe Lernziel, Experiment und Sicherheitsregel noch einmal.'}
+function saveInputs(){document.querySelectorAll('[data-save]').forEach(el=>storageSet(lessonKey+el.id,el.value))}function loadInputs(){document.querySelectorAll('[data-save]').forEach(el=>{const v=storageGet(lessonKey+el.id);if(v!==null)el.value=v;el.addEventListener('input',saveInputs)})}function resetAll(){if(confirm('Alle lokal gespeicherten Eingaben dieser Stunde löschen?')){storageRemovePrefix(lessonKey);location.reload()}}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName))nextSlide();if(e.key==='ArrowLeft'&&!['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName))prevSlide();if(e.key==='Escape')stopSpeech()});
+loadInputs();showSlide(Number(storageGet(lessonKey+'slide'))||0);timerRender();updateModel();drawChart();
+</script>
+
+<script id="froebel-differenzierung-script">
+
+(function(){
+"use strict";
+
+function norm(value){
+  return (value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+const RX = {
+  explicitHigh: /(erweiterung|erweitert|experten?(aufgabe|niveau)?|hohere anforderung|anspruchsvoll|transfer(aufgabe)?|afb\s*iii|anforderungsbereich\s*iii)/,
+  explicitMedium: /(regelstandard|regelaufgabe|mittelniveau|mittlere anforderung|standardaufgabe|afb\s*ii|anforderungsbereich\s*ii)/,
+  explicitEasy: /(grundniveau|grundaufgabe|basis(aufgabe|niveau)?|leichte? anforderung|einfach(e|es)?|afb\s*i(?!i)|anforderungsbereich\s*i(?!i))/,
+
+  highOperator: /^(beurteile|bewerte|diskutiere|entwickle|plane|entwirf|ubertrage|erortere|reflektiere|optimiere|nimm stellung|prufe kritisch|interpretiere|analysiere|erstelle ein modell|formuliere eine hypothese)\b/,
+  mediumOperator: /^(beschreibe|erklare|berechne|vergleiche|begrunde|untersuche|werte aus|bestimme|ermittle|protokolliere|stelle dar|formuliere|leite ab|weise nach|ordne begrundet|skizziere und erklare)\b/,
+  easyOperator: /^(nenne|benenne|gib an|lies ab|ordne zu|markiere|beschrifte|notiere|erganze|wahle|kreuze|zeichne|wiederhole|setze ein|miss|baue auf|beobachte)\b/,
+
+  easyQuestion: /^(was ist|was sind|welche|welcher|welches|wann|wo|wer|womit|wie heisst|wie lautet)\b/,
+  mediumQuestion: /^(warum|wie erklart|wie verandert|wodurch|inwiefern)\b/,
+  taskContext: /(aufgabe|arbeitsauftrag|beobachtungsauftrag|messauftrag|forscherauftrag|denkauftrag|auftrag|ubung|station|lernkontrolle|auswertung|experiment|sicherung|transfer|reflexion|quiz|prufung|bearbeite)/
+};
+
+function explicitLevel(text){
+  const value = norm(text);
+  if(RX.explicitHigh.test(value)) return "high";
+  if(RX.explicitMedium.test(value)) return "medium";
+  if(RX.explicitEasy.test(value)) return "easy";
+  return null;
+}
+
+function operatorLevel(text){
+  let value = norm(text)
+    .replace(/^[\d\s.:;()\-–—]+/,"")
+    .replace(/^(aufgabe|arbeitsauftrag|auftrag)\s*\d*\s*[:.\-–—]?\s*/,"");
+  if(RX.highOperator.test(value)) return "high";
+  if(RX.mediumOperator.test(value)) return "medium";
+  if(RX.easyOperator.test(value)) return "easy";
+  if(RX.mediumQuestion.test(value)) return "medium";
+  if(RX.easyQuestion.test(value)) return "easy";
+  return null;
+}
+
+function directHeading(element){
+  if(!element || !element.children) return "";
+  for(const child of element.children){
+    if(/^H[1-4]$/.test(child.tagName)) return child.textContent || "";
+  }
+  return "";
+}
+
+function contextText(element){
+  const parts = [];
+  let current = element ? element.parentElement : null;
+  let depth = 0;
+  while(current && depth < 6){
+    if(current.dataset){
+      if(current.dataset.name) parts.push(current.dataset.name);
+      if(current.dataset.titel) parts.push(current.dataset.titel);
+      if(current.dataset.title) parts.push(current.dataset.title);
+    }
+    const heading = directHeading(current);
+    if(heading) parts.push(heading);
+    current = current.parentElement;
+    depth++;
+  }
+  return parts.join(" ");
+}
+
+function ancestorLevel(element){
+  let current = element;
+  let depth = 0;
+  while(current && depth < 7){
+    const cls = " " + (current.className || "") + " ";
+    if(/\bniveau\b/.test(cls)){
+      if(/\b(e|erweitert|experte)\b/.test(cls)) return "high";
+      if(/\b(r|regel|mittel)\b/.test(cls)) return "medium";
+      if(/\b(g|grund|basis)\b/.test(cls)) return "easy";
+    }
+    const dataLevel = current.getAttribute && current.getAttribute("data-level");
+    if(dataLevel && /^(easy|medium|high)$/.test(dataLevel)) return dataLevel;
+    const fromHeading = explicitLevel(directHeading(current));
+    if(fromHeading) return fromHeading;
+    current = current.parentElement;
+    depth++;
+  }
+  return null;
+}
+
+function excluded(element){
+  return !!element.closest(
+    "script,style,nav,header,footer,dialog,.solution,.loesung,.teacher,.teacher-note,.quellen,.sources,.froebel-ignore"
+  );
+}
+
+function icon(level){
+  const span = document.createElement("span");
+  span.className = "froebel-task-symbol " +
+    (level === "easy" ? "froebel-cube" :
+     level === "high" ? "froebel-sphere" : "froebel-cylinder");
+  span.setAttribute("aria-hidden","true");
+  return span;
+}
+
+function decorate(element, level){
+  if(!element || element.dataset.froebelMarked || excluded(element)) return;
+  const text = (element.textContent || "").trim();
+  if(!text) return;
+  element.insertBefore(icon(level), element.firstChild);
+  element.classList.add("froebel-task");
+  element.dataset.froebelMarked = level;
+}
+
+function isTaskHeading(element){
+  const value = norm(element.textContent);
+  return RX.taskContext.test(value) || !!explicitLevel(value);
+}
+
+function isTaskCandidate(element){
+  if(excluded(element) || element.dataset.froebelMarked) return false;
+  const text = (element.textContent || "").trim();
+  if(text.length < 3 || text.length > 900) return false;
+
+  if(/^H[3-4]$/.test(element.tagName)){
+    return isTaskHeading(element);
+  }
+
+  const op = operatorLevel(text);
+  if(op) return true;
+
+  if(element.tagName === "P"){
+    const strong = element.querySelector(":scope > strong:first-child");
+    if(strong && /(^\s*\d+[.)]|aufgabe|auftrag|frage)/i.test(strong.textContent || "")) return true;
+    return RX.taskContext.test(norm(contextText(element))) && text.length < 600;
+  }
+
+  if(element.tagName === "LI"){
+    return RX.taskContext.test(norm(contextText(element)));
+  }
+
+  return false;
+}
+
+function decorateExplicit(root){
+  const groups = [
+    ["easy", ".niveau.g,.niveau.grund,.grundniveau,.grundaufgabe,.basisaufgabe,.basisniveau,[data-level='easy']"],
+    ["medium", ".niveau.r,.niveau.regel,.regelstandard,.regelaufgabe,.mittelniveau,.standardaufgabe,[data-level='medium']"],
+    ["high", ".niveau.e,.niveau.erweitert,.erweiterung,.expertenaufgabe,.expertenniveau,[data-level='high']"]
+  ];
+
+  for(const pair of groups){
+    const level = pair[0], selector = pair[1];
+    root.querySelectorAll(selector).forEach(function(block){
+      const target = block.matches("h1,h2,h3,h4,p,li")
+        ? block
+        : block.querySelector("h1,h2,h3,h4,p,li");
+      decorate(target, level);
+    });
+  }
+
+  root.querySelectorAll("h2,h3,h4").forEach(function(heading){
+    const level = explicitLevel(heading.textContent);
+    if(level) decorate(heading, level);
+  });
+}
+
+function decorateTasks(root){
+  root.querySelectorAll("li,p,h3,h4").forEach(function(element){
+    if(!isTaskCandidate(element)) return;
+    const level =
+      ancestorLevel(element) ||
+      explicitLevel(element.textContent) ||
+      operatorLevel(element.textContent) ||
+      "medium";
+    decorate(element, level);
+  });
+}
+
+function scan(root){
+  const scopes = [];
+  if(root && root.matches && root.matches(".tc-tiddler-body,main,body")) scopes.push(root);
+  if(root && root.querySelectorAll){
+    root.querySelectorAll(".tc-tiddler-body,main").forEach(function(scope){ scopes.push(scope); });
+  }
+  if(!scopes.length && document.body) scopes.push(document.body);
+
+  scopes.forEach(function(scope){
+    decorateExplicit(scope);
+    decorateTasks(scope);
+  });
+}
+
+function start(){
+  scan(document);
+  const observer = new MutationObserver(function(records){
+    records.forEach(function(record){
+      record.addedNodes.forEach(function(node){
+        if(node.nodeType === 1) scan(node);
+      });
+    });
+  });
+  observer.observe(document.body,{childList:true,subtree:true});
+}
+
+if(document.readyState === "loading"){
+  document.addEventListener("DOMContentLoaded",start,{once:true});
+}else{
+  start();
+}
+})();
+
+</script>
+</body></html>

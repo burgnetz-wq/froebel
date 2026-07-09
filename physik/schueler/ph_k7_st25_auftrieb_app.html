@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auftrieb – Warum schwimmen manche Dinge?</title>
+<style>
+:root{
+  --blau:#4a6fa5; --blau-dunkel:#33507a; --gruen:#3d8b3d; --gelb:#c9a800;
+  --rot:#c0392b; --hintergrund:#f7f9fb; --karte:#ffffff; --text:#1f2a33;
+}
+*{box-sizing:border-box;}
+body{
+  font-family:"Segoe UI",Arial,sans-serif; margin:0; padding:0;
+  background:var(--hintergrund); color:var(--text); line-height:1.5;
+}
+header.kopf{
+  background:var(--blau); color:#fff; padding:14px 20px;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px;
+}
+header.kopf h1{ margin:0; font-size:1.3em; }
+header.kopf .meta{ font-size:0.9em; opacity:0.9; }
+nav.steuerung{
+  display:flex; flex-wrap:wrap; gap:8px; padding:10px 16px;
+  background:#eef2f7; position:sticky; top:0; z-index:50; border-bottom:2px solid var(--blau);
+}
+nav.steuerung button{
+  font-size:0.95em; padding:9px 14px; border:1px solid var(--blau);
+  border-radius:8px; background:#fff; color:var(--blau-dunkel); cursor:pointer;
+}
+nav.steuerung button:hover{ background:var(--blau); color:#fff; }
+main{ max-width:900px; margin:0 auto; padding:16px; }
+.karte{
+  background:var(--karte); border-radius:12px; padding:20px 24px; margin-bottom:20px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08); border-left:6px solid var(--blau);
+}
+.karte h2{ margin-top:0; border-bottom:2px solid var(--blau); padding-bottom:6px; }
+.karte.le{ border-left-color:#d99a1b; background:#fff7e6; }
+.karte.se{ border-left-color:var(--gruen); background:#eaf6ea; }
+.karte.arduino{ border-left-color:#1a7ab5; background:#e8f4fb; }
+.karte.merksatz{ border-left-color:var(--gelb); background:#fff9d6; font-size:1.08em; }
+.karte.sicherheit{ border:2px solid var(--rot); background:#fdecea; }
+.tafelbild{
+  background:#1d3b2a; color:#f5f5f0; padding:18px 22px; border:10px solid #6d4c2f;
+  border-radius:8px; font-family:"Segoe Print","Comic Sans MS",cursive;
+}
+.tafelbild h2{ color:#fff; border-bottom:2px solid #fff; }
+.tafelbild .zeile{ margin:10px 0; font-size:1.1em; }
+.zeile.gelb{ color:#ffe27a; } .zeile.blau{ color:#9fd0ff; } .zeile.gruen{ color:#a8e6a1; }
+.vorlese-btn{
+  background:none; border:1px solid var(--blau); color:var(--blau-dunkel);
+  border-radius:6px; padding:5px 10px; font-size:0.85em; cursor:pointer; margin-bottom:8px;
+}
+.vorlese-btn:hover{ background:var(--blau); color:#fff; }
+table{ border-collapse:collapse; width:100%; margin:10px 0; }
+th, td{ border:1px solid #b9c4d0; padding:8px; text-align:center; }
+th{ background:#e4ecf5; }
+input[type=text], input[type=number]{
+  width:80px; padding:6px; border:1px solid #b9c4d0; border-radius:6px; text-align:center;
+}
+.niveau{ padding:8px 12px; border-radius:6px; margin:8px 0; }
+.grund{ background:#e8f4fb; border-left:5px solid #1a7ab5; }
+.regel{ background:#eaf6ea; border-left:5px solid var(--gruen); }
+.erweitert{ background:#fdeef7; border-left:5px solid #b03a8c; }
+.quiz-frage{ margin:14px 0; }
+.quiz-frage .optionen button{
+  display:block; width:100%; text-align:left; margin:4px 0; padding:9px 12px;
+  border:1px solid #b9c4d0; border-radius:8px; background:#fff; cursor:pointer; font-size:1em;
+}
+.quiz-frage .optionen button.richtig{ background:#d7f2d2; border-color:var(--gruen); }
+.quiz-frage .optionen button.falsch{ background:#fbdada; border-color:var(--rot); }
+.rueckmeldung{ font-weight:bold; margin-top:6px; }
+.loesung-btn{
+  background:var(--blau); color:#fff; border:none; border-radius:8px; padding:9px 14px; cursor:pointer;
+}
+.loesung-box{
+  display:none; background:#fff9d6; border:2px solid var(--gelb); border-radius:8px;
+  padding:12px 16px; margin-top:10px;
+}
+footer{ text-align:center; padding:16px; font-size:0.85em; color:#5a6672; }
+@media print{
+  nav.steuerung, .vorlese-btn, .loesung-btn{ display:none; }
+  .karte{ break-inside:avoid; box-shadow:none; }
+}
+@media (max-width:600px){
+  header.kopf h1{ font-size:1.05em; }
+  main{ padding:10px; }
+  .karte{ padding:14px 16px; }
+}
+</style>
+</head>
+<body>
+<header class="kopf">
+  <h1>Auftrieb – Warum schwimmen manche Dinge?</h1>
+  <div class="meta">Klasse 7 · Physik · Mechanik · 60 Minuten</div>
+</header>
+<nav class="steuerung">
+  <button onclick="window.scrollTo(0,0)">⬆ Anfang</button>
+  <button onclick="vorlesenStoppen()">🔇 Vorlesen stoppen</button>
+  <button onclick="vollbild()">⛶ Vollbild</button>
+  <button onclick="window.print()">🖨 Drucken</button>
+  <button onclick="seiteZuruecksetzen()">↺ Zurücksetzen</button>
+</nav>
+<main>
+<section class="karte ">
+<h2>1. Einstieg</h2>
+<button class="vorlese-btn" onclick="vorlesen('text-einstieg25')">🔊 Vorlesen</button>
+<div id="text-einstieg25">
+
+<p>Ein großes Containerschiff aus Stahl treibt auf dem Meer, ein Eisberg schwimmt
+im Polarmeer.</p>
+<p><strong>Frage:</strong> Beide bestehen aus Stoffen, die eigentlich untergehen
+würden – warum schwimmen sie trotzdem?</p>
+
+</div>
+</section>
+<section class="karte le">
+<h2>2. Lehrerdemonstrationsexperiment: Weniger Gewicht im Wasser?</h2>
+
+<div>
+
+<p><strong>Aufbau:</strong> Ein Metallkörper wird am Kraftmesser zunächst in Luft,
+dann vollständig eingetaucht in Wasser gemessen.</p>
+<p><strong>Beispielrechnung:</strong> Kraft in Luft 5 N, Kraft im Wasser 4 N ⟹
+Auftrieb = 5 N − 4 N = 1 N</p>
+<svg viewBox="0 0 400 160" style="width:100%; max-width:400px; display:block; margin:10px auto;">
+  <rect x="40" y="90" width="320" height="55" fill="#9fd0ff" opacity="0.5"/>
+  <line x1="200" y1="10" x2="200" y2="70" stroke="#333" stroke-width="2"/>
+  <rect x="185" y="70" width="30" height="30" fill="#7a7a7a"/>
+  <line x1="200" y1="100" x2="200" y2="140" stroke="#c0392b" stroke-width="3"/>
+  <polygon points="195,138 205,138 200,150" fill="#c0392b"/>
+  <text x="210" y="130" font-size="12">Auftrieb</text>
+</svg>
+
+</div>
+</section>
+<section class="karte ">
+<h2>3. Fachwissen: Auftrieb und Dichte</h2>
+<button class="vorlese-btn" onclick="vorlesen('text-fachwissen25')">🔊 Vorlesen</button>
+<div id="text-fachwissen25">
+
+<p>In einer Flüssigkeit wirkt auf jeden eingetauchten Körper eine Auftriebskraft,
+die der Gewichtskraft entgegenwirkt.</p>
+<p><strong>Dichte Körper &lt; Dichte Flüssigkeit</strong> ⟶ Körper schwimmt.<br>
+<strong>Dichte Körper &gt; Dichte Flüssigkeit</strong> ⟶ Körper sinkt.</p>
+
+</div>
+</section>
+<section class="karte se">
+<h2>4. Schülerexperiment: Schwimmen oder Sinken?</h2>
+
+<div>
+
+<p><strong>Auftrag:</strong> Legt Kork, Holz, Kunststoff, Metall und Stein
+vorsichtig auf die Wasseroberfläche und beobachtet, was passiert.</p>
+<table>
+<thead><tr><th>Körper</th><th>schwimmt / sinkt</th><th>Dichte größer/kleiner als Wasser</th></tr></thead>
+<tbody>
+<tr><td>Kork</td><td><input type="text" style="width:100px;"></td><td><input type="text" style="width:100px;"></td></tr>
+<tr><td>Holz</td><td><input type="text" style="width:100px;"></td><td><input type="text" style="width:100px;"></td></tr>
+<tr><td>Kunststoff</td><td><input type="text" style="width:100px;"></td><td><input type="text" style="width:100px;"></td></tr>
+<tr><td>Metall</td><td><input type="text" style="width:100px;"></td><td><input type="text" style="width:100px;"></td></tr>
+<tr><td>Stein</td><td><input type="text" style="width:100px;"></td><td><input type="text" style="width:100px;"></td></tr>
+</tbody>
+</table>
+
+</div>
+</section>
+<section class="karte merksatz">
+<h2>5. Merksatz</h2>
+<button class="vorlese-btn" onclick="vorlesen('text-merksatz25')">🔊 Vorlesen</button>
+<div id="text-merksatz25">
+
+<p>In einer Flüssigkeit wirkt auf jeden eingetauchten Körper eine Auftriebskraft,
+die der Gewichtskraft entgegenwirkt. Ein Körper schwimmt, wenn seine mittlere
+Dichte kleiner ist als die Dichte der Flüssigkeit, er sinkt, wenn sie größer ist.</p>
+
+</div>
+</section>
+<section class="karte tafelbild">
+<h2>Tafelbild: Auftrieb</h2>
+<div class="zeile">1. Problemfrage: Warum schwimmt ein tonnenschweres Schiff aus Stahl?</div>
+<div class="zeile gelb">2. Merksatz: Auftrieb wirkt der Gewichtskraft in einer Flüssigkeit entgegen.</div>
+<div class="zeile blau">3. Regel: Dichte Körper &lt; Dichte Flüssigkeit ⟶ schwimmt. Größer ⟶ sinkt.</div>
+<div class="zeile gruen">4. Beispiel: Metallkörper in Luft 5 N, im Wasser 4 N ⟹ Auftrieb = 1 N</div>
+</section>
+<section class="karte ">
+<h2>6. Lernkontrolle</h2>
+
+<div>
+<div class="quiz-frage">
+<p><strong>1.</strong> Ein Körper zeigt in Luft 6 N, im Wasser 4,5 N. Wie groß ist die Auftriebskraft?</p>
+<div class="optionen"><button onclick="pruefeAntwort(this,false)">10,5 N</button>
+<button onclick="pruefeAntwort(this,true)">1,5 N</button>
+<button onclick="pruefeAntwort(this,false)">6 N</button>
+<button onclick="pruefeAntwort(this,false)">4,5 N</button>
+</div>
+<p class="rueckmeldung"></p>
+</div>
+<div class="quiz-frage">
+<p><strong>2.</strong> Warum schwimmt ein Stück Holz auf Wasser?</p>
+<div class="optionen"><button onclick="pruefeAntwort(this,false)">Holz hat keine Masse</button>
+<button onclick="pruefeAntwort(this,true)">Die Dichte von Holz ist kleiner als die von Wasser</button>
+<button onclick="pruefeAntwort(this,false)">Holz ist immer trocken</button>
+<button onclick="pruefeAntwort(this,false)">Wasser stößt Holz ab</button>
+</div>
+<p class="rueckmeldung"></p>
+</div>
+<div class="quiz-frage">
+<p><strong>3.</strong> Warum schwimmt ein Stahlschiff, obwohl massiver Stahl untergeht?</p>
+<div class="optionen"><button onclick="pruefeAntwort(this,false)">Stahl wird im Wasser leichter</button>
+<button onclick="pruefeAntwort(this,true)">Das Schiff schließt Luft ein, seine mittlere Dichte ist kleiner als die von Wasser</button>
+<button onclick="pruefeAntwort(this,false)">Schiffe bestehen nicht aus Stahl</button>
+<button onclick="pruefeAntwort(this,false)">Wasser hat keine Dichte</button>
+</div>
+<p class="rueckmeldung"></p>
+</div>
+
+</div>
+</section>
+<section class="karte ">
+<h2>7. Zusammenfassung und Hausaufgabe</h2>
+
+<div>
+
+<p>Heute habt ihr gelernt, wie der Auftrieb wirkt und warum manche Dinge schwimmen
+und andere sinken.</p>
+<p><strong>Hausaufgabe:</strong> Finde zu Hause drei Gegenstände und teste, ob sie in
+einer Schüssel Wasser schwimmen oder sinken. Ordne die Dichte im Vergleich zu
+Wasser ein.</p>
+
+</div>
+</section>
+</main>
+<footer>Interaktive Unterrichtspräsentation · Physik Klasse 7 · Thüringer Regelschule</footer>
+<script>
+function vorlesen(id){
+  if(!("speechSynthesis" in window)){
+    alert("Dieser Browser unterstützt die Vorlesefunktion nicht.");
+    return;
+  }
+  window.speechSynthesis.cancel();
+  var el = document.getElementById(id);
+  if(!el){ alert("Textabschnitt nicht gefunden."); return; }
+  var text = el.innerText.trim();
+  var u = new SpeechSynthesisUtterance(text);
+  u.lang = "de-DE"; u.rate = 0.9; u.pitch = 1;
+  window.speechSynthesis.speak(u);
+}
+function vorlesenStoppen(){ window.speechSynthesis.cancel(); }
+
+function loesungZeigen(id){
+  var box = document.getElementById(id);
+  box.style.display = (box.style.display === "block") ? "none" : "block";
+}
+
+function vollbild(){
+  var el = document.documentElement;
+  if(!document.fullscreenElement){ el.requestFullscreen && el.requestFullscreen(); }
+  else{ document.exitFullscreen && document.exitFullscreen(); }
+}
+
+function pruefeAntwort(btn, richtig, gruppe){
+  var opts = btn.parentElement.querySelectorAll("button");
+  opts.forEach(function(b){ b.disabled = true; });
+  var rueck = btn.parentElement.parentElement.querySelector(".rueckmeldung");
+  if(richtig){
+    btn.classList.add("richtig");
+    rueck.textContent = "Richtig!";
+    rueck.style.color = "#3d8b3d";
+  } else {
+    btn.classList.add("falsch");
+    rueck.textContent = "Leider nicht richtig. Versuch es bei der nächsten Frage weiter!";
+    rueck.style.color = "#c0392b";
+  }
+}
+
+function seiteZuruecksetzen(){
+  document.querySelectorAll(".quiz-frage .optionen button").forEach(function(b){
+    b.disabled = false; b.classList.remove("richtig","falsch");
+  });
+  document.querySelectorAll(".rueckmeldung").forEach(function(r){ r.textContent = ""; });
+  document.querySelectorAll(".loesung-box").forEach(function(b){ b.style.display = "none"; });
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
