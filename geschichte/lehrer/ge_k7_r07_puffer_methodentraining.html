@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Puffer/Methodentraining – Lehrer</title>
+<style>
+:root{
+  --history:#8f1232; --history-dark:#5c0b21; --history-soft:#fff1f4;
+  --paper:#ffffff; --bg:#f7f3f2; --line:#ddd4d1; --ink:#261d1c;
+  --muted:#6f6563; --blue:#0f5fa8; --green:#2e7d32; --gold:#ad7c00;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Arial,Helvetica,sans-serif}
+a{color:var(--history-dark)}
+header{background:linear-gradient(135deg,var(--history-dark),var(--history));color:#fff;padding:28px 18px}
+.header-inner,main,footer{max-width:1100px;margin:auto}
+.eyebrow{text-transform:uppercase;letter-spacing:.1em;font-size:.8rem;opacity:.82}
+h1{margin:.25rem 0 .45rem;font-size:clamp(1.8rem,4vw,3rem);line-height:1.08}
+.subtitle{margin:0;max-width:850px;opacity:.92}
+.topbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.topbar a,.button{
+  display:inline-block;border:0;border-radius:9px;padding:9px 12px;background:#fff;
+  color:var(--history-dark);text-decoration:none;font:inherit;font-weight:700;cursor:pointer;
+}
+main{padding:18px}
+.hero{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 6px 18px rgba(52,29,28,.08);margin-bottom:18px}
+.hero img{display:block;width:100%;height:min(54vw,460px);object-fit:cover;background:#eee}
+.hero-fallback{display:none;padding:70px 20px;text-align:center;background:var(--history-soft);color:var(--history-dark);font-weight:800}
+.caption{padding:8px 12px;font-size:.8rem;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.card{grid-column:span 12;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 4px 14px rgba(52,29,28,.05)}
+.card h2,.card h3{margin-top:0;color:var(--history-dark)}
+.half{grid-column:span 6}
+.third{grid-column:span 4}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tab-btn{border:1px solid #cfbfba;background:#fff;color:var(--history-dark);border-radius:999px;padding:8px 14px;font-weight:800;cursor:pointer}
+.tab-btn.active{background:var(--history);color:#fff;border-color:var(--history)}
+.level-panel{display:none}
+.level-panel.active{display:block}
+.note{background:#fff7dc;border-left:6px solid var(--gold);padding:12px 14px;border-radius:0 10px 10px 0}
+.info{background:#eef7ff;border-left:6px solid var(--blue);padding:12px 14px;border-radius:0 10px 10px 0}
+.ok{background:#eef8ef;border-left:6px solid var(--green);padding:12px 14px;border-radius:0 10px 10px 0}
+ul{padding-left:20px}
+table{width:100%;border-collapse:collapse}
+th,td{border:1px solid var(--line);padding:9px;text-align:left;vertical-align:top}
+th{background:#f9e1e6;color:var(--history-dark)}
+.chip{display:inline-block;padding:4px 8px;border-radius:999px;background:var(--history-soft);color:var(--history-dark);font-size:.8rem;font-weight:800;margin:2px}
+.material-box a{display:inline-block;margin:4px 6px 4px 0;padding:6px 9px;background:#f7f3f2;border-radius:8px;text-decoration:none}
+.quiz .q{padding:10px 0;border-bottom:1px solid #eee}
+.quiz .q:last-child{border-bottom:0}
+.small{font-size:.9rem;color:var(--muted)}
+footer{padding:6px 18px 35px;color:var(--muted);font-size:.85rem}
+.hidden{display:none}
+@media(max-width:760px){.half,.third{grid-column:span 12}main{padding:12px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="eyebrow">Geschichte · Klasse 7 · Lehrerdatei</div>
+    <h1>Puffer/Methodentraining</h1>
+    <p class="subtitle">Themenblock 07 · Differenzierung nach HSA und RSA · geplanter Umfang: 18 Stunden</p>
+    <div class="topbar">
+      <a href="../index.html">Übersicht</a>
+      <a href="../svgeschichte.html">Stoffverteilung</a>
+      <a href="../schueler/ge_k7_r07_puffer_methodentraining.html">Schülerdatei</a>
+      <button class="button" onclick="window.print()">Drucken</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  
+    <div class="hero">
+      <img src="https://burgnetz-wq.github.io/froebel/bilder/geschichte/ge_k7_r07_puffer_methodentraining.jpg" alt="Bild zu Puffer/Methodentraining"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div class="hero-fallback">
+        Bild noch nicht im GitHub-Ordner vorhanden.<br>
+        Erwarteter Dateiname: ge_k7_r07_puffer_methodentraining.jpg
+      </div>
+      <div class="caption">
+        Bildpfad: <code>https://burgnetz-wq.github.io/froebel/bilder/geschichte/ge_k7_r07_puffer_methodentraining.jpg</code>
+      </div>
+    </div>
+    
+
+  <div class="grid">
+    <section class="card half">
+      <h2>Reihendaten</h2>
+      <p><strong>Zeitraum:</strong> 4.–8. Mai., 11.–15. Mai., 15. Mai, 18.–22. Mai., 25.–29. Mai., 1.–5. Jun., 8.–12. Jun., 15.–19. Jun., 22.–26. Jun., 29. Jun. – 3. Jul., 4. Jul. – 14. Aug.</p>
+      <p><strong>Schwerpunkt:</strong> Karikatur, Verfassungsschema, Zeitleiste, Klassenarbeit</p>
+      <p><strong>Kompetenzen/Methoden:</strong> Methoden sichern und anwenden</p>
+      <p><strong>Materialien/Quellen:</strong> Methodenkarten, Lernkarten</p>
+    </section>
+
+    <section class="card half">
+      <h2>Didaktischer Kern</h2>
+      <div class="note">
+        Die Reihe soll Grundwissen sichern und zugleich historische Orientierung aufbauen. 
+        HSA erhält stärker strukturierte Zugänge; RSA arbeitet mit mehr Selbstständigkeit, Quellenbezug und Urteilsbildung.
+      </div>
+    </section>
+
+    <section class="card" data-default="teacher">
+      <h2>Differenzierung HSA / RSA</h2>
+      <div class="tabs">
+        <button id="teacher-btn-hsa" class="tab-btn teacher-btn" onclick="showLevel('teacher','hsa')">HSA</button>
+        <button id="teacher-btn-rsa" class="tab-btn teacher-btn" onclick="showLevel('teacher','rsa')">RSA</button>
+      </div>
+
+      <div id="teacher-hsa" class="level-panel teacher-panel">
+        <h3>HSA – Schwerpunkt</h3>
+        <ul>
+          <li>Grundbegriffe sichern</li>
+          <li>klare Leitfragen und kurze Texte</li>
+          <li>stärkere Strukturierung und häufige Sicherung</li>
+          <li>produktorientierte Arbeitsformen: Zuordnung, Tabelle, Merksatz</li>
+        </ul>
+        <h3>Geeignete Aufgaben</h3>
+        <ul><li>Lies den Grundtext zum Thema „Puffer/Methodentraining“ und markiere fünf wichtige Wörter.</li><li>Ordne Bild, Karte oder Zeitstrahl den passenden Aussagen zu.</li><li>Fülle ein kurzes Arbeitsblatt mit Leitfragen aus.</li><li>Schreibe am Ende drei bis vier Merksätze in einfacher Sprache.</li></ul>
+      </div>
+
+      <div id="teacher-rsa" class="level-panel teacher-panel">
+        <h3>RSA – Schwerpunkt</h3>
+        <ul>
+          <li>komplexere Zusammenhänge herstellen</li>
+          <li>Quellen und Darstellungen kritisch auswerten</li>
+          <li>Vergleich und Perspektivenwechsel</li>
+          <li>Urteile argumentativ absichern</li>
+        </ul>
+        <h3>Geeignete Aufgaben</h3>
+        <ul><li>Arbeite eine Quelle oder Darstellung zum Thema „Puffer/Methodentraining“ mit Leitfragen aus.</li><li>Erkläre Ursachen und Folgen in einem zusammenhängenden Text oder Schaubild.</li><li>Vergleiche mindestens zwei Perspektiven oder Deutungen.</li><li>Formuliere eine begründete Stellungnahme mit historischem Bezug.</li></ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Reihenplan</h2>
+      <table>
+        <thead>
+          <tr><th>Std.-Block</th><th>Zeitraum</th><th>Std.</th><th>Unterrichtsschwerpunkt</th><th>Kompetenzen/Methoden</th></tr>
+        </thead>
+        <tbody><tr><td>1</td><td>4.–8. Mai.</td><td>2</td><td>Karikatur, Verfassungsschema, Zeitleiste, Klassenarbeit</td><td>Methoden sichern und anwenden</td></tr><tr><td>2</td><td>11.–15. Mai.</td><td>2</td><td>Vertiefung/Übung: Puffer/Methodentraining</td><td>Sichern, anwenden, kurze Auswertung</td></tr><tr><td>3</td><td>15. Mai</td><td></td><td></td><td></td></tr><tr><td>4</td><td>18.–22. Mai.</td><td>2</td><td>Vertiefung/Übung: Puffer/Methodentraining</td><td>Sichern, anwenden, kurze Auswertung</td></tr><tr><td>5</td><td>25.–29. Mai.</td><td>2</td><td>Vertiefung/Übung: Puffer/Methodentraining</td><td>Sichern, anwenden, kurze Auswertung</td></tr><tr><td>6</td><td>1.–5. Jun.</td><td>2</td><td>Vertiefung/Übung: Puffer/Methodentraining</td><td>Sichern, anwenden, kurze Auswertung</td></tr><tr><td>7</td><td>8.–12. Jun.</td><td>2</td><td>Vertiefung/Übung: Puffer/Methodentraining</td><td>Sichern, anwenden, kurze Auswertung</td></tr><tr><td>8</td><td>15.–19. Jun.</td><td>2</td><td>Vertiefung/Übung: Puffer/Methodentraining</td><td>Sichern, anwenden, kurze Auswertung</td></tr><tr><td>9</td><td>22.–26. Jun.</td><td>2</td><td>Vertiefung/Übung: Puffer/Methodentraining</td><td>Sichern, anwenden, kurze Auswertung</td></tr><tr><td>10</td><td>29. Jun. – 3. Jul.</td><td>2</td><td>Vertiefung/Übung: Puffer/Methodentraining</td><td>Sichern, anwenden, kurze Auswertung</td></tr><tr><td>11</td><td>4. Jul. – 14. Aug.</td><td></td><td></td><td></td></tr></tbody>
+      </table>
+    </section>
+
+    <section class="card half">
+      <h2>Unterrichtsorganisation</h2>
+      <ul>
+        <li>Einstieg mit Bild, Karte, Zitat oder Gegenstand</li>
+        <li>gemeinsame Sicherung zentraler Begriffe</li>
+        <li>anschließende Öffnung in HSA- und RSA-Aufgaben</li>
+        <li>Schlussphase mit Merksatz, Mini-Urteil oder kurzer Auswertung</li>
+      </ul>
+      <div class="info">
+        Für HSA sollte mindestens ein stark gelenkter Zwischenschritt eingeplant werden. 
+        RSA kann zusätzliche Quellen oder Vergleichsaufgaben bearbeiten.
+      </div>
+    </section>
+
+    <section class="card half">
+      <h2>Zusatzmaterial aus hochgeladenen Dateien</h2>
+      <div class="material-box"><p class='small'>Kein zusätzliches hochgeladenes Material direkt zugeordnet.</p></div>
+    </section>
+
+    <section class="card">
+      <h2>Leistungsfeststellung</h2>
+      <table>
+        <thead><tr><th>Bereich</th><th>HSA</th><th>RSA</th></tr></thead>
+        <tbody>
+          <tr><td>Reproduktion</td><td>Begriffe, Merksätze, zeitliche Einordnung</td><td>Begriffe sicher anwenden, strukturiert wiedergeben</td></tr>
+          <tr><td>Transfer</td><td>einfache Zuordnung und Vergleich</td><td>Ursachen, Folgen und Perspektiven verknüpfen</td></tr>
+          <tr><td>Urteil</td><td>kurze Stellungnahme mit Hilfen</td><td>begründetes historisches Urteil</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</main>
+
+<footer>
+  Lehrerdatei · Bild wird aus dem GitHub-Ordner <code>/bilder/geschichte/</code> geladen.
+</footer>
+
+<script>
+function showLevel(prefix, level){
+  document.querySelectorAll('.'+prefix+'-btn').forEach(btn=>btn.classList.remove('active'));
+  document.querySelectorAll('.'+prefix+'-panel').forEach(panel=>panel.classList.remove('active'));
+  document.getElementById(prefix+'-btn-'+level).classList.add('active');
+  document.getElementById(prefix+'-'+level).classList.add('active');
+}
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('[data-default]').forEach(el=>{
+    const prefix = el.dataset.default;
+    showLevel(prefix, 'hsa');
+  });
+});
+</script>
+</body>
+</html>
