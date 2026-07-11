@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weimarer Republik</title>
+<style>
+body{font-family:Georgia,serif;background:#f5f0e8;color:#1a1208;margin:0}
+header{background:#1a1208;color:#f5f0e8;padding:40px}
+h1{font-size:2.5rem;margin:0 0 8px}
+h1 em{display:block;font-size:1rem;opacity:.6;margin-top:6px}
+nav{background:#e3d8c0;border-bottom:2px solid #c4a245;position:sticky;top:0;z-index:99;display:flex;flex-wrap:wrap;gap:0}
+nav button{padding:12px 16px;border:none;background:none;font-family:Georgia,serif;font-size:13px;cursor:pointer;border-bottom:3px solid transparent;color:#3d3020}
+nav button:hover{background:#d8ccb0}
+nav button.akt{border-bottom-color:#8b2e0f;color:#8b2e0f;font-weight:bold}
+main{max-width:860px;margin:0 auto;padding:0 32px 60px}
+.tab{display:none;padding-top:32px}
+.tab.akt{display:block}
+h2{font-size:1.8rem;margin:0 0 6px}
+.sub{color:#8b6914;font-style:italic;margin-bottom:24px;font-size:14px}
+/* Akkordeon */
+.ak{border:1px solid #c4a245;margin-bottom:6px;background:#ede5d0}
+.ak summary{padding:14px 18px;cursor:pointer;font-size:15px;font-weight:bold;list-style:none}
+.ak summary::-webkit-details-marker{display:none}
+.ak summary::before{content:"▶ ";color:#c4a245}
+details[open] summary::before{content:"▼ ";color:#8b2e0f}
+.ak-body{padding:6px 20px 18px 36px;font-size:15px;line-height:1.75;color:#3d3020}
+.ak-body p{margin-bottom:10px}
+blockquote{border-left:3px solid #c4a245;padding:8px 16px;margin:14px 0;background:rgba(196,162,69,.08);font-style:italic}
+.pill{display:inline-block;background:#1a1208;color:#f5f0e8;padding:3px 12px;font-size:12px;margin:2px 4px;border-radius:2px}
+/* Zeitstrahl */
+.tl{position:relative;padding-left:80px;margin-top:12px}
+.tl::before{content:"";position:absolute;left:56px;top:0;bottom:0;width:2px;background:#c4a245;opacity:.4}
+.te{position:relative;padding:10px 0}
+.te::before{content:"";position:absolute;left:-28px;top:14px;width:12px;height:12px;border-radius:50%;background:#c4a245;border:2px solid #f5f0e8;box-shadow:0 0 0 1px #c4a245}
+.te.rot::before{background:#8b2e0f;box-shadow:0 0 0 1px #8b2e0f}
+.te-j{position:absolute;left:-76px;top:12px;font-size:12px;font-weight:bold;color:#8b6914;width:46px;text-align:right;font-style:italic}
+.te-t{font-weight:bold;font-size:14px;margin-bottom:2px}
+.te-d{font-size:13px;color:#5a4830;font-style:italic}
+/* Quiz */
+.qcard{background:#ede5d0;border:1px solid rgba(26,18,8,.1);padding:22px;margin-bottom:12px}
+.qfrage{font-size:15px;font-weight:bold;margin-bottom:14px}
+.qopt{display:block;width:100%;padding:10px 14px;margin-bottom:6px;border:1px solid rgba(26,18,8,.15);background:none;font-family:Georgia,serif;font-size:14px;text-align:left;cursor:pointer;border-radius:2px}
+.qopt:hover:not(:disabled){background:#e3d8c0}
+.qopt.ok{background:rgba(27,74,46,.1);border-color:#1b4a2e;color:#1b4a2e;font-weight:bold}
+.qopt.no{background:rgba(139,46,15,.08);border-color:#8b2e0f;color:#8b2e0f}
+.qfb{font-size:13px;font-style:italic;color:#5a4830;min-height:18px;margin-top:8px}
+#quiz-ergebnis{padding:18px;background:#1a1208;color:#f5f0e8;font-size:1.1rem;font-weight:bold;text-align:center;margin-top:16px;display:none}
+/* Bildzuordnung */
+.bz-hint{padding:12px 16px;background:#ede5d0;border:1px solid #c4a245;font-style:italic;font-size:14px;margin-bottom:16px;min-height:44px;line-height:1.5}
+.bz-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.bz-karte{border:2px solid rgba(26,18,8,.12);border-radius:3px;cursor:pointer;background:#ede5d0;transition:border-color .2s,transform .15s;overflow:hidden}
+.bz-karte:hover{border-color:#c4a245;transform:translateY(-2px)}
+.bz-karte.sel{border-color:#1b3a5c}
+.bz-karte.ok{border-color:#1b4a2e;pointer-events:none}
+.bz-karte.no{border-color:#8b2e0f}
+.bz-karte svg{display:block;width:100%}
+.bz-cap{font-size:11px;padding:6px 8px;color:#5a4830;font-style:italic;line-height:1.4}
+.bz-karte.ok .bz-cap{color:#1b4a2e;font-style:normal;font-weight:bold}
+.bz-bereiche{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.bz-ber{padding:14px 10px;background:#ede5d0;border:1px solid rgba(26,18,8,.12);border-radius:2px;cursor:pointer;text-align:center}
+.bz-ber:hover{background:#e3d8c0}
+.bz-ber-t{font-size:10px;font-weight:bold;letter-spacing:.1em;text-transform:uppercase;color:#8b6914;margin-bottom:4px}
+.bz-ber-n{font-size:24px;font-family:Georgia,serif;font-weight:bold;color:#1a1208}
+.bz-res{font-size:14px;font-style:italic;color:#5a4830;margin-top:6px;min-height:18px}
+@keyframes wack{0%,100%{transform:translateX(0)}30%{transform:translateX(-6px)}70%{transform:translateX(6px)}}
+.bz-karte.wack{animation:wack .35s}
+/* Vorlesen */
+.vl-steuer{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.vl-btn{padding:10px 22px;border:1px solid rgba(26,18,8,.2);background:none;font-family:Georgia,serif;font-size:14px;cursor:pointer;border-radius:2px}
+.vl-btn:hover{background:#e3d8c0}
+.vl-prog{height:4px;background:rgba(26,18,8,.1);border-radius:2px;margin-bottom:10px}
+.vl-bar{height:4px;background:#c4a245;width:0%;transition:width .3s;border-radius:2px}
+.vl-stat{font-size:13px;color:#5a4830;font-style:italic;margin-bottom:14px}
+.vl-text{background:#ede5d0;border:1px solid rgba(26,18,8,.1);border-radius:2px;padding:22px 26px;font-size:16px;line-height:2}
+.vl-s{border-radius:2px;padding:1px 2px;transition:background .25s}
+.vl-s.hl{background:rgba(196,162,69,.4)}
+/* Gewichtung */
+.ug-row{margin-bottom:14px}
+.ug-kopf{display:flex;justify-content:space-between;margin-bottom:3px}
+.ug-name{font-weight:bold;font-size:14px}
+.ug-val{font-size:13px;color:#5a4830}
+.ug-sub{font-size:12px;color:#8b6914;font-style:italic;margin-bottom:4px}
+.ug-balken{height:6px;background:rgba(26,18,8,.1);border-radius:3px;overflow:hidden}
+.ug-fill{height:6px;border-radius:3px;transition:width .2s}
+.ug-summe{display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(26,18,8,.12);padding-top:14px;margin-top:14px}
+.ug-sv{font-size:22px;font-weight:bold;font-family:Georgia,serif}
+.ug-warn{font-size:12px;color:#8b2e0f;min-height:16px}
+.ug-urteil{margin-top:14px;padding:14px 18px;background:#ede5d0;border:1px solid rgba(26,18,8,.1);font-style:italic;font-size:14px;line-height:1.65;min-height:50px}
+/* Zuordnung */
+.zo-pool{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.zo-karte{background:#ede5d0;border:1px solid rgba(26,18,8,.12);padding:10px 14px;font-size:14px;cursor:pointer;line-height:1.5;user-select:none;border-radius:2px}
+.zo-karte:hover{background:#e3d8c0}
+.zo-karte.sel{border-color:#1b3a5c;background:rgba(27,58,92,.07)}
+.zo-karte.ok{border-color:#1b4a2e;background:rgba(27,74,46,.07);color:#1b4a2e;cursor:default}
+.zo-karte.no{border-color:#8b2e0f;background:rgba(139,46,15,.07);color:#8b2e0f;cursor:default}
+.zo-bereiche{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.zo-bkt{background:#ede5d0;border:1px solid rgba(26,18,8,.1);padding:10px;min-height:140px;border-radius:2px}
+.zo-bkt:hover{border-color:rgba(26,18,8,.25)}
+.zo-bkt-t{font-size:10px;font-weight:bold;letter-spacing:.1em;text-transform:uppercase;color:#8b6914;margin-bottom:6px;padding-bottom:5px;border-bottom:1px solid rgba(26,18,8,.08)}
+.zo-res{font-size:14px;font-style:italic;color:#5a4830;min-height:18px;margin-top:6px}
+/* Lückentext */
+.lt-wb{display:flex;flex-wrap:wrap;gap:6px;padding:12px;background:#ede5d0;border:1px solid rgba(26,18,8,.1);margin-bottom:14px;border-radius:2px}
+.lt-w{padding:5px 12px;background:#f5f0e8;border:1px solid rgba(26,18,8,.15);border-radius:2px;font-size:13px;cursor:pointer;font-family:Georgia,serif;user-select:none}
+.lt-w:hover:not(.benutzt){background:#e3d8c0}
+.lt-w.sel{border-color:#1b3a5c;background:rgba(27,58,92,.1)}
+.lt-w.benutzt{opacity:.25;pointer-events:none}
+.lt-text{font-size:15px;line-height:2.4;color:#1a1208;margin-bottom:12px}
+.lt-lk{display:inline-block;min-width:120px;border-bottom:2px solid rgba(26,18,8,.25);padding:0 5px;margin:0 2px;font-size:14px;font-weight:bold;cursor:pointer;text-align:center;vertical-align:bottom;color:#5a4830}
+.lt-lk.gef{color:#1b3a5c;border-color:#1b3a5c}
+.lt-lk.ok{color:#1b4a2e;border-color:#1b4a2e;cursor:default}
+.lt-lk.no{color:#8b2e0f;border-color:#8b2e0f}
+.lt-erg{font-size:14px;font-style:italic;color:#5a4830;min-height:18px}
+/* Glossar */
+.gl{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:rgba(26,18,8,.08);margin-top:18px}
+.gl-item{background:#ede5d0;padding:16px 18px}
+.gl-term{font-weight:bold;font-size:15px;margin-bottom:5px}
+.gl-def{font-size:13px;color:#5a4830;line-height:1.6}
+/* Buttons */
+.btn{padding:9px 20px;border:1px solid rgba(26,18,8,.2);background:none;font-family:Georgia,serif;font-size:14px;cursor:pointer;border-radius:2px;margin-top:12px;margin-right:6px}
+.btn:hover{background:#e3d8c0}
+@media(max-width:640px){.bz-grid,.bz-bereiche,.zo-bereiche,.gl{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Das Scheitern der Weimarer Republik<em>Ursachen einer Demokratie in der Krise · 1919–1933</em></h1>
+</header>
+
+<nav id="nav"></nav>
+
+<main>
+
+<div id="tab-politik" class="tab">
+  <h2>Politische Gründe</h2>
+  <p class="sub">Schwächen im System, feindliche Kräfte, fehlendes Vertrauen in die Demokratie</p>
+  <details class="ak"><summary>I. Schwächen der Weimarer Verfassung</summary><div class="ak-body"><p>Die Verfassung sah ein reines <em>Verhältniswahlrecht</em> vor – wer auch nur wenige Stimmen erhielt, kam ins Parlament. Das führte zur extremen Zersplitterung: Oft saßen mehr als zehn Parteien im Reichstag, stabile Mehrheiten waren kaum möglich.</p><blockquote>»Das Verhältniswahlrecht machte Regieren zur Kunst des Unmöglichen.«</blockquote><p>Besonders gefährlich war <em>Artikel 48</em>: Er erlaubte dem Reichspräsidenten, in Notlagen per Dekret ohne den Reichstag zu regieren. In den letzten Jahren der Republik wurde er zum Normalzustand.</p><span class="pill">1932: 57 Notverordnungen</span><span class="pill">5 Kanzler in 1 Jahr</span></div></details>
+  <details class="ak"><summary>II. Feinde von links und rechts</summary><div class="ak-body"><p>Die Republik wurde von zwei Seiten bekämpft. Die <em>KPD</em> wollte eine Räterepublik. Die <em>NSDAP</em> agitierte offen gegen die Demokratie. Beide organisierten Schlägertrupps, die Straßenkämpfe austrugen.</p><span class="pill">Kapp-Putsch 1920</span><span class="pill">Hitlerputsch 1923</span><span class="pill">Straßenkämpfe 1932</span></div></details>
+  <details class="ak"><summary>III. Versailles und die Dolchstoßlegende</summary><div class="ak-body"><p>Die Republik musste den <em>Versailler Vertrag</em> unterzeichnen: Reparationen, Kriegsschuldparagraf, Gebietsverluste. Rechte Kreise verbreiteten die <em>Dolchstoßlegende</em>: Deutschland sei nicht militärisch besiegt worden, sondern von innen verraten. Diese Lüge vergiftete die politische Atmosphäre dauerhaft.</p></div></details>
+  <details class="ak"><summary>IV. Staatsfeinde im Staatsdienst</summary><div class="ak-body"><p>Richter, Offiziere und Beamte standen der Demokratie feindlich gegenüber. Hitler wurde nach dem Putsch 1923 zu nur fünf Jahren Haft verurteilt – und nach neun Monaten entlassen.</p><span class="pill">354 pol. Morde 1919–22</span><span class="pill">Nur 10 Verurteilungen</span></div></details>
+</div>
+
+<div id="tab-wirtschaft" class="tab">
+  <h2>Wirtschaftliche Gründe</h2>
+  <p class="sub">Inflation, Weltwirtschaftskrise und Massenarbeitslosigkeit als Nährboden des Extremismus</p>
+  <details class="ak"><summary>I. Die Hyperinflation von 1923</summary><div class="ak-body"><p>Deutschland druckte massenhaft Geld für den Ruhrkampf. Im November 1923 kostete ein Brot über eine Milliarde Mark. Ersparnisse wurden über Nacht wertlos – vor allem die <em>Mittelschicht</em> verlor alles.</p><span class="pill">4,2 Billionen Mark = 1 US-Dollar</span><span class="pill">Nov. 1923: Währungsreform</span></div></details>
+  <details class="ak"><summary>II. Die Weltwirtschaftskrise ab 1929</summary><div class="ak-body"><p>Am 25. Oktober 1929 brach die New Yorker Börse zusammen. Die USA zogen ihre Kredite ab, Banken brachen zusammen. Bis 1932 gab es über <em>6 Millionen registrierte Arbeitslose</em>.</p><blockquote>»Die NSDAP-Stimmen stiegen fast exakt parallel zur Arbeitslosenquote.«</blockquote><span class="pill">1928: NSDAP 2,6 %</span><span class="pill">1932: NSDAP 37,4 %</span></div></details>
+  <details class="ak"><summary>III. Reparationen und wirtschaftliche Abhängigkeit</summary><div class="ak-body"><p>132 Milliarden Goldmark Reparationen belasteten die Staatsfinanzen. Die Erholung in den Goldenen Zwanzigern basierte auf <em>amerikanischen Krediten</em> – als diese 1929 abgezogen wurden, brach das Kartenhaus zusammen.</p><span class="pill">132 Mrd. Goldmark</span><span class="pill">Dawes-Plan 1924</span></div></details>
+</div>
+
+<div id="tab-gesellschaft" class="tab">
+  <h2>Gesellschaftliche Gründe</h2>
+  <p class="sub">Fehlende demokratische Tradition, Polarisierung, Versagen der Eliten</p>
+  <details class="ak"><summary>I. Fehlende demokratische Tradition</summary><div class="ak-body"><p>Der preußische Obrigkeitsstaat hatte Generationen gelehrt zu gehorchen, nicht zu debattieren. Viele Deutsche sahen Parlamentsdebatten als Zeichen von Schwäche und sehnten sich nach <em>klaren Entscheidungen</em>.</p></div></details>
+  <details class="ak"><summary>II. Gesellschaftliche Polarisierung</summary><div class="ak-body"><p>Die Gesellschaft zerfiel in feindliche Lager. 1932 starben in Preußen 300 Menschen bei politischen Auseinandersetzungen. Die demokratische Mitte schrumpfte.</p><span class="pill">SA: 400.000 Mann 1932</span></div></details>
+  <details class="ak"><summary>III. Versagen der konservativen Eliten</summary><div class="ak-body"><p>Hindenburg und Papen ernannten Hitler am 30. Januar 1933 – in der fatalen Fehlkalkulation, ihn kontrollieren zu können.</p><blockquote>»Wir haben Hitler engagiert.« – Franz von Papen, Januar 1933</blockquote></div></details>
+  <details class="ak"><summary>IV. Antisemitismus und Sündenbockdenken</summary><div class="ak-body"><p>Die NSDAP nutzte verbreiteten Antisemitismus geschickt: Alle Probleme wurden »den Juden« angelastet. Das <em>Sündenbockdenken</em> bot einfache Antworten auf komplexe Fragen.</p></div></details>
+</div>
+
+<div id="tab-zeitstrahl" class="tab">
+  <h2>Zeitstrahl 1919–1933</h2>
+  <p class="sub">Rote Punkte = kritische Wendepunkte</p>
+  <div class="tl">
+    <div class="te rot"><span class="te-j">1919</span><div class="te-t">Weimarer Verfassung · Versailler Vertrag</div><div class="te-d">Gründung der Republik; Kriegsschuld, Reparationen, Gebietsverluste</div></div>
+    <div class="te"><span class="te-j">1920</span><div class="te-t">Kapp-Putsch</div><div class="te-d">Rechtsextremer Putschversuch; Niederschlagung durch Generalstreik</div></div>
+    <div class="te rot"><span class="te-j">1923</span><div class="te-t">Hyperinflation · Hitlerputsch · Ruhrkrise</div><div class="te-d">Dreifachkrise: Ersparnisse vernichtet, Ruhrbesetzung, gescheiterter Putsch</div></div>
+    <div class="te"><span class="te-j">1924–28</span><div class="te-t">Goldene Zwanziger – trügerische Stabilität</div><div class="te-d">Erholung dank US-Krediten – die Probleme sind nicht gelöst</div></div>
+    <div class="te rot"><span class="te-j">1929</span><div class="te-t">Weltwirtschaftskrise</div><div class="te-d">Börsenkrach in New York; US-Kredite abgezogen; Depression</div></div>
+    <div class="te"><span class="te-j">1930</span><div class="te-t">NSDAP-Wahlerfolg · Präsidialkabinette</div><div class="te-d">NSDAP springt auf 18,3 %; Regieren per Notverordnung beginnt</div></div>
+    <div class="te rot"><span class="te-j">1932</span><div class="te-t">NSDAP 37,4 % · 6 Mio. Arbeitslose</div><div class="te-d">Politische Gewalt eskaliert; demokratische Mitte bricht weg</div></div>
+    <div class="te rot"><span class="te-j">30.1.1933</span><div class="te-t">Hitler wird Reichskanzler</div><div class="te-d">Hindenburg ernennt Hitler; Eliten glauben, ihn kontrollieren zu können</div></div>
+    <div class="te rot"><span class="te-j">März 1933</span><div class="te-t">Ermächtigungsgesetz – Ende der Demokratie</div><div class="te-d">Hitler erhält diktatorische Vollmachten; Weimarer Republik endet</div></div>
+  </div>
+</div>
+
+<div id="tab-quiz" class="tab">
+  <h2>Wissenstest</h2>
+  <p class="sub">Klicke auf die richtige Antwort</p>
+  <div id="quiz-inhalt"></div>
+  <div id="quiz-ergebnis"></div>
+  <button class="btn" id="quiz-neu" onclick="quizBauen()" style="display:none">↺ Nochmal</button>
+</div>
+
+<div id="tab-bilder" class="tab">
+  <h2>Bildzuordnung</h2>
+  <p class="sub">Wähle eine Karte, dann klicke auf den richtigen Bereich</p>
+  <div class="bz-hint" id="bz-hint">Wähle zuerst eine Karte aus.</div>
+  <div class="bz-grid" id="bz-grid"></div>
+  <div class="bz-bereiche">
+    <div class="bz-ber" onclick="bzZuordnen('pol')"><div class="bz-ber-t">Politische Gründe</div><div class="bz-ber-n" id="bzz-pol">0</div></div>
+    <div class="bz-ber" onclick="bzZuordnen('wirt')"><div class="bz-ber-t">Wirtschaftliche Gründe</div><div class="bz-ber-n" id="bzz-wirt">0</div></div>
+    <div class="bz-ber" onclick="bzZuordnen('ges')"><div class="bz-ber-t">Gesellschaftliche Gründe</div><div class="bz-ber-n" id="bzz-ges">0</div></div>
+  </div>
+  <div class="bz-res" id="bz-res"></div>
+  <button class="btn" onclick="bzBauen()">↺ Neu starten</button>
+</div>
+
+<div id="tab-vorlesen" class="tab">
+  <h2>Zusammenfassung vorlesen</h2>
+  <p class="sub">Der aktuelle Satz wird hervorgehoben</p>
+  <div class="vl-steuer">
+    <button class="vl-btn" id="vl-play" onclick="vlPlay()">▶ Vorlesen</button>
+    <button class="vl-btn" id="vl-pause" onclick="vlPause()" style="display:none">⏸ Pause</button>
+    <button class="vl-btn" id="vl-stop" onclick="vlStopp()" style="display:none">■ Stop</button>
+    <span style="font-size:13px;color:#5a4830">Tempo:</span>
+    <input type="range" min="0.5" max="1.4" step="0.1" value="0.9" id="vl-tempo" style="width:80px" oninput="document.getElementById('vl-tempo-z').textContent=parseFloat(this.value).toFixed(1)+'×'">
+    <span id="vl-tempo-z" style="font-size:13px;color:#5a4830">0.9×</span>
+  </div>
+  <div class="vl-prog"><div class="vl-bar" id="vl-bar"></div></div>
+  <div class="vl-stat" id="vl-stat">Bereit.</div>
+  <div id="vl-kein-tts" style="display:none;font-style:italic;font-size:14px;color:#8b2e0f;margin-bottom:12px">Dein Browser unterstützt keine Sprachausgabe. Bitte nutze Chrome, Edge oder Firefox.</div>
+  <div class="vl-text" id="vl-text">
+    <span class="vl-s" id="vs0">Die Weimarer Republik, Deutschlands erste Demokratie, bestand von 1919 bis 1933.</span>
+    <span class="vl-s" id="vs1"> Sie entstand aus der Niederlage im Ersten Weltkrieg und musste sofort den demütigenden Versailler Vertrag unterzeichnen.</span>
+    <span class="vl-s" id="vs2"> Dieser Vertrag legte Deutschland die alleinige Kriegsschuld, massive Reparationszahlungen und starke Rüstungsbeschränkungen auf.</span>
+    <span class="vl-s" id="vs3"> Rechte Kreise verbreiteten die Dolchstoßlegende: die Lüge, Deutschland sei nicht militärisch besiegt worden, sondern von innen verraten.</span>
+    <span class="vl-s" id="vs4"> Die Weimarer Verfassung enthielt zwar moderne Grundrechte, aber auch gefährliche Schwächen.</span>
+    <span class="vl-s" id="vs5"> Das reine Verhältniswahlrecht führte zur extremen Zersplitterung des Reichstags in viele kleine Parteien.</span>
+    <span class="vl-s" id="vs6"> Artikel 48 erlaubte dem Reichspräsidenten, in Krisen ohne Parlamentszustimmung per Dekret zu regieren.</span>
+    <span class="vl-s" id="vs7"> Die Republik wurde von zwei Seiten angegriffen: von der NSDAP rechts und der KPD links.</span>
+    <span class="vl-s" id="vs8"> 1923 erschütterte eine Hyperinflation das Land – ein Brot kostete eine Milliarde Mark.</span>
+    <span class="vl-s" id="vs9"> Die Mittelschicht verlor ihre Ersparnisse und wandte sich verbittert gegen die Republik.</span>
+    <span class="vl-s" id="vs10"> Der Börsenkrach von 1929 traf Deutschland mit voller Wucht und brachte über sechs Millionen Arbeitslose.</span>
+    <span class="vl-s" id="vs11"> In dieser Krise erzielte die NSDAP 1932 über 37 Prozent der Stimmen.</span>
+    <span class="vl-s" id="vs12"> Reichspräsident Hindenburg ernannte Hitler am 30. Januar 1933 zum Reichskanzler.</span>
+    <span class="vl-s" id="vs13"> Das Ermächtigungsgesetz vom März 1933 beendete die parlamentarische Demokratie endgültig.</span>
+    <span class="vl-s" id="vs14"> Das Scheitern der Weimarer Republik war das Ergebnis des Zusammenspiels politischer Schwächen, wirtschaftlicher Krisen und gesellschaftlicher Zerrissenheit.</span>
+  </div>
+</div>
+
+<div id="tab-gewichtung" class="tab">
+  <h2>Ursachen gewichten</h2>
+  <p class="sub">Verteile genau 100 Punkte – deine Einschätzung wird historisch eingeordnet</p>
+  <div id="ug-regler"></div>
+  <div class="ug-summe">
+    <div><div style="font-size:13px;color:#5a4830">Vergeben:</div><div class="ug-warn" id="ug-warn"></div></div>
+    <div class="ug-sv" id="ug-summe">0 / 100</div>
+  </div>
+  <div class="ug-urteil" id="ug-urteil">Stelle alle Regler ein – bei 100 Punkten erscheint deine Einordnung.</div>
+</div>
+
+<div id="tab-zuordnung" class="tab">
+  <h2>Zuordnungsspiel</h2>
+  <p class="sub">Karte anklicken → Bereich anklicken · Platzierten Karte anklicken = zurücknehmen</p>
+  <div class="zo-pool" id="zo-pool"></div>
+  <div class="zo-bereiche">
+    <div class="zo-bkt" onclick="zoDrop('pol')"><div class="zo-bkt-t">Politische Gründe</div><div id="zb-pol"></div></div>
+    <div class="zo-bkt" onclick="zoDrop('wirt')"><div class="zo-bkt-t">Wirtschaftliche Gründe</div><div id="zb-wirt"></div></div>
+    <div class="zo-bkt" onclick="zoDrop('ges')"><div class="zo-bkt-t">Gesellschaftliche Gründe</div><div id="zb-ges"></div></div>
+  </div>
+  <div class="zo-res" id="zo-res"></div>
+  <button class="btn" onclick="zoAuswerten()">Auswerten</button>
+  <button class="btn" onclick="zoBauen()">↺ Neu</button>
+</div>
+
+<div id="tab-luecken" class="tab">
+  <h2>Lückentext</h2>
+  <p class="sub">Wort anklicken → Lücke anklicken · 4 Wörter sind Fallen!</p>
+  <div class="lt-wb" id="lt-wb"></div>
+  <div class="lt-text" id="lt-text"></div>
+  <div class="lt-erg" id="lt-erg"></div>
+  <button class="btn" onclick="ltAuswerten()">Auswerten</button>
+  <button class="btn" onclick="ltBauen()">↺ Neu</button>
+</div>
+
+<div id="tab-glossar" class="tab">
+  <h2>Glossar</h2>
+  <p class="sub">Wichtige Begriffe einfach erklärt</p>
+  <div class="gl">
+    <div class="gl-item"><div class="gl-term">Weimarer Republik</div><div class="gl-def">Deutschlands erste demokratische Staatsform (1919–1933), benannt nach Weimar, wo die Nationalversammlung tagte.</div></div>
+    <div class="gl-item"><div class="gl-term">Verhältniswahlrecht</div><div class="gl-def">Wahlsystem, bei dem Parteien entsprechend ihrem Stimmanteil Sitze erhalten. Fördert Vielfalt, führt aber zur Zersplitterung.</div></div>
+    <div class="gl-item"><div class="gl-term">Artikel 48</div><div class="gl-def">Notstandsparagraf: Der Reichspräsident konnte per Dekret ohne Parlament regieren. Wurde zunehmend missbraucht.</div></div>
+    <div class="gl-item"><div class="gl-term">Versailler Vertrag</div><div class="gl-def">Friedensvertrag 1919: Kriegsschuld, 132 Mrd. Goldmark Reparationen, Gebietsabgaben, Armee auf 100.000 Mann begrenzt.</div></div>
+    <div class="gl-item"><div class="gl-term">Dolchstoßlegende</div><div class="gl-def">Rechte Lüge: Deutschland sei von innen verraten worden. Historisch widerlegt, aber politisch wirkungsmächtig.</div></div>
+    <div class="gl-item"><div class="gl-term">Hyperinflation</div><div class="gl-def">Extremer Geldwertverfall 1923. Ursache: Gelddrucken für den Ruhrkampf. Ersparnisse der Mittelschicht vernichtet.</div></div>
+    <div class="gl-item"><div class="gl-term">Weltwirtschaftskrise</div><div class="gl-def">Globale Krise nach dem Börsenkrach 1929. Deutschland besonders betroffen wegen Abhängigkeit von US-Krediten.</div></div>
+    <div class="gl-item"><div class="gl-term">Ermächtigungsgesetz</div><div class="gl-def">März 1933: Hitler erhielt diktatorische Vollmachten. Faktisches Ende der Weimarer Demokratie.</div></div>
+    <div class="gl-item"><div class="gl-term">SA (Sturmabteilung)</div><div class="gl-def">Paramilitärischer Kampfverband der NSDAP. Terrorisierte Gegner, destabilisierte die öffentliche Ordnung.</div></div>
+    <div class="gl-item"><div class="gl-term">Reparationen</div><div class="gl-def">Kriegsentschädigungen: 132 Milliarden Goldmark – eine erdrückende Last für die junge Republik.</div></div>
+    <div class="gl-item"><div class="gl-term">Präsidialkabinett</div><div class="gl-def">Regierung ohne Parlamentsmehrheit, gestützt auf den Reichspräsidenten. Zeichen des Verfassungsbruchs 1930–33.</div></div>
+    <div class="gl-item"><div class="gl-term">Führerprinzip</div><div class="gl-def">NS-Prinzip der absoluten Unterordnung unter Hitler. Gegenentwurf zur parlamentarischen Demokratie.</div></div>
+  </div>
+</div>
+
+</main>
+
+<script>
+// NAVIGATION
+var TABS = [
+  ['politik',     '⚖ Politische Gründe'],
+  ['wirtschaft',  '📉 Wirtschaftliche Gründe'],
+  ['gesellschaft','👥 Gesellschaftliche Gründe'],
+  ['zeitstrahl',  '📅 Zeitstrahl'],
+  ['quiz',        '✏ Wissenstest'],
+  ['bilder',      '🖼 Bildzuordnung'],
+  ['vorlesen',    '🔊 Zusammenfassung'],
+  ['gewichtung',  '⚙ Gewichtung'],
+  ['zuordnung',   '🎯 Zuordnung'],
+  ['luecken',     '📝 Lückentext'],
+  ['glossar',     '📖 Glossar'],
+];
+
+var nav = document.getElementById('nav');
+TABS.forEach(function(t) {
+  var b = document.createElement('button');
+  b.textContent = t[1];
+  b.onclick = function() { zeige(t[0]); };
+  nav.appendChild(b);
+});
+
+var geladen = {};
+
+function zeige(id) {
+  TABS.forEach(function(t, i) {
+    document.getElementById('tab-' + t[0]).classList.toggle('akt', t[0] === id);
+    nav.children[i].classList.toggle('akt', t[0] === id);
+  });
+  if (!geladen[id]) {
+    geladen[id] = true;
+    if (id === 'quiz')       quizBauen();
+    if (id === 'bilder')     bzBauen();
+    if (id === 'vorlesen')   vlInit();
+    if (id === 'gewichtung') ugBauen();
+    if (id === 'zuordnung')  zoBauen();
+    if (id === 'luecken')    ltBauen();
+  }
+  window.scrollTo(0, nav.offsetTop - 1);
+}
+
+zeige('politik');
+
+// QUIZ
+var QD = [
+  {f:'Welcher Paragraf ermöglichte dem Reichspräsidenten das Regieren per Dekret?', a:['Artikel 14','Artikel 48','Artikel 25','Artikel 1'], r:1, fb:'Richtig! Artikel 48 war der Notstandsparagraf – in den Krisenjahren 1930–1933 zur Dauerregel geworden.'},
+  {f:'Was besagte die Dolchstoßlegende?', a:['Deutschland hätte den Krieg doch gewinnen können.','Die Alliierten hätten unfair gekämpft.','Deutschland sei von innen verraten worden, nicht militärisch besiegt.','Der Versailler Vertrag sei ungültig.'], r:2, fb:'Genau! Diese gefährliche Lüge delegitimierte die Demokratie.'},
+  {f:'Auf wie viele Soldaten war die Reichswehr begrenzt?', a:['50.000','200.000','100.000','500.000'], r:2, fb:'Richtig! 100.000 Mann – für eine Großmacht eine starke Einschränkung.'},
+  {f:'Welches Ereignis verschärfte die Krise 1929 dramatisch?', a:['Der Ruhrkampf','Der Börsenkrach in New York','Der Kapp-Putsch','Der Dawes-Plan'], r:1, fb:'Korrekt! Der Börsenkrach löste die Weltwirtschaftskrise aus.'},
+  {f:'Warum ernannte Hindenburg Hitler zum Reichskanzler?', a:['Die NSDAP hatte die Mehrheit.','Er war Anhänger Hitlers.','Konservative glaubten, Hitler kontrollieren zu können.','Ein Referendum forderte Hitler.'], r:2, fb:'Richtig! Papen und Hindenburg kalkulierten fatal falsch.'},
+  {f:'Was charakterisierte das Verhältniswahlrecht?', a:['Nur Parteien über 10% kamen ins Parlament.','Jeder hatte zwei Stimmen.','Auch kleine Parteien kamen ins Parlament – das führte zur Zersplitterung.','Der Kanzler wurde direkt gewählt.'], r:2, fb:'Genau! Extreme Parteienvielfalt machte stabile Mehrheiten fast unmöglich.'},
+  {f:'Wie viele Arbeitslose gab es bis 1932?', a:['2 Millionen','4 Millionen','6 Millionen','8 Millionen'], r:2, fb:'Richtig! Über 6 Millionen – die Not trieb Menschen zu den Extremparteien.'},
+];
+var qGem = [];
+
+function quizBauen() {
+  qGem = new Array(QD.length).fill(false);
+  document.getElementById('quiz-ergebnis').style.display = 'none';
+  document.getElementById('quiz-neu').style.display = 'none';
+  var h = '';
+  QD.forEach(function(q, qi) {
+    h += '<div class="qcard" id="qc'+qi+'"><div class="qfrage">'+(qi+1)+'. '+q.f+'</div>';
+    q.a.forEach(function(a, ai) {
+      h += '<button class="qopt" onclick="qAntwort('+qi+','+ai+')" id="qo'+qi+'_'+ai+'">'+a+'</button>';
+    });
+    h += '<div class="qfb" id="qf'+qi+'"></div></div>';
+  });
+  document.getElementById('quiz-inhalt').innerHTML = h;
+}
+
+function qAntwort(qi, ai) {
+  if (qGem[qi]) return;
+  qGem[qi] = true;
+  var q = QD[qi];
+  for (var i = 0; i < q.a.length; i++) {
+    var b = document.getElementById('qo'+qi+'_'+i);
+    b.disabled = true;
+    if (i === q.r) b.classList.add('ok');
+    else if (i === ai) b.classList.add('no');
+  }
+  document.getElementById('qf'+qi).textContent = q.fb;
+  if (qGem.every(Boolean)) {
+    var ok = 0;
+    QD.forEach(function(q, qi) {
+      var card = document.getElementById('qc'+qi);
+      if (!card.querySelector('.qopt.no')) ok++;
+    });
+    var el = document.getElementById('quiz-ergebnis');
+    el.textContent = 'Ergebnis: '+ok+' von '+QD.length+' richtig — '+(ok>=6?'Sehr gut!':ok>=5?'Gut!':ok>=4?'Befriedigend.':'Noch üben!');
+    el.style.display = 'block';
+    document.getElementById('quiz-neu').style.display = '';
+  }
+}
+
+// BILDZUORDNUNG
+var BZ = [
+  {id:'b1', kat:'wirt', cap:'Inflation 1923 – wertloses Geld', exp:'Hyperinflation 1923: Geldscheine waren so wertlos, dass manche sie als Brennmaterial nutzten. Ersparnisse vernichtet.',
+   svg:'<svg viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg"><rect width="180" height="120" fill="#e8dcc8"/><rect x="12" y="22" width="68" height="36" rx="3" fill="#c8b87a" stroke="#8b6914" stroke-width="1.2"/><text x="46" y="36" text-anchor="middle" font-size="8" fill="#3d2010" font-family="Georgia">1 Billion</text><text x="46" y="49" text-anchor="middle" font-size="8" fill="#3d2010" font-family="Georgia">Mark</text><rect x="100" y="22" width="68" height="36" rx="3" fill="#c8b87a" stroke="#8b6914" stroke-width="1.2"/><text x="134" y="36" text-anchor="middle" font-size="8" fill="#3d2010" font-family="Georgia">1 Billion</text><text x="134" y="49" text-anchor="middle" font-size="8" fill="#3d2010" font-family="Georgia">Mark</text><rect x="12" y="68" width="68" height="36" rx="3" fill="#c8b87a" stroke="#8b6914" stroke-width="1.2"/><rect x="100" y="68" width="68" height="36" rx="3" fill="#c8b87a" stroke="#8b6914" stroke-width="1.2"/><text x="90" y="116" text-anchor="middle" font-size="9" fill="#5a4020" font-family="Georgia">= 1 Laib Brot</text></svg>'},
+  {id:'b2', kat:'pol', cap:'Reichstag – Parlamentskrise', exp:'Durch Parteienstreit und Artikel 48 war der Reichstag zunehmend machtlos. Die Demokratie wurde von innen ausgehöhlt.',
+   svg:'<svg viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg"><rect width="180" height="120" fill="#ddd8cc"/><rect x="30" y="55" width="120" height="58" fill="#b0a890" stroke="#5a5040" stroke-width="1"/><rect x="60" y="36" width="60" height="24" fill="#c0b090" stroke="#5a5040" stroke-width="1"/><rect x="80" y="15" width="20" height="23" fill="#a09070" stroke="#5a5040" stroke-width="1"/><rect x="85" y="6" width="10" height="11" fill="#8b6914"/><rect x="40" y="64" width="20" height="22" fill="#e8dcc8" stroke="#5a5040" stroke-width="0.6"/><rect x="79" y="64" width="22" height="22" fill="#e8dcc8" stroke="#5a5040" stroke-width="0.6"/><rect x="118" y="64" width="20" height="22" fill="#e8dcc8" stroke="#5a5040" stroke-width="0.6"/><text x="90" y="117" text-anchor="middle" font-size="9" fill="#3d3020" font-family="Georgia">Reichstagsgebäude Berlin</text></svg>'},
+  {id:'b3', kat:'wirt', cap:'Massenarbeitslosigkeit 1930', exp:'Weltwirtschaftskrise: Millionen standen vor den Arbeitsämtern. Hunger und Hoffnungslosigkeit trieben Menschen zu Extremparteien.',
+   svg:'<svg viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg"><rect width="180" height="120" fill="#d8d0c0"/><line x1="20" y1="96" x2="160" y2="96" stroke="#5a5040" stroke-width="1"/><g transform="translate(28,52)"><circle r="7" fill="#5a4830"/><rect x="-6" y="7" width="12" height="26" fill="#6a5840"/></g><g transform="translate(52,57)"><circle r="7" fill="#5a4830"/><rect x="-6" y="7" width="12" height="26" fill="#6a5840"/></g><g transform="translate(76,50)"><circle r="7" fill="#5a4830"/><rect x="-6" y="7" width="12" height="26" fill="#6a5840"/></g><g transform="translate(100,54)"><circle r="7" fill="#5a4830"/><rect x="-6" y="7" width="12" height="26" fill="#6a5840"/></g><g transform="translate(124,51)"><circle r="7" fill="#5a4830"/><rect x="-6" y="7" width="12" height="26" fill="#6a5840"/></g><g transform="translate(148,55)"><circle r="7" fill="#5a4830"/><rect x="-6" y="7" width="12" height="26" fill="#6a5840"/></g><rect x="15" y="80" width="58" height="15" rx="2" fill="#8b6914" opacity="0.75"/><text x="44" y="91" text-anchor="middle" font-size="8" fill="#f5f0e8" font-family="Georgia">ARBEITSAMT</text><text x="90" y="116" text-anchor="middle" font-size="9" fill="#3d3020" font-family="Georgia">Massenarbeitslosigkeit 1930</text></svg>'},
+  {id:'b4', kat:'pol', cap:'SA-Aufmarsch – politische Gewalt', exp:'Die SA terrorisierte politische Gegner. Straßenkämpfe destabilisierten die öffentliche Ordnung. 1932: 400.000 Mitglieder.',
+   svg:'<svg viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg"><rect width="180" height="120" fill="#c8c0b0"/><line x1="15" y1="100" x2="165" y2="100" stroke="#5a5040" stroke-width="1"/><g transform="translate(22,40)"><circle r="8" fill="#5a4830"/><rect x="-7" y="8" width="14" height="28" fill="#2a2a2a"/><line x1="0" y1="8" x2="-12" y2="26" stroke="#2a2a2a" stroke-width="3"/><line x1="0" y1="12" x2="12" y2="26" stroke="#2a2a2a" stroke-width="3"/></g><g transform="translate(55,42)"><circle r="8" fill="#5a4830"/><rect x="-7" y="8" width="14" height="28" fill="#2a2a2a"/><line x1="0" y1="8" x2="-12" y2="26" stroke="#2a2a2a" stroke-width="3"/><line x1="0" y1="12" x2="14" y2="20" stroke="#2a2a2a" stroke-width="3"/></g><g transform="translate(88,37)"><circle r="8" fill="#5a4830"/><rect x="-7" y="8" width="14" height="28" fill="#2a2a2a"/></g><g transform="translate(121,41)"><circle r="8" fill="#5a4830"/><rect x="-7" y="8" width="14" height="28" fill="#2a2a2a"/></g><g transform="translate(154,39)"><circle r="8" fill="#5a4830"/><rect x="-7" y="8" width="14" height="28" fill="#2a2a2a"/></g><text x="90" y="117" text-anchor="middle" font-size="9" fill="#3d3020" font-family="Georgia">SA-Aufmarsch – politische Gewalt</text></svg>'},
+  {id:'b5', kat:'ges', cap:'Hindenburg ernennt Hitler (1933)', exp:'Hindenburg und Papen ernannten Hitler am 30.1.1933 in der fatalen Fehlkalkulation, ihn kontrollieren zu können.',
+   svg:'<svg viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg"><rect width="180" height="120" fill="#d8cfc0"/><circle cx="58" cy="34" r="13" fill="#c8a87a" stroke="#8b6914" stroke-width="1"/><rect x="45" y="47" width="26" height="34" rx="2" fill="#3a4a5a"/><text x="58" y="92" text-anchor="middle" font-size="8" fill="#3d3020" font-family="Georgia">Hindenburg</text><circle cx="126" cy="34" r="11" fill="#c8a87a" stroke="#8b6914" stroke-width="1"/><rect x="114" y="45" width="24" height="32" rx="2" fill="#6a3020"/><text x="126" y="90" text-anchor="middle" font-size="8" fill="#3d3020" font-family="Georgia">Hitler</text><line x1="72" y1="54" x2="112" y2="54" stroke="#8b2e0f" stroke-width="2" marker-end="url(#pfeil)"/><defs><marker id="pfeil" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L8 4L0 8" fill="#8b2e0f"/></marker></defs><text x="92" y="48" text-anchor="middle" font-size="7.5" fill="#8b2e0f" font-family="Georgia">ernennt</text><text x="90" y="117" text-anchor="middle" font-size="9" fill="#3d3020" font-family="Georgia">30. Januar 1933</text></svg>'},
+  {id:'b6', kat:'ges', cap:'Versailler Vertrag 1919', exp:'Die Unterzeichnung galt als nationale Demütigung und vergiftete das politische Klima von Anfang an.',
+   svg:'<svg viewBox="0 0 180 120" xmlns="http://www.w3.org/2000/svg"><rect width="180" height="120" fill="#e0d8c8"/><rect x="28" y="16" width="124" height="88" rx="4" fill="#f5f0e0" stroke="#8b6914" stroke-width="1.5"/><line x1="28" y1="34" x2="152" y2="34" stroke="#8b6914" stroke-width="0.7" opacity="0.5"/><line x1="28" y1="50" x2="152" y2="50" stroke="#8b6914" stroke-width="0.7" opacity="0.5"/><line x1="28" y1="66" x2="152" y2="66" stroke="#8b6914" stroke-width="0.7" opacity="0.5"/><line x1="28" y1="82" x2="152" y2="82" stroke="#8b6914" stroke-width="0.7" opacity="0.5"/><text x="90" y="29" text-anchor="middle" font-size="9" fill="#3d2010" font-family="Georgia" font-weight="bold">FRIEDENSVERTRAG</text><text x="90" y="46" text-anchor="middle" font-size="8" fill="#5a4020" font-family="Georgia">Versailles, 28. Juni 1919</text><text x="90" y="62" text-anchor="middle" font-size="8" fill="#5a4020" font-family="Georgia">Artikel 231 – Kriegsschuld</text><text x="90" y="78" text-anchor="middle" font-size="8" fill="#5a4020" font-family="Georgia">132 Mrd. Goldmark</text><text x="90" y="117" text-anchor="middle" font-size="9" fill="#3d3020" font-family="Georgia">Versailler Vertrag 1919</text></svg>'},
+];
+
+var bzGew = null, bzOk = {}, bzZahl = {pol:0,wirt:0,ges:0};
+
+function bzBauen() {
+  bzGew = null; bzOk = {}; bzZahl = {pol:0,wirt:0,ges:0};
+  ['pol','wirt','ges'].forEach(function(k){ document.getElementById('bzz-'+k).textContent='0'; });
+  document.getElementById('bz-res').textContent = '';
+  document.getElementById('bz-hint').textContent = 'Wähle zuerst eine Karte aus.';
+  var g = document.getElementById('bz-grid');
+  g.innerHTML = '';
+  var misch = BZ.slice().sort(function(){return Math.random()-.5;});
+  misch.forEach(function(it){
+    var d = document.createElement('div');
+    d.className = 'bz-karte'; d.id = 'bzk-'+it.id;
+    d.innerHTML = it.svg+'<div class="bz-cap">'+it.cap+'</div>';
+    d.onclick = (function(id){ return function(){ bzWaehle(id); }; })(it.id);
+    g.appendChild(d);
+  });
+}
+
+function bzWaehle(id) {
+  if (bzOk[id]) return;
+  document.querySelectorAll('.bz-karte').forEach(function(c){ c.classList.remove('sel'); });
+  bzGew = id;
+  document.getElementById('bzk-'+id).classList.add('sel');
+  var it = BZ.find(function(x){ return x.id===id; });
+  document.getElementById('bz-hint').textContent = '»'+it.cap+'« – welchem Bereich gehört das?';
+}
+
+function bzZuordnen(kat) {
+  if (!bzGew) { document.getElementById('bz-hint').textContent = 'Bitte zuerst eine Karte auswählen!'; return; }
+  var it = BZ.find(function(x){ return x.id===bzGew; });
+  var karte = document.getElementById('bzk-'+bzGew);
+  if (it.kat === kat) {
+    karte.classList.remove('sel'); karte.classList.add('ok');
+    bzOk[bzGew] = true;
+    bzZahl[kat]++;
+    document.getElementById('bzz-'+kat).textContent = bzZahl[kat];
+    document.getElementById('bz-hint').textContent = '✓ Richtig! '+it.exp;
+  } else {
+    karte.classList.add('wack');
+    var k = karte;
+    setTimeout(function(){ k.classList.remove('wack'); }, 380);
+    document.getElementById('bz-hint').textContent = '✗ Nicht ganz – schau die Karte nochmal an.';
+  }
+  bzGew = null;
+  if (Object.keys(bzOk).length === BZ.length)
+    document.getElementById('bz-res').textContent = 'Alle '+BZ.length+' Karten richtig zugeordnet! Sehr gut.';
+}
+
+// VORLESEN
+var vlAn = false, vlIdx = 0, vlSaetze = [];
+
+function vlInit() {
+  if (!('speechSynthesis' in window)) {
+    document.getElementById('vl-kein-tts').style.display = 'block';
+    document.getElementById('vl-play').style.display = 'none';
+    return;
+  }
+  vlSaetze = [];
+  var i = 0;
+  while (document.getElementById('vs'+i)) {
+    vlSaetze.push(document.getElementById('vs'+i).textContent.trim());
+    i++;
+  }
+}
+
+function vlHervorheben(i) {
+  document.querySelectorAll('.vl-s').forEach(function(e){ e.classList.remove('hl'); });
+  var el = document.getElementById('vs'+i);
+  if (el) { el.classList.add('hl'); el.scrollIntoView({block:'nearest',behavior:'smooth'}); }
+  document.getElementById('vl-bar').style.width = Math.round(i/vlSaetze.length*100)+'%';
+  document.getElementById('vl-stat').textContent = 'Satz '+(i+1)+' von '+vlSaetze.length;
+}
+
+function vlSpreche(i) {
+  if (!vlAn || i >= vlSaetze.length) { if (i >= vlSaetze.length) vlFertig(); return; }
+  vlIdx = i; vlHervorheben(i);
+  var u = new SpeechSynthesisUtterance(vlSaetze[i]);
+  u.lang = 'de-DE';
+  u.rate = parseFloat(document.getElementById('vl-tempo').value);
+  u.onend = function(){ if (vlAn) vlSpreche(i+1); };
+  u.onerror = function(){ if (vlAn) vlSpreche(i+1); };
+  speechSynthesis.speak(u);
+}
+
+function vlPlay() {
+  speechSynthesis.cancel(); vlAn = true;
+  document.getElementById('vl-play').style.display = 'none';
+  document.getElementById('vl-pause').style.display = '';
+  document.getElementById('vl-stop').style.display = '';
+  vlSpreche(vlIdx);
+}
+
+function vlPause() {
+  if (speechSynthesis.paused) {
+    speechSynthesis.resume(); vlAn = true;
+    document.getElementById('vl-pause').textContent = '⏸ Pause';
+  } else {
+    speechSynthesis.pause(); vlAn = false;
+    document.getElementById('vl-pause').textContent = '▶ Weiter';
+    document.getElementById('vl-stat').textContent = 'Pausiert.';
+  }
+}
+
+function vlStopp() {
+  vlAn = false; vlIdx = 0; speechSynthesis.cancel();
+  document.querySelectorAll('.vl-s').forEach(function(e){ e.classList.remove('hl'); });
+  document.getElementById('vl-bar').style.width = '0%';
+  document.getElementById('vl-play').style.display = '';
+  document.getElementById('vl-pause').style.display = 'none';
+  document.getElementById('vl-stop').style.display = 'none';
+  document.getElementById('vl-pause').textContent = '⏸ Pause';
+  document.getElementById('vl-stat').textContent = 'Bereit.';
+}
+
+function vlFertig() {
+  vlAn = false; vlIdx = 0;
+  document.querySelectorAll('.vl-s').forEach(function(e){ e.classList.remove('hl'); });
+  document.getElementById('vl-bar').style.width = '100%';
+  document.getElementById('vl-play').style.display = '';
+  document.getElementById('vl-pause').style.display = 'none';
+  document.getElementById('vl-stop').style.display = 'none';
+  document.getElementById('vl-pause').textContent = '⏸ Pause';
+  document.getElementById('vl-stat').textContent = 'Vorlesen abgeschlossen.';
+  setTimeout(function(){ document.getElementById('vl-bar').style.width='0%'; }, 2000);
+}
+
+// GEWICHTUNG
+var UGF = [
+  {id:'pol',  n:'Politische Schwächen',      u:'Verfassung, Parteienstreit, Extremisten', f:'#1B3A5C', v:25},
+  {id:'wirt', n:'Wirtschaftskrisen',          u:'Inflation 1923, Weltwirtschaftskrise',    f:'#8B2E0F', v:30},
+  {id:'ges',  n:'Gesellschaftliche Spaltung', u:'Fehlendes Demokratiebewusstsein, Eliten', f:'#1B4A2E', v:20},
+  {id:'vers', n:'Versailler Vertrag',          u:'Reparationen, Dolchstoßlegende',          f:'#8B6914', v:15},
+  {id:'zuf',  n:'Zufall & Einzelpersonen',    u:'Hindenburg, Hitler, Einzelentscheidungen', f:'#534AB7', v:10},
+];
+
+function ugBauen() {
+  var h = '';
+  UGF.forEach(function(f){
+    h += '<div class="ug-row">'
+      +'<div class="ug-kopf"><span class="ug-name">'+f.n+'</span><span class="ug-val" id="ugv'+f.id+'">'+f.v+'</span></div>'
+      +'<div class="ug-sub">'+f.u+'</div>'
+      +'<input type="range" min="0" max="100" step="1" value="'+f.v+'" style="width:100%;margin-bottom:4px" id="ugr'+f.id+'" oninput="ugUpd()">'
+      +'<div class="ug-balken"><div class="ug-fill" id="ugb'+f.id+'" style="background:'+f.f+';width:'+f.v+'%"></div></div>'
+      +'</div>';
+  });
+  document.getElementById('ug-regler').innerHTML = h;
+  ugUpd();
+}
+
+function ugUpd() {
+  var sum = 0;
+  UGF.forEach(function(f){
+    var v = parseInt(document.getElementById('ugr'+f.id).value);
+    document.getElementById('ugv'+f.id).textContent = v;
+    document.getElementById('ugb'+f.id).style.width = v+'%';
+    sum += v;
+  });
+  document.getElementById('ug-summe').textContent = sum+' / 100';
+  var w = document.getElementById('ug-warn');
+  var u = document.getElementById('ug-urteil');
+  if (sum !== 100) {
+    w.textContent = sum < 100 ? 'Noch '+(100-sum)+' Punkte zu vergeben.' : 'Um '+(sum-100)+' zu viel.';
+    u.textContent = 'Stelle alle Regler ein – bei 100 Punkten erscheint deine Einordnung.';
+  } else {
+    w.textContent = '';
+    var vals = {};
+    UGF.forEach(function(f){ vals[f.id] = parseInt(document.getElementById('ugr'+f.id).value); });
+    var t;
+    if (vals.wirt >= 40) t = 'Du gewichtest die Wirtschaftskrisen sehr stark – das entspricht der Mehrheitsmeinung vieler Historiker. Ohne Massenarbeitslosigkeit wäre Hitler kaum an die Macht gekommen.';
+    else if (vals.pol >= 35) t = 'Du siehst die politischen Schwächen als Hauptursache – gut begründbar. Ohne Artikel 48 und Parteienstreit wäre die Demokratie stabiler gewesen.';
+    else if (vals.vers >= 30) t = 'Du betonst den Versailler Vertrag – er vergiftete das Klima von Anfang an. Aber war er allein entscheidend?';
+    else if (vals.zuf >= 25) t = 'Du gewichtest Zufall hoch – hätte Hindenburg Hitler nicht ernannt, wäre die Geschichte vielleicht anders verlaufen.';
+    else t = 'Deine Einschätzung ist ausgewogen. Die meisten Historiker betonen das Zusammenspiel aller Faktoren.';
+    u.textContent = t;
+  }
+}
+
+// ZUORDNUNG
+var ZOD = [
+  {id:'z1', t:'Die Hyperinflation 1923 vernichtete die Ersparnisse der Mittelschicht.', k:'wirt'},
+  {id:'z2', t:'Artikel 48 erlaubte Regieren per Dekret ohne Parlamentszustimmung.', k:'pol'},
+  {id:'z3', t:'Viele Deutsche hatten keine Erfahrung mit demokratischen Prozessen.', k:'ges'},
+  {id:'z4', t:'Nach dem Börsenkrach 1929 gab es über 6 Millionen Arbeitslose.', k:'wirt'},
+  {id:'z5', t:'Das Verhältniswahlrecht führte zu extremer Zersplitterung im Reichstag.', k:'pol'},
+  {id:'z6', t:'Hindenburg und Papen ernannten Hitler, weil sie ihn kontrollieren wollten.', k:'ges'},
+  {id:'z7', t:'SA und KPD-Truppen lieferten sich blutige Straßenkämpfe.', k:'pol'},
+  {id:'z8', t:'Deutschland war wirtschaftlich stark von amerikanischen Krediten abhängig.', k:'wirt'},
+  {id:'z9', t:'Richter bestraften rechte Gewalttäter deutlich milder als linke.', k:'ges'},
+];
+var zoGew = null, zoGesetzt = {}, zoGeprueft = false;
+
+function zoBauen() {
+  zoGew = null; zoGesetzt = {}; zoGeprueft = false;
+  document.getElementById('zo-res').textContent = '';
+  var pool = document.getElementById('zo-pool');
+  pool.innerHTML = '';
+  ['pol','wirt','ges'].forEach(function(b){ document.getElementById('zb-'+b).innerHTML=''; });
+  var misch = ZOD.slice().sort(function(){return Math.random()-.5;});
+  misch.forEach(function(c){
+    var el = document.createElement('div');
+    el.className = 'zo-karte'; el.id = 'zk'+c.id;
+    el.textContent = c.t; el.dataset.k = c.k; el.dataset.id = c.id;
+    el.onclick = (function(id){ return function(){ zoWaehle(id); }; })(c.id);
+    pool.appendChild(el);
+  });
+}
+
+function zoWaehle(id) {
+  if (zoGeprueft) return;
+  if (zoGew === id) { zoGew = null; document.querySelectorAll('.zo-karte').forEach(function(e){ e.classList.remove('sel'); }); return; }
+  document.querySelectorAll('.zo-karte').forEach(function(e){ e.classList.remove('sel'); });
+  zoGew = id;
+  var el = document.getElementById('zk'+id);
+  if (el) el.classList.add('sel');
+}
+
+function zoDrop(kat) {
+  if (!zoGew || zoGeprueft) return;
+  var id = zoGew; zoGew = null;
+  var karte = document.getElementById('zk'+id);
+  if (!karte) return;
+  if (zoGesetzt[id]) {
+    var alt = document.getElementById('zb-'+zoGesetzt[id]);
+    if (alt) { var ak = alt.querySelector('[data-id="'+id+'"]'); if (ak) ak.remove(); }
+  }
+  zoGesetzt[id] = kat;
+  var klon = karte.cloneNode(true);
+  klon.classList.remove('sel');
+  klon.onclick = (function(cid){ return function(){ zoZurueck(cid); }; })(id);
+  karte.remove();
+  document.getElementById('zb-'+kat).appendChild(klon);
+}
+
+function zoZurueck(id) {
+  if (zoGeprueft) return;
+  var kat = zoGesetzt[id]; if (!kat) return;
+  var el = document.getElementById('zb-'+kat).querySelector('[data-id="'+id+'"]');
+  if (!el) return;
+  var orig = ZOD.find(function(c){ return c.id===id; });
+  var neu = document.createElement('div');
+  neu.className = 'zo-karte'; neu.id = 'zk'+id;
+  neu.textContent = orig.t; neu.dataset.k = orig.k; neu.dataset.id = id;
+  neu.onclick = (function(cid){ return function(){ zoWaehle(cid); }; })(id);
+  document.getElementById('zo-pool').appendChild(neu);
+  el.remove(); delete zoGesetzt[id];
+}
+
+function zoAuswerten() {
+  if (Object.keys(zoGesetzt).length < ZOD.length) { document.getElementById('zo-res').textContent = 'Bitte alle Karten zuordnen.'; return; }
+  zoGeprueft = true;
+  var ok = 0;
+  ZOD.forEach(function(c){
+    var el = document.querySelector('[data-id="'+c.id+'"]');
+    if (!el) return;
+    if (zoGesetzt[c.id] === c.k) { el.classList.add('ok'); ok++; }
+    else el.classList.add('no');
+  });
+  document.getElementById('zo-res').textContent = ok === ZOD.length
+    ? 'Perfekt! Alle '+ZOD.length+' Karten richtig.'
+    : ok+' von '+ZOD.length+' richtig. Rote Karten neu einordnen.';
+}
+
+// LÜCKENTEXT
+var LTS = [
+  {t:'text', v:'Die Weimarer Republik wurde 1919 gegründet. Sie musste sofort den '},
+  {t:'lk', id:'l1', a:'Versailler Vertrag'},
+  {t:'text', v:' unterzeichnen. Besonders belastend waren die '},
+  {t:'lk', id:'l2', a:'Reparationen'},
+  {t:'text', v:', die 132 Milliarden Goldmark betrugen. Die Verfassung enthielt den gefährlichen '},
+  {t:'lk', id:'l3', a:'Artikel 48'},
+  {t:'text', v:', der Notverordnungen ohne Parlament ermöglichte. Das '},
+  {t:'lk', id:'l4', a:'Verhältniswahlrecht'},
+  {t:'text', v:' führte zur Zersplitterung im Reichstag. Als 1923 die '},
+  {t:'lk', id:'l5', a:'Hyperinflation'},
+  {t:'text', v:' ausbrach, verlor die Mittelschicht alles. Die '},
+  {t:'lk', id:'l6', a:'Weltwirtschaftskrise'},
+  {t:'text', v:' ab 1929 brachte über 6 Millionen Arbeitslose. Reichspräsident '},
+  {t:'lk', id:'l7', a:'Hindenburg'},
+  {t:'text', v:' ernannte Hitler zum Kanzler. Das '},
+  {t:'lk', id:'l8', a:'Ermächtigungsgesetz'},
+  {t:'text', v:' von 1933 beendete die Demokratie.'},
+];
+var LTW = ['Versailler Vertrag','Reparationen','Artikel 48','Verhältniswahlrecht','Hyperinflation','Weltwirtschaftskrise','Hindenburg','Ermächtigungsgesetz','Dolchstoßlegende','Dawes-Plan','Reichstag','Inflation'];
+var ltGew = null, ltGef = {}, ltFertig = false;
+
+function ltBauen() {
+  ltGew = null; ltGef = {}; ltFertig = false;
+  document.getElementById('lt-erg').textContent = '';
+  var wb = document.getElementById('lt-wb');
+  wb.innerHTML = '';
+  LTW.slice().sort(function(){return Math.random()-.5;}).forEach(function(w){
+    var el = document.createElement('span');
+    el.className = 'lt-w'; el.textContent = w; el.dataset.w = w;
+    el.onclick = (function(ww){ return function(){ ltWaehle(ww); }; })(w);
+    wb.appendChild(el);
+  });
+  var txt = document.getElementById('lt-text');
+  txt.innerHTML = '';
+  LTS.forEach(function(seg){
+    if (seg.t === 'text') {
+      txt.appendChild(document.createTextNode(seg.v));
+    } else {
+      var sp = document.createElement('span');
+      sp.className = 'lt-lk'; sp.id = seg.id; sp.dataset.a = seg.a;
+      sp.textContent = '___________';
+      sp.onclick = (function(id){ return function(){ ltKlickLk(id); }; })(seg.id);
+      txt.appendChild(sp);
+    }
+  });
+}
+
+function ltWaehle(w) {
+  if (ltFertig) return;
+  document.querySelectorAll('.lt-w').forEach(function(e){ e.classList.remove('sel'); });
+  ltGew = w;
+  var el = Array.from(document.querySelectorAll('.lt-w')).find(function(e){ return e.dataset.w===w && !e.classList.contains('benutzt'); });
+  if (el) el.classList.add('sel');
+}
+
+function ltKlickLk(id) {
+  if (ltFertig) return;
+  var lk = document.getElementById(id);
+  if (lk.classList.contains('ok')) return;
+  if (ltGef[id]) {
+    var alt = ltGef[id];
+    var altEl = Array.from(document.querySelectorAll('.lt-w')).find(function(e){ return e.dataset.w===alt; });
+    if (altEl) altEl.classList.remove('benutzt');
+    delete ltGef[id];
+    lk.textContent = '___________'; lk.className = 'lt-lk';
+    ltGew = null; document.querySelectorAll('.lt-w').forEach(function(e){ e.classList.remove('sel'); });
+    return;
+  }
+  if (!ltGew) return;
+  var wEl = Array.from(document.querySelectorAll('.lt-w')).find(function(e){ return e.dataset.w===ltGew && !e.classList.contains('benutzt'); });
+  if (!wEl) return;
+  wEl.classList.add('benutzt'); wEl.classList.remove('sel');
+  ltGef[id] = ltGew;
+  lk.textContent = ltGew; lk.className = 'lt-lk gef';
+  ltGew = null;
+}
+
+function ltAuswerten() {
+  var lks = document.querySelectorAll('.lt-lk');
+  var offen = Array.from(lks).filter(function(l){ return !ltGef[l.id]; });
+  if (offen.length) { document.getElementById('lt-erg').textContent = 'Bitte alle Lücken ausfüllen.'; return; }
+  ltFertig = true;
+  var ok = 0;
+  lks.forEach(function(l){
+    if (ltGef[l.id] === l.dataset.a) { l.className = 'lt-lk ok'; ok++; }
+    else l.className = 'lt-lk no';
+  });
+  document.getElementById('lt-erg').textContent = ok === lks.length
+    ? 'Ausgezeichnet! Alle '+lks.length+' Lücken richtig.'
+    : ok+' von '+lks.length+' richtig. Rote Lücken neu ausfüllen.';
+}
+</script>
+</body>
+</html>

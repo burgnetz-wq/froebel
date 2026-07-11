@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vom Deutschen Bund zur Reichsgründung 1871</title>
+  <style>
+    :root{
+      --bg:#f3e7cf;
+      --paper:#fffaf1;
+      --paper2:#fff3dc;
+      --ink:#2f2416;
+      --accent:#8a4f17;
+      --accent-dark:#60350d;
+      --gold:#c79a4a;
+      --line:#d5ba87;
+      --green:#2f7d32;
+      --red:#a53333;
+      --shadow:0 6px 18px rgba(0,0,0,0.14);
+      --focus:rgba(199,154,74,0.42);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#ead7b2,var(--bg));
+      color:var(--ink);
+      line-height:1.55;
+    }
+
+    header{
+      padding:2.2rem 1rem;
+      text-align:center;
+      color:white;
+      border-bottom:6px solid var(--gold);
+      background:
+        linear-gradient(rgba(53,34,15,0.76),rgba(53,34,15,0.76)),
+        url("https://burgnetz-wq.github.io/froebel/bilder/versailles.png") center/cover;
+    }
+    header h1{
+      margin:0 0 .45rem;
+      font-size:clamp(2rem,5vw,3.8rem);
+      letter-spacing:.02em;
+    }
+    header p{
+      max-width:950px;
+      margin:0 auto;
+      font-size:1.12rem;
+    }
+
+    nav{
+      position:sticky;
+      top:0;
+      z-index:20;
+      backdrop-filter:blur(6px);
+      background:rgba(255,250,241,.95);
+      border-bottom:1px solid var(--line);
+    }
+    nav .nav-inner{
+      max-width:1250px;
+      margin:0 auto;
+      padding:.6rem 1rem;
+      display:flex;
+      flex-wrap:wrap;
+      gap:.45rem;
+      justify-content:center;
+    }
+    nav a{
+      text-decoration:none;
+      color:var(--accent-dark);
+      font-weight:800;
+      background:var(--paper2);
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:.55rem .8rem;
+      display:inline-block;
+    }
+    nav a:hover, nav a:focus{
+      outline:3px solid var(--focus);
+      background:#ffe8b5;
+    }
+
+    main{
+      max-width:1250px;
+      margin:0 auto;
+      padding:1.2rem;
+    }
+
+    section{
+      margin:1.4rem 0;
+      padding:1.2rem;
+      background:rgba(255,250,241,.96);
+      border:2px solid var(--line);
+      border-radius:18px;
+      box-shadow:var(--shadow);
+    }
+
+    h2{
+      margin:0 0 .55rem;
+      color:#4b2b0e;
+      font-size:clamp(1.55rem,3vw,2.15rem);
+    }
+    h3{
+      margin:.2rem 0 .45rem;
+      color:#62350d;
+    }
+
+    .lead{
+      font-size:1.06rem;
+    }
+
+    .hint, .source-box{
+      background:#f0e0bc;
+      padding:.9rem 1rem;
+      border-left:8px solid var(--accent);
+      border-radius:12px;
+      margin:.8rem 0 1rem;
+    }
+    .source-box{
+      background:#f7edd3;
+      border-left-color:#9a7440;
+      font-size:.95rem;
+    }
+    .source-box a{color:var(--accent-dark); font-weight:800}
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:.65rem;
+      margin:1rem 0;
+    }
+    button, .button-link{
+      border:none;
+      border-radius:999px;
+      padding:.78rem 1rem;
+      background:var(--accent);
+      color:white;
+      font-weight:800;
+      cursor:pointer;
+      font-size:1rem;
+      min-height:44px;
+      box-shadow:0 3px 8px rgba(0,0,0,.18);
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+    button:hover,button:focus,.button-link:hover,.button-link:focus{
+      background:var(--accent-dark);
+      outline:3px solid var(--focus);
+    }
+    .secondary-btn{
+      background:var(--paper2);
+      color:var(--accent-dark);
+      border:1px solid var(--line);
+    }
+    .secondary-btn:hover,.secondary-btn:focus{
+      background:#ffe8b5;
+      color:var(--accent-dark);
+    }
+
+    .card-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+      gap:1rem;
+    }
+    figure.card{
+      margin:0;
+      background:var(--paper);
+      border:1px solid var(--line);
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow:0 4px 14px rgba(0,0,0,.12);
+      display:flex;
+      flex-direction:column;
+    }
+    .card img{
+      width:100%;
+      height:235px;
+      object-fit:cover;
+      display:block;
+      background:#ddd3bf;
+    }
+    .card .text-only{
+      min-height:235px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      padding:1.1rem;
+      background:var(--paper2);
+    }
+    figcaption{
+      padding:.85rem;
+      flex:1;
+    }
+    figcaption strong{
+      display:block;
+      color:var(--accent);
+      margin-bottom:.18rem;
+      font-size:1.04rem;
+    }
+    .figure-actions{
+      padding:0 .85rem .9rem;
+      display:flex;
+      flex-wrap:wrap;
+      gap:.5rem;
+    }
+
+    .map-figure img{
+      width:100%;
+      max-height:680px;
+      object-fit:contain;
+      background:#efe4c9;
+    }
+
+    .timeline{
+      display:grid;
+      gap:.8rem;
+    }
+    .time-card{
+      display:grid;
+      grid-template-columns:100px 1fr;
+      gap:.8rem;
+      align-items:start;
+      padding:.9rem;
+      background:var(--paper2);
+      border-left:8px solid var(--gold);
+      border-radius:12px;
+    }
+    .year{
+      font-size:1.2rem;
+      font-weight:900;
+      color:var(--accent);
+    }
+
+    .glossar{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:.8rem;
+    }
+    .term{
+      background:var(--paper2);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:.9rem;
+    }
+    .term strong{color:var(--accent)}
+
+    .quiz-card{
+      background:var(--paper2);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:1rem;
+      margin:.8rem 0;
+    }
+    .answer{
+      min-height:1.6rem;
+      margin-top:.7rem;
+      font-weight:800;
+    }
+    .right{color:var(--green)}
+    .wrong{color:var(--red)}
+
+    .popup-backdrop{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(22,15,8,.62);
+      padding:1rem;
+      z-index:100;
+    }
+    .popup-backdrop.is-open{display:flex}
+    .popup{
+      width:min(780px,96vw);
+      max-height:88vh;
+      overflow:auto;
+      background:var(--paper);
+      border-radius:20px;
+      border:3px solid var(--gold);
+      box-shadow:0 20px 48px rgba(0,0,0,.35);
+      padding:1.2rem;
+    }
+    .popup ul{padding-left:1.25rem}
+    .popup .close-row{
+      display:flex;
+      justify-content:flex-end;
+      margin-top:1rem;
+      position:sticky;
+      bottom:-1.2rem;
+      background:linear-gradient(transparent,var(--paper) 35%);
+      padding-top:1.2rem;
+    }
+    .detail-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:.8rem;
+      margin-top:.8rem;
+    }
+    .detail-box{
+      background:var(--paper2);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:.8rem;
+    }
+    .detail-box strong{color:var(--accent-dark)}
+
+
+    .portrait-card img,
+    .contain-card img{
+      object-fit:contain !important;
+      background:#efe4c9;
+      padding:.45rem;
+    }
+
+    .caricature-card img{
+      object-fit:contain !important;
+      height:310px;
+      background:#efe4c9;
+      padding:.45rem;
+    }
+
+    .zoomable{
+      cursor:zoom-in;
+      transition:transform .15s ease, filter .15s ease;
+    }
+    .zoomable:hover,
+    .zoomable:focus{
+      filter:brightness(1.04);
+      transform:scale(1.01);
+      outline:3px solid var(--focus);
+    }
+
+    .large-popup-image{
+      width:100%;
+      max-height:72vh;
+      object-fit:contain;
+      display:block;
+      background:#efe4c9;
+      border-radius:14px;
+      border:1px solid var(--line);
+    }
+
+    .flag-wartburg-visual{
+      min-height:235px;
+      position:relative;
+      background:
+        linear-gradient(rgba(50,32,14,.35),rgba(50,32,14,.35)),
+        url("https://commons.wikimedia.org/wiki/Special:FilePath/Wartburg_demonstration_1817.jpg?width=900") center/cover;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:1rem;
+    }
+
+    .historic-flag{
+      width:min(320px,90%);
+      height:180px;
+      border:4px solid rgba(255,255,255,.86);
+      box-shadow:0 12px 28px rgba(0,0,0,.35);
+      display:grid;
+      grid-template-rows:1fr 1fr 1fr;
+      transform:rotate(-2deg);
+      background:white;
+    }
+
+    .historic-flag span:nth-child(1){background:#000;}
+    .historic-flag span:nth-child(2){background:#dd0000;}
+    .historic-flag span:nth-child(3){background:#ffcc00;}
+
+    .flag-label{
+      position:absolute;
+      left:.8rem;
+      right:.8rem;
+      bottom:.8rem;
+      background:rgba(255,250,241,.94);
+      color:#3b2612;
+      font-weight:900;
+      border-radius:999px;
+      padding:.45rem .7rem;
+      text-align:center;
+      border:1px solid var(--line);
+    }
+
+
+    .two-col{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:1rem;
+      align-items:start;
+    }
+
+    .print-note{
+      font-size:.95rem;
+      color:#5c4a32;
+    }
+
+
+
+    .popup.image-mode{
+      width:min(1220px,97vw);
+      max-height:94vh;
+      padding:1rem;
+    }
+
+    .image-zoom-scroll{
+      width:100%;
+      max-height:78vh;
+      overflow:auto;
+      background:#efe4c9;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:.6rem;
+    }
+
+    .image-zoom-scroll img{
+      display:block;
+      width:100%;
+      min-width:min(1100px,140vw);
+      height:auto;
+      max-height:none;
+      object-fit:contain;
+      border-radius:10px;
+      background:#efe4c9;
+    }
+
+    @media (min-width:1000px){
+      .popup.image-mode{
+        width:96vw;
+      }
+
+      .image-zoom-scroll img{
+        min-width:1350px;
+      }
+    }
+
+    .method-compact{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:.8rem;
+      margin-top:.8rem;
+    }
+
+    .method-compact .method-step{
+      min-height:160px;
+    }
+
+    .method-step .step-number{
+      display:inline-flex;
+      width:2rem;
+      height:2rem;
+      align-items:center;
+      justify-content:center;
+      border-radius:50%;
+      background:var(--accent);
+      color:white;
+      font-weight:900;
+      margin-right:.35rem;
+    }
+
+
+
+    .solution-btn{
+      margin-left:.5rem;
+      margin-top:.35rem;
+      padding:.45rem .75rem;
+      font-size:.92rem;
+      min-height:36px;
+      background:#6f4a16;
+    }
+
+    #aufgaben li{
+      margin-bottom:.8rem;
+    }
+
+    @media print{
+      .solution-btn{
+        display:none !important;
+      }
+    }
+
+
+    .leitfrage{
+      max-width:980px;
+      margin:1rem auto 0;
+      padding:.9rem 1rem;
+      background:rgba(255,250,241,.94);
+      color:#3b2612;
+      border-left:8px solid var(--gold);
+      border-radius:14px;
+      font-weight:900;
+      box-shadow:0 4px 12px rgba(0,0,0,.12);
+    }
+
+    .contrast-box{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:1rem;
+      margin-top:1rem;
+    }
+
+    .contrast-card{
+      background:var(--paper2);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:1rem;
+    }
+
+    .contrast-card h3{
+      margin-top:0;
+    }
+
+    .afb-block{
+      margin:1rem 0;
+      padding:1rem;
+      background:var(--paper2);
+      border:1px solid var(--line);
+      border-radius:16px;
+    }
+
+    .afb-block h3{
+      margin-top:0;
+      color:var(--accent-dark);
+    }
+
+    .print-summary{
+      display:none;
+    }
+
+    .feedback-explanation{
+      display:block;
+      margin-top:.35rem;
+      font-weight:600;
+      color:#3b2612;
+    }
+
+    @media (max-width:850px){
+      .contrast-box{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media print {
+      .print-summary {
+        display:block !important;
+      }
+    }
+
+
+    @media (max-width:850px){
+      .method-compact{
+        grid-template-columns:1fr;
+      }
+
+      .image-zoom-scroll img{
+        min-width:980px;
+      }
+    }
+
+
+    @media (min-width:900px){
+      main{
+        max-width:1280px;
+      }
+
+      .card-grid{
+        grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+      }
+
+      #personen .card-grid,
+      #quellen .card-grid{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+      }
+
+      #quellen .card-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+
+      .card img{
+        height:260px;
+      }
+
+      .portrait-card img{
+        height:300px;
+      }
+
+      .caricature-card img{
+        height:360px;
+      }
+
+      .map-figure img{
+        max-height:720px;
+      }
+    }
+
+    @media (min-width:900px) and (max-width:1180px){
+      #personen .card-grid{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+      }
+
+      #quellen .card-grid{
+        grid-template-columns:repeat(2,minmax(0,1fr));
+      }
+    }
+
+    @media (min-width:1181px){
+      .card-grid{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+      }
+
+      #vorgeschichte .card-grid{
+        grid-template-columns:repeat(4,minmax(0,1fr));
+      }
+
+      #kriege .card-grid{
+        grid-template-columns:repeat(3,minmax(0,1fr));
+      }
+    }
+
+    .method-list{
+      display:grid;
+      gap:.75rem;
+      margin-top:.8rem;
+    }
+
+    .method-step{
+      background:var(--paper2);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:.85rem;
+    }
+
+    .method-step strong{
+      color:var(--accent-dark);
+    }
+
+
+    @media (max-width:850px){
+  
+    .portrait-card img,
+    .contain-card img{
+      object-fit:contain !important;
+      background:#efe4c9;
+      padding:.45rem;
+    }
+
+    .caricature-card img{
+      object-fit:contain !important;
+      height:310px;
+      background:#efe4c9;
+      padding:.45rem;
+    }
+
+    .zoomable{
+      cursor:zoom-in;
+      transition:transform .15s ease, filter .15s ease;
+    }
+    .zoomable:hover,
+    .zoomable:focus{
+      filter:brightness(1.04);
+      transform:scale(1.01);
+      outline:3px solid var(--focus);
+    }
+
+    .large-popup-image{
+      width:100%;
+      max-height:72vh;
+      object-fit:contain;
+      display:block;
+      background:#efe4c9;
+      border-radius:14px;
+      border:1px solid var(--line);
+    }
+
+    .flag-wartburg-visual{
+      min-height:235px;
+      position:relative;
+      background:
+        linear-gradient(rgba(50,32,14,.35),rgba(50,32,14,.35)),
+        url("https://commons.wikimedia.org/wiki/Special:FilePath/Wartburg_demonstration_1817.jpg?width=900") center/cover;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:1rem;
+    }
+
+    .historic-flag{
+      width:min(320px,90%);
+      height:180px;
+      border:4px solid rgba(255,255,255,.86);
+      box-shadow:0 12px 28px rgba(0,0,0,.35);
+      display:grid;
+      grid-template-rows:1fr 1fr 1fr;
+      transform:rotate(-2deg);
+      background:white;
+    }
+
+    .historic-flag span:nth-child(1){background:#000;}
+    .historic-flag span:nth-child(2){background:#dd0000;}
+    .historic-flag span:nth-child(3){background:#ffcc00;}
+
+    .flag-label{
+      position:absolute;
+      left:.8rem;
+      right:.8rem;
+      bottom:.8rem;
+      background:rgba(255,250,241,.94);
+      color:#3b2612;
+      font-weight:900;
+      border-radius:999px;
+      padding:.45rem .7rem;
+      text-align:center;
+      border:1px solid var(--line);
+    }
+
+
+    .two-col{grid-template-columns:1fr}
+      .time-card{grid-template-columns:1fr}
+      .card img{height:210px}
+    }
+
+    @media print{
+      body{background:white}
+      header{
+        background:white;
+        color:black;
+        border-bottom:2px solid #999;
+      }
+      nav, button, .button-link, .btn-row, .figure-actions, .popup-backdrop{display:none !important}
+      section{box-shadow:none; break-inside:avoid}
+      .card img{height:165px}
+      .map-figure img{max-height:420px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Vom Deutschen Bund zur Reichsgründung</h1>
+    <p>Eine interaktive Lernseite zur Nationalbewegung, zur Revolution von 1848/49, zu Bismarck, den Einigungskriegen und zur Reichsgründung 1871.</p>
+    <p class="leitfrage">
+      Leitfrage: War die Reichsgründung von 1871 die Erfüllung der Freiheitsbewegung
+      oder vor allem das Ergebnis preußischer Machtpolitik?
+    </p>
+  </header>
+
+  <nav aria-label="Seitennavigation">
+    <div class="nav-inner">
+      <a href="#ueberblick">Überblick</a>
+      <a href="#vorgeschichte">Vorgeschichte</a>
+      <a href="#deutscherbund">Deutscher Bund</a>
+      <a href="#kriege">Einigungskriege</a>
+      <a href="#personen">Personen</a>
+      <a href="#karte">Karte</a>
+      <a href="#perspektiven">Perspektiven</a>
+      <a href="#quellen">Zitat/Karikatur</a>
+      <a href="#zeitstrahl">Zeitstrahl</a>
+      <a href="#quiz">Quiz</a>
+      <a href="#aufgaben">Aufgaben</a>
+    </div>
+  </nav>
+
+  <main>
+    <section id="ueberblick">
+      <h2>Überblick</h2>
+      <p class="lead">
+        Die Reichsgründung 1871 kann man nur richtig verstehen, wenn man die Vorgeschichte kennt:
+        Schon lange vor Bismarck forderten viele Menschen nationale Einheit und mehr Freiheit.
+        Wichtige Stationen waren das <strong>Wartburgfest 1817</strong>, das <strong>Hambacher Fest 1832</strong>
+        und die <strong>Revolution von 1848/49</strong>. Erst danach kam die Einigung „von oben“ durch Preußen,
+        Bismarck und die drei Einigungskriege.
+      </p>
+
+      <div class="btn-row">
+        <button onclick="speakText('overviewRead')">Text vorlesen</button>
+        <button onclick="stopSpeak()">Vorlesen stoppen</button>
+        <button class="secondary-btn" onclick="openDetails('ueberblick')">Warum diese Reihenfolge?</button>
+      </div>
+
+      <p id="overviewRead" style="display:none">
+        Die Reichsgründung 1871 kann man nur richtig verstehen, wenn man die Vorgeschichte kennt:
+        Schon lange vor Bismarck forderten viele Menschen nationale Einheit und mehr Freiheit.
+        Wichtige Stationen waren das Wartburgfest 1817, das Hambacher Fest 1832 und die Revolution von 1848/49.
+        Erst danach kam die Einigung von oben durch Preußen, Bismarck und die drei Einigungskriege.
+      </p>
+
+
+      <p class="source-box">
+        Hinweis zur Vorlesefunktion: Die Aussprache hängt vom Browser und den installierten Stimmen ab.
+        Falls keine deutsche Stimme verfügbar ist, kann die Vorlesefunktion unnatürlich klingen.
+      </p>
+      <p class="source-box">
+        Anzeigehinweis: Die Seite ist für Laptop, Beamer und Tablet optimiert. Bilder werden auf dem Laptop nicht beschnitten,
+        sondern bei Porträts, Karte und Karikatur vollständig angezeigt. Karte und Karikatur können zusätzlich vergrößert werden.
+      </p>
+    </section>
+
+    <section id="vorgeschichte">
+      <h2>1. Vorgeschichte: Der Wunsch nach Einheit und Freiheit</h2>
+      <p class="hint">
+        Diese drei Ereignisse zeigen: Die Idee eines geeinten Deutschlands entstand nicht erst 1871.
+        Viele Menschen wollten schon früher Mitbestimmung, Freiheitsrechte und nationale Einheit.
+      </p>
+
+      <div class="card-grid">
+        <figure class="card">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Wartburg_demonstration_1817.jpg?width=900"
+               alt="Darstellung des Wartburgfestes 1817">
+          <figcaption>
+            <strong>Wartburgfest 1817</strong>
+            Studenten und Professoren versammelten sich auf der Wartburg. Sie forderten nationale Einheit und politische Erneuerung.
+          </figcaption>
+          <div class="figure-actions">
+            <button onclick="openDetails('wartburg')">Details</button>
+            <a class="button-link secondary-btn" href="https://commons.wikimedia.org/wiki/File:Wartburg_demonstration_1817.jpg" target="_blank" rel="noopener">Quelle</a>
+          </div>
+        </figure>
+
+        <figure class="card">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Hambacher_Fest_1832.jpg?width=900"
+               alt="Darstellung des Hambacher Festes 1832">
+          <figcaption>
+            <strong>Hambacher Fest 1832</strong>
+            Tausende Menschen zogen zum Hambacher Schloss. Sie forderten Freiheit, Mitbestimmung und nationale Einheit.
+          </figcaption>
+          <div class="figure-actions">
+            <button onclick="openDetails('hambach')">Details</button>
+            <a class="button-link secondary-btn" href="https://commons.wikimedia.org/wiki/File:Hambacher_Fest_1832.jpg" target="_blank" rel="noopener">Quelle</a>
+          </div>
+        </figure>
+
+        <figure class="card">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Frankfurt_Nationalversammlung_1848.jpg?width=900"
+               alt="Sitzung der Nationalversammlung in der Paulskirche 1848">
+          <figcaption>
+            <strong>Revolution 1848/49</strong>
+            In der Frankfurter Paulskirche tagte die Nationalversammlung. Sie wollte eine Verfassung und ein geeintes Deutschland schaffen.
+          </figcaption>
+          <div class="figure-actions">
+            <button onclick="openDetails('revolution1848')">Details</button>
+            <a class="button-link secondary-btn" href="https://commons.wikimedia.org/wiki/File:Frankfurt_Nationalversammlung_1848.jpg" target="_blank" rel="noopener">Quelle</a>
+          </div>
+        </figure>
+      </div>
+
+      <div class="source-box">
+        Bild- und Quellenhinweise: Wartburgfest, Hambacher Fest und Paulskirche stammen aus Wikimedia Commons.
+        Zur Einordnung von Schwarz-Rot-Gold: Die Herkunft wird häufig mit dem Lützowschen Freikorps und der Jenaer Urburschenschaft verbunden; der Ursprung gilt jedoch nicht als völlig eindeutig.
+      </div>
+    </section>
+
+    <section id="deutscherbund">
+      <h2>2. Der Deutsche Bund als Ausgangslage</h2>
+      <div class="two-col">
+        <div>
+          <p>
+            Nach dem Wiener Kongress entstand 1815 der <strong>Deutsche Bund</strong>. Er war noch kein Nationalstaat,
+            sondern ein lockerer Zusammenschluss vieler deutscher Staaten. Die beiden stärksten Mächte darin waren
+            <strong>Österreich</strong> und <strong>Preußen</strong>. Zwischen beiden entwickelte sich ein Machtkampf um
+            die Führung in Deutschland.
+          </p>
+          <div class="btn-row">
+            <button class="secondary-btn" onclick="openDetails('dtbund')">Was war das Problem?</button>
+          </div>
+        </div>
+
+        <figure class="card">
+          <img src="https://burgnetz-wq.github.io/froebel/bilder/dtbund.png"
+               alt="Karte des Deutschen Bundes 1815 bis 1866">
+          <figcaption>
+            <strong>Der Deutsche Bund</strong>
+            Viele Einzelstaaten, aber kein einheitlicher deutscher Nationalstaat.
+          </figcaption>
+          <div class="figure-actions">
+            <button onclick="openDetails('dtbund')">Details</button>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <section id="kriege">
+      <h2>3. Die Einigungskriege</h2>
+      <p class="hint">
+        Die Nationalbewegung von unten scheiterte 1848/49. Danach setzte Preußen unter Bismarck stärker auf Machtpolitik.
+        Die Einigung erfolgte schließlich durch drei Kriege.
+      </p>
+
+      <div class="card-grid">
+        <figure class="card">
+          <img src="https://burgnetz-wq.github.io/froebel/bilder/1864.png"
+               alt="Darstellung zum Deutsch-Dänischen Krieg 1864">
+          <figcaption>
+            <strong>Deutsch-Dänischer Krieg 1864</strong>
+            Preußen und Österreich kämpften gemeinsam gegen Dänemark. Streitpunkt waren Schleswig und Holstein.
+          </figcaption>
+          <div class="figure-actions">
+            <button onclick="openDetails('krieg1864')">Details</button>
+          </div>
+        </figure>
+
+        <figure class="card">
+          <img src="https://burgnetz-wq.github.io/froebel/bilder/dtkrieg.png"
+               alt="Darstellung zum Deutschen Krieg 1866">
+          <figcaption>
+            <strong>Deutscher Krieg 1866</strong>
+            Preußen besiegte Österreich und entschied damit die Führungsfrage in Deutschland.
+          </figcaption>
+          <div class="figure-actions">
+            <button onclick="openDetails('krieg1866')">Details</button>
+          </div>
+        </figure>
+
+        <figure class="card">
+          <img src="https://burgnetz-wq.github.io/froebel/bilder/187071.png"
+               alt="Darstellung zum Deutsch-Französischen Krieg 1870 bis 1871">
+          <figcaption>
+            <strong>Deutsch-Französischer Krieg 1870/71</strong>
+            Der Krieg gegen Frankreich schweißte viele deutsche Staaten politisch enger zusammen.
+          </figcaption>
+          <div class="figure-actions">
+            <button onclick="openDetails('krieg187071')">Details</button>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <section id="personen">
+      <h2>4. Personen und Reichsgründung</h2>
+      <div class="card-grid">
+        <figure class="card portrait-card">
+          <img src="https://burgnetz-wq.github.io/froebel/bilder/bismarck.png"
+               alt="Otto von Bismarck um 1871">
+          <figcaption>
+            <strong>Otto von Bismarck</strong>
+            Er war der wichtigste preußische Politiker auf dem Weg zur Reichsgründung.
+          </figcaption>
+          <div class="figure-actions">
+            <button onclick="openDetails('bismarck')">Details</button>
+          </div>
+        </figure>
+
+        <figure class="card">
+          <img src="https://burgnetz-wq.github.io/froebel/bilder/wilhelm1.png"
+               alt="Wilhelm I. als Deutscher Kaiser 1871">
+          <figcaption>
+            <strong>Wilhelm I.</strong>
+            Wilhelm I. wurde 1871 zum Deutschen Kaiser ausgerufen.
+          </figcaption>
+          <div class="figure-actions">
+            <button onclick="openDetails('wilhelm1')">Details</button>
+          </div>
+        </figure>
+
+        <figure class="card">
+          <img src="https://burgnetz-wq.github.io/froebel/bilder/versailles.png"
+               alt="Reichsgründung im Spiegelsaal von Versailles 1871">
+          <figcaption>
+            <strong>Reichsgründung in Versailles</strong>
+            Das Kaiserreich entstand rechtlich zum 1. Januar 1871; die Kaiserproklamation fand am 18. Januar 1871 im Spiegelsaal von Versailles statt.
+          </figcaption>
+          <div class="figure-actions">
+            <button onclick="openDetails('versailles')">Details</button>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <section id="karte">
+      <h2>5. Karte: Räume der Einigung und der Kriege</h2>
+      <p>
+        Diese Wikimedia-Karte hilft, die politischen Räume zu verstehen: Norddeutscher Bund, süddeutsche Staaten,
+        Frankreich und Elsass-Lothringen.
+      </p>
+
+      <figure class="card map-figure">
+        <img class="zoomable"
+             src="https://commons.wikimedia.org/wiki/Special:FilePath/C._1871_Unification_of_Germany.jpg?width=1400"
+             alt="Karte zur deutschen Einigung 1866 bis 1871"
+             title="Karte anklicken zum Vergrößern"
+             tabindex="0"
+             onclick="openImagePopup('Karte vergrößert: Deutsche Einigung 1866–1871', 'https://commons.wikimedia.org/wiki/Special:FilePath/C._1871_Unification_of_Germany.jpg?width=2200', 'Die Karte zeigt die Räume der deutschen Einigung: Norddeutscher Bund, süddeutsche Staaten, Frankreich und Elsass-Lothringen.')"
+             onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); this.click();}">
+        <figcaption>
+          <strong>Deutsche Einigung 1866–1871</strong>
+          Die Karte zeigt, wie aus preußischer Führung Schritt für Schritt ein deutsches Kaiserreich wurde.
+        </figcaption>
+        <div class="figure-actions">
+          <button onclick="openDetails('karte')">Karte erklären</button>
+          <button onclick="openImagePopup('Karte vergrößert: Deutsche Einigung 1866–1871', 'https://commons.wikimedia.org/wiki/Special:FilePath/C._1871_Unification_of_Germany.jpg?width=2200', 'Die Karte zeigt die Räume der deutschen Einigung: Norddeutscher Bund, süddeutsche Staaten, Frankreich und Elsass-Lothringen.')">Karte vergrößern</button>
+          <a class="button-link secondary-btn" href="https://commons.wikimedia.org/wiki/File:C._1871_Unification_of_Germany.jpg" target="_blank" rel="noopener">Quelle</a>
+        </div>
+      </figure>
+
+      <div class="source-box">
+        Quelle der Karte: Wikimedia Commons, <em>C. 1871 Unification of Germany.jpg</em>. Historische Vorlage:
+        William R. Shepherd, <em>Historical Atlas</em> (1911).
+      </div>
+    </section>
+
+
+    <section id="perspektiven">
+      <h2>6. Perspektiven auf die Reichsgründung</h2>
+      <p class="hint">
+        Die Reichsgründung war nicht für alle Beteiligten dasselbe Ereignis. Je nach Perspektive konnte sie als Erfolg,
+        Enttäuschung, Machtverlust oder Demütigung erscheinen.
+      </p>
+      <div class="glossar">
+        <div class="term">
+          <strong>Liberale Nationalbewegung:</strong><br>
+          Viele begrüßten die Einheit, waren aber enttäuscht, dass sie nicht demokratisch-parlamentarisch
+          durchgesetzt wurde.
+        </div>
+        <div class="term">
+          <strong>Preußen:</strong><br>
+          Preußen gewann die Führungsrolle und prägte das neue Reich politisch, militärisch und symbolisch stark.
+        </div>
+        <div class="term">
+          <strong>Österreich:</strong><br>
+          Österreich wurde nach 1866 aus der deutschen Einigung ausgeschlossen. Damit setzte sich die kleindeutsche Lösung durch.
+        </div>
+        <div class="term">
+          <strong>Süddeutsche Staaten:</strong><br>
+          Sie traten dem Reich bei, behielten aber teilweise eigene Rechte. Die Einigung war also kein einfacher Zentralstaat.
+        </div>
+        <div class="term">
+          <strong>Frankreich:</strong><br>
+          Versailles und der Verlust Elsass-Lothringens wurden als Demütigung erlebt und belasteten das Verhältnis dauerhaft.
+        </div>
+        <div class="term">
+          <strong>Schülerurteil:</strong><br>
+          Die zentrale Frage lautet: War 1871 ein Fortschritt, ein Widerspruch oder beides?
+        </div>
+      </div>
+    </section>
+
+    <section id="quellen">
+      <h2>7. Zitat und Karikatur</h2>
+      <p class="hint">
+        Jetzt kommt die spannende Frage: War die Reichsgründung eher ein Werk der Freiheitsbewegung oder ein Werk der Machtpolitik?
+      </p>
+
+      <div class="card-grid">
+        <figure class="card">
+          <div class="text-only">
+            <blockquote style="font-size:1.35rem; line-height:1.45; margin:0; font-weight:800; color:#4a2a0d;">
+              „Nicht durch Reden und Majoritätsbeschlüsse […] sondern durch Eisen und Blut.“
+            </blockquote>
+            <p style="margin-top:1rem;">
+              Otto von Bismarck, Rede vor der Budgetkommission des preußischen Abgeordnetenhauses, 1862
+            </p>
+          </div>
+          <figcaption>
+            <strong>Bismarcks „Eisen und Blut“</strong>
+            Das Zitat zeigt eine Politik, die weniger auf Abstimmungen als auf Macht und Militär setzt.
+          </figcaption>
+          <div class="figure-actions">
+            <button onclick="openDetails('zitatBismarck')">Zitat erklären</button>
+          </div>
+        </figure>
+
+        <figure class="card caricature-card">
+          <img class="zoomable"
+               src="https://commons.wikimedia.org/wiki/Special:FilePath/Punsch_1866_Bismarck_Bundeshotel.jpg?width=900"
+               alt="Karikatur zu Bismarck und dem Deutschen Bund 1866"
+               title="Karikatur anklicken zum Vergrößern"
+               tabindex="0"
+               onclick="openImagePopup('Karikatur vergrößert: Bismarck und der Deutsche Bund 1866', 'https://commons.wikimedia.org/wiki/Special:FilePath/Punsch_1866_Bismarck_Bundeshotel.jpg?width=2600', 'Beschreiben: Was ist zu sehen? Deuten: Was wird übertrieben oder kritisiert? Schlussfolgerung: Welche Aussage macht die Karikatur über Bismarcks Politik?')"
+               onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault(); this.click();}">
+          <figcaption>
+            <strong>Karikatur zu Bismarck, 1866</strong>
+            Die Karikatur kommentiert Bismarcks Politik in der Krise des Deutschen Bundes.
+          </figcaption>
+          <div class="figure-actions">
+            <button onclick="openDetails('karikaturBismarck1866')">Karikatur analysieren</button>
+            <button onclick="openDetails('karikaturMethode')">Karikatur-Methode</button>
+            <button onclick="openImagePopup('Karikatur vergrößert: Bismarck und der Deutsche Bund 1866', 'https://commons.wikimedia.org/wiki/Special:FilePath/Punsch_1866_Bismarck_Bundeshotel.jpg?width=2600', 'Beschreiben: Was ist zu sehen? Deuten: Was wird übertrieben oder kritisiert? Schlussfolgerung: Welche Aussage macht die Karikatur über Bismarcks Politik?')">Karikatur vergrößern</button>
+            <a class="button-link secondary-btn" href="https://commons.wikimedia.org/wiki/File:Punsch_1866_Bismarck_Bundeshotel.jpg" target="_blank" rel="noopener">Quelle</a>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <section id="zeitstrahl">
+      <h2>8. Zeitstrahl</h2>
+      <div class="timeline">
+        <div class="time-card">
+          <div class="year">1815</div>
+          <div><strong>Deutscher Bund:</strong> Nach dem Wiener Kongress entsteht ein lockerer Staatenbund.</div>
+        </div>
+        <div class="time-card">
+          <div class="year">1817</div>
+          <div><strong>Wartburgfest:</strong> Frühe nationale und liberale Forderungen werden öffentlich sichtbar.</div>
+        </div>
+        <div class="time-card">
+          <div class="year">1832</div>
+          <div><strong>Hambacher Fest:</strong> Der Ruf nach Freiheit, Mitbestimmung und nationaler Einheit wird lauter.</div>
+        </div>
+        <div class="time-card">
+          <div class="year">1848/49</div>
+          <div><strong>Revolution und Paulskirche:</strong> Versuch, Deutschland mit Verfassung und Parlament zu einigen – am Ende erfolglos.</div>
+        </div>
+        <div class="time-card">
+          <div class="year">1864</div>
+          <div><strong>Deutsch-Dänischer Krieg:</strong> Preußen und Österreich siegen gegen Dänemark.</div>
+        </div>
+        <div class="time-card">
+          <div class="year">1866</div>
+          <div><strong>Deutscher Krieg:</strong> Preußen besiegt Österreich und entscheidet die Führungsfrage.</div>
+        </div>
+        <div class="time-card">
+          <div class="year">1870/71</div>
+          <div><strong>Deutsch-Französischer Krieg:</strong> Der äußere Krieg stärkt den inneren Zusammenschluss.</div>
+        </div>
+        <div class="time-card">
+          <div class="year">1871</div>
+          <div><strong>Reichsgründung:</strong> Wilhelm I. wird in Versailles zum Deutschen Kaiser ausgerufen.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="glossar">
+      <h2>9. Glossar</h2>
+      <div class="glossar">
+        <div class="term"><strong>Deutscher Bund:</strong><br>Zusammenschluss deutscher Staaten von 1815 bis 1866.</div>
+        <div class="term"><strong>Nationalstaat:</strong><br>Staat, der sich als gemeinsamer Staat einer Nation versteht.</div>
+        <div class="term"><strong>Nationalbewegung:</strong><br>Bewegung, die ein geeintes Deutschland und oft auch politische Freiheit forderte.</div>
+        <div class="term"><strong>Paulskirche:</strong><br>Ort der Frankfurter Nationalversammlung 1848/49.</div>
+        <div class="term"><strong>Kleindeutsche Lösung:</strong><br>Deutscher Nationalstaat unter preußischer Führung ohne Österreich.</div>
+        <div class="term"><strong>Einigungskriege:</strong><br>Kriege von 1864, 1866 und 1870/71 auf dem Weg zur Reichsgründung.</div>
+      </div>
+    </section>
+
+
+    <section id="quiz">
+      <h2>10. Quiz</h2>
+
+      <div class="quiz-card">
+        <p><strong>1. Warum ist das Hambacher Fest für die Vorgeschichte der Reichsgründung wichtig?</strong></p>
+        <button onclick="checkAnswer('q1', true, 'Es verband nationale Einheit mit Freiheits- und Bürgerrechten.')">
+          Es verband nationale Einheit mit Freiheits- und Bürgerrechten.
+        </button>
+        <button onclick="checkAnswer('q1', false, 'Das Hambacher Fest war keine staatliche Gründungsversammlung.')">
+          Dort wurde das Deutsche Kaiserreich gegründet.
+        </button>
+        <button onclick="checkAnswer('q1', false, 'Bismarck spielte 1832 noch keine politische Führungsrolle.')">
+          Dort verkündete Bismarck seine Einigungspolitik.
+        </button>
+        <div id="q1" class="answer"></div>
+      </div>
+
+      <div class="quiz-card">
+        <p><strong>2. Was unterscheidet 1848/49 von 1871?</strong></p>
+        <button onclick="checkAnswer('q2', true, '1848/49 steht für eine parlamentarisch-demokratische Einigung von unten; 1871 für eine monarchisch-preußische Einigung von oben.')">
+          1848/49 war eine Einigung von unten, 1871 eine Einigung von oben.
+        </button>
+        <button onclick="checkAnswer('q2', false, '1848/49 war gerade kein erfolgreicher Fürstenbeschluss.')">
+          1848/49 wurde die Einheit durch die Fürsten vollendet.
+        </button>
+        <button onclick="checkAnswer('q2', false, '1871 war kein demokratischer Volksentscheid über die Reichsgründung.')">
+          1871 entstand das Reich durch eine Volksabstimmung.
+        </button>
+        <div id="q2" class="answer"></div>
+      </div>
+
+      <div class="quiz-card">
+        <p><strong>3. Wer wurde am 18. Januar 1871 in Versailles zum Deutschen Kaiser proklamiert?</strong></p>
+        <button onclick="checkAnswer('q3', true, 'Wilhelm I. war König von Preußen und wurde Deutscher Kaiser.')">Wilhelm I.</button>
+        <button onclick="checkAnswer('q3', false, 'Wilhelm II. wurde erst 1888 Kaiser.')">Wilhelm II.</button>
+        <button onclick="checkAnswer('q3', false, 'Bismarck war Reichskanzler, nicht Kaiser.')">Otto von Bismarck</button>
+        <div id="q3" class="answer"></div>
+      </div>
+
+      <div class="quiz-card">
+        <p><strong>4. Welche Folge hatte der Deutsche Krieg von 1866?</strong></p>
+        <button onclick="checkAnswer('q4', true, 'Preußen setzte sich gegen Österreich durch; der Deutsche Bund wurde aufgelöst.')">
+          Preußen entschied die Führungsfrage gegen Österreich.
+        </button>
+        <button onclick="checkAnswer('q4', false, 'Schleswig und Holstein standen vor allem im Zusammenhang mit dem Krieg von 1864.')">
+          Dänemark erhielt Schleswig und Holstein zurück.
+        </button>
+        <button onclick="checkAnswer('q4', false, 'Frankreich war 1866 nicht der zentrale Gegner Preußens.')">
+          Frankreich wurde aus dem Deutschen Bund ausgeschlossen.
+        </button>
+        <div id="q4" class="answer"></div>
+      </div>
+
+      <div class="quiz-card">
+        <p><strong>5. Was meint Bismarcks Formel „Eisen und Blut“ im Zusammenhang der Reichsgründung?</strong></p>
+        <button onclick="checkAnswer('q5', true, 'Gemeint sind Machtpolitik, militärische Stärke und politische Durchsetzung.')">
+          Machtpolitik und militärische Durchsetzung
+        </button>
+        <button onclick="checkAnswer('q5', false, 'Das Gegenteil ist gemeint: Bismarck setzt gerade nicht auf reine Parlamentsdebatten.')">
+          Eine rein parlamentarische Einigung durch Abstimmungen
+        </button>
+        <button onclick="checkAnswer('q5', false, 'Wirtschaft spielte eine Rolle, ist aber nicht der Kern dieser Formel.')">
+          Eine wirtschaftliche Einigung durch Handelspolitik
+        </button>
+        <div id="q5" class="answer"></div>
+      </div>
+    </section>
+
+
+
+    <section id="aufgaben">
+      <h2>11. Arbeitsaufträge</h2>
+
+      <div class="afb-block">
+        <h3>AFB I – Wiedergeben</h3>
+        <ol>
+          <li>Nenne die wichtigsten Stationen von 1815 bis 1871 in der richtigen Reihenfolge. <button class="solution-btn" onclick="openDetails('loesung1')">Lösungsvorschlag</button></li>
+          <li>Notiere zu Wartburgfest, Hambacher Fest und Paulskirche jeweils eine zentrale Forderung. <button class="solution-btn" onclick="openDetails('loesung2')">Lösungsvorschlag</button></li>
+        </ol>
+      </div>
+
+      <div class="afb-block">
+        <h3>AFB II – Erklären und Vergleichen</h3>
+        <ol start="3">
+          <li>Erkläre den Unterschied zwischen der Einigung „von unten“ und der Einigung „von oben“. <button class="solution-btn" onclick="openDetails('loesung3')">Lösungsvorschlag</button></li>
+          <li>Erkläre, warum der Sieg Preußens 1866 eine Voraussetzung für die spätere Reichsgründung war. <button class="solution-btn" onclick="openDetails('loesung4')">Lösungsvorschlag</button></li>
+          <li>Untersuche die Karikatur nach den Schritten: Beschreiben – Deuten – Schlussfolgerung. <button class="solution-btn" onclick="openDetails('loesung5')">Lösungsvorschlag</button></li>
+          <li>Erkläre mit Hilfe der Karte, welche Räume für die Reichsgründung wichtig waren. <button class="solution-btn" onclick="openDetails('loesung6')">Lösungsvorschlag</button></li>
+        </ol>
+      </div>
+
+      <div class="afb-block">
+        <h3>AFB III – Beurteilen</h3>
+        <ol start="7">
+          <li>Beurteile: War die Reichsgründung eher ein Erfolg der Freiheitsbewegung oder ein Erfolg preußischer Machtpolitik? <button class="solution-btn" onclick="openDetails('loesung7')">Lösungsvorschlag</button></li>
+          <li>Nimm Stellung: Ist Bismarck eher als Reichsgründer, Machtpolitiker oder beides zu bewerten? Begründe mit mindestens zwei Materialien der Seite. <button class="solution-btn" onclick="openDetails('loesung8')">Lösungsvorschlag</button></li>
+          <li>Urteile: War 1871 eher ein Fortschritt, ein Rückschritt oder ein widersprüchlicher Kompromiss? <button class="solution-btn" onclick="openDetails('loesung9')">Lösungsvorschlag</button></li>
+        </ol>
+      </div>
+
+      <p class="print-note">Hinweis: In der Druckansicht verschwinden die Buttons. So kann die Seite auch als Arbeitsblatt verwendet werden.</p>
+    </section>
+
+
+    <section class="print-summary">
+      <h2>Kurzfassung für den Ausdruck</h2>
+      <p>
+        1817, 1832 und 1848/49 zeigen die Einigungsidee von unten: Einheit, Freiheit, Verfassung und Mitbestimmung.
+        1871 entstand die Einheit dagegen durch preußische Führung, Fürstenentscheidungen, Diplomatie und Kriege.
+        Die Leitfrage lautet daher: Einheit gewonnen – Freiheit verwirklicht?
+      </p>
+    </section>
+  </main>
+
+  <div class="popup-backdrop" id="popupBackdrop" onclick="backdropClose(event)">
+    <div class="popup" id="popupBox" role="dialog" aria-modal="true" aria-labelledby="popupTitle">
+      <h2 id="popupTitle">Details</h2>
+      <div id="popupBody"></div>
+      <div class="close-row" style="gap:.5rem; flex-wrap:wrap;">
+        <button class="secondary-btn" onclick="speakPopup()">Popup vorlesen</button>
+        <button class="secondary-btn" onclick="stopSpeak()">Stoppen</button>
+        <button onclick="closePopup()">Schließen</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let lastFocusedElement = null;
+
+    const details = {
+      ueberblick: {
+        title: "Warum ist diese Reihenfolge sinnvoll?",
+        html: `
+          <p>Viele Darstellungen beginnen sofort mit Bismarck. Für den Unterricht ist es aber hilfreicher, die Entwicklung in zwei großen Schritten zu zeigen:</p>
+          <div class="detail-grid">
+            <div class="detail-box"><strong>1. Nationalbewegung:</strong><br>Wartburgfest, Hambacher Fest und Revolution 1848/49 zeigen den Wunsch nach Einheit und Freiheit.</div>
+            <div class="detail-box"><strong>2. Reichsgründung von oben:</strong><br>Nach dem Scheitern von 1848/49 setzte sich die preußische Machtpolitik durch.</div>
+          </div>
+          <p><strong>Merksatz:</strong> 1871 fiel nicht vom Himmel, sondern hatte eine längere Vorgeschichte.</p>
+        `
+      },
+
+      wartburg: {
+        title: "Wartburgfest 1817",
+        html: `
+          <p><strong>Worum ging es?</strong> Studenten und Professoren trafen sich auf der Wartburg, um an die Reformation und die Befreiungskriege zu erinnern.</p>
+          <ul>
+            <li>Sie forderten mehr nationale Einheit.</li>
+            <li>Sie kritisierten politische Zersplitterung und Rückständigkeit.</li>
+            <li>Das Fest gilt als frühes Symbol der deutschen Nationalbewegung.</li>
+          </ul>
+          <p><strong>Bedeutung:</strong> Das Wartburgfest zeigt, dass der Wunsch nach einem geeinten Deutschland schon lange vor Bismarck vorhanden war. Die später wichtigen Farben Schwarz-Rot-Gold wurden hier mit nationalen und freiheitlichen Forderungen verbunden. Zugleich war die frühe Nationalbewegung nicht nur modern-demokratisch: Es gab auch nationalistische Übersteigerungen und Feindbilder. Deshalb muss man das Ereignis differenziert betrachten.</p>
+        `
+      },
+
+
+      farben: {
+        title: "Schwarz-Rot-Gold: Herkunft und Bedeutung",
+        html: `
+          <p><strong>Wichtig:</strong> Der Ursprung der Farben Schwarz-Rot-Gold ist historisch nicht völlig eindeutig. Eine häufig genannte Erklärung verbindet sie mit dem Lützowschen Freikorps und der Jenaer Urburschenschaft.</p>
+          <ul>
+            <li><strong>Schwarz:</strong> wird oft mit den schwarzen Uniformen des Lützowschen Freikorps verbunden.</li>
+            <li><strong>Rot:</strong> wird häufig auf rote Aufschläge oder Vorstöße an diesen Uniformen bezogen.</li>
+            <li><strong>Gold:</strong> wird oft mit goldfarbenen Knöpfen oder Verzierungen erklärt.</li>
+            <li>Die Jenaer Urburschenschaft machte diese Farben im frühen 19. Jahrhundert bekannter.</li>
+            <li>Beim Wartburgfest 1817 wurden schwarz-rot-goldene Zeichen und Fahnen mit nationalen und freiheitlichen Forderungen verbunden.</li>
+          </ul>
+          <p><strong>Bedeutung im Unterricht:</strong> Schwarz-Rot-Gold steht hier nicht einfach für den heutigen Staat, sondern für frühe Hoffnungen auf nationale Einheit, Freiheit und politische Mitbestimmung.</p>
+          <p><strong>Merksatz:</strong> Aus studentischen Symbolen der Freiheits- und Nationalbewegung wurden später deutsche Nationalfarben.</p>
+        `
+      },
+
+      hambach: {
+        title: "Hambacher Fest 1832",
+        html: `
+          <p><strong>Worum ging es?</strong> Beim Hambacher Fest versammelten sich Tausende Menschen und forderten politische Freiheit, nationale Einheit, Bürgerrechte, Pressefreiheit, Versammlungsfreiheit und politische Mitbestimmung.</p>
+          <ul>
+            <li>Das Fest war breiter und politischer als das Wartburgfest.</li>
+            <li>Es verband nationale Forderungen mit Freiheitsrechten und Mitbestimmung.</li>
+            <li>Es gilt als wichtiger Meilenstein der Demokratiegeschichte.</li>
+          </ul>
+          <p><strong>Bedeutung:</strong> Das Hambacher Fest machte sichtbar, dass viele Menschen nicht nur Einheit, sondern auch politische Rechte wollten. Es war breiter angelegt als das Wartburgfest und gilt als wichtiger Meilenstein der deutschen Demokratiegeschichte.</p>
+        `
+      },
+
+      revolution1848: {
+        title: "Revolution 1848/49 und Paulskirche",
+        html: `
+          <p><strong>Worum ging es?</strong> 1848/49 versuchten Revolutionäre und Abgeordnete, Deutschland mit Hilfe eines Parlaments und einer Verfassung zu einen.</p>
+          <ul>
+            <li>In Frankfurt tagte die Nationalversammlung in der Paulskirche.</li>
+            <li>Sie erarbeitete eine Verfassung für ein geeintes Deutschland.</li>
+            <li>Das Vorhaben scheiterte am Widerstand der Fürsten, an politischen Konflikten und daran, dass die Nationalversammlung keine eigene Machtbasis und keine eigene Armee hatte, um ihre Beschlüsse durchzusetzen.</li>
+          </ul>
+          <p><strong>Bedeutung:</strong> Die Revolution scheiterte, aber ihre Ideen wirkten weiter. Später wurde Deutschland allerdings nicht demokratisch von unten, sondern monarchisch von oben geeint. Dadurch entstand 1871 Einheit, aber keine parlamentarische Demokratie im modernen Sinn.</p>
+        `
+      },
+
+      dtbund: {
+        title: "Der Deutsche Bund als Problem",
+        html: `
+          <p>Der Deutsche Bund war kein gemeinsamer Nationalstaat, sondern ein lockerer Staatenbund.</p>
+          <ul>
+            <li>Es gab viele Einzelstaaten mit eigenen Regierungen.</li>
+            <li>Österreich und Preußen konkurrierten um die Führungsrolle.</li>
+            <li>Dadurch war Einheit schwer zu erreichen.</li>
+          </ul>
+          <p><strong>Wichtige Frage:</strong> Sollte ein geeintes Deutschland mit oder ohne Österreich entstehen?</p>
+        `
+      },
+
+      krieg1864: {
+        title: "Deutsch-Dänischer Krieg 1864",
+        html: `
+          <p>Preußen und Österreich kämpften gemeinsam gegen Dänemark.</p>
+          <ul>
+            <li>Es ging um Schleswig und Holstein.</li>
+            <li>Der gemeinsame Sieg führte später zum Streit zwischen Preußen und Österreich.</li>
+          </ul>
+          <p><strong>Bedeutung:</strong> Der Krieg war der erste Schritt zur späteren Vorherrschaft Preußens.</p>
+        `
+      },
+
+      krieg1866: {
+        title: "Deutscher Krieg 1866",
+        html: `
+          <p>Jetzt kämpften Preußen und Österreich gegeneinander.</p>
+          <ul>
+            <li>Preußen siegte.</li>
+            <li>Der Deutsche Bund wurde aufgelöst.</li>
+            <li>Danach entstand der Norddeutsche Bund unter preußischer Führung.</li>
+          </ul>
+          <p><strong>Bedeutung:</strong> Damit war die Führungsfrage entschieden: Preußen setzte sich gegen Österreich durch.</p>
+        `
+      },
+
+      krieg187071: {
+        title: "Deutsch-Französischer Krieg 1870/71",
+        html: `
+          <p>Preußen und die süddeutschen Staaten kämpften gemeinsam gegen Frankreich.</p>
+          <ul>
+            <li>Der Krieg schuf ein starkes Zusammengehörigkeitsgefühl.</li>
+            <li>Er förderte den Beitritt der süddeutschen Staaten zum neuen Reich.</li>
+            <li>Frankreich verlor Elsass-Lothringen.</li>
+          </ul>
+          <p><strong>Bedeutung:</strong> Der Krieg war der letzte Schritt zur Gründung des Deutschen Kaiserreichs.</p>
+        `
+      },
+
+      bismarck: {
+        title: "Otto von Bismarck",
+        html: `
+          <p>Bismarck war preußischer Ministerpräsident und später erster Reichskanzler.</p>
+          <ul>
+            <li>Er nutzte diplomatisches Geschick und Machtpolitik.</li>
+            <li>Er wollte ein geeintes Deutschland unter preußischer Führung.</li>
+            <li>Seine Politik wird oft mit „Blut und Eisen“ verbunden.</li>
+          </ul>
+          <p><strong>Achtung:</strong> Bismarck war nicht der Kaiser, sondern der führende Politiker hinter der Einigung.</p>
+        `
+      },
+
+      wilhelm1: {
+        title: "Wilhelm I.",
+        html: `
+          <p>Wilhelm I. war König von Preußen und wurde 1871 Deutscher Kaiser.</p>
+          <ul>
+            <li>Er verkörperte die monarchische Spitze des neuen Reiches.</li>
+            <li>Wichtig: 1871 war es Wilhelm I., nicht Wilhelm II.</li>
+          </ul>
+          <p><strong>Merksatz:</strong> Bismarck organisierte die Politik, Wilhelm I. wurde das Staatsoberhaupt.</p>
+        `
+      },
+
+      versailles: {
+        title: "Reichsgründung in Versailles",
+        html: `
+          <p>Das Deutsche Kaiserreich entstand rechtlich zum 1. Januar 1871. Am 18. Januar 1871 wurde Wilhelm I. im Spiegelsaal von Versailles feierlich zum Deutschen Kaiser proklamiert.</p>
+          <ul>
+            <li>Die Wahl des Ortes war politisch bedeutsam.</li>
+            <li>Versailles lag in Frankreich und stand für französische Größe.</li>
+            <li>Die Reichsgründung dort war für Frankreich eine Demütigung.</li>
+          </ul>
+          <p><strong>Bedeutung:</strong> Die Reichsgründung war ein Triumph Preußens, schuf aber zugleich neue Spannungen mit Frankreich.</p>
+        `
+      },
+
+      karte: {
+        title: "Karte erklären",
+        html: `
+          <p>Die Karte zeigt die politischen Räume der Einigung.</p>
+          <div class="detail-grid">
+            <div class="detail-box"><strong>Norddeutscher Bund:</strong><br>Vorstufe des Kaiserreiches unter preußischer Führung.</div>
+            <div class="detail-box"><strong>Süddeutsche Staaten:</strong><br>Wurden erst im Zusammenhang mit dem Krieg 1870/71 Teil des Reiches.</div>
+            <div class="detail-box"><strong>Frankreich:</strong><br>Der äußere Gegner im Krieg von 1870/71.</div>
+            <div class="detail-box"><strong>Elsass-Lothringen:</strong><br>Wurde nach dem Krieg an das Deutsche Reich angeschlossen.</div>
+          </div>
+        `
+      },
+
+      zitatBismarck: {
+        title: "Zitat erklären: „Eisen und Blut“",
+        html: `
+          <p>Bismarck betont, dass große politische Entscheidungen seiner Meinung nach nicht nur durch Reden und Abstimmungen fallen.</p>
+          <ul>
+            <li><strong>„Reden und Majoritätsbeschlüsse“</strong> stehen für parlamentarische Diskussion.</li>
+            <li><strong>„Eisen und Blut“</strong> steht für Machtpolitik, Militär und Kriege.</li>
+            <li>Das Zitat passt gut zu den Einigungskriegen von 1864, 1866 und 1870/71.</li>
+          </ul>
+          <p><strong>Frage:</strong> War diese Form der Einigung erfolgreich – aber politisch problematisch?</p>
+        `
+      },
+
+      karikaturBismarck1866: {
+        title: "Karikatur analysieren: Bismarck 1866",
+        html: `
+          <div class="method-list">
+            <div class="method-step">
+              <strong>Beschreiben:</strong><br>
+              Bismarck steht im Mittelpunkt. Achte auf seine Körperhaltung, die Umgebung, mögliche Gegner und darauf, was mit dem Deutschen Bund geschieht.
+            </div>
+            <div class="method-step">
+              <strong>Deuten:</strong><br>
+              Die Karikatur zeigt Bismarck überspitzt. Sie deutet seine Politik als Angriff auf die alte Ordnung des Deutschen Bundes.
+            </div>
+            <div class="method-step">
+              <strong>Schlussfolgerung:</strong><br>
+              Die Karikatur kann als Kritik an Bismarcks Machtpolitik verstanden werden: Er erscheint nicht nur als Einiger, sondern auch als jemand, der bestehende Strukturen rücksichtslos verändert.
+            </div>
+          </div>
+          <p><strong>Arbeitsfrage:</strong> Welche Bilddetails stützen diese Schlussfolgerung?</p>
+        `
+      },
+
+      karikaturMethode: {
+        title: "Methode: Karikatur interpretieren",
+        html: `
+          <p>Für diese Unterrichtsseite reicht eine klare Dreischritt-Methode. Sie passt gut auf ein Arbeitsblatt und verhindert, dass Schüler sofort wild herumdeuten wie Detektive ohne Lupe.</p>
+
+          <div class="method-compact">
+            <div class="method-step">
+              <strong><span class="step-number">1</span>Beschreiben</strong><br>
+              Beschreibe nur, was sichtbar ist. Noch keine Deutung. Nenne Personen, Gegenstände, Kleidung, Körperhaltung, Gesichtsausdruck, Größenverhältnisse, Bildunterschrift und auffällige Symbole.
+              <p><strong>Satzstarter:</strong><br>Auf der Karikatur sieht man ...</p>
+            </div>
+
+            <div class="method-step">
+              <strong><span class="step-number">2</span>Deuten</strong><br>
+              Was könnte das bedeuten? Achte auf Übertreibung, Spott, Kritik und historische Zusammenhänge. Hier geht es um Bismarck, den Deutschen Bund und das Jahr 1866.
+              <p><strong>Satzstarter:</strong><br>Das könnte bedeuten, dass ...</p>
+            </div>
+
+            <div class="method-step">
+              <strong><span class="step-number">3</span>Schlussfolgerung</strong><br>
+              Welche Aussage macht die Karikatur insgesamt? Beziehe sie auf die Leitfrage: Zeigt die Karikatur Bismarck als Einiger, als Machtpolitiker oder als Gefahr für die alte Ordnung?
+              <p><strong>Satzstarter:</strong><br>Die Karikatur kritisiert ..., weil ...</p>
+            </div>
+          </div>
+
+          <p><strong>Merksatz:</strong> Erst genau beschreiben, dann deuten, am Ende eine begründete Schlussfolgerung ziehen.</p>
+        `
+      },
+      loesung1: {
+        title: "Lösungsvorschlag zu Aufgabe 1",
+        html: `
+          <p><strong>Mögliche Reihenfolge:</strong></p>
+          <ol>
+            <li><strong>1815:</strong> Deutscher Bund entsteht nach dem Wiener Kongress.</li>
+            <li><strong>1817:</strong> Wartburgfest mit Forderungen nach Einheit und Freiheit.</li>
+            <li><strong>1832:</strong> Hambacher Fest als wichtige politische Massenkundgebung.</li>
+            <li><strong>1848/49:</strong> Revolution und Frankfurter Nationalversammlung in der Paulskirche.</li>
+            <li><strong>1864:</strong> Deutsch-Dänischer Krieg.</li>
+            <li><strong>1866:</strong> Deutscher Krieg; Preußen setzt sich gegen Österreich durch.</li>
+            <li><strong>1870/71:</strong> Deutsch-Französischer Krieg.</li>
+            <li><strong>1871:</strong> Reichsgründung und Kaiserproklamation Wilhelms I. in Versailles.</li>
+          </ol>
+        `
+      },
+
+      loesung2: {
+        title: "Lösungsvorschlag zu Aufgabe 2",
+        html: `
+          <p><strong>Wartburgfest 1817:</strong> Forderung nach nationaler Einheit und politischer Erneuerung.</p>
+          <p><strong>Hambacher Fest 1832:</strong> Forderung nach Freiheit, Bürgerrechten, Pressefreiheit, Versammlungsfreiheit und nationaler Einheit.</p>
+          <p><strong>Paulskirche 1848/49:</strong> Forderung nach einer Verfassung und einem geeinten deutschen Nationalstaat mit parlamentarischer Mitbestimmung.</p>
+          <p><strong>Merksatz:</strong> Alle drei Ereignisse gehören zur Einigungsidee „von unten“.</p>
+        `
+      },
+
+      loesung3: {
+        title: "Lösungsvorschlag zu Aufgabe 3",
+        html: `
+          <p>
+            Die <strong>Einigung von unten</strong> meint Forderungen aus der Bevölkerung, von Studenten, Bürgern,
+            Liberalen und Abgeordneten. Sie wollten Einheit, Freiheit, Verfassung und Mitbestimmung.
+          </p>
+          <p>
+            Die <strong>Einigung von oben</strong> meint die spätere Reichsgründung durch Fürstenentscheidungen,
+            preußische Führung, Bismarcks Politik und Kriege.
+          </p>
+          <p><strong>Kernsatz:</strong> 1848/49 sollte Deutschland demokratisch-parlamentarisch entstehen; 1871 entstand es monarchisch-preußisch.</p>
+        `
+      },
+
+      loesung4: {
+        title: "Lösungsvorschlag zu Aufgabe 4",
+        html: `
+          <p>
+            1866 besiegte Preußen Österreich im Deutschen Krieg. Dadurch wurde die Führungsfrage entschieden:
+            Nicht Österreich, sondern Preußen bestimmte nun die weitere deutsche Einigung.
+          </p>
+          <p>
+            Der Deutsche Bund wurde aufgelöst und der Norddeutsche Bund entstand unter preußischer Führung.
+            Damit war der Weg zur kleindeutschen Lösung ohne Österreich frei.
+          </p>
+        `
+      },
+
+      loesung5: {
+        title: "Lösungsvorschlag zu Aufgabe 5",
+        html: `
+          <p><strong>Beschreiben:</strong> Die Karikatur stellt Bismarck in den Mittelpunkt. Auffällig sind seine dominante Darstellung, die politische Umgebung und der Bezug zum Deutschen Bund im Jahr 1866.</p>
+          <p><strong>Deuten:</strong> Die Karikatur übertreibt Bismarcks Rolle. Sie zeigt ihn als Politiker, der die alte Ordnung des Deutschen Bundes angreift oder zerstört.</p>
+          <p><strong>Schlussfolgerung:</strong> Die Karikatur kritisiert Bismarcks Machtpolitik. Er erscheint nicht nur als möglicher Einiger, sondern auch als gefährlicher Störenfried der bisherigen Ordnung.</p>
+          <p><strong>Wichtig:</strong> Eine gute Lösung verweist immer auf konkrete Bilddetails.</p>
+        `
+      },
+
+      loesung6: {
+        title: "Lösungsvorschlag zu Aufgabe 6",
+        html: `
+          <p>
+            Wichtig sind vor allem vier Räume: <strong>Preußen/Norddeutscher Bund</strong>,
+            die <strong>süddeutschen Staaten</strong>, <strong>Frankreich</strong> und <strong>Elsass-Lothringen</strong>.
+          </p>
+          <ul>
+            <li>Preußen führte den Norddeutschen Bund.</li>
+            <li>Die süddeutschen Staaten schlossen sich 1870/71 dem neuen Reich an.</li>
+            <li>Frankreich war der Gegner im Deutsch-Französischen Krieg.</li>
+            <li>Elsass-Lothringen wurde nach dem Krieg ein dauerhafter Konfliktpunkt zwischen Deutschland und Frankreich.</li>
+          </ul>
+        `
+      },
+
+      loesung7: {
+        title: "Lösungsvorschlag zu Aufgabe 7",
+        html: `
+          <p>
+            Man kann die Reichsgründung teilweise als Erfolg der Freiheitsbewegung sehen, weil ein zentraler Wunsch erfüllt wurde:
+            Es entstand ein deutscher Nationalstaat.
+          </p>
+          <p>
+            Gleichzeitig war sie vor allem ein Erfolg preußischer Machtpolitik, weil die Einheit nicht demokratisch durch ein Parlament,
+            sondern durch Bismarcks Politik, Fürstenentscheidungen und Kriege erreicht wurde.
+          </p>
+          <p><strong>Ausgewogenes Urteil:</strong> 1871 brachte nationale Einheit, verwirklichte aber die demokratischen Hoffnungen von 1848/49 nur begrenzt.</p>
+        `
+      },
+
+      loesung8: {
+        title: "Lösungsvorschlag zu Aufgabe 8",
+        html: `
+          <p>
+            Bismarck kann als <strong>Reichsgründer</strong> gesehen werden, weil seine Politik wesentlich zur Einigung unter preußischer Führung führte.
+          </p>
+          <p>
+            Er war aber auch ein <strong>Machtpolitiker</strong>. Das zeigt das Zitat „Eisen und Blut“ und auch die Karikatur von 1866,
+            die seine Politik kritisch darstellt.
+          </p>
+          <p><strong>Mögliches Urteil:</strong> Bismarck war beides: ein erfolgreicher Reichsgründer und ein Politiker, der Einheit durch Macht, Diplomatie und Krieg durchsetzte.</p>
+        `
+      },
+
+      loesung9: {
+        title: "Lösungsvorschlag zu Aufgabe 9",
+        html: `
+          <p>
+            1871 war ein <strong>Fortschritt</strong>, weil ein deutscher Nationalstaat entstand und die jahrzehntelange Forderung nach Einheit erfüllt wurde.
+          </p>
+          <p>
+            Es war aber auch ein <strong>widersprüchlicher Kompromiss</strong>, weil das neue Reich monarchisch, stark preußisch geprägt und nicht vollständig demokratisch war.
+          </p>
+          <p>
+            Als reiner Rückschritt lässt sich 1871 schwer bezeichnen, weil nationale Einheit erreicht wurde.
+            Aber als vollständige Erfüllung der Freiheitsbewegung kann man es ebenfalls nicht bewerten.
+          </p>
+          <p><strong>Starkes Urteil:</strong> 1871 war ein Fortschritt in der nationalen Frage, aber ein unvollständiger Fortschritt in der Freiheits- und Demokratiefrage.</p>
+        `
+      }
+    };
+
+    function openDetails(key){
+      const entry = details[key];
+      if(!entry) return;
+      lastFocusedElement = document.activeElement;
+      const popupBox = document.getElementById("popupBox");
+      if(popupBox){
+        popupBox.classList.remove("image-mode");
+      }
+      document.getElementById("popupTitle").textContent = entry.title;
+      document.getElementById("popupBody").innerHTML = entry.html;
+      document.getElementById("popupBackdrop").classList.add("is-open");
+      document.body.style.overflow = "hidden";
+      const closeButton = document.querySelector(".close-row button:last-child");
+      if(closeButton){ closeButton.focus(); }
+    }
+
+
+    function openImagePopup(title, imageUrl, caption){
+      lastFocusedElement = document.activeElement;
+      const popupBox = document.getElementById("popupBox");
+      if(popupBox){
+        popupBox.classList.add("image-mode");
+      }
+
+      document.getElementById("popupTitle").textContent = title;
+      document.getElementById("popupBody").innerHTML =
+        `<div class="image-zoom-scroll">
+           <img src="${imageUrl}" alt="${title}">
+         </div>
+         <p style="margin-top:.8rem;"><strong>Hinweis:</strong> ${caption}</p>
+         <p style="margin-top:.4rem;">Tipp: Im Bildfenster kann man auf dem Laptop seitlich und nach unten scrollen. So wird die Karikatur deutlich größer angezeigt.</p>`;
+      document.getElementById("popupBackdrop").classList.add("is-open");
+      document.body.style.overflow = "hidden";
+    }
+
+    function speakPopup(){
+      const title = document.getElementById("popupTitle");
+      const body = document.getElementById("popupBody");
+      if(!title || !body) return;
+      const text = (title.innerText + ". " + body.innerText).trim();
+      if(!text) return;
+
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "de-DE";
+      utterance.rate = 0.9;
+      utterance.pitch = 1;
+
+      const voices = window.speechSynthesis.getVoices();
+      const germanVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith("de"));
+      if(germanVoice){ utterance.voice = germanVoice; }
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+
+    function closePopup(){
+      document.getElementById("popupBackdrop").classList.remove("is-open");
+      const popupBox = document.getElementById("popupBox");
+      if(popupBox){
+        popupBox.classList.remove("image-mode");
+      }
+      document.body.style.overflow = "";
+      if(lastFocusedElement){ lastFocusedElement.focus(); }
+    }
+
+    function backdropClose(event){
+      if(event.target.id === "popupBackdrop"){ closePopup(); }
+    }
+
+    document.addEventListener("keydown", function(event){
+      if(event.key === "Escape"){ closePopup(); }
+    });
+
+    function speakText(id){
+      const element = document.getElementById(id);
+      if(!element) return;
+      const text = element.innerText || element.textContent;
+      if(!text.trim()) return;
+
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "de-DE";
+      utterance.rate = 0.92;
+      utterance.pitch = 1;
+
+      const voices = window.speechSynthesis.getVoices();
+      const germanVoice = voices.find(v => v.lang && v.lang.toLowerCase().startsWith("de"));
+      if(germanVoice){ utterance.voice = germanVoice; }
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function stopSpeak(){
+      window.speechSynthesis.cancel();
+    }
+
+    function checkAnswer(id, correct, explanation){
+      const box = document.getElementById(id);
+      if(!box) return;
+
+      const info = explanation ? `<span class="feedback-explanation">${explanation}</span>` : "";
+
+      if(correct){
+        box.innerHTML = "Richtig." + info;
+        box.className = "answer right";
+      } else {
+        box.innerHTML = "Noch einmal prüfen." + info;
+        box.className = "answer wrong";
+      }
+    }
+
+    window.speechSynthesis.onvoiceschanged = function(){
+      window.speechSynthesis.getVoices();
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mit Markus und Julia durch das alte Rom</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+:root {
+  --terra:   #c0522a;
+  --terra-d: #8b3318;
+  --terra-l: #e07a52;
+  --purpur:  #4a1942;
+  --purpur-l:#7a3470;
+  --elfenb:  #f5ead6;
+  --elfenb-d:#e8d5b0;
+  --gold:    #c9973a;
+  --gold-l:  #e8c070;
+  --sand:    #f9f3e6;
+  --ink:     #2a1a0a;
+  --muted:   #7a6248;
+  --shadow:  0 8px 32px rgba(42,20,10,.18);
+  --r:       16px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+body{
+  font-family:'Crimson Pro',Georgia,serif;
+  background:var(--sand);
+  color:var(--ink);
+  min-height:100vh;
+  background-image:
+    radial-gradient(circle at 15% 10%, rgba(192,82,42,.08) 0, transparent 40%),
+    radial-gradient(circle at 85% 90%, rgba(74,25,66,.07) 0, transparent 40%);
+}
+
+/* ── PROGRESS BAR ── */
+#progress-wrap{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:6px;background:rgba(42,20,10,.12);
+}
+#progress-bar{
+  height:100%;
+  background:linear-gradient(90deg,var(--terra),var(--gold));
+  width:0%;
+  transition:width .6s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── HEADER ── */
+header{
+  background:linear-gradient(135deg,var(--purpur) 0%,var(--terra-d) 60%,var(--purpur-l) 100%);
+  padding:48px 24px 36px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+header::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+header h1{
+  font-family:'Cinzel',serif;
+  font-size:clamp(1.8rem,5vw,3.4rem);
+  font-weight:900;
+  color:#fff;
+  text-shadow:0 2px 12px rgba(0,0,0,.4);
+  letter-spacing:.04em;
+  position:relative;
+}
+header .subtitle{
+  font-family:'Crimson Pro',serif;
+  font-size:clamp(1rem,2.5vw,1.3rem);
+  color:rgba(255,255,255,.82);
+  margin-top:10px;
+  font-style:italic;
+  position:relative;
+}
+.progress-label{
+  color:rgba(255,255,255,.7);
+  font-size:.9rem;
+  margin-top:18px;
+  position:relative;
+  font-family:'Cinzel',serif;
+  letter-spacing:.08em;
+}
+#score-display{
+  font-weight:700;
+  color:var(--gold-l);
+}
+
+/* ── FIGUREN-LEISTE ── */
+.chars{
+  display:flex;gap:16px;justify-content:center;flex-wrap:wrap;
+  padding:22px 20px 0;
+}
+.char-card{
+  background:white;
+  border-radius:var(--r);
+  padding:16px 20px;
+  max-width:340px;
+  box-shadow:var(--shadow);
+  border-left:5px solid var(--terra);
+  display:flex;gap:14px;align-items:flex-start;
+}
+.char-card.julia{border-left-color:var(--purpur-l);}
+.char-avatar{
+  font-size:2.6rem;
+  flex-shrink:0;
+  line-height:1;
+}
+.char-name{
+  font-family:'Cinzel',serif;
+  font-weight:700;
+  font-size:1.05rem;
+  color:var(--terra-d);
+}
+.char-card.julia .char-name{color:var(--purpur);}
+.char-text{
+  font-size:.95rem;
+  line-height:1.55;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+/* ── NAV ── */
+nav{
+  position:sticky;top:6px;z-index:50;
+  background:rgba(249,243,230,.95);
+  backdrop-filter:blur(10px);
+  border-bottom:2px solid var(--elfenb-d);
+  padding:10px 16px;
+  display:flex;gap:8px;overflow-x:auto;
+  scrollbar-width:none;
+}
+nav::-webkit-scrollbar{display:none}
+nav a{
+  white-space:nowrap;
+  text-decoration:none;
+  color:var(--terra-d);
+  font-family:'Cinzel',serif;
+  font-size:.78rem;
+  font-weight:600;
+  letter-spacing:.06em;
+  padding:7px 14px;
+  border-radius:999px;
+  border:1.5px solid var(--terra);
+  transition:all .2s;
+}
+nav a:hover,nav a.active{
+  background:var(--terra);
+  color:#fff;
+}
+
+/* ── MAIN ── */
+main{
+  width:min(1080px,96vw);
+  margin:24px auto 60px;
+  display:flex;
+  flex-direction:column;
+  gap:28px;
+}
+
+/* ── SECTION / STATION ── */
+.station{
+  background:white;
+  border-radius:var(--r);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.station-header{
+  background:linear-gradient(135deg,var(--terra),var(--terra-d));
+  padding:22px 28px;
+  display:flex;align-items:center;gap:16px;
+}
+.station-header.purpur{background:linear-gradient(135deg,var(--purpur),var(--purpur-l));}
+.station-header.gold{background:linear-gradient(135deg,var(--gold),#a87020);}
+.station-header.ink{background:linear-gradient(135deg,#3a2a1a,#5a3a20);}
+.station-header.teal{background:linear-gradient(135deg,#1a5a4a,#2a8a6a);}
+.station-icon{font-size:2.4rem;}
+.station-title-wrap{}
+.station-num{
+  font-family:'Cinzel',serif;
+  font-size:.78rem;
+  font-weight:700;
+  letter-spacing:.15em;
+  color:rgba(255,255,255,.65);
+}
+.station-title{
+  font-family:'Cinzel',serif;
+  font-size:1.35rem;
+  font-weight:700;
+  color:#fff;
+  margin-top:2px;
+}
+.station-body{padding:28px;}
+
+.two-col{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  margin-bottom:20px;
+}
+@media(max-width:640px){.two-col{grid-template-columns:1fr}}
+
+.info-box{
+  background:var(--elfenb);
+  border-radius:12px;
+  padding:18px;
+  border-top:4px solid var(--terra);
+}
+.info-box.purpur-top{border-top-color:var(--purpur-l);}
+.info-box h3{
+  font-family:'Cinzel',serif;
+  font-size:1rem;
+  color:var(--terra-d);
+  margin-bottom:8px;
+  display:flex;align-items:center;gap:8px;
+}
+.info-box.purpur-top h3{color:var(--purpur);}
+.info-box p{
+  font-size:1rem;
+  line-height:1.65;
+  color:var(--ink);
+}
+.info-box ul{
+  padding-left:1.2em;
+  margin-top:6px;
+}
+.info-box ul li{
+  font-size:1rem;
+  line-height:1.6;
+  margin-bottom:4px;
+}
+
+.fact{
+  background:linear-gradient(135deg,rgba(201,151,58,.12),rgba(201,151,58,.05));
+  border-left:5px solid var(--gold);
+  border-radius:0 10px 10px 0;
+  padding:12px 16px;
+  margin:14px 0;
+  font-style:italic;
+}
+.fact strong{color:var(--terra-d);}
+
+/* ── SPEAK BUTTON ── */
+.speak{
+  display:inline-flex;align-items:center;gap:5px;
+  background:none;
+  border:1.5px solid var(--terra);
+  color:var(--terra);
+  border-radius:999px;
+  padding:4px 10px;
+  font-size:.82rem;
+  cursor:pointer;
+  font-family:'Crimson Pro',serif;
+  transition:all .18s;
+  vertical-align:middle;
+  margin:0 2px;
+}
+.speak:hover{background:var(--terra);color:#fff;}
+.speak.sm{padding:3px 8px;font-size:.76rem;}
+
+/* ── AUFGABEN ── */
+.task{
+  background:var(--elfenb);
+  border-radius:14px;
+  padding:22px;
+  margin-top:22px;
+  border:2px solid var(--elfenb-d);
+}
+.task-label{
+  font-family:'Cinzel',serif;
+  font-size:.72rem;
+  letter-spacing:.12em;
+  font-weight:700;
+  color:var(--muted);
+  margin-bottom:8px;
+}
+.task h3{
+  font-family:'Cinzel',serif;
+  font-size:1.05rem;
+  color:var(--terra-d);
+  margin-bottom:12px;
+}
+.feedback{
+  min-height:1.4em;
+  font-weight:600;
+  font-size:.97rem;
+  margin-top:10px;
+  padding:8px 12px;
+  border-radius:8px;
+  display:none;
+}
+.feedback.show{display:block;}
+.feedback.correct{background:#d4edda;color:#155724;}
+.feedback.wrong{background:#f8d7da;color:#721c24;}
+
+/* MC */
+.mc-options{
+  display:flex;flex-direction:column;gap:8px;
+  margin:12px 0;
+}
+.mc-btn{
+  background:white;
+  border:2px solid var(--elfenb-d);
+  border-radius:10px;
+  padding:10px 14px;
+  text-align:left;
+  cursor:pointer;
+  font-family:'Crimson Pro',serif;
+  font-size:1rem;
+  transition:all .18s;
+}
+.mc-btn:hover{border-color:var(--terra);background:rgba(192,82,42,.06);}
+.mc-btn.correct{border-color:#28a745;background:#d4edda;}
+.mc-btn.wrong{border-color:#dc3545;background:#f8d7da;}
+
+/* LUECKENTEXT */
+.luecke{
+  display:inline-block;
+  min-width:90px;
+  border:0;
+  border-bottom:2px solid var(--terra);
+  background:rgba(192,82,42,.06);
+  padding:2px 8px;
+  font-family:'Crimson Pro',serif;
+  font-size:1rem;
+  color:var(--ink);
+  text-align:center;
+  border-radius:4px 4px 0 0;
+  margin:0 3px;
+}
+.luecke:focus{outline:none;border-bottom-color:var(--purpur);background:rgba(74,25,66,.07);}
+
+/* RICHTIG-FALSCH */
+.rf-item{
+  background:white;
+  border-radius:10px;
+  padding:12px 16px;
+  margin:8px 0;
+  border:2px solid var(--elfenb-d);
+  display:flex;align-items:center;gap:10px;
+  flex-wrap:wrap;
+}
+.rf-item span{flex:1;min-width:0;font-size:1rem;line-height:1.5;}
+.rf-btns{display:flex;gap:8px;}
+.rf-btn{
+  padding:6px 14px;
+  border-radius:8px;
+  border:2px solid var(--terra);
+  background:white;
+  color:var(--terra);
+  font-family:'Cinzel',serif;
+  font-size:.78rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:all .18s;
+}
+.rf-btn:hover,.rf-btn.selected-r{background:var(--terra);color:#fff;}
+.rf-btn.f-btn{border-color:var(--purpur);color:var(--purpur);}
+.rf-btn.f-btn:hover,.rf-btn.selected-f{background:var(--purpur);color:#fff;}
+.rf-result{font-size:.88rem;font-weight:700;padding:4px 8px;border-radius:6px;}
+.rf-result.ok{background:#d4edda;color:#155724;}
+.rf-result.nope{background:#f8d7da;color:#721c24;}
+
+/* DRAG & DROP */
+.drag-container{
+  display:flex;gap:14px;flex-wrap:wrap;
+  margin:12px 0;
+}
+.drag-items{
+  display:flex;flex-wrap:wrap;gap:8px;
+  min-height:50px;
+  flex:1;
+}
+.drag-item{
+  background:white;
+  border:2px solid var(--terra);
+  border-radius:10px;
+  padding:8px 14px;
+  cursor:grab;
+  font-family:'Crimson Pro',serif;
+  font-size:.95rem;
+  user-select:none;
+  transition:all .18s;
+  touch-action:none;
+}
+.drag-item:hover{background:var(--terra);color:white;transform:scale(1.04);}
+.drag-item.dragging{opacity:.4;cursor:grabbing;}
+
+.drop-zone{
+  border:2px dashed var(--terra);
+  border-radius:10px;
+  padding:8px 14px;
+  min-width:130px;
+  min-height:44px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;
+  color:var(--muted);
+  font-style:italic;
+  transition:all .18s;
+  flex:1;
+}
+.drop-zone.over{background:rgba(192,82,42,.1);border-color:var(--terra-d);}
+.drop-zone.filled{background:rgba(192,82,42,.08);color:var(--ink);font-style:normal;font-weight:600;border-style:solid;}
+
+/* ZUORDNUNG */
+.match-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;
+}
+.match-left{
+  background:white;
+  border:2px solid var(--purpur);
+  border-radius:10px;
+  padding:10px 14px;
+  font-size:.95rem;
+  font-weight:600;
+  color:var(--purpur);
+  font-family:'Cinzel',serif;
+  font-size:.85rem;
+}
+.match-select{
+  padding:8px 10px;
+  border:2px solid var(--elfenb-d);
+  border-radius:10px;
+  font-family:'Crimson Pro',serif;
+  font-size:.95rem;
+  background:white;
+  width:100%;
+}
+.match-select:focus{outline:none;border-color:var(--terra);}
+
+/* WOHNUNGS-QUIZ */
+.wohn-item{
+  background:white;
+  border-radius:10px;
+  padding:12px 16px;
+  margin:8px 0;
+  border:2px solid var(--elfenb-d);
+  display:flex;align-items:center;gap:10px;
+  flex-wrap:wrap;
+}
+.wohn-item span{flex:1;font-size:.97rem;}
+.wohn-btns{display:flex;gap:8px;}
+.wohn-btn{
+  padding:6px 12px;
+  border-radius:8px;
+  font-family:'Cinzel',serif;
+  font-size:.75rem;
+  font-weight:700;
+  cursor:pointer;
+  border:2px solid;
+  transition:all .18s;
+}
+.btn-domus{border-color:#c0522a;color:#c0522a;background:white;}
+.btn-domus.sel,.btn-domus:hover{background:#c0522a;color:white;}
+.btn-insula{border-color:#4a1942;color:#4a1942;background:white;}
+.btn-insula.sel,.btn-insula:hover{background:#4a1942;color:white;}
+.btn-both{border-color:#c9973a;color:#c0750a;background:white;}
+.btn-both.sel,.btn-both:hover{background:#c9973a;color:white;}
+
+/* BTN */
+.btn{
+  background:var(--terra);
+  color:white;
+  border:0;
+  border-radius:10px;
+  padding:10px 22px;
+  font-family:'Cinzel',serif;
+  font-weight:700;
+  font-size:.88rem;
+  letter-spacing:.06em;
+  cursor:pointer;
+  margin-top:10px;
+  transition:all .2s;
+}
+.btn:hover{background:var(--terra-d);}
+.btn.purpur{background:var(--purpur);}
+.btn.purpur:hover{background:var(--purpur-l);}
+.btn.gold{background:var(--gold);color:var(--ink);}
+.btn.gold:hover{filter:brightness(1.1);}
+
+/* LATEINISCH */
+.lat{
+  font-style:italic;
+  font-weight:600;
+  color:var(--terra-d);
+  border-bottom:1px dotted var(--terra);
+}
+
+/* EXTERN-LINK */
+.extern-link{
+  display:inline-flex;align-items:center;gap:5px;
+  color:var(--terra);
+  font-weight:600;
+  text-decoration:none;
+  border-bottom:1.5px solid var(--terra-l);
+  transition:all .16s;
+}
+.extern-link:hover{color:var(--terra-d);border-bottom-color:var(--terra-d);}
+
+/* ── GLOSSAR ── */
+#glossar{
+  background:white;
+  border-radius:var(--r);
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+#glossar-header{
+  background:linear-gradient(135deg,#3a2a1a,var(--terra-d));
+  padding:18px 24px;
+  display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;
+  user-select:none;
+}
+#glossar-header h2{
+  font-family:'Cinzel',serif;
+  color:#fff;
+  font-size:1.15rem;
+  display:flex;align-items:center;gap:10px;
+}
+#glossar-toggle{
+  color:rgba(255,255,255,.8);
+  font-size:1.4rem;
+  transition:transform .3s;
+}
+#glossar-body{
+  display:none;
+  padding:20px;
+}
+#glossar-body.open{display:block;}
+.glossar-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:12px;
+}
+.gloss-card{
+  background:var(--elfenb);
+  border-radius:10px;
+  padding:14px;
+  border-left:4px solid var(--gold);
+}
+.gloss-word{
+  font-family:'Cinzel',serif;
+  font-size:1.05rem;
+  font-weight:700;
+  color:var(--terra-d);
+}
+.gloss-def{
+  font-size:.9rem;
+  color:var(--muted);
+  margin-top:4px;
+  line-height:1.5;
+}
+
+/* ── FOOTER ── */
+footer{
+  text-align:center;
+  color:var(--muted);
+  font-size:.9rem;
+  padding:20px;
+  font-style:italic;
+}
+</style>
+</head>
+<body>
+
+<div id="progress-wrap"><div id="progress-bar"></div></div>
+
+<header>
+  <h1>🏛️ Mit Markus und Julia<br>durch das alte Rom</h1>
+  <p class="subtitle">Alltag im Römischen Reich – interaktives Lernmodul</p>
+  <p class="progress-label">Aufgaben gelöst: <span id="score-display">0 / 18</span></p>
+</header>
+
+<div class="chars">
+  <div class="char-card">
+    <div class="char-avatar">🧑‍🦱</div>
+    <div>
+      <div class="char-name">Markus</div>
+      <div class="char-text">Ich bin 12 Jahre alt und lebe in einer prächtigen <span class="lat">Domus</span> auf dem Esquilin-Hügel. Mein Vater ist Patrizier und Senator. Begleite mich durch das Leben der reichen Römer!</div>
+    </div>
+  </div>
+  <div class="char-card julia">
+    <div class="char-avatar">👧</div>
+    <div>
+      <div class="char-name">Julia</div>
+      <div class="char-text">Ich bin 11 und wohne in einer engen <span class="lat">Insula</span> im Subura-Viertel – dem lautesten, stinkendsten und lebendigsten Viertel Roms! Ich zeige dir, wie das Volk wirklich lebt.</div>
+    </div>
+  </div>
+</div>
+
+<nav id="mainnav">
+  <a href="#s1">🏠 Wohnen</a>
+  <a href="#s2">🛣️ Infrastruktur</a>
+  <a href="#s3">🛁 Thermen</a>
+  <a href="#s4">⚔️ Kolosseum</a>
+  <a href="#s5">👨‍👩‍👧 Familie</a>
+  <a href="#glossar">📖 Glossar</a>
+</nav>
+
+<main>
+
+<!-- ═══ STATION 1: WOHNEN ═══ -->
+<section class="station" id="s1">
+  <div class="station-header">
+    <div class="station-icon">🏠</div>
+    <div class="station-title-wrap">
+      <div class="station-num">STATION I</div>
+      <div class="station-title">Wo wir wohnen – <em>Insula</em> vs. <em>Domus</em></div>
+    </div>
+  </div>
+  <div class="station-body">
+    <div class="two-col">
+      <div class="info-box purpur-top">
+        <h3>🏚️ Julias Insula <button class="speak sm" onclick="speak('Die Insula, das Mietshaus der armen Römer. Überfüllt, feuergefährdet und meistens sehr schmutzig.')">🔊</button></h3>
+        <p>Die <span class="lat">Insula</span> (lat. „Insel") ist das Mietshaus der einfachen Römer. Bis zu 6 Stockwerke hoch, oft schlecht gebaut – Einstürze und Brände waren keine Seltenheit.</p>
+        <ul>
+          <li>Kein fließendes Wasser oberhalb des Erdgeschosses</li>
+          <li>Nachttöpfe wurden aus dem Fenster entleert 🪣</li>
+          <li>Im Erdgeschoss gab es Läden (<span class="lat">Tabernae</span>)</li>
+          <li>Je höher, desto billiger und gefährlicher</li>
+          <li>Heizung kaum vorhanden – frieren im Winter</li>
+        </ul>
+      </div>
+      <div class="info-box">
+        <h3>🏛️ Markus' Domus <button class="speak sm" onclick="speak('Die Domus, das Stadthaus der reichen Römer. Mit Atrium und Peristyl, fließendem Wasser und Fußbodenheizung.')">🔊</button></h3>
+        <p>Die <span class="lat">Domus</span> ist das Stadthaus wohlhabender Römer. Sie ist um ein offenes <span class="lat">Atrium</span> (Eingangshalle mit Lichtöffnung) und ein <span class="lat">Peristyl</span> (Säulengarten) herum gebaut.</p>
+        <ul>
+          <li>Fließendes Wasser im Erdgeschoss (<span class="lat">Impluvium</span>)</li>
+          <li>Kunstvolle Mosaikböden und Wandmalereien</li>
+          <li>Separate Küche, <span class="lat">Triclinium</span> (Speisezimmer)</li>
+          <li>Sklaven erledigten alle Hausarbeiten</li>
+          <li><span class="lat">Hypocaustum</span>: Fußbodenheizung mit heißer Luft</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fact">
+      <strong>Wusstest du?</strong> Rom hatte bis zu 46.000 <span class="lat">Insulae</span>, aber nur rund 1.800 <span class="lat">Domus</span>. Fast alle gewöhnlichen Römer lebten also in Mietshäusern – ähnlich wie heute in Großstädten!
+      <a class="extern-link" href="https://de.wikipedia.org/wiki/Insula_(Rom)" target="_blank" rel="noopener"> 🔗 Mehr auf Wikipedia</a>
+    </div>
+
+    <!-- AUFGABE 1: Wohnungs-Inspektor -->
+    <div class="task" id="t1">
+      <div class="task-label">🔍 AUFGABE 1 – WOHNUNGS-INSPEKTOR-QUIZ</div>
+      <h3>Welches Merkmal gehört wohin? Ordne zu: <em>Domus</em>, <em>Insula</em> oder <em>Beide</em>.</h3>
+      <div id="wohn-items"></div>
+      <button class="btn" onclick="checkWohn()">Auswertung</button>
+      <div class="feedback" id="fb-wohn"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ STATION 2: INFRASTRUKTUR ═══ -->
+<section class="station" id="s2">
+  <div class="station-header purpur">
+    <div class="station-icon">🛣️</div>
+    <div class="station-title-wrap">
+      <div class="station-num">STATION II</div>
+      <div class="station-title">Straßen & Kloaken – Geniale Technik</div>
+    </div>
+  </div>
+  <div class="station-body">
+    <div class="two-col">
+      <div class="info-box purpur-top">
+        <h3>🗺️ Römerstraßen <button class="speak sm" onclick="speak('Die Römerstraßen: gerade, gepflastert und bis heute teilweise erhalten. Omnes viae Romam ducunt – Alle Wege führen nach Rom.')">🔊</button></h3>
+        <p>„Alle Wege führen nach Rom" – das war buchstäblich wahr! Das Straßennetz umfasste über <strong>400.000 km</strong>, davon 80.000 km befestigt. Meilensteine zeigten die Entfernung zur <span class="lat">Milliarium Aureum</span> (Goldener Meilenstein) in Rom.</p>
+        <ul>
+          <li>Mehrschichtiger Aufbau (Kies, Sand, Steine)</li>
+          <li>Leicht gewölbt für Wasserablauf</li>
+          <li>Aquädukte brachten Frischwasser in die Stadt</li>
+          <li><a class="extern-link" href="https://de.wikipedia.org/wiki/R%C3%B6merstra%C3%9Fe" target="_blank" rel="noopener">🔗 Römerstraße auf Wikipedia</a></li>
+        </ul>
+      </div>
+      <div class="info-box">
+        <h3>💩 Cloaca Maxima <button class="speak sm" onclick="speak('Die Cloaca Maxima, das größte Abwassersystem der Antike. Erbaut im 6. Jahrhundert vor Christus, bis heute teilweise in Betrieb.')">🔊</button></h3>
+        <p>Roms größte Erfindung: die <span class="lat">Cloaca Maxima</span> – ein riesiges Abwassersystem aus dem 6. Jh. v. Chr. Sie entwässerte die Täler zwischen den sieben Hügeln und leitet bis heute Regenwasser in den Tiber.</p>
+        <ul>
+          <li>Öffentliche Latrinen (<span class="lat">Foricae</span>) mit bis zu 20 Sitzen</li>
+          <li>Man saß nebeneinander – ohne Trennwände!</li>
+          <li>Zur Reinigung: ein Schwamm am Stock (<span class="lat">Tersorium</span>)</li>
+          <li><a class="extern-link" href="https://de.wikipedia.org/wiki/Cloaca_Maxima" target="_blank" rel="noopener">🔗 Cloaca Maxima auf Wikipedia</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fact">
+      <strong>Ekelfakt:</strong> Da Urin als Waschmittel galt (Ammoniak!), standen in Roms Straßen Tongefäße, in die Passanten urinieren konnten. Wäscher (<span class="lat">Fullones</span>) sammelten den Inhalt ein. Kaiser Vespasian besteuerte sogar diesen „Handel"!
+      <button class="speak sm" onclick="speak('Ekelfakt: Da Urin als Waschmittel galt, standen in Roms Straßen Tongefäße. Wäscher sammelten den Inhalt ein. Kaiser Vespasian besteuerte diesen Handel!')">🔊</button>
+    </div>
+
+    <!-- AUFGABE 2: Lückentext Aquädukte -->
+    <div class="task" id="t2">
+      <div class="task-label">✏️ AUFGABE 2 – LÜCKENTEXT: AQUÄDUKTE & KLOAKEN</div>
+      <h3>Fülle die Lücken aus.</h3>
+      <p style="line-height:2;font-size:1rem;">
+        Die Römer bauten <input class="luecke" id="l1" placeholder="???" size="7"> (Wasserleitungen), um Frischwasser über weite Strecken in die Stadt zu transportieren. Das Abwasser floss durch die
+        <input class="luecke" id="l2" placeholder="???" size="14"> ab. In öffentlichen Toiletten, den sogenannten
+        <input class="luecke" id="l3" placeholder="???" size="8">, saßen die Römer gemeinsam auf Steinbänken ohne Trennwände. Zur Reinigung nutzten sie einen Schwamm am Stock, den
+        <input class="luecke" id="l4" placeholder="???" size="10">. Das Straßennetz Roms war über
+        <input class="luecke" id="l5" placeholder="???" size="6"> km lang.
+      </p>
+      <button class="btn purpur" onclick="checkLuecke()">Prüfen</button>
+      <div class="feedback" id="fb-luecke"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ STATION 3: THERMEN ═══ -->
+<section class="station" id="s3">
+  <div class="station-header teal">
+    <div class="station-icon">🛁</div>
+    <div class="station-title-wrap">
+      <div class="station-num">STATION III</div>
+      <div class="station-title">Wellness für alle – Die <em>Thermae</em></div>
+    </div>
+  </div>
+  <div class="station-body">
+    <p style="font-size:1.05rem;line-height:1.7;margin-bottom:16px;">Die öffentlichen Bäder (<span class="lat">Thermae</span>) waren mehr als nur Badeanstalten – sie waren das soziale Herz Roms. Hier trafen Senatoren und Sklaven, Reiche und Arme zusammen. Der Eintritt war oft fast kostenlos oder sogar gratis. Neben Bädern gab es Bibliotheken, Sportplätze, Friseure und Imbissbuden.</p>
+    <a class="extern-link" href="https://de.wikipedia.org/wiki/Caracalla-Thermen" target="_blank" rel="noopener">🔗 Caracalla-Thermen auf Wikipedia</a>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin:20px 0;">
+      <div class="info-box" style="border-top-color:#3a8a7a;">
+        <h3>1. Apodyterium <button class="speak sm" onclick="speak('Apodyterium: die Umkleidekabine der Therme')">🔊</button></h3>
+        <p>Umkleide. Hier zog man seine <span class="lat">Tunica</span> aus und hinterließ die Wertsachen (auf eigenes Risiko!).</p>
+      </div>
+      <div class="info-box" style="border-top-color:#6aaa9a;">
+        <h3>2. Palaestra <button class="speak sm" onclick="speak('Palaestra: der Sportplatz der Therme')">🔊</button></h3>
+        <p>Sportplatz. Hier trainierte man mit Hanteln, rang oder spielte Ball, bevor man ins Bad ging.</p>
+      </div>
+      <div class="info-box" style="border-top-color:#c9973a;">
+        <h3>3. Frigidarium <button class="speak sm" onclick="speak('Frigidarium: das Kaltbad der Therme')">🔊</button></h3>
+        <p>Das <strong>Kaltbad</strong>. Wer mutig war, sprang hier direkt rein – erfrischt und wach!</p>
+      </div>
+      <div class="info-box" style="border-top-color:#e07a52;">
+        <h3>4. Tepidarium <button class="speak sm" onclick="speak('Tepidarium: das Lauwarmbad der Therme')">🔊</button></h3>
+        <p>Das <strong>Lauwarmbad</strong>. Hier akklimatisierte man sich und entspannte nach dem Sport.</p>
+      </div>
+      <div class="info-box" style="border-top-color:#c0522a;">
+        <h3>5. Caldarium <button class="speak sm" onclick="speak('Caldarium: das heiße Dampfbad der Therme')">🔊</button></h3>
+        <p>Das <strong>Heißbad/Dampfbad</strong>. Öl wurde auf die Haut aufgetragen, Schmutz mit einem <span class="lat">Strigilis</span> (Schabeisen) abgekratzt.</p>
+      </div>
+    </div>
+
+    <!-- AUFGABE 3: Drag & Drop Reihenfolge -->
+    <div class="task" id="t3">
+      <div class="task-label">🔀 AUFGABE 3 – DRAG & DROP: REIHENFOLGE DES THERMENBESUCHS</div>
+      <h3>Bringe die 5 Stationen des Thermenbesuchs in die richtige Reihenfolge!</h3>
+      <p style="font-size:.9rem;color:var(--muted);margin-bottom:12px;">Ziehe die Begriffe in die richtige Reihenfolge (Felder 1–5):</p>
+      <div class="drag-items" id="drag-source" ondragover="event.preventDefault()" ondrop="dropToSource(event)">
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin:14px 0;">
+        <div class="drop-zone" id="dz1" data-pos="1" ondragover="dragOver(event)" ondrop="dropItem(event)">① ___</div>
+        <div class="drop-zone" id="dz2" data-pos="2" ondragover="dragOver(event)" ondrop="dropItem(event)">② ___</div>
+        <div class="drop-zone" id="dz3" data-pos="3" ondragover="dragOver(event)" ondrop="dropItem(event)">③ ___</div>
+        <div class="drop-zone" id="dz4" data-pos="4" ondragover="dragOver(event)" ondrop="dropItem(event)">④ ___</div>
+        <div class="drop-zone" id="dz5" data-pos="5" ondragover="dragOver(event)" ondrop="dropItem(event)">⑤ ___</div>
+      </div>
+      <button class="btn" style="background:#1a5a4a;" onclick="checkDrag()">Reihenfolge prüfen</button>
+      <div class="feedback" id="fb-drag"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ STATION 4: KOLOSSEUM ═══ -->
+<section class="station" id="s4">
+  <div class="station-header gold">
+    <div class="station-icon">⚔️</div>
+    <div class="station-title-wrap">
+      <div class="station-num">STATION IV</div>
+      <div class="station-title">Panem et Circenses – Kolosseum & Circus Maximus</div>
+    </div>
+  </div>
+  <div class="station-body">
+    <div class="two-col">
+      <div class="info-box">
+        <h3>🏟️ Das Kolosseum <button class="speak sm" onclick="speak('Das Amphitheatrum Flavium, das Kolosseum. Erbaut zwischen 72 und 80 nach Christus. Es fasste bis zu 80.000 Zuschauer.')">🔊</button></h3>
+        <p>Das <span class="lat">Amphitheatrum Flavium</span> (später „Kolosseum") wurde 72–80 n. Chr. gebaut. Es fasste bis zu <strong>80.000 Zuschauer</strong> und hatte 80 Ausgänge (<span class="lat">Vomitoria</span>) für schnelle Evakuierung.</p>
+        <ul>
+          <li>Kämpfe zwischen Gladiatoren (<span class="lat">Munera</span>)</li>
+          <li>Tierhetzen (<span class="lat">Venationes</span>)</li>
+          <li>Seeschlachten (<span class="lat">Naumachiae</span>) – die Arena wurde geflutet!</li>
+          <li><a class="extern-link" href="https://de.wikipedia.org/wiki/Kolosseum" target="_blank" rel="noopener">🔗 Kolosseum Wikipedia</a></li>
+        </ul>
+      </div>
+      <div class="info-box purpur-top">
+        <h3>🎠 Circus Maximus <button class="speak sm" onclick="speak('Der Circus Maximus: die größte Rennbahn der Welt mit bis zu 300.000 Zuschauern.')">🔊</button></h3>
+        <p>Der <span class="lat">Circus Maximus</span> war die größte Rennbahn der Antike – bis zu <strong>300.000 Zuschauer</strong>! Wagenrennen (<span class="lat">Ludi Circenses</span>) mit bis zu 12 Wagen gleichzeitig. Die Rennfahrer wurden wie Popstars verehrt.</p>
+        <ul>
+          <li>4 Fraktionen (Blau, Grün, Rot, Weiß)</li>
+          <li>7 Runden um die <span class="lat">Spina</span> (Mittelstreifen)</li>
+          <li><a class="extern-link" href="https://de.wikipedia.org/wiki/Circus_Maximus" target="_blank" rel="noopener">🔗 Circus Maximus Wikipedia</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="fact">
+      <strong>Panem et Circenses</strong> – „Brot und Spiele": Kaiser verteilten Brot an Arme und organisierten Spektakel, um die Bevölkerung ruhig zu halten. Der Dichter Juvenal kritisierte, das Volk wolle nur noch essen und Unterhaltung.
+      <button class="speak sm" onclick="speak('Panem et Circenses – Brot und Spiele. Kaiser verteilten Brot an Arme und organisierten Spektakel, um die Bevölkerung ruhig zu halten.')">🔊</button>
+    </div>
+
+    <!-- AUFGABE 4: Mythen-Check Richtig/Falsch -->
+    <div class="task" id="t4">
+      <div class="task-label">✅❌ AUFGABE 4 – GLADIATOREN-MYTHEN-CHECK</div>
+      <h3>Richtig oder Falsch? Korrigiere die häufigsten Irrtümer über Gladiatoren!</h3>
+      <div id="rf-items"></div>
+      <button class="btn gold" style="margin-top:12px;" onclick="checkRF()">Auswertung</button>
+      <div class="feedback" id="fb-rf"></div>
+    </div>
+
+    <!-- AUFGABE 5: Multiple Choice -->
+    <div class="task" id="t5">
+      <div class="task-label">🎯 AUFGABE 5 – MULTIPLE CHOICE</div>
+      <h3>Was bedeutet „Panem et Circenses"?</h3>
+      <div class="mc-options" id="mc1">
+        <button class="mc-btn" onclick="mcCheck(this,'mc1-fb',false)">„Kämpfe bis zum Tod"</button>
+        <button class="mc-btn" onclick="mcCheck(this,'mc1-fb',true)">„Brot und Spiele" – Volksunterhaltung zur Ablenkung</button>
+        <button class="mc-btn" onclick="mcCheck(this,'mc1-fb',false)">„Blut und Ehre" – Motto der Gladiatoren</button>
+        <button class="mc-btn" onclick="mcCheck(this,'mc1-fb',false)">„Alle Wege führen nach Rom"</button>
+      </div>
+      <div class="feedback" id="mc1-fb"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ STATION 5: FAMILIE ═══ -->
+<section class="station" id="s5">
+  <div class="station-header ink">
+    <div class="station-icon">👨‍👩‍👧</div>
+    <div class="station-title-wrap">
+      <div class="station-num">STATION V</div>
+      <div class="station-title">Familie & Alltag – <em>Patria Potestas</em></div>
+    </div>
+  </div>
+  <div class="station-body">
+    <div class="two-col">
+      <div class="info-box">
+        <h3>👨 Pater Familias <button class="speak sm" onclick="speak('Der Pater Familias: Der Vater hatte in Rom die absolute Gewalt über alle Familienmitglieder, sogar über erwachsene Söhne.')">🔊</button></h3>
+        <p>Der <span class="lat">Pater Familias</span> hatte die absolute <span class="lat">Patria Potestas</span> (väterliche Gewalt) über alle Familienmitglieder – sogar über erwachsene Söhne, ihre Frauen und Sklaven. Er entschied über Leben und Tod.</p>
+        <ul>
+          <li>Konnte ein Neugeborenes anerkennen oder aussetzen</li>
+          <li>Durfte Sklaven kaufen, verkaufen oder bestrafen</li>
+          <li>Erst mit seinem Tod waren Söhne rechtlich frei</li>
+        </ul>
+      </div>
+      <div class="info-box purpur-top">
+        <h3>👩 Frauen & Kinder <button class="speak sm" onclick="speak('Römische Frauen hatten je nach Stand unterschiedliche Rechte. Wohlhabende Frauen konnten Besitz haben und Geschäfte führen.')">🔊</button></h3>
+        <p>Frauen (<span class="lat">Matronae</span>) standen rechtlich unter Vormundschaft. Wohlhabende Frauen konnten aber de facto selbstständig agieren, Geschäfte führen und eigenen Besitz haben.</p>
+        <ul>
+          <li>Kinder spielten mit Puppen, Kreisel, Murmeln</li>
+          <li>Ab 7 Jahren: Schule beim <span class="lat">Ludi Magister</span></li>
+          <li>Wohlhabende Knaben: Griechisch & Rhetorik</li>
+          <li>Mädchen: oft Haushalt statt Schule</li>
+        </ul>
+      </div>
+    </div>
+    <div class="info-box" style="margin-bottom:14px;border-top:4px solid #333;">
+      <h3>⛓️ Sklaven – Die unsichtbare Basis <button class="speak sm" onclick="speak('Sklaven bildeten die unsichtbare Basis der römischen Gesellschaft. Bis zu einem Drittel der Bevölkerung Roms waren Sklaven.')">🔊</button></h3>
+      <p>Bis zu <strong>⅓ der Bevölkerung</strong> Roms waren Sklaven (<span class="lat">Servi</span>). Sie kamen durch Kriegsgefangenschaft, Piraterie oder Geburt in die Sklaverei. Manche bildeten sich weiter und wurden als Lehrer, Ärzte oder Verwalter eingesetzt. Freigelassene (<span class="lat">Liberti</span>) konnten römische Bürger werden.
+      <a class="extern-link" href="https://de.wikipedia.org/wiki/Sklaverei_im_R%C3%B6mischen_Reich" target="_blank" rel="noopener"> 🔗 Sklaverei in Rom</a></p>
+    </div>
+
+    <!-- AUFGABE 6: Multiple Choice Familie -->
+    <div class="task" id="t6">
+      <div class="task-label">🎯 AUFGABE 6 – MULTIPLE CHOICE</div>
+      <h3>Was konnte ein <em>Pater Familias</em> NICHT entscheiden?</h3>
+      <div class="mc-options" id="mc2">
+        <button class="mc-btn" onclick="mcCheck(this,'mc2-fb',false)">Ob ein Neugeborenes in der Familie bleibt</button>
+        <button class="mc-btn" onclick="mcCheck(this,'mc2-fb',false)">Ob ein Sklave verkauft wird</button>
+        <button class="mc-btn" onclick="mcCheck(this,'mc2-fb',true)">Die Wahl des Kaisers bei den Senatswahlen</button>
+        <button class="mc-btn" onclick="mcCheck(this,'mc2-fb',false)">Die Ehe seiner Kinder</button>
+      </div>
+      <div class="feedback" id="mc2-fb"></div>
+    </div>
+
+    <!-- AUFGABE 7: Zuordnung Familienrollen -->
+    <div class="task" id="t7">
+      <div class="task-label">🔗 AUFGABE 7 – ZUORDNUNG: WER HAT WELCHE RECHTE?</div>
+      <h3>Ordne jedem Begriff die passende Beschreibung zu!</h3>
+      <div class="match-grid" id="match-grid"></div>
+      <button class="btn purpur" onclick="checkMatch()">Zuordnung prüfen</button>
+      <div class="feedback" id="fb-match"></div>
+    </div>
+
+    <!-- AUFGABE 8: MC Sklaven -->
+    <div class="task" id="t8">
+      <div class="task-label">🎯 AUFGABE 8 – WER WAREN DIE LIBERTI?</div>
+      <h3>Was war ein <em>Libertus/Liberta</em>?</h3>
+      <div class="mc-options" id="mc3">
+        <button class="mc-btn" onclick="mcCheck(this,'mc3-fb',false)">Ein besonders reicher Patrizier</button>
+        <button class="mc-btn" onclick="mcCheck(this,'mc3-fb',true)">Ein freigelassener Sklave, der römischer Bürger werden konnte</button>
+        <button class="mc-btn" onclick="mcCheck(this,'mc3-fb',false)">Ein Söldner in der römischen Armee</button>
+        <button class="mc-btn" onclick="mcCheck(this,'mc3-fb',false)">Ein freier Bauer in den Provinzen</button>
+      </div>
+      <div class="feedback" id="mc3-fb"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ GLOSSAR ═══ -->
+<div id="glossar">
+  <div id="glossar-header" onclick="toggleGlossar()">
+    <h2>📖 Latein-Glossar – Die wichtigsten Begriffe</h2>
+    <span id="glossar-toggle">▼</span>
+  </div>
+  <div id="glossar-body">
+    <div class="glossar-grid" id="gloss-grid"></div>
+  </div>
+</div>
+
+</main>
+
+<footer>Interaktives Lernmodul „Mit Markus und Julia durch das alte Rom" · Für den Einsatz im Schulunterricht · Alle Quellenlinks verweisen auf freie Enzyklopädien.</footer>
+
+<script>
+// ── SPEAK ──────────────────────────────────────────────────────────────────
+let score = 0;
+const totalTasks = 18;
+
+function speak(text, lang='de-DE') {
+  if (!window.speechSynthesis) { alert('Sprachausgabe nicht unterstützt.'); return; }
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang; u.rate = 0.92; u.pitch = 1.05;
+  window.speechSynthesis.speak(u);
+}
+
+// ── SCORE ──────────────────────────────────────────────────────────────────
+function addScore(n) {
+  score += n;
+  document.getElementById('score-display').textContent = score + ' / ' + totalTasks;
+  const pct = Math.min(100, Math.round(score / totalTasks * 100));
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+
+function showFB(id, ok, msg) {
+  const el = document.getElementById(id);
+  el.className = 'feedback show ' + (ok ? 'correct' : 'wrong');
+  el.textContent = msg;
+}
+
+// ── NAV ACTIVE ─────────────────────────────────────────────────────────────
+const secs = ['s1','s2','s3','s4','s5','glossar'];
+window.addEventListener('scroll', () => {
+  let cur = '';
+  secs.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 120) cur = id;
+  });
+  document.querySelectorAll('nav a').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#'+cur);
+  });
+});
+
+// ── GLOSSAR ────────────────────────────────────────────────────────────────
+const glossar = [
+  {w:'Insula',d:'Mehrstöckiges Mietshaus der einfachen Römer; wörtl. „Insel"'},
+  {w:'Domus',d:'Stadthaus einer reichen römischen Familie'},
+  {w:'Atrium',d:'Eingangshalle der Domus mit Lichtöffnung im Dach'},
+  {w:'Peristyl',d:'Innengarten mit Säulengang in der Domus'},
+  {w:'Hypocaustum',d:'Römische Fußbodenheizung (Warmluft unter dem Boden)'},
+  {w:'Cloaca Maxima',d:'Größtes Abwassersystem Roms (ca. 6. Jh. v. Chr.)'},
+  {w:'Aquädukt',d:'Wasserleitung; transportierte Frischwasser über große Distanzen'},
+  {w:'Foricae',d:'Öffentliche Toiletten in Rom'},
+  {w:'Apodyterium',d:'Umkleideraum in der Therme'},
+  {w:'Frigidarium',d:'Kaltbad in der Therme'},
+  {w:'Tepidarium',d:'Lauwarmbad in der Therme'},
+  {w:'Caldarium',d:'Heißbad/Dampfbad in der Therme'},
+  {w:'Strigilis',d:'Schabeisen zum Entfernen von Öl und Schmutz im Bad'},
+  {w:'Pater Familias',d:'Familienoberhaupt mit absoluter väterlicher Gewalt'},
+  {w:'Patria Potestas',d:'Die rechtliche Gewalt des Vaters über alle Familienmitglieder'},
+  {w:'Servi',d:'Sklaven im Römischen Reich'},
+  {w:'Liberti',d:'Freigelassene Sklaven, die zu römischen Bürgern wurden'},
+  {w:'Panem et Circenses',d:'„Brot und Spiele" – Strategie der Kaiser zur Volksberuhigung'},
+  {w:'Tunica',d:'Das einfache Untergewand der Römer (Männer & Frauen)'},
+  {w:'Tabernae',d:'Läden im Erdgeschoss von Insulae'},
+];
+
+function buildGlossar() {
+  const grid = document.getElementById('gloss-grid');
+  glossar.forEach(g => {
+    const div = document.createElement('div');
+    div.className = 'gloss-card';
+    div.innerHTML = `<div class="gloss-word">${g.w} <button class="speak sm" onclick="speak('${g.w}: ${g.d}')">🔊</button></div><div class="gloss-def">${g.d}</div>`;
+    grid.appendChild(div);
+  });
+}
+function toggleGlossar() {
+  const b = document.getElementById('glossar-body');
+  const t = document.getElementById('glossar-toggle');
+  b.classList.toggle('open');
+  t.textContent = b.classList.contains('open') ? '▲' : '▼';
+  t.style.transform = b.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+
+// ── AUFGABE 1: WOHNUNGS-QUIZ ────────────────────────────────────────────────
+const wohnItems = [
+  {text:'Fußbodenheizung (Hypocaustum)', ans:'domus'},
+  {text:'Nachttöpfe aus dem Fenster leeren', ans:'insula'},
+  {text:'Sklaven als Hausbedienstete', ans:'domus'},
+  {text:'Brandgefahr durch schlechte Bauweise', ans:'insula'},
+  {text:'Läden (Tabernae) im Erdgeschoss', ans:'both'},
+  {text:'Atrium mit Impluvium', ans:'domus'},
+  {text:'Günstige Miete in oberen Etagen', ans:'insula'},
+  {text:'Mosaikböden und Wandmalereien', ans:'domus'},
+  {text:'Mehrere Etagen', ans:'both'},
+];
+let wohnScored = false;
+
+function buildWohn() {
+  const cont = document.getElementById('wohn-items');
+  wohnItems.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'wohn-item';
+    div.innerHTML = `
+      <span>${item.text}</span>
+      <div class="wohn-btns">
+        <button class="wohn-btn btn-domus" onclick="selectWohn(this,${i},'domus')">Domus</button>
+        <button class="wohn-btn btn-insula" onclick="selectWohn(this,${i},'insula')">Insula</button>
+        <button class="wohn-btn btn-both" onclick="selectWohn(this,${i},'both')">Beide</button>
+      </div>
+      <span id="wohn-res-${i}" style="font-size:.85rem;"></span>`;
+    cont.appendChild(div);
+  });
+}
+function selectWohn(btn, i, val) {
+  const btns = btn.parentElement.querySelectorAll('.wohn-btn');
+  btns.forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  btn.dataset.choice = val;
+  btn.dataset.idx = i;
+}
+function checkWohn() {
+  if (wohnScored) return;
+  let correct = 0;
+  wohnItems.forEach((item, i) => {
+    const cont = document.getElementById('wohn-items').children[i];
+    const selected = cont.querySelector('.wohn-btn.sel');
+    const res = document.getElementById('wohn-res-' + i);
+    if (selected && selected.dataset.choice === item.ans) {
+      correct++;
+      res.textContent = '✅';
+    } else {
+      res.textContent = '❌ (' + (item.ans === 'domus' ? 'Domus' : item.ans === 'insula' ? 'Insula' : 'Beide') + ')';
+      res.style.color = '#721c24';
+    }
+  });
+  const ok = correct >= 7;
+  showFB('fb-wohn', ok,
+    correct + ' von ' + wohnItems.length + ' richtig! ' +
+    (ok ? '🏛️ Ausgezeichnet, Wohnungsinspektor!' : 'Versuche es noch einmal und lies die Texte!')
+  );
+  if (!wohnScored && correct > 0) { addScore(Math.round(correct / wohnItems.length * 3)); wohnScored = true; }
+}
+
+// ── AUFGABE 2: LÜCKENTEXT ───────────────────────────────────────────────────
+const lueckeAnswers = [
+  {id:'l1', answers:['aquädukte','aquädukt','aquedukte','aquaedukte']},
+  {id:'l2', answers:['cloaca maxima','cloaca','kloake']},
+  {id:'l3', answers:['foricae','latrinien','latrinen','forica']},
+  {id:'l4', answers:['tersorium','schwamm']},
+  {id:'l5', answers:['400000','400.000','400 000']},
+];
+let lueckeScored = false;
+
+function checkLuecke() {
+  if (lueckeScored) return;
+  let correct = 0;
+  lueckeAnswers.forEach(({id, answers}) => {
+    const inp = document.getElementById(id);
+    const val = inp.value.trim().toLowerCase();
+    const ok = answers.some(a => val === a || val.includes(a.split(' ')[0]));
+    inp.style.borderBottomColor = ok ? '#28a745' : '#dc3545';
+    inp.style.background = ok ? 'rgba(40,167,69,.1)' : 'rgba(220,53,69,.1)';
+    if (ok) correct++;
+  });
+  const ok = correct >= 4;
+  showFB('fb-luecke', ok,
+    correct + ' von 5 Lücken korrekt! ' + (ok ? '🛣️ Sehr gut!' : 'Tipp: Lies Abschnitt 2 noch einmal.')
+  );
+  if (!lueckeScored && correct > 0) { addScore(Math.round(correct / 5 * 3)); lueckeScored = true; }
+}
+
+// ── AUFGABE 3: DRAG & DROP THERMEN ─────────────────────────────────────────
+const dragOrder = [
+  {name:'Apodyterium', pos:1},
+  {name:'Palaestra', pos:2},
+  {name:'Frigidarium', pos:3},
+  {name:'Tepidarium', pos:4},
+  {name:'Caldarium', pos:5},
+];
+let dragged = null;
+let dragScored = false;
+
+function buildDrag() {
+  const src = document.getElementById('drag-source');
+  const shuffled = [...dragOrder].sort(() => Math.random()-.5);
+  shuffled.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'drag-item';
+    el.draggable = true;
+    el.textContent = item.name;
+    el.dataset.pos = item.pos;
+    el.addEventListener('dragstart', e => { dragged = el; el.classList.add('dragging'); });
+    el.addEventListener('dragend', e => el.classList.remove('dragging'));
+    src.appendChild(el);
+  });
+}
+function dragOver(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('over');
+}
+function dropItem(e) {
+  e.preventDefault();
+  const zone = e.currentTarget;
+  zone.classList.remove('over');
+  if (!dragged) return;
+  // Return previous occupant to source
+  if (zone.dataset.filled) {
+    const prev = document.createElement('div');
+    prev.className = 'drag-item';
+    prev.draggable = true;
+    prev.textContent = zone.dataset.filled;
+    prev.dataset.pos = zone.dataset.filledPos;
+    prev.addEventListener('dragstart', ev => { dragged = prev; prev.classList.add('dragging'); });
+    prev.addEventListener('dragend', ev => prev.classList.remove('dragging'));
+    document.getElementById('drag-source').appendChild(prev);
+  }
+  zone.textContent = dragged.textContent;
+  zone.dataset.filled = dragged.textContent;
+  zone.dataset.filledPos = dragged.dataset.pos;
+  zone.classList.add('filled');
+  dragged.remove();
+  dragged = null;
+}
+function dropToSource(e) {
+  e.preventDefault();
+  if (!dragged) return;
+  dragged.classList.remove('dragging');
+}
+function checkDrag() {
+  if (dragScored) return;
+  const order = ['Apodyterium','Palaestra','Frigidarium','Tepidarium','Caldarium'];
+  let correct = 0;
+  for (let i = 1; i <= 5; i++) {
+    const z = document.getElementById('dz'+i);
+    if (z.dataset.filled === order[i-1]) {
+      correct++;
+      z.style.borderColor = '#28a745';
+      z.style.background = 'rgba(40,167,69,.1)';
+    } else {
+      z.style.borderColor = '#dc3545';
+      z.style.background = 'rgba(220,53,69,.08)';
+    }
+  }
+  const ok = correct >= 4;
+  showFB('fb-drag', ok,
+    correct + ' von 5 Positionen korrekt! ' +
+    (ok ? '🛁 Perfekter Thermenbesuch!' : 'Die richtige Reihenfolge: Apodyterium → Palaestra → Frigidarium → Tepidarium → Caldarium')
+  );
+  if (!dragScored && correct > 0) { addScore(Math.round(correct/5*3)); dragScored = true; }
+}
+
+// ── AUFGABE 4: RICHTIG/FALSCH GLADIATOREN ──────────────────────────────────
+const rfItems = [
+  {text:'Der Daumen nach unten bedeutete im Kolosseum immer „töte ihn!"', ans:false, exp:'Irrtum! Das Daumen-Zeichen ist ein moderner Mythos aus dem 19. Jh. – die genaue Bedeutung ist historisch unklar.'},
+  {text:'Gladiatoren waren fast ausschließlich Sklaven und Kriegsgefangene.', ans:false, exp:'Nicht ganz: Es gab auch freiwillige Gladiatoren, die Ruhm und Geld suchten!'},
+  {text:'Die meisten Gladiatoren überlebten ihre Kämpfe, da sie wertvolle Investitionen waren.', ans:true, exp:'Richtig! Gladiatoren waren teuer ausgebildet – ihr Tod war wirtschaftlich unerwünscht.'},
+  {text:'Frauen durften im Kolosseum in der ersten Reihe sitzen.', ans:false, exp:'Falsch: Frauen mussten auf den obersten, schlechtesten Plätzen sitzen.'},
+  {text:'Das Kolosseum fasste ca. 50.000–80.000 Zuschauer.', ans:true, exp:'Richtig! Die genaue Kapazität wird auf 50.000–80.000 Zuschauer geschätzt.'},
+  {text:'Das Kolosseum wurde innerhalb eines Jahres fertiggestellt.', ans:false, exp:'Falsch: Der Bau dauerte ca. 8 Jahre (72–80 n. Chr.).'},
+];
+let rfAnswers = {};
+let rfScored = false;
+
+function buildRF() {
+  const cont = document.getElementById('rf-items');
+  rfItems.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'rf-item';
+    div.innerHTML = `
+      <span>${item.text}</span>
+      <div class="rf-btns">
+        <button class="rf-btn" onclick="rfSelect(${i},true,this)">✅ Richtig</button>
+        <button class="rf-btn f-btn" onclick="rfSelect(${i},false,this)">❌ Falsch</button>
+      </div>
+      <span id="rf-res-${i}"></span>`;
+    cont.appendChild(div);
+  });
+}
+function rfSelect(i, val, btn) {
+  rfAnswers[i] = val;
+  const btns = btn.parentElement.querySelectorAll('.rf-btn');
+  btns.forEach(b => b.classList.remove('selected-r','selected-f'));
+  btn.classList.add(val ? 'selected-r' : 'selected-f');
+}
+function checkRF() {
+  if (rfScored) return;
+  let correct = 0;
+  rfItems.forEach((item, i) => {
+    const res = document.getElementById('rf-res-'+i);
+    if (rfAnswers[i] === item.ans) {
+      correct++;
+      res.innerHTML = `<span class="rf-result ok">✅ ${item.exp}</span>`;
+    } else if (rfAnswers[i] !== undefined) {
+      res.innerHTML = `<span class="rf-result nope">❌ ${item.exp}</span>`;
+    }
+  });
+  const ok = correct >= 4;
+  showFB('fb-rf', ok,
+    correct + ' von ' + rfItems.length + ' richtig! ' +
+    (ok ? '⚔️ Du kennst die Gladiatoren gut!' : 'Lies die Erklärungen – viele Mythen sind überraschend!')
+  );
+  if (!rfScored && correct > 0) { addScore(Math.round(correct/rfItems.length*3)); rfScored = true; }
+}
+
+// ── MULTIPLE CHOICE ────────────────────────────────────────────────────────
+const mcScored = {};
+function mcCheck(btn, fbId, isCorrect) {
+  if (mcScored[fbId]) return;
+  const btns = btn.closest('.mc-options').querySelectorAll('.mc-btn');
+  btns.forEach(b => b.style.pointerEvents = 'none');
+  if (isCorrect) {
+    btn.classList.add('correct');
+    showFB(fbId, true, '✅ Richtig! Gut gemacht!');
+    addScore(1);
+  } else {
+    btn.classList.add('wrong');
+    showFB(fbId, false, '❌ Leider falsch. Die richtige Antwort ist markiert.');
+    btns.forEach(b => { if (b.onclick.toString().includes('true')) b.classList.add('correct'); });
+  }
+  mcScored[fbId] = true;
+}
+
+// ── AUFGABE 7: ZUORDNUNG FAMILIE ───────────────────────────────────────────
+const matchData = [
+  {term:'Pater Familias', correct:'0'},
+  {term:'Servi (Sklaven)', correct:'1'},
+  {term:'Liberti (Freigelassene)', correct:'2'},
+  {term:'Matronae (Frauen)', correct:'3'},
+  {term:'Ludi Magister', correct:'4'},
+];
+const matchDefs = [
+  'Absoluter Herr über Haus, Familie und Sklaven',
+  'Besitzloses Eigentum des Herrn, konnten verkauft werden',
+  'Freigelassene Sklaven, konnten Bürger werden',
+  'Unter Vormundschaft; konnten teils Besitz halten',
+  'Grundschullehrer für Lesen, Schreiben, Rechnen',
+];
+let matchScored = false;
+
+function buildMatch() {
+  const grid = document.getElementById('match-grid');
+  matchData.forEach((item, i) => {
+    const left = document.createElement('div');
+    left.className = 'match-left';
+    left.textContent = item.term;
+    const sel = document.createElement('select');
+    sel.className = 'match-select';
+    sel.id = 'ms-' + i;
+    sel.innerHTML = '<option value="">– bitte wählen –</option>' +
+      matchDefs.map((d,j) => `<option value="${j}">${d}</option>`).join('');
+    grid.appendChild(left);
+    grid.appendChild(sel);
+  });
+}
+function checkMatch() {
+  if (matchScored) return;
+  let correct = 0;
+  matchData.forEach((item, i) => {
+    const sel = document.getElementById('ms-' + i);
+    if (sel.value === item.correct) {
+      correct++;
+      sel.style.borderColor = '#28a745';
+      sel.style.background = 'rgba(40,167,69,.08)';
+    } else {
+      sel.style.borderColor = '#dc3545';
+      sel.style.background = 'rgba(220,53,69,.08)';
+    }
+  });
+  const ok = correct >= 4;
+  showFB('fb-match', ok,
+    correct + ' von ' + matchData.length + ' korrekt! ' +
+    (ok ? '👨‍👩‍👧 Du kennst die römischen Familienrollen!' : 'Lies Station 5 noch einmal!')
+  );
+  if (!matchScored && correct > 0) { addScore(Math.round(correct/matchData.length*2)); matchScored = true; }
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────
+buildWohn();
+buildDrag();
+buildRF();
+buildMatch();
+buildGlossar();
+</script>
+</body>
+</html>
