@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Literaturepochen – Übersicht, Ordnen und Erraten</title>
+<style>
+:root{--bg:#07111f;--panel:#101d30;--panel2:#17263b;--text:#f8fafc;--muted:#a9b8cc;--accent:#38bdf8;--accent2:#a78bfa;--ok:#34d399;--bad:#fb7185;--warn:#fbbf24;--line:#2c405c;}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:radial-gradient(circle at top,#132842 0,#07111f 48%,#040a12 100%);color:var(--text);min-height:100vh}
+button,select{font:inherit}
+button{touch-action:manipulation}
+.app{width:min(1180px,100%);margin:auto;padding:clamp(12px,2vw,24px)}
+.hero{background:linear-gradient(135deg,rgba(56,189,248,.15),rgba(167,139,250,.12));border:1px solid var(--line);border-radius:24px;padding:clamp(18px,4vw,36px);box-shadow:0 22px 60px rgba(0,0,0,.3)}
+.hero h1{font-size:clamp(1.8rem,5vw,3.4rem);line-height:1.05;margin:0 0 10px;background:linear-gradient(90deg,#67e8f9,#a78bfa,#f0abfc);-webkit-background-clip:text;color:transparent}
+.hero p{margin:0;color:var(--muted);font-size:clamp(1rem,2vw,1.18rem)}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:16px 0}
+.btn{border:1px solid #3d5574;background:#17263b;color:white;border-radius:13px;padding:11px 16px;font-weight:750;cursor:pointer;box-shadow:0 5px 15px rgba(0,0,0,.2)}
+.btn:hover,.btn:focus-visible{border-color:var(--accent);transform:translateY(-1px)}
+.btn.primary{background:linear-gradient(135deg,#0284c7,#7c3aed);border-color:transparent}
+.btn.good{background:#0f6b50;border-color:#2bbf8e}
+.btn.warn{background:#754a00;border-color:#d99a23}
+.btn.ghost{background:transparent}
+.btn.small{padding:7px 10px;border-radius:10px;font-size:.92rem}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+select{background:#17263b;color:white;border:1px solid #3d5574;border-radius:12px;padding:10px}
+.statusbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:14px 0}
+.stat{background:rgba(16,29,48,.9);border:1px solid var(--line);border-radius:14px;padding:10px 12px;text-align:center}
+.stat strong{display:block;font-size:1.25rem;color:#fff}
+.stat span{font-size:.82rem;color:var(--muted)}
+.screen{display:none;margin-top:18px}
+.screen.active{display:block}
+.mode-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:18px}
+.mode-card{background:linear-gradient(160deg,#14243a,#0d1828);border:1px solid var(--line);border-radius:22px;padding:22px;min-height:230px;display:flex;flex-direction:column;justify-content:space-between}
+.mode-card h2{margin:0 0 8px;font-size:1.55rem}
+.mode-card p{color:var(--muted);margin:0 0 18px}
+.icon{font-size:3rem}
+.panel{background:rgba(16,29,48,.94);border:1px solid var(--line);border-radius:22px;padding:clamp(14px,2.5vw,24px)}
+.overview-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 18px}
+.overview-tools input{flex:1;min-width:220px;background:#17263b;color:white;border:1px solid #3d5574;border-radius:12px;padding:11px 13px;font:inherit}
+.overview-tools input:focus{outline:2px solid var(--accent);outline-offset:2px}
+.overview-count{color:var(--muted);font-size:.92rem;margin-left:auto}
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px}
+.era-card{background:linear-gradient(160deg,#14243a,#0d1828);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 10px 28px rgba(0,0,0,.22);transition:transform .2s,border-color .2s}
+.era-card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.overview-image{height:230px;background:linear-gradient(145deg,#1d3550,#0e1727);position:relative;overflow:hidden}
+.overview-image img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s}
+.era-card:hover .overview-image img{transform:scale(1.035)}
+.overview-image .ph{position:absolute;inset:0;display:grid;place-items:center;font-size:2.4rem;color:#91a4bc}
+.era-badge{position:absolute;left:12px;top:12px;max-width:calc(100% - 62px);background:rgba(3,8,16,.84);border:1px solid var(--accent);border-radius:999px;padding:5px 10px;color:#7dd3fc;font-weight:800;font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.era-number{position:absolute;right:12px;top:12px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(3,8,16,.84);border:1px solid #4c6484;font-weight:900}
+.era-content{padding:18px;display:flex;flex-direction:column;flex:1}
+.era-content h3{font-size:1.28rem;line-height:1.2;margin:0 0 5px}
+.era-years{color:#67e8f9;font-weight:800;margin-bottom:12px}
+.era-desc{color:#c4d2e3;margin:0 0 15px;line-height:1.55;flex:1}
+.era-details{border-top:1px solid var(--line);padding-top:12px;font-size:.9rem;line-height:1.5;color:var(--muted)}
+.era-details p{margin:0 0 8px}
+.era-details strong{color:var(--text)}
+.empty-state{grid-column:1/-1;text-align:center;color:var(--muted);padding:35px;border:1px dashed #476182;border-radius:16px}
+
+.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px}
+.panel h2{margin:0}
+.help{color:var(--muted);margin:.35rem 0 0}
+.order-list{display:grid;gap:10px}
+.order-item{display:grid;grid-template-columns:44px 108px minmax(0,1fr) auto;gap:12px;align-items:center;background:#14243a;border:2px solid transparent;border-radius:16px;padding:9px;user-select:none;transition:.18s}
+.order-item.dragging{opacity:.45;border-color:var(--accent)}
+.order-item.correct{border-color:var(--ok);background:#0e3029}
+.order-item.wrong{border-color:var(--bad);background:#341827}
+.handle{font-size:1.4rem;color:#7dd3fc;text-align:center;cursor:grab}
+.thumb{height:74px;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,#273d59,#1c2940);position:relative}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.thumb .ph{position:absolute;inset:0;display:grid;place-items:center;font-size:1.6rem;color:#91a4bc}
+.order-info b{font-size:1.03rem}
+.order-info small{display:block;color:var(--muted);margin-top:3px}
+.move-buttons{display:flex;gap:5px}
+.feedback{min-height:28px;margin:14px 0 0;font-weight:750}
+.feedback.ok{color:var(--ok)}.feedback.bad{color:var(--bad)}.feedback.info{color:var(--warn)}
+.quiz-card{display:grid;grid-template-columns:minmax(280px,44%) 1fr;gap:20px;align-items:stretch}
+.quiz-image{min-height:390px;border-radius:18px;overflow:hidden;background:linear-gradient(145deg,#1d3550,#0e1727);position:relative}
+.quiz-image img{width:100%;height:100%;object-fit:cover;display:block}
+.quiz-image .number{position:absolute;top:12px;left:12px;background:rgba(3,8,16,.8);padding:7px 11px;border-radius:999px;border:1px solid #4c6484;font-weight:800}
+.quiz-content{display:flex;flex-direction:column}
+.clue{background:#14243a;border-left:4px solid var(--accent);border-radius:10px;padding:11px 13px;margin-bottom:9px;color:#dbe8f8}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:auto}
+.answer{min-height:64px;text-align:left;border:2px solid #314969;background:#15243a;color:white;border-radius:14px;padding:11px 13px;font-weight:750;cursor:pointer}
+.answer:hover{border-color:var(--accent)}
+.answer.correct{border-color:var(--ok);background:#0e3b2f}
+.answer.wrong{border-color:var(--bad);background:#451a2c}
+.answer:disabled{cursor:default;opacity:1}
+.image-note{font-size:.78rem;color:var(--muted);margin-top:8px}
+.repo-state{font-size:.85rem;color:var(--muted);margin-left:auto}
+.repo-state.ok{color:var(--ok)}.repo-state.warn{color:var(--warn)}
+.result-box{text-align:center;padding:30px}
+.result-score{font-size:clamp(3rem,10vw,6rem);font-weight:900;line-height:1;background:linear-gradient(90deg,#67e8f9,#c084fc);-webkit-background-clip:text;color:transparent}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:16px;z-index:20}
+.modal.show{display:flex}
+.modal-box{width:min(720px,100%);max-height:90vh;overflow:auto;background:#101d30;border:1px solid #476182;border-radius:20px;padding:22px}
+.modal-box h3{margin-top:0}
+.timeline{display:grid;gap:7px}
+.timeline div{display:grid;grid-template-columns:42px 1fr auto;gap:9px;padding:8px;border-bottom:1px solid var(--line)}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:920px){.mode-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.mode-grid,.quiz-card{grid-template-columns:1fr}.statusbar{grid-template-columns:repeat(2,1fr)}.order-item{grid-template-columns:34px 76px 1fr}.move-buttons{grid-column:2/4;justify-content:flex-end}.thumb{height:62px}.quiz-image{min-height:270px}.answers{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero">
+<h1>Literaturepochen interaktiv</h1>
+<p>Lies die vollständige Übersicht mit Bildern und Texten. Danach kannst du die Epochen ordnen oder anhand von Hinweisen erraten.</p>
+</header>
+<div class="toolbar">
+<button class="btn ghost" id="overviewBtn">▦ Übersicht</button>
+<button class="btn ghost" id="homeBtn">🎮 Spiele</button>
+<button class="btn ghost" id="solutionBtn">☰ Zeitstrahl</button>
+<span id="repoState" class="repo-state ok">20 GitHub-Bilder fest verknüpft</span>
+</div>
+<div class="statusbar" aria-live="polite">
+<div class="stat"><strong id="score">0</strong><span>Punkte</span></div>
+<div class="stat"><strong id="round">–</strong><span>Runde</span></div>
+<div class="stat"><strong id="right">0</strong><span>Richtig</span></div>
+<div class="stat"><strong id="streak">0</strong><span>Serie</span></div>
+</div>
+
+<section id="home" class="screen">
+<div class="mode-grid">
+<article class="mode-card"><div><h2>Übersicht lesen</h2><p>Alle 20 Epochen mit Bild, Zeitraum, Erklärung, Motiven sowie wichtigen Autoren und Werken.</p></div><div class="toolbar"><button class="btn primary" id="showOverview">Übersicht öffnen</button></div></article>
+<article class="mode-card"><div><div class="icon">↕️</div><h2>Epochen ordnen</h2><p>Sortiere zufällig gemischte Epochen chronologisch. Ziehen oder Pfeiltasten benutzen.</p></div><div class="toolbar"><label for="orderCount">Umfang</label><select id="orderCount"><option value="6">6 Epochen</option><option value="10" selected>10 Epochen</option><option value="20">alle 20</option></select><button class="btn primary" id="startOrder">Starten</button></div></article>
+<article class="mode-card"><div><div class="icon">🕵️</div><h2>Epoche erraten</h2><p>Ein Bild und drei Hinweise erscheinen. Wähle aus vier Epochen die passende aus.</p></div><div class="toolbar"><label for="quizCount">Runden</label><select id="quizCount"><option value="5">5</option><option value="10" selected>10</option><option value="20">20</option></select><button class="btn primary" id="startQuiz">Starten</button></div></article>
+</div>
+</section>
+
+<section id="overviewScreen" class="screen active">
+<div class="panel">
+<div class="panel-head"><div><h2>Die 20 Literaturepochen im Überblick</h2><p class="help">Die ursprünglichen Texte und Bilder sind vollständig enthalten. Über die Suche lassen sich Epochen, Motive, Werke und Autoren filtern.</p></div><button class="btn primary" id="toGamesBtn">Zu den Spielen</button></div>
+<div class="overview-tools"><label class="sr-only" for="overviewSearch">Übersicht durchsuchen</label><input id="overviewSearch" type="search" placeholder="Epoche, Motiv, Autor oder Werk suchen …" autocomplete="off"><button class="btn" id="clearSearch">Suche löschen</button><span class="overview-count" id="overviewCount">20 Epochen</span></div>
+<div id="overviewGrid" class="overview-grid"></div>
+</div>
+</section>
+
+<section id="orderScreen" class="screen">
+<div class="panel">
+<div class="panel-head"><div><h2>Epochen ordnen</h2><p class="help">Früheste Epoche nach oben, jüngste nach unten. Die Jahreszahlen bleiben zunächst verborgen.</p></div><button class="btn warn" id="shuffleOrder">Neu mischen</button></div>
+<div id="orderList" class="order-list"></div>
+<div class="toolbar"><button class="btn good" id="checkOrder">Reihenfolge prüfen</button><button class="btn" id="revealOrder">Lösung anzeigen</button></div>
+<div id="orderFeedback" class="feedback" aria-live="polite"></div>
+</div>
+</section>
+
+<section id="quizScreen" class="screen">
+<div class="panel">
+<div class="panel-head"><div><h2>Welche Epoche ist gemeint?</h2><p class="help">Nutze Bild, Motive und Autoren. Eine Antwort ist richtig.</p></div><button class="btn warn" id="skipQuiz">Überspringen</button></div>
+<div id="quizArea"></div>
+<div id="quizFeedback" class="feedback" aria-live="polite"></div>
+<div class="toolbar"><button class="btn primary" id="nextQuiz" hidden>Nächste Aufgabe</button></div>
+</div>
+</section>
+
+<section id="resultScreen" class="screen">
+<div class="panel result-box"><div class="result-score" id="finalScore">0</div><h2 id="resultTitle">Geschafft</h2><p id="resultText"></p><button class="btn primary" id="againBtn">Noch einmal</button></div>
+</section>
+</div>
+
+<div class="modal" id="solutionModal" role="dialog" aria-modal="true" aria-labelledby="solutionTitle">
+<div class="modal-box"><div class="panel-head"><h3 id="solutionTitle">Zeitstrahl der Literaturepochen</h3><button class="btn small" id="closeModal">Schließen</button></div><div id="timeline" class="timeline"></div></div>
+</div>
+
+<script>
+'use strict';
+const EPOCHS=[{"id": 1, "name": "Mittelalter", "title": "Mittelalterliche Literatur", "years": "ca. 750 – 1500", "desc": "Geprägt von der christlichen Kirche und dem höfischen Rittertum. Mönche bewahren in Skriptorien das Wissen auf Pergament; an den Fürstenhöfen entfalten sich Minnesang und Heldenepen.", "motives": "Gottgefälligkeit (Memento mori), ritterliche Tugenden (Triuwe, Maze), Minne", "authors": "Walther von der Vogelweide, Wolfram von Eschenbach (Parzival), Nibelungenlied", "fallbackFile": "mittelalter.jpg"}, {"id": 2, "name": "Renaissance & Humanismus", "title": "Renaissance & Humanismus", "years": "ca. 1400 – 1600", "desc": "Wiederentdeckung der antiken Philosophie und Wissenschaft. Der Mensch rückt als freies, vernunftbegabtes Individuum in den Mittelpunkt. Gutenbergs Buchdruck revolutioniert die Wissensvermittlung.", "motives": "Ad fontes (Zurück zu den Quellen), Bildung, Kritik an Dogmen, Kosmologie", "authors": "Erasmus von Rotterdam, Sebastian Brant (Das Narrenschiff), Ulrich von Hutten", "fallbackFile": "renaissance.jpg"}, {"id": 3, "name": "Reformation", "title": "Reformation", "years": "ca. 1517 – 1600", "desc": "Religiöse Erneuerung und Aufruhr gegen den Ablasshandel der katholischen Kirche. Martin Luthers Bibelübersetzung ins Deutsche formt die moderne hochdeutsche Schriftsprache und macht Glauben dem Volk zugänglich.", "motives": "Glaubensfreiheit, Flugschriften, Volkstümlichkeit, Kirchenlieder, Meistersang", "authors": "Martin Luther (Bibelübersetzung), Hans Sachs, Thomas Müntzer", "fallbackFile": "reformation.jpg"}, {"id": 4, "name": "Barock", "title": "Barock", "years": "ca. 1600 – 1720", "desc": "Vor dem Hintergrund des verheerenden Dreißigjährigen Krieges pendelt das Lebensgefühl zwischen tiefer Todesangst und prachtvollem Lebensgenuss. Strenge formale Metrik und bildgewaltige Metaphern.", "motives": "Vanitas (Vergänglichkeit), Memento mori, Carpe diem, Antithetik", "authors": "Andreas Gryphius, Martin Opitz, Hans Jakob Christoffel von Grimmelshausen (Simplicissimus)", "fallbackFile": "barock.jpg"}, {"id": 5, "name": "Aufklärung", "title": "Aufklärung", "years": "ca. 1720 – 1800", "desc": "Das Zeitalter der Vernunft (Kants „Ausgang des Menschen aus seiner selbst verschuldeten Unmündigkeit“). Literatur wird zum moralischen Erziehungsinstrument; religiöse Toleranz und Humanität stehen im Fokus.", "motives": "Vernunft, Toleranzgedanke, Kritik an Standesvorrechten, Fabeln & bürgerliches Trauerspiel", "authors": "Gotthold Ephraim Lessing (Nathan der Weise, Emilia Galotti), Immanuel Kant, Christoph Martin Wieland", "fallbackFile": "aufklaerung.jpg"}, {"id": 6, "name": "Empfindsamkeit", "title": "Empfindsamkeit", "years": "ca. 1740 – 1780", "desc": "Ergänzung und sanfter Gegenpol zur rein verstandesorientierten Aufklärung. Der Kult um das tief empfundene Gefühl, das Mitleid, seelische Introspektion und die leidenschaftliche Liebe zur Natur bricht sich Bahn.", "motives": "Gefühlskult, Schwermut, Naturverbundenheit, Freundschaft, Seelenkult", "authors": "Friedrich Gottlieb Klopstock (Der Messias), Sophie von La Roche, Matthias Claudius", "fallbackFile": "empfindsamkeit.jpg"}, {"id": 7, "name": "Sturm und Drang", "title": "Sturm und Drang", "years": "ca. 1765 – 1785", "desc": "Die rebellische Jugendbewegung der deutschen Literatur („Geniezeit“). Protest gegen starre Autoritäten, Verstandesdogmen und höfische Zwänge. Das Originalgenie folgt allein seinem Herzen, seiner Leidenschaft und der Natur.", "motives": "Geniekult, Herzensleidenschaft, Natur- und Freiheitsdrang, Konflikt mit der Gesellschaft", "authors": "Johann Wolfgang von Goethe (Die Leiden des jungen Werthers), Friedrich Schiller (Die Räuber), Jakob Michael Reinhold Lenz", "fallbackFile": "sturmunddrang.jpg"}, {"id": 8, "name": "Weimarer Klassik", "title": "Weimarer Klassik", "years": "ca. 1786 – 1832", "desc": "Nach Goethes Italienreise streben Goethe und Schiller in Weimar nach ästhetischer und ethischer Vollendung. Orientierung an der Antike: Harmonie zwischen Pflicht und Neigung, Vernunft und Gefühl („Edel sei der Mensch, hilfreich und gut“).", "motives": "Harmonie, Humanität, Maß und Mitte, Schönheitsideal der Antike, ästhetische Erziehung", "authors": "Goethe (Faust I, Iphigenie auf Tauris), Schiller (Wilhelm Tell, Maria Stuart), Johann Gottfried Herder", "fallbackFile": "weimarerklassik.jpg"}, {"id": 9, "name": "Romantik", "title": "Romantik", "years": "ca. 1795 – 1848", "desc": "Gegenbewegung zur nüchternen Industrialisierung und Aufklärung. Sehnsucht nach dem Unendlichen, dem Geheimnisvollen, Märchenhaften und Unbewussten. Die „Blaue Blume“ wird zum weltberühmten Symbol der Poesie und Sehnsucht.", "motives": "Sehnsucht, Die Blaue Blume, Wanderlust, Traum, Nacht, Ironie, Volksmärchen", "authors": "Novalis, E. T. A. Hoffmann (Der Sandmann), Joseph von Eichendorff, Brüder Grimm, Clemens Brentano", "fallbackFile": "romantik.jpg"}, {"id": 10, "name": "Biedermeier", "title": "Biedermeier", "years": "ca. 1815 – 1848", "desc": "In der Zeit der Metternich'schen Restauration und Zensur ziehen sich viele Autoren ins Private und Häusliche zurück. Fokus auf bürgerliche Bescheidenheit, Familienglück, stille Melancholie und detailgetreue Naturbeobachtung.", "motives": "Rückzug ins Private, Idylle, Resignation, Vergänglichkeit im Kleinen, Ordnung", "authors": "Eduard Mörike (Mozart auf der Reise nach Prag), Adalbert Stifter (Der Nachsommer), Franz Grillparzer", "fallbackFile": "biedermeier.jpg"}, {"id": 11, "name": "Vormärz & Junges Deutschland", "title": "Vormärz & Junges Deutschland", "years": "ca. 1815 – 1848", "desc": "Politischer und gesellschaftlicher Protest im Vorfeld der Revolution von 1848. Die Autoren fordern Presse- und Meinungsfreiheit, Demokratie, soziale Gerechtigkeit und das Ende der feudalen Willkür. Literatur wird zur politischen Tat.", "motives": "Auflehnung, Kritik an Zensur und Kirche, soziale Ungerechtigkeit, Freiheitskämpfe", "authors": "Georg Büchner (Woyzeck, Der Hessische Landbote), Heinrich Heine (Deutschland. Ein Wintermärchen), Georg Herwegh", "fallbackFile": "vormaerz.jpg"}, {"id": 12, "name": "Bürgerlicher Realismus", "title": "Bürgerlicher Realismus", "years": "ca. 1848 – 1890", "desc": "Darstellung der beobachtbaren Wirklichkeit mit künstlerisch-poetischer Gestaltung. Im Zeitalter der Industrialisierung und des aufstrebenden Bürgertums werden Konflikte des Individuums mit gesellschaftlichen Normen feinsinnig seziert.", "motives": "Bürgerliches Leben, Regionalität, Humor und Ironie, Ehe- und Gesellschaftskonflikte", "authors": "Theodor Fontane (Effi Briest), Theodor Storm (Der Schimmelreiter), Gottfried Keller, Marie von Ebner-Eschenbach", "fallbackFile": "realismus.jpg"}, {"id": 13, "name": "Naturalismus", "title": "Naturalismus", "years": "ca. 1880 – 1900", "desc": "Radikale Steigerung des Realismus („Kunst = Natur minus X“ nach Arno Holz). Exakte, ungeschönte Dokumentation des sozialen Elends in Mietskasernen und Fabriken unter Einfluss von Darwinismus und Milieutheorie.", "motives": "Soziales Elend, Alkoholismus, Determinismus (Milieu & Vererbung), Sekundenstil, Dialekt", "authors": "Gerhart Hauptmann (Die Weber, Bahnwärter Thiel), Arno Holz, Johannes Schlaf", "fallbackFile": "naturalismus.jpg"}, {"id": 14, "name": "Impressionismus / Fin de Siècle", "title": "Impressionismus & Wiener Moderne", "years": "ca. 1890 – 1920", "desc": "Um die Jahrhundertwende rücken die subjektiven, flüchtigen Sinneseindrücke, Nuancen des Seelenlebens und die beginnende Psychoanalyse (Freud) ins Zentrum. Caféhaus-Kultur, Melancholie und Decadence.", "motives": "Flüchtige Stimmungen, innerer Monolog, Seelenanalysen, Melancholie, Ästhetizismus", "authors": "Arthur Schnitzler (Lieutenant Gustl, Traumnovelle), Hugo von Hofmannsthal, Peter Altenberg", "fallbackFile": "impressionismus.jpg"}, {"id": 15, "name": "Symbolismus & Jugendstil", "title": "Symbolismus & Jugendstil", "years": "ca. 1890 – 1920", "desc": "Gegenbewegung zum Naturalismus: Das Geheimnisvolle, Magische und Klangliche der Sprache erlangt höchste Vollendung. Durch vielschichtige Symbole und formale Perfektion wird eine reine, überirdische Poesie erschaffen („L'art pour l'art“).", "motives": "Magische Symbole, Klangmagie, Ästhetizismus, Elitismus, Abkehr von der Alltagswelt", "authors": "Rainer Maria Rilke (Der Panther, Duineser Elegien), Stefan George, Richard Dehmel", "fallbackFile": "symbolismus.jpg"}, {"id": 16, "name": "Expressionismus", "title": "Expressionismus", "years": "ca. 1910 – 1925", "desc": "Ausdruck starker innerer Erschütterung durch Großstadt-Reizüberflutung, Entfremdung und die Katastrophe des Ersten Weltkriegs. Sprengung traditioneller Grammatik, grelle Metaphern, Apokalypse- und Erneuerungssehnsucht.", "motives": "Großstadt, Weltende, Krieg, Angst und Isolation, Sehnsucht nach dem „Neuen Menschen“", "authors": "Georg Trakl, Georg Heym (Der Gott der Stadt), Else Lasker-Schüler, Gottfried Benn, Franz Kafka", "fallbackFile": "expressionismus.jpg"}, {"id": 17, "name": "Neue Sachlichkeit", "title": "Neue Sachlichkeit / Weimarer Republik", "years": "ca. 1918 – 1933", "desc": "Nüchterne, sachlich-dokumentarische Bestandsaufnahme der politischen und sozialen Kontraste in der Weimarer Republik. Zeitroman, Gebrauchsliteratur, politisch engagiertes Episches Theater und Großstadtbeobachtung.", "motives": "Kälte der Metropole, Arbeitslosigkeit, Goldene Zwanziger, Nüchternheit, Montage", "authors": "Erich Kästner (Fabian), Bertolt Brecht (Dreigroschenoper), Alfred Döblin (Berlin Alexanderplatz), Hans Fallada", "fallbackFile": "neuesachlichkeit.jpg"}, {"id": 18, "name": "Exilliteratur & Innere Emigration", "title": "Exilliteratur & Innere Emigration", "years": "ca. 1933 – 1945", "desc": "Nach der Machtübernahme der Nationalsozialisten und den Bücherverbrennungen müssen tausende Schriftsteller fliehen. Schreiben gegen den Faschismus unter existenzieller Not und Verlust der Heimat oder verdecktes Schreiben im Inland.", "motives": "Heimatverlust, Aufklärung über NS-Terror, Sehnsucht nach Humanität, Identitätskrise", "authors": "Thomas Mann (Doktor Faustus), Bertolt Brecht (Mutter Courage), Anna Seghers (Das siebte Kreuz), Stefan Zweig", "fallbackFile": "exilliteratur.jpg"}, {"id": 19, "name": "Trümmerliteratur", "title": "Trümmer- & Nachkriegsliteratur", "years": "ca. 1945 – 1960", "desc": "Die „Stunde Null“ in den zerbombten Städten Deutschlands. Abkehr von ideologischem Pathos hin zu einer radikal klaren, ungeschönten Sprache („Kahlschlagliteratur“). Die Gruppe 47 prägt den moralischen Neubeginn.", "motives": "Heimkehrer, Trümmer, Schuldfrage, Vergangenheitsbewältigung, Existenzangst, Hoffnung", "authors": "Wolfgang Borchert (Draußen vor der Tür), Heinrich Böll (Wanderer, kommst du nach Spa...), Günter Grass (Die Blechtrommel)", "fallbackFile": "truemmerliteratur.jpg"}, {"id": 20, "name": "Gegenwartsliteratur", "title": "Gegenwartsliteratur & Postmoderne", "years": "ab ca. 1989 / heute", "desc": "Seit dem Mauerfall und im Zeitalter von Digitalisierung, Globalisierung und kultureller Vielfalt blüht eine pluralistische Literaturlandschaft. Intertextualität, autobiografisches Schreiben, Identitätssuche und moderne Großstadterfahrungen.", "motives": "Digitale Moderne, Migration & Identität, Wende- und Familienromane, Klimakrise, Vielfalt", "authors": "Herta Müller, Juli Zeh (Corpus Delicti), Daniel Kehlmann (Die Vermessung der Welt), Saša Stanišić, Christian Kracht", "fallbackFile": "gegenwartsliteratur.jpg"}];
+const PAGES_BASE='https://burgnetz-wq.github.io/froebel/deutsch/epochen/';
+const state={mode:'home',score:0,right:0,streak:0,round:0,total:0,orderItems:[],quizItems:[],quizIndex:0,answered:false};
+const $=s=>document.querySelector(s);
+const screens=[...document.querySelectorAll('.screen')];
+function showScreen(id){screens.forEach(s=>s.classList.toggle('active',s.id===id));window.scrollTo({top:0,behavior:'smooth'})}
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function updateStats(){$ ('#score').textContent=state.score;$ ('#right').textContent=state.right;$ ('#streak').textContent=state.streak;$ ('#round').textContent=state.total?`${Math.min(state.round,state.total)}/${state.total}`:'–'}
+function resetStats(total){state.score=0;state.right=0;state.streak=0;state.round=0;state.total=total;updateStats()}
+function imageMarkup(ep,cls=''){return `<img class="${cls}" src="${PAGES_BASE+encodeURIComponent(ep.fallbackFile)}" alt="Bildhinweis zur Epoche ${ep.name}" loading="lazy" onerror="this.style.display='none'">`}
+
+function goHome(){state.mode='home';resetStats(0);showScreen('home')}
+function showOverview(){state.mode='overview';resetStats(0);showScreen('overviewScreen')}
+
+function startOrder(){const n=Number($('#orderCount').value);state.mode='order';resetStats(1);state.round=1;const chosen=n===20?[...EPOCHS]:shuffle(EPOCHS).slice(0,n).sort((a,b)=>a.id-b.id);state.orderItems=shuffle(chosen);renderOrder();showScreen('orderScreen');updateStats()}
+function renderOrder(showYears=false){const list=$('#orderList');list.innerHTML='';state.orderItems.forEach((ep,index)=>{const row=document.createElement('div');row.className='order-item';row.draggable=true;row.dataset.id=ep.id;row.innerHTML=`<div class="handle" title="Ziehen">☰</div><div class="thumb">${imageMarkup(ep)}</div><div class="order-info"><b>${ep.name}</b><small>${showYears?ep.years:'Jahreszahlen verborgen'}</small></div><div class="move-buttons"><button class="btn small up" aria-label="Nach oben">▲</button><button class="btn small down" aria-label="Nach unten">▼</button></div>`;
+ row.querySelector('.up').onclick=()=>moveOrder(index,-1);row.querySelector('.down').onclick=()=>moveOrder(index,1);
+ row.addEventListener('dragstart',e=>{row.classList.add('dragging');e.dataTransfer.setData('text/plain',String(index));});row.addEventListener('dragend',()=>row.classList.remove('dragging'));
+ row.addEventListener('dragover',e=>e.preventDefault());row.addEventListener('drop',e=>{e.preventDefault();const from=Number(e.dataTransfer.getData('text/plain'));const to=index;if(from!==to){const [x]=state.orderItems.splice(from,1);state.orderItems.splice(to,0,x);renderOrder(showYears)}});
+ list.appendChild(row)})}
+function moveOrder(i,d){const j=i+d;if(j<0||j>=state.orderItems.length)return;[state.orderItems[i],state.orderItems[j]]=[state.orderItems[j],state.orderItems[i]];renderOrder()}
+function checkOrder(){const sorted=[...state.orderItems].sort((a,b)=>a.id-b.id);let correct=0;[...document.querySelectorAll('.order-item')].forEach((row,i)=>{const ok=state.orderItems[i].id===sorted[i].id;row.classList.toggle('correct',ok);row.classList.toggle('wrong',!ok);if(ok)correct++});const full=correct===state.orderItems.length;state.right=full?1:0;state.streak=full?1:0;state.score=full?state.orderItems.length*100:correct*35;updateStats();const fb=$('#orderFeedback');fb.className='feedback '+(full?'ok':'bad');fb.textContent=full?`Richtig: Alle ${correct} Epochen stehen chronologisch.`:`${correct} von ${state.orderItems.length} Positionen stimmen. Rote Karten müssen noch verschoben werden.`}
+function revealOrder(){state.orderItems.sort((a,b)=>a.id-b.id);renderOrder(true);document.querySelectorAll('.order-item').forEach(r=>r.classList.add('correct'));const fb=$('#orderFeedback');fb.className='feedback info';fb.textContent='Die chronologische Lösung wird angezeigt.'}
+
+function startQuiz(){const n=Number($('#quizCount').value);state.mode='quiz';resetStats(n);state.quizItems=shuffle(EPOCHS).slice(0,n);state.quizIndex=0;state.round=1;state.answered=false;showScreen('quizScreen');renderQuiz();updateStats()}
+function renderQuiz(){const ep=state.quizItems[state.quizIndex];state.answered=false;$('#nextQuiz').hidden=true;$('#quizFeedback').textContent='';$('#quizFeedback').className='feedback';const distract=shuffle(EPOCHS.filter(x=>x.id!==ep.id)).slice(0,3);const choices=shuffle([ep,...distract]);$('#quizArea').innerHTML=`<div class="quiz-card"><div><div class="quiz-image">${imageMarkup(ep)}<span class="number">Bild ${state.quizIndex+1}</span></div><div class="image-note">Bildquelle: GitHub-Ordner <code>froebel/deutsch/epochen/</code></div></div><div class="quiz-content"><div class="clue"><b>Zeitraum:</b> ${maskYears(ep.years)}</div><div class="clue"><b>Motive:</b> ${ep.motives}</div><div class="clue"><b>Autoren und Werke:</b> ${ep.authors}</div><div class="answers">${choices.map(x=>`<button class="answer" data-id="${x.id}">${x.name}</button>`).join('')}</div></div></div>`;document.querySelectorAll('.answer').forEach(b=>b.onclick=()=>answerQuiz(Number(b.dataset.id)))}
+function maskYears(y){return y.replace(/\d/g,'•')}
+function answerQuiz(id){if(state.answered)return;state.answered=true;const ep=state.quizItems[state.quizIndex];const ok=id===ep.id;document.querySelectorAll('.answer').forEach(b=>{b.disabled=true;const bid=Number(b.dataset.id);if(bid===ep.id)b.classList.add('correct');else if(bid===id)b.classList.add('wrong')});if(ok){state.right++;state.streak++;const gain=100+Math.min(state.streak-1,5)*20;state.score+=gain;$('#quizFeedback').className='feedback ok';$('#quizFeedback').textContent=`Richtig: ${ep.name} (${ep.years}). +${gain} Punkte`}else{state.streak=0;$('#quizFeedback').className='feedback bad';$('#quizFeedback').textContent=`Nicht richtig. Gesucht war ${ep.name} (${ep.years}).`}updateStats();$('#nextQuiz').hidden=false}
+function nextQuiz(){if(state.quizIndex+1>=state.quizItems.length){showResult();return}state.quizIndex++;state.round=state.quizIndex+1;renderQuiz();updateStats()}
+function skipQuiz(){if(state.answered){nextQuiz();return}state.streak=0;$('#quizFeedback').className='feedback info';const ep=state.quizItems[state.quizIndex];$('#quizFeedback').textContent=`Übersprungen. Die Lösung lautet: ${ep.name} (${ep.years}).`;document.querySelectorAll('.answer').forEach(b=>{b.disabled=true;if(Number(b.dataset.id)===ep.id)b.classList.add('correct')});state.answered=true;$('#nextQuiz').hidden=false;updateStats()}
+function showResult(){showScreen('resultScreen');$('#finalScore').textContent=state.score;$('#resultTitle').textContent=state.right===state.total?'Fehlerfrei!':state.right>=Math.ceil(state.total*.7)?'Gut erkannt':'Noch einmal üben';$('#resultText').textContent=`${state.right} von ${state.total} Epochen richtig. Beste Serie: ${state.streak}.`}
+
+
+function escapeHtml(value){return String(value).replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]))}
+function buildOverview(filter=''){
+ const q=filter.trim().toLocaleLowerCase('de');
+ const visible=EPOCHS.filter(ep=>[ep.name,ep.title,ep.years,ep.desc,ep.motives,ep.authors].join(' ').toLocaleLowerCase('de').includes(q));
+ $('#overviewCount').textContent=`${visible.length} ${visible.length===1?'Epoche':'Epochen'}`;
+ $('#overviewGrid').innerHTML=visible.length?visible.map(ep=>`<article class="era-card">
+  <div class="overview-image">${imageMarkup(ep)}<span class="era-badge">${escapeHtml(ep.name)}</span><span class="era-number">${ep.id}</span></div>
+  <div class="era-content"><h3>${escapeHtml(ep.title)}</h3><div class="era-years">${escapeHtml(ep.years)}</div><p class="era-desc">${escapeHtml(ep.desc)}</p>
+  <div class="era-details"><p><strong>Hauptmotive:</strong> ${escapeHtml(ep.motives)}</p><p><strong>Wichtige Werke und Autoren:</strong> ${escapeHtml(ep.authors)}</p></div></div>
+ </article>`).join(''):'<div class="empty-state">Keine passende Epoche gefunden.</div>';
+}
+
+function buildTimeline(){$('#timeline').innerHTML=EPOCHS.map(ep=>`<div><b>${String(ep.id).padStart(2,'0')}</b><span>${ep.name}</span><small>${ep.years}</small></div>`).join('')}
+$('#overviewBtn').onclick=showOverview;$('#homeBtn').onclick=goHome;$('#showOverview').onclick=showOverview;$('#toGamesBtn').onclick=goHome;$('#overviewSearch').addEventListener('input',e=>buildOverview(e.target.value));$('#clearSearch').onclick=()=>{$('#overviewSearch').value='';buildOverview()};$('#startOrder').onclick=startOrder;$('#shuffleOrder').onclick=()=>{state.orderItems=shuffle(state.orderItems);renderOrder();$('#orderFeedback').textContent=''};$('#checkOrder').onclick=checkOrder;$('#revealOrder').onclick=revealOrder;
+$('#startQuiz').onclick=startQuiz;$('#nextQuiz').onclick=nextQuiz;$('#skipQuiz').onclick=skipQuiz;$('#againBtn').onclick=()=>state.mode==='quiz'?startQuiz():startOrder();
+$('#solutionBtn').onclick=()=>$('#solutionModal').classList.add('show');$('#closeModal').onclick=()=>$('#solutionModal').classList.remove('show');$('#solutionModal').onclick=e=>{if(e.target.id==='solutionModal')e.currentTarget.classList.remove('show')};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')$('#solutionModal').classList.remove('show')});
+buildOverview();buildTimeline();updateStats();
+</script>
+</body>
+</html>
