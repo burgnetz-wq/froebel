@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epochen der deutschsprachigen Literatur – Fotorealistische Bildgalerie</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --border: #334155;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+        header {
+            max-width: 1200px;
+            margin: 0 auto 3rem auto;
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, #38bdf8, #818cf8, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .era-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .era-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+            border-color: var(--accent);
+        }
+        .image-container {
+            width: 100%;
+            height: 280px;
+            background-color: #090d16;
+            position: relative;
+            overflow: hidden;
+        }
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .era-card:hover .image-container img {
+            transform: scale(1.05);
+        }
+        .era-badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .era-number {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .card-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+        .era-title {
+            font-size: 1.4rem;
+            color: #fff;
+            margin-bottom: 0.3rem;
+        }
+        .era-years {
+            font-size: 0.95rem;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .era-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.2rem;
+            flex-grow: 1;
+        }
+        .era-details {
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+            font-size: 0.88rem;
+        }
+        .detail-item {
+            margin-bottom: 0.4rem;
+        }
+        .detail-label {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        .detail-value {
+            color: var(--text-secondary);
+        }
+        footer {
+            max-width: 1200px;
+            margin: 4rem auto 1rem auto;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            padding-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Epochen der deutschsprachigen Literatur</h1>
+    <p class="subtitle">Eine visuelle und inhaltliche Reise durch 20 prägende Zeitalter – von den hochmittelalterlichen Skriptorien bis zur vielschichtigen Gegenwartsliteratur, illustriert durch 20 eigens generierte fotorealistische Szenerien.</p>
+</header>
+
+<div class="gallery-grid">
+
+    <!-- 01 Mittelalter -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/01_mittelalter.jpg" alt="Mittelalter Scriptorium">
+            <span class="era-badge">Mittelalter</span>
+            <span class="era-number">1</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Mittelalterliche Literatur</h2>
+            <div class="era-years">ca. 750 – 1500</div>
+            <p class="era-desc">Geprägt von der christlichen Kirche und dem höfischen Rittertum. Mönche bewahren in Skriptorien das Wissen auf Pergament; an den Fürstenhöfen entfalten sich Minnesang und Heldenepen.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Gottgefälligkeit (Memento mori), ritterliche Tugenden (Triuwe, Maze), Minne</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Walther von der Vogelweide, Wolfram von Eschenbach (Parzival), Nibelungenlied</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 02 Renaissance -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/02_renaissance.jpg" alt="Renaissance und Humanismus">
+            <span class="era-badge">Renaissance & Humanismus</span>
+            <span class="era-number">2</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Renaissance & Humanismus</h2>
+            <div class="era-years">ca. 1400 – 1600</div>
+            <p class="era-desc">Wiederentdeckung der antiken Philosophie und Wissenschaft. Der Mensch rückt als freies, vernunftbegabtes Individuum in den Mittelpunkt. Gutenbergs Buchdruck revolutioniert die Wissensvermittlung.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Ad fontes (Zurück zu den Quellen), Bildung, Kritik an Dogmen, Kosmologie</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Erasmus von Rotterdam, Sebastian Brant (Das Narrenschiff), Ulrich von Hutten</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 03 Reformation -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/03_reformation.jpg" alt="Reformation">
+            <span class="era-badge">Reformation</span>
+            <span class="era-number">3</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Reformation</h2>
+            <div class="era-years">ca. 1517 – 1600</div>
+            <p class="era-desc">Religiöse Erneuerung und Aufruhr gegen den Ablasshandel der katholischen Kirche. Martin Luthers Bibelübersetzung ins Deutsche formt die moderne hochdeutsche Schriftsprache und macht Glauben dem Volk zugänglich.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Glaubensfreiheit, Flugschriften, Volkstümlichkeit, Kirchenlieder, Meistersang</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Martin Luther (Bibelübersetzung), Hans Sachs, Thomas Müntzer</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 04 Barock -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/04_barock.jpg" alt="Barock Vanitas">
+            <span class="era-badge">Barock</span>
+            <span class="era-number">4</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Barock</h2>
+            <div class="era-years">ca. 1600 – 1720</div>
+            <p class="era-desc">Vor dem Hintergrund des verheerenden Dreißigjährigen Krieges pendelt das Lebensgefühl zwischen tiefer Todesangst und prachtvollem Lebensgenuss. Strenge formale Metrik und bildgewaltige Metaphern.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Vanitas (Vergänglichkeit), Memento mori, Carpe diem, Antithetik</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Andreas Gryphius, Martin Opitz, Hans Jakob Christoffel von Grimmelshausen (Simplicissimus)</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 05 Aufklärung -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/05_aufklaerung.jpg" alt="Aufklärung Salon">
+            <span class="era-badge">Aufklärung</span>
+            <span class="era-number">5</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Aufklärung</h2>
+            <div class="era-years">ca. 1720 – 1800</div>
+            <p class="era-desc">Das Zeitalter der Vernunft (Kants „Ausgang des Menschen aus seiner selbst verschuldeten Unmündigkeit“). Literatur wird zum moralischen Erziehungsinstrument; religiöse Toleranz und Humanität stehen im Fokus.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Vernunft, Toleranzgedanke, Kritik an Standesvorrechten, Fabeln & bürgerliches Trauerspiel</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Gotthold Ephraim Lessing (Nathan der Weise, Emilia Galotti), Immanuel Kant, Christoph Martin Wieland</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 06 Empfindsamkeit -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/06_empfindsamkeit.jpg" alt="Empfindsamkeit">
+            <span class="era-badge">Empfindsamkeit</span>
+            <span class="era-number">6</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Empfindsamkeit</h2>
+            <div class="era-years">ca. 1740 – 1780</div>
+            <p class="era-desc">Ergänzung und sanfter Gegenpol zur rein verstandesorientierten Aufklärung. Der Kult um das tief empfundene Gefühl, das Mitleid, seelische Introspektion und die leidenschaftliche Liebe zur Natur bricht sich Bahn.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Gefühlskult, Schwermut, Naturverbundenheit, Freundschaft, Seelenkult</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Friedrich Gottlieb Klopstock (Der Messias), Sophie von La Roche, Matthias Claudius</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 07 Sturm und Drang -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/07_sturm_und_drang.jpg" alt="Sturm und Drang">
+            <span class="era-badge">Sturm und Drang</span>
+            <span class="era-number">7</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Sturm und Drang</h2>
+            <div class="era-years">ca. 1765 – 1785</div>
+            <p class="era-desc">Die rebellische Jugendbewegung der deutschen Literatur („Geniezeit“). Protest gegen starre Autoritäten, Verstandesdogmen und höfische Zwänge. Das Originalgenie folgt allein seinem Herzen, seiner Leidenschaft und der Natur.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Geniekult, Herzensleidenschaft, Natur- und Freiheitsdrang, Konflikt mit der Gesellschaft</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Johann Wolfgang von Goethe (Die Leiden des jungen Werthers), Friedrich Schiller (Die Räuber), Jakob Michael Reinhold Lenz</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 08 Weimarer Klassik -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/08_weimarer_klassik.jpg" alt="Weimarer Klassik">
+            <span class="era-badge">Weimarer Klassik</span>
+            <span class="era-number">8</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Weimarer Klassik</h2>
+            <div class="era-years">ca. 1786 – 1832</div>
+            <p class="era-desc">Nach Goethes Italienreise streben Goethe und Schiller in Weimar nach ästhetischer und ethischer Vollendung. Orientierung an der Antike: Harmonie zwischen Pflicht und Neigung, Vernunft und Gefühl („Edel sei der Mensch, hilfreich und gut“).</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Harmonie, Humanität, Maß und Mitte, Schönheitsideal der Antike, ästhetische Erziehung</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Goethe (Faust I, Iphigenie auf Tauris), Schiller (Wilhelm Tell, Maria Stuart), Johann Gottfried Herder</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 09 Romantik -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/09_romantik.jpg" alt="Romantik">
+            <span class="era-badge">Romantik</span>
+            <span class="era-number">9</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Romantik</h2>
+            <div class="era-years">ca. 1795 – 1848</div>
+            <p class="era-desc">Gegenbewegung zur nüchternen Industrialisierung und Aufklärung. Sehnsucht nach dem Unendlichen, dem Geheimnisvollen, Märchenhaften und Unbewussten. Die „Blaue Blume“ wird zum weltberühmten Symbol der Poesie und Sehnsucht.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Sehnsucht, Die Blaue Blume, Wanderlust, Traum, Nacht, Ironie, Volksmärchen</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Novalis, E. T. A. Hoffmann (Der Sandmann), Joseph von Eichendorff, Brüder Grimm, Clemens Brentano</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10 Biedermeier -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/10_biedermeier.jpg" alt="Biedermeier">
+            <span class="era-badge">Biedermeier</span>
+            <span class="era-number">10</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Biedermeier</h2>
+            <div class="era-years">ca. 1815 – 1848</div>
+            <p class="era-desc">In der Zeit der Metternich'schen Restauration und Zensur ziehen sich viele Autoren ins Private und Häusliche zurück. Fokus auf bürgerliche Bescheidenheit, Familienglück, stille Melancholie und detailgetreue Naturbeobachtung.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Rückzug ins Private, Idylle, Resignation, Vergänglichkeit im Kleinen, Ordnung</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Eduard Mörike (Mozart auf der Reise nach Prag), Adalbert Stifter (Der Nachsommer), Franz Grillparzer</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 11 Vormärz -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/11_vormaerz.svg" alt="Vormärz und Junges Deutschland">
+            <span class="era-badge">Vormärz & Junges Deutschland</span>
+            <span class="era-number">11</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Vormärz & Junges Deutschland</h2>
+            <div class="era-years">ca. 1815 – 1848</div>
+            <p class="era-desc">Politischer und gesellschaftlicher Protest im Vorfeld der Revolution von 1848. Die Autoren fordern Presse- und Meinungsfreiheit, Demokratie, soziale Gerechtigkeit und das Ende der feudalen Willkür. Literatur wird zur politischen Tat.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Auflehnung, Kritik an Zensur und Kirche, soziale Ungerechtigkeit, Freiheitskämpfe</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Georg Büchner (Woyzeck, Der Hessische Landbote), Heinrich Heine (Deutschland. Ein Wintermärchen), Georg Herwegh</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12 Realismus -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/12_realismus.svg" alt="Bürgerlicher Realismus">
+            <span class="era-badge">Bürgerlicher Realismus</span>
+            <span class="era-number">12</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Bürgerlicher Realismus</h2>
+            <div class="era-years">ca. 1848 – 1890</div>
+            <p class="era-desc">Darstellung der beobachtbaren Wirklichkeit mit künstlerisch-poetischer Gestaltung. Im Zeitalter der Industrialisierung und des aufstrebenden Bürgertums werden Konflikte des Individuums mit gesellschaftlichen Normen feinsinnig seziert.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Bürgerliches Leben, Regionalität, Humor und Ironie, Ehe- und Gesellschaftskonflikte</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Theodor Fontane (Effi Briest), Theodor Storm (Der Schimmelreiter), Gottfried Keller, Marie von Ebner-Eschenbach</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 13 Naturalismus -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/13_naturalismus.svg" alt="Naturalismus">
+            <span class="era-badge">Naturalismus</span>
+            <span class="era-number">13</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Naturalismus</h2>
+            <div class="era-years">ca. 1880 – 1900</div>
+            <p class="era-desc">Radikale Steigerung des Realismus („Kunst = Natur minus X“ nach Arno Holz). Exakte, ungeschönte Dokumentation des sozialen Elends in Mietskasernen und Fabriken unter Einfluss von Darwinismus und Milieutheorie.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Soziales Elend, Alkoholismus, Determinismus (Milieu & Vererbung), Sekundenstil, Dialekt</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Gerhart Hauptmann (Die Weber, Bahnwärter Thiel), Arno Holz, Johannes Schlaf</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 14 Impressionismus -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/14_impressionismus.svg" alt="Impressionismus">
+            <span class="era-badge">Impressionismus / Fin de Siècle</span>
+            <span class="era-number">14</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Impressionismus & Wiener Moderne</h2>
+            <div class="era-years">ca. 1890 – 1920</div>
+            <p class="era-desc">Um die Jahrhundertwende rücken die subjektiven, flüchtigen Sinneseindrücke, Nuancen des Seelenlebens und die beginnende Psychoanalyse (Freud) ins Zentrum. Caféhaus-Kultur, Melancholie und Decadence.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Flüchtige Stimmungen, innerer Monolog, Seelenanalysen, Melancholie, Ästhetizismus</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Arthur Schnitzler (Lieutenant Gustl, Traumnovelle), Hugo von Hofmannsthal, Peter Altenberg</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 15 Symbolismus -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/15_symbolismus.svg" alt="Symbolismus">
+            <span class="era-badge">Symbolismus & Jugendstil</span>
+            <span class="era-number">15</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Symbolismus & Jugendstil</h2>
+            <div class="era-years">ca. 1890 – 1920</div>
+            <p class="era-desc">Gegenbewegung zum Naturalismus: Das Geheimnisvolle, Magische und Klangliche der Sprache erlangt höchste Vollendung. Durch vielschichtige Symbole und formale Perfektion wird eine reine, überirdische Poesie erschaffen („L'art pour l'art“).</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Magische Symbole, Klangmagie, Ästhetizismus, Elitismus, Abkehr von der Alltagswelt</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Rainer Maria Rilke (Der Panther, Duineser Elegien), Stefan George, Richard Dehmel</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 16 Expressionismus -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/16_expressionismus.svg" alt="Expressionismus">
+            <span class="era-badge">Expressionismus</span>
+            <span class="era-number">16</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Expressionismus</h2>
+            <div class="era-years">ca. 1910 – 1925</div>
+            <p class="era-desc">Ausdruck starker innerer Erschütterung durch Großstadt-Reizüberflutung, Entfremdung und die Katastrophe des Ersten Weltkriegs. Sprengung traditioneller Grammatik, grelle Metaphern, Apokalypse- und Erneuerungssehnsucht.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Großstadt, Weltende, Krieg, Angst und Isolation, Sehnsucht nach dem „Neuen Menschen“</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Georg Trakl, Georg Heym (Der Gott der Stadt), Else Lasker-Schüler, Gottfried Benn, Franz Kafka</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 17 Neue Sachlichkeit -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/17_neue_sachlichkeit.svg" alt="Neue Sachlichkeit">
+            <span class="era-badge">Neue Sachlichkeit</span>
+            <span class="era-number">17</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Neue Sachlichkeit / Weimarer Republik</h2>
+            <div class="era-years">ca. 1918 – 1933</div>
+            <p class="era-desc">Nüchterne, sachlich-dokumentarische Bestandsaufnahme der politischen und sozialen Kontraste in der Weimarer Republik. Zeitroman, Gebrauchsliteratur, politisch engagiertes Episches Theater und Großstadtbeobachtung.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Kälte der Metropole, Arbeitslosigkeit, Goldene Zwanziger, Nüchternheit, Montage</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Erich Kästner (Fabian), Bertolt Brecht (Dreigroschenoper), Alfred Döblin (Berlin Alexanderplatz), Hans Fallada</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 18 Exilliteratur -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/18_exilliteratur.svg" alt="Exilliteratur">
+            <span class="era-badge">Exilliteratur & Innere Emigration</span>
+            <span class="era-number">18</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Exilliteratur & Innere Emigration</h2>
+            <div class="era-years">ca. 1933 – 1945</div>
+            <p class="era-desc">Nach der Machtübernahme der Nationalsozialisten und den Bücherverbrennungen müssen tausende Schriftsteller fliehen. Schreiben gegen den Faschismus unter existenzieller Not und Verlust der Heimat oder verdecktes Schreiben im Inland.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Heimatverlust, Aufklärung über NS-Terror, Sehnsucht nach Humanität, Identitätskrise</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Thomas Mann (Doktor Faustus), Bertolt Brecht (Mutter Courage), Anna Seghers (Das siebte Kreuz), Stefan Zweig</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 19 Trümmerliteratur -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/19_truemmerliteratur.svg" alt="Trümmerliteratur">
+            <span class="era-badge">Trümmerliteratur</span>
+            <span class="era-number">19</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Trümmer- & Nachkriegsliteratur</h2>
+            <div class="era-years">ca. 1945 – 1960</div>
+            <p class="era-desc">Die „Stunde Null“ in den zerbombten Städten Deutschlands. Abkehr von ideologischem Pathos hin zu einer radikal klaren, ungeschönten Sprache („Kahlschlagliteratur“). Die Gruppe 47 prägt den moralischen Neubeginn.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Heimkehrer, Trümmer, Schuldfrage, Vergangenheitsbewältigung, Existenzangst, Hoffnung</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Wolfgang Borchert (Draußen vor der Tür), Heinrich Böll (Wanderer, kommst du nach Spa...), Günter Grass (Die Blechtrommel)</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 20 Gegenwartsliteratur -->
+    <div class="era-card">
+        <div class="image-container">
+            <img src="images/20_gegenwartsliteratur.svg" alt="Gegenwartsliteratur">
+            <span class="era-badge">Gegenwartsliteratur</span>
+            <span class="era-number">20</span>
+        </div>
+        <div class="card-content">
+            <h2 class="era-title">Gegenwartsliteratur & Postmoderne</h2>
+            <div class="era-years">ab ca. 1989 / heute</div>
+            <p class="era-desc">Seit dem Mauerfall und im Zeitalter von Digitalisierung, Globalisierung und kultureller Vielfalt blüht eine pluralistische Literaturlandschaft. Intertextualität, autobiografisches Schreiben, Identitätssuche und moderne Großstadterfahrungen.</p>
+            <div class="era-details">
+                <div class="detail-item"><span class="detail-label">Hauptmotive:</span> <span class="detail-value">Digitale Moderne, Migration & Identität, Wende- und Familienromane, Klimakrise, Vielfalt</span></div>
+                <div class="detail-item"><span class="detail-label">Wichtige Werke/Autoren:</span> <span class="detail-value">Herta Müller, Juli Zeh (Corpus Delicti), Daniel Kehlmann (Die Vermessung der Welt), Saša Stanišić, Christian Kracht</span></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+    Erstellt im Arena Workspace &middot; 20 fotorealistische Epochen-Bilder &middot; Juli 2026
+</footer>
+
+</body>
+</html>
