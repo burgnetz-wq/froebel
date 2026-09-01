@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kommasetzung – Goethe</title>
+<style>
+:root {
+  --fs: 26px;
+  --bg: #f3f0e9;
+  --paper: #fffdf8;
+  --ink: #1e1e1e;
+  --accent: #b60000;
+  --accent2: #ffd84d;
+  --line: #d6d0c5;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+}
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  gap: .55rem;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: .7rem 1rem;
+  background: rgba(255,255,255,.96);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 2px 10px rgba(0,0,0,.08);
+}
+.toolbar button, .toolbar input {
+  font: inherit;
+}
+.toolbtn {
+  border: 1px solid #aaa;
+  border-radius: 9px;
+  background: white;
+  padding: .45rem .8rem;
+  cursor: pointer;
+  font-weight: 700;
+}
+.toolbtn:hover { background: #f2f2f2; }
+.sizebox {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  margin-right: .4rem;
+}
+#sizeRange { width: 180px; }
+#sizeLabel {
+  min-width: 58px;
+  font-weight: 700;
+  text-align: center;
+}
+.counter {
+  margin-left: auto;
+  font-size: .9rem;
+  color: #555;
+}
+main {
+  max-width: 1180px;
+  margin: 1.2rem auto 3rem;
+  padding: clamp(1rem, 3vw, 2.5rem);
+  background: var(--paper);
+  box-shadow: 0 5px 24px rgba(0,0,0,.09);
+  border-radius: 14px;
+}
+h1 {
+  margin: 0 0 .35rem;
+  font-size: calc(var(--fs) * 1.4);
+}
+.intro {
+  font-size: calc(var(--fs) * .82);
+  color: #4f4f4f;
+  margin-bottom: 1.6rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 1rem;
+}
+.text {
+  font-size: var(--fs);
+  line-height: 1.58;
+}
+.text h2 {
+  margin: 1.25em 0 .35em;
+  font-size: 1.18em;
+  line-height: 1.25;
+}
+.text p {
+  margin: .28em 0 .75em;
+}
+.spacer { height: .25em; }
+.comma {
+  display: inline-grid;
+  place-items: center;
+  min-width: .88em;
+  height: 1.2em;
+  margin: 0 .02em;
+  padding: 0 .10em .14em;
+  vertical-align: baseline;
+  border: 2px solid var(--accent);
+  border-radius: .32em;
+  background: var(--accent2);
+  color: #111;
+  font: inherit;
+  font-weight: 900;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 1px 0 rgba(0,0,0,.14);
+}
+.comma:hover, .comma:focus-visible {
+  transform: scale(1.12);
+  outline: 3px solid rgba(182,0,0,.22);
+}
+.comma.seen {
+  background: #dff4db;
+  border-color: #397a2e;
+}
+.caption {
+  text-align: center;
+  margin-top: 1.5rem !important;
+  font-style: italic;
+}
+.caption.small {
+  margin-top: -.45rem !important;
+  font-size: .8em;
+}
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0,0,0,.55);
+}
+.overlay.open { display: flex; }
+.modal {
+  width: min(760px, 95vw);
+  max-height: 86vh;
+  overflow: auto;
+  background: white;
+  border-radius: 16px;
+  padding: 1.3rem 1.4rem 1.5rem;
+  box-shadow: 0 18px 70px rgba(0,0,0,.35);
+}
+.modaltop {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: .75rem;
+}
+.modal h3 {
+  margin: 0;
+  font-size: calc(var(--fs) * 1.05);
+}
+.close {
+  border: 0;
+  border-radius: 8px;
+  background: #222;
+  color: white;
+  font-size: 1.1rem;
+  padding: .45rem .75rem;
+  cursor: pointer;
+}
+#explanation {
+  font-size: var(--fs);
+  line-height: 1.45;
+  margin: 1rem 0 .2rem;
+}
+body.hide-marks .comma {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+body.hide-marks .comma:hover,
+body.hide-marks .comma:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent2);
+}
+@media (max-width: 700px) {
+  .counter { width: 100%; margin-left: 0; }
+  #sizeRange { width: 130px; }
+  main { margin: 0; border-radius: 0; }
+}
+@media print {
+  .toolbar, .overlay { display: none !important; }
+  body { background: white; }
+  main { box-shadow: none; margin: 0; max-width: none; padding: 0; }
+}
+</style>
+</head>
+<body>
+<div class="toolbar" role="toolbar" aria-label="Ansicht einstellen">
+  <strong>Textgröße:</strong>
+  <button class="toolbtn" id="smaller" type="button" title="Text kleiner">A−</button>
+  <div class="sizebox">
+    <input id="sizeRange" type="range" min="18" max="44" value="26" step="1" aria-label="Textgröße einstellen">
+    <span id="sizeLabel">26 px</span>
+  </div>
+  <button class="toolbtn" id="larger" type="button" title="Text größer">A+</button>
+  <button class="toolbtn" id="resetSize" type="button">Standard</button>
+  <button class="toolbtn" id="toggleMarks" type="button">Markierungen ausblenden</button>
+  <button class="toolbtn" id="fullscreen" type="button">Vollbild</button>
+  <span class="counter"><strong>37</strong> Komma-Stellen · angeklickt: <span id="seenCount">0</span>/37</span>
+</div>
+
+<main>
+  <h1>Kommasetzung: Goethe</h1>
+  <div class="intro">Klicke auf ein markiertes Komma. Im Fenster erscheint eine kurze Erklärung zur Regel.</div>
+  <section class="text" aria-label="Text mit erklärten Kommas">
+    <h2>Der Herr Geheimrat auf Abwegen</h2>
+<p>Schon als junger Student in Leipzig war Goethe mehr an den Kneipen der Stadt als an Paragraphen interessiert.</p>
+<p>Statt Jura zu pauken<button class="comma" type="button" aria-label="Komma 1: Erklärung anzeigen" data-n="1" data-exp="Pflichtkomma: Die Infinitivgruppe beginnt mit „statt“: „Statt Jura zu pauken …“">,</button> ging er lieber fechten<button class="comma" type="button" aria-label="Komma 2: Erklärung anzeigen" data-n="2" data-exp="Aufzählung: Hier werden mehrere Tätigkeiten aufgezählt: „ging … fechten, ritt … oder schrieb …“">,</button> ritt durch die Umgebung oder schrieb Gedichte auf Servietten. Später in Weimar<button class="comma" type="button" aria-label="Komma 3: Erklärung anzeigen" data-n="3" data-exp="Relativsatz: „wo er als Minister … arbeitete“ erklärt „Weimar“ genauer.">,</button> wo er als Minister am Hofe des Herzogs Karl August arbeitete<button class="comma" type="button" aria-label="Komma 4: Erklärung anzeigen" data-n="4" data-exp="Ende des Relativsatzes: Der eingeschobene Satz wird mit einem zweiten Komma abgeschlossen.">,</button> ging es zwar offiziell sehr steif zu<button class="comma" type="button" aria-label="Komma 5: Erklärung anzeigen" data-n="5" data-exp="Komma vor „aber“: Bei der Verbindung „zwar …, aber …“ steht ein Komma.">,</button> aber Goethe fand immer wieder Wege<button class="comma" type="button" aria-label="Komma 6: Erklärung anzeigen" data-n="6" data-exp="Infinitivgruppe: „dem höfischen Protokoll zu entkommen“ hängt vom Nomen „Wege“ ab. Deshalb steht ein Komma.">,</button> dem höfischen Protokoll zu entkommen. Wenn ihm die ewigen Empfänge und langweiligen Sitzungen zu bunt wurden<button class="comma" type="button" aria-label="Komma 7: Erklärung anzeigen" data-n="7" data-exp="Ende des Wenn-Nebensatzes: Danach beginnt der Hauptsatz „zog er sich … zurück“.">,</button> zog er sich einfach in seine Gartenlaube zurück und tat so<button class="comma" type="button" aria-label="Komma 8: Erklärung anzeigen" data-n="8" data-exp="Nebensatz mit „als“: „als sei er nicht zu sprechen“ wird vom Hauptsatz abgetrennt.">,</button> als sei er nicht zu sprechen. Man erzählt sich<button class="comma" type="button" aria-label="Komma 9: Erklärung anzeigen" data-n="9" data-exp="Dass-Satz: Vor einem Nebensatz mit „dass“ steht ein Komma.">,</button> dass er einmal einen Boten des Herzogs<button class="comma" type="button" aria-label="Komma 10: Erklärung anzeigen" data-n="10" data-exp="Relativsatz: „der dringend eine Unterschrift brauchte“ erklärt „Boten“ genauer.">,</button> der dringend eine Unterschrift brauchte<button class="comma" type="button" aria-label="Komma 11: Erklärung anzeigen" data-n="11" data-exp="Ende des Relativsatzes: Der Einschub wird mit einem zweiten Komma abgeschlossen.">,</button> mit den Worten abwimmelte<button class="comma" type="button" aria-label="Komma 12: Erklärung anzeigen" data-n="12" data-exp="Indirekte Rede: Die nachgestellte Aussage „der Geheimrat sei …“ wird vom übergeordneten Satz abgetrennt.">,</button> der Geheimrat sei heute leider für niemanden auf der Welt zu erreichen – obwohl er gut hörbar hinter dem Busch stand und an seinen Blumen schnüffelte.</p>
+<div class="spacer"></div>
+<h2>Goethe und die Prominenz: Das Treffen mit Beethoven</h2>
+<p>Ein echtes Highlight der Literatur- und Musikgeschichte war Goethes Begegnung mit dem Komponisten Ludwig van Beethoven im Jahr 1812 in Teplitz. Die beiden trafen dort aufeinander und machten zusammen Spaziergänge im Kurpark. Dabei kam es zu einem legendären Kulturclash zwischen dem feinen<button class="comma" type="button" aria-label="Komma 13: Erklärung anzeigen" data-n="13" data-exp="Gleichrangige Adjektive: „feinen, höfischen Dichter“. Beide Adjektive beschreiben den Dichter selbstständig.">,</button> höfischen Dichter und dem wilden<button class="comma" type="button" aria-label="Komma 14: Erklärung anzeigen" data-n="14" data-exp="Gleichrangige Adjektive: „wilden, stürmischen Musiker“.">,</button> stürmischen Musiker. Beethoven beklagte sich bitterlich darüber<button class="comma" type="button" aria-label="Komma 15: Erklärung anzeigen" data-n="15" data-exp="Dass-Satz: Der Nebensatz „dass Goethe … legte“ wird mit Komma abgetrennt.">,</button> dass Goethe viel zu viel Wert auf Etikette und das Ansehen bei Hofe legte. Als ihnen einmal die kaiserliche Familie entgegenkam<button class="comma" type="button" aria-label="Komma 16: Erklärung anzeigen" data-n="16" data-exp="Ende des Als-Nebensatzes: Danach beginnt der Hauptsatz „wich Beethoven …“.">,</button> wich Beethoven keinen Millimeter aus<button class="comma" type="button" aria-label="Komma 17: Erklärung anzeigen" data-n="17" data-exp="Während-Satz: Der Nebensatz mit „während“ wird durch Komma vom Hauptsatz getrennt.">,</button> während Goethe laut Berichten sofort den Hut zog<button class="comma" type="button" aria-label="Komma 18: Erklärung anzeigen" data-n="18" data-exp="Aufzählung von Handlungen: „den Hut zog, sich tief verbeugte und …“">,</button> sich tief verbeugte und am Wegesrand stehen blieb. Beethoven war stinksauer auf seinen Dichterkollegen<button class="comma" type="button" aria-label="Komma 19: Erklärung anzeigen" data-n="19" data-exp="Weil-Satz: Vor dem Nebensatz mit „weil“ steht ein Komma.">,</button> weil er fand<button class="comma" type="button" aria-label="Komma 20: Erklärung anzeigen" data-n="20" data-exp="Indirekte Rede: „ein wahrer Genius müsse …“ ist eine uneingeleitete indirekte Aussage und wird abgetrennt.">,</button> ein wahrer Genius müsse sich vor gekrönten Häuptern nicht verbeugen. Goethe hingegen fand Beethovens Benehmen einfach nur unmöglich und rüpelhaft. Nach diesem Urlaub haben sich die beiden Herren auch nie wieder getroffen.</p>
+<div class="spacer"></div>
+<h2>Der ewige Genießer</h2>
+<p>Goethe war nicht nur ein genialer Schreiber<button class="comma" type="button" aria-label="Komma 21: Erklärung anzeigen" data-n="21" data-exp="Komma vor „sondern“: Bei „nicht nur …, sondern auch …“ steht ein Komma.">,</button> sondern auch ein echter Gourmet<button class="comma" type="button" aria-label="Komma 22: Erklärung anzeigen" data-n="22" data-exp="Relativsatz: „der gutes Essen … zu schätzen wusste“ erklärt „Gourmet“ genauer.">,</button> der gutes Essen und erlesene Weine zu schätzen wusste. Ein Schärzchen am Rande: Wenn er auf Reisen war<button class="comma" type="button" aria-label="Komma 23: Erklärung anzeigen" data-n="23" data-exp="Ende des Wenn-Nebensatzes: Danach beginnt der Hauptsatz „führte er … Buch“.">,</button> führte er akribisch Buch darüber<button class="comma" type="button" aria-label="Komma 24: Erklärung anzeigen" data-n="24" data-exp="Indirekter Fragesatz: „welche Weine … getrunken wurden“ ist ein Nebensatz und wird abgetrennt.">,</button> welche Weine in welcher Herberge getrunken wurden. Einmal soll er in einem Gasthof so unzufrieden mit der Auswahl im Weinkeller gewesen sein<button class="comma" type="button" aria-label="Komma 25: Erklärung anzeigen" data-n="25" data-exp="Dass-Satz: Vor „dass er kurzerhand …“ steht ein Komma.">,</button> dass er kurzerhand selbst in den Keller stieg<button class="comma" type="button" aria-label="Komma 26: Erklärung anzeigen" data-n="26" data-exp="Infinitivgruppe mit „um … zu“: Diese Gruppe muss mit Komma abgetrennt werden.">,</button> um die Bestände zu inspizieren<button class="comma" type="button" aria-label="Komma 27: Erklärung anzeigen" data-n="27" data-exp="Ende der Infinitivgruppe „um die Bestände zu inspizieren“.">,</button> und dem Wirt erklärte<button class="comma" type="button" aria-label="Komma 28: Erklärung anzeigen" data-n="28" data-exp="Indirekter Fragesatz: „wie ein ordentlicher Riesling …“ wird mit Komma abgetrennt.">,</button> wie ein ordentlicher Riesling zu schmecken habe. Der Wirt war so eingeschüchtert von der Anwesenheit des berühmten Dichters<button class="comma" type="button" aria-label="Komma 29: Erklärung anzeigen" data-n="29" data-exp="Dass-Satz: Vor dem Nebensatz „dass er ihm … einschenkte“ steht ein Komma.">,</button> dass er ihm den besten Tropfen des Hauses den Rest des Abends umsonst einschenkte.</p>
+<div class="spacer"></div>
+<h2>Goethe privat: Unordnung im Arbeitszimmer</h2>
+<p>Wer denkt<button class="comma" type="button" aria-label="Komma 30: Erklärung anzeigen" data-n="30" data-exp="Dass-Satz: „dass ein Dichterfürst … arbeitet“ ist ein eingeschobener Nebensatz.">,</button> dass ein Dichterfürst in einem perfekt aufgeräumten Büro arbeitet<button class="comma" type="button" aria-label="Komma 31: Erklärung anzeigen" data-n="31" data-exp="Hier endet der vorangestellte „Wer …“-Nebensatz. Danach folgt der Hauptsatz „irrt gewaltig“.">,</button> irrt gewaltig. Goethes Arbeitszimmer in Weimar war oft das pure Chaos. Man fand dort überall verstreute Manuskripte<button class="comma" type="button" aria-label="Komma 32: Erklärung anzeigen" data-n="32" data-exp="Aufzählung: Zwischen „Manuskripte“ und „botanische Proben“ steht ein Komma.">,</button> botanische Proben<button class="comma" type="button" aria-label="Komma 33: Erklärung anzeigen" data-n="33" data-exp="Aufzählung: Zwischen „botanische Proben“ und „Steine“ steht ein Komma.">,</button> Steine<button class="comma" type="button" aria-label="Komma 34: Erklärung anzeigen" data-n="34" data-exp="Aufzählung: Zwischen „Steine“ und „Fläschchen …“ steht ein Komma.">,</button> Fläschchen mit chemischen Substanzen und alte Theaterzettel. Wenn seine Frau Christiane versuchte<button class="comma" type="button" aria-label="Komma 35: Erklärung anzeigen" data-n="35" data-exp="Freiwilliges Gliederungskomma: Die Infinitivgruppe „dort … durchzuwischen oder aufzuräumen“ wird zur besseren Lesbarkeit abgetrennt.">,</button> dort einmal gründlich durchzuwischen oder aufzuräumen<button class="comma" type="button" aria-label="Komma 36: Erklärung anzeigen" data-n="36" data-exp="Ende des Wenn-Nebensatzes: Danach beginnt der Hauptsatz „gab es gewaltigen Ärger“.">,</button> gab es gewaltigen Ärger. Goethe brauchte seine kreative Unordnung und wusste angeblich genau<button class="comma" type="button" aria-label="Komma 37: Erklärung anzeigen" data-n="37" data-exp="Nebensatz mit „wo“: „wo jedes einzelne Zettelchen lag“ wird mit Komma abgetrennt.">,</button> wo jedes einzelne Zettelchen lag – selbst wenn es unter einem halben Dutzend leerer Teetassen begraben war.</p>
+<div class="spacer"></div>
+<p class="caption">„Goethe in der römischen Campagna“</p>
+<p class="caption small">von Johann Heinrich Wilhelm Tischbein</p>
+  </section>
+</main>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <div class="modaltop">
+      <h3 id="modalTitle">Komma</h3>
+      <button class="close" id="closeModal" type="button" aria-label="Fenster schließen">✕</button>
+    </div>
+    <p id="explanation"></p>
+  </div>
+</div>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const range = document.getElementById('sizeRange');
+  const label = document.getElementById('sizeLabel');
+  const overlay = document.getElementById('overlay');
+  const explanation = document.getElementById('explanation');
+  const modalTitle = document.getElementById('modalTitle');
+  const seenCount = document.getElementById('seenCount');
+  const commas = [...document.querySelectorAll('.comma')];
+  const seen = new Set();
+
+  function setSize(v) {
+    const n = Math.max(18, Math.min(44, Number(v)));
+    root.style.setProperty('--fs', n + 'px');
+    range.value = n;
+    label.textContent = n + ' px';
+    localStorage.setItem('kommaTextSize', n);
+  }
+
+  const saved = Number(localStorage.getItem('kommaTextSize'));
+  setSize(saved >= 18 && saved <= 44 ? saved : 26);
+
+  range.addEventListener('input', e => setSize(e.target.value));
+  document.getElementById('smaller').addEventListener('click', () => setSize(Number(range.value) - 2));
+  document.getElementById('larger').addEventListener('click', () => setSize(Number(range.value) + 2));
+  document.getElementById('resetSize').addEventListener('click', () => setSize(26));
+
+  commas.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const n = btn.dataset.n;
+      modalTitle.textContent = 'Komma ' + n + ' von 37';
+      explanation.textContent = btn.dataset.exp;
+      overlay.classList.add('open');
+      btn.classList.add('seen');
+      seen.add(n);
+      seenCount.textContent = seen.size;
+      document.getElementById('closeModal').focus();
+    });
+  });
+
+  function closeModal() {
+    overlay.classList.remove('open');
+  }
+  document.getElementById('closeModal').addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) closeModal();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  const toggle = document.getElementById('toggleMarks');
+  toggle.addEventListener('click', () => {
+    document.body.classList.toggle('hide-marks');
+    const hidden = document.body.classList.contains('hide-marks');
+    toggle.textContent = hidden ? 'Markierungen einblenden' : 'Markierungen ausblenden';
+  });
+
+  document.getElementById('fullscreen').addEventListener('click', async () => {
+    try {
+      if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
+      else await document.exitFullscreen();
+    } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>
