@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elektromagnetische Wellen – Schüler-HTML</title>
+<style>
+:root{
+  --bg:#07111f; --bg2:#0b1b30; --card:#10243b; --line:#294b69;
+  --text:#eef6ff; --muted:#a9c3d8; --cyan:#69e3ff; --gold:#ffd166;
+  --pink:#ff7aa8; --green:#7ee2a8; --danger:#ff8b7b; --white:#fff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  color:var(--text); background:
+  radial-gradient(circle at 15% 5%,rgba(105,227,255,.10),transparent 26%),
+  linear-gradient(180deg,var(--bg),var(--bg2));
+  line-height:1.5;
+}
+nav{
+  position:sticky; top:0; z-index:50; display:flex; gap:.45rem; flex-wrap:wrap;
+  align-items:center; padding:.6rem 1rem; background:rgba(5,14,25,.93);
+  border-bottom:1px solid var(--line); backdrop-filter:blur(8px)
+}
+nav strong{margin-right:auto;color:var(--cyan);letter-spacing:.04em}
+nav a{
+  color:var(--muted); text-decoration:none; padding:.35rem .65rem; border-radius:999px;
+  border:1px solid transparent; font-size:.88rem
+}
+nav a:hover{color:#fff;border-color:var(--line)}
+header{
+  min-height:88vh; display:grid; place-items:center; padding:4rem 1.2rem 3rem;
+  text-align:center; position:relative; overflow:hidden;
+}
+.hero{max-width:1050px;position:relative;z-index:2}
+.kicker{color:var(--cyan);letter-spacing:.22em;text-transform:uppercase;font-size:.75rem}
+h1{font-size:clamp(2.7rem,7vw,6rem);line-height:1;margin:.5rem 0 1rem}
+.hero p{font-size:clamp(1.05rem,2vw,1.35rem);color:var(--muted);max-width:780px;margin:auto}
+.hero .question{
+  margin:2rem auto 0; max-width:780px; padding:1rem 1.2rem;
+  background:rgba(255,255,255,.04); border:1px solid var(--line); border-radius:16px;
+  font-size:1.15rem; color:#fff
+}
+main{max-width:1120px;margin:auto;padding:0 1rem 5rem}
+section{margin:4.5rem 0;scroll-margin-top:85px}
+.sec-head{display:flex;gap:.8rem;align-items:center;margin-bottom:1rem}
+.num{
+  width:2.4rem;height:2.4rem;border-radius:50%;display:grid;place-items:center;
+  border:1px solid var(--cyan);color:var(--cyan);font-weight:700;flex:0 0 auto
+}
+h2{font-size:clamp(1.55rem,3vw,2.35rem);margin:0}
+.lead{color:var(--muted);max-width:850px}
+.card{
+  background:linear-gradient(160deg,rgba(255,255,255,.055),rgba(255,255,255,.025));
+  border:1px solid var(--line); border-radius:18px; padding:1.2rem;
+}
+.grid{display:grid;gap:1rem}
+.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.big-definition{
+  font-size:clamp(1.25rem,2.5vw,1.7rem); line-height:1.55; padding:1.3rem;
+  border-left:4px solid var(--gold); background:rgba(255,209,102,.06);
+  border-radius:0 14px 14px 0
+}
+.em-svg-wrap{overflow:hidden;border-radius:18px;border:1px solid var(--line);background:#071727;padding:.6rem}
+.em-svg{width:100%;height:auto;display:block}
+.wave-e{stroke:var(--cyan);stroke-width:5;fill:none;filter:drop-shadow(0 0 5px rgba(105,227,255,.45))}
+.wave-b{stroke:var(--pink);stroke-width:5;fill:none;filter:drop-shadow(0 0 5px rgba(255,122,168,.35))}
+.axis{stroke:#68819a;stroke-width:2}
+.arrow{stroke:var(--gold);stroke-width:4;marker-end:url(#arrow)}
+.label{fill:#eef6ff;font-size:26px;font-weight:650}
+.smalllabel{fill:#a9c3d8;font-size:20px}
+.wave-group{animation:slide 6s linear infinite}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(80px)}}
+.fact{
+  padding:1rem;border-radius:15px;border:1px solid var(--line);background:rgba(255,255,255,.03)
+}
+.fact b{display:block;color:var(--gold);margin-bottom:.35rem}
+.fact .ico{font-size:1.7rem;display:block;margin-bottom:.4rem}
+.formula{
+  text-align:center;font-size:clamp(1.8rem,4vw,3.3rem);font-family:Georgia,serif;
+  padding:1rem;color:var(--gold)
+}
+.calc{
+  display:grid;grid-template-columns:1fr 1fr;gap:1rem;align-items:stretch
+}
+input[type=range]{width:100%}
+.readout{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;margin-top:1rem
+}
+.metric{border:1px solid var(--line);border-radius:12px;padding:.8rem;background:rgba(255,255,255,.03)}
+.metric b{display:block;color:var(--cyan);font-size:.78rem;text-transform:uppercase;letter-spacing:.08em}
+.metric span{font-size:1.15rem}
+.spectrum{
+  display:grid;grid-template-columns:1.2fr 1fr 1fr .8fr .9fr .9fr .9fr;
+  border-radius:16px;overflow:hidden;border:1px solid var(--line);margin-top:1rem
+}
+.band{
+  min-height:105px;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:.55rem;font-weight:700;color:#07111f;cursor:pointer;
+  transition:.15s transform,.15s filter
+}
+.band:hover{transform:scale(1.025);filter:brightness(1.05);z-index:2}
+.band[data-band="radio"]{background:#8bd3ff}
+.band[data-band="micro"]{background:#66e0d1}
+.band[data-band="infra"]{background:#ffb36b}
+.band[data-band="visible"]{background:linear-gradient(90deg,#8e64ff,#4d8dff,#55d66b,#f6e45f,#ffa64f,#ff5d69)}
+.band[data-band="uv"]{background:#b67cff}
+.band[data-band="xray"]{background:#e9e9ff}
+.band[data-band="gamma"]{background:#ff8fa3}
+.bandinfo{
+  margin-top:1rem;padding:1rem;border:1px solid var(--line);border-radius:14px;
+  background:rgba(255,255,255,.035);min-height:100px
+}
+.arrowline{display:flex;justify-content:space-between;color:var(--muted);font-size:.88rem;margin-top:.6rem}
+.interaction .item{
+  display:flex;gap:.9rem;align-items:flex-start;border:1px solid var(--line);
+  border-radius:14px;padding:1rem;background:rgba(255,255,255,.03)
+}
+.interaction .symbol{font-size:1.6rem}
+.task{
+  border:1px solid var(--line);border-radius:14px;padding:1rem;margin:.8rem 0;background:rgba(255,255,255,.025)
+}
+.task summary{cursor:pointer;font-weight:700;color:var(--gold)}
+.answer{padding:.8rem 0 0;color:var(--muted)}
+.quizopt{
+  display:block;width:100%;text-align:left;padding:.8rem .9rem;margin:.55rem 0;
+  color:var(--text);background:rgba(255,255,255,.03);border:1px solid var(--line);
+  border-radius:12px;cursor:pointer;font:inherit
+}
+.quizopt:hover{border-color:var(--cyan)}
+.quizopt.correct{border-color:var(--green);background:rgba(126,226,168,.12)}
+.quizopt.wrong{border-color:var(--danger);background:rgba(255,139,123,.1)}
+.board{
+  background:#173a2c;border:10px solid #7a5b35;border-radius:10px;
+  padding:1.3rem;color:#f7f2df;font-family:"Trebuchet MS",Arial,sans-serif;
+  box-shadow:inset 0 0 30px rgba(0,0,0,.32)
+}
+.board h3{text-align:center;margin:.2rem 0 1rem;font-size:1.8rem;color:#fff3b0}
+.board .chalk{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.board ul{margin:.4rem 0 0 1.2rem}
+.board li{margin:.45rem 0}
+.footer{text-align:center;color:var(--muted);padding:2rem 1rem 4rem;border-top:1px solid var(--line)}
+.badge{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.25rem .65rem;margin:.25rem;color:var(--muted);font-size:.82rem}
+.note{font-size:.9rem;color:var(--muted)}
+@media(max-width:820px){
+  .grid2,.grid3,.calc,.board .chalk{grid-template-columns:1fr}
+  .spectrum{grid-template-columns:1fr}
+  .band{min-height:62px}
+  nav strong{width:100%}
+}
+</style>
+</head>
+<body>
+<nav>
+  <strong>EM-WELLEN</strong>
+  <a href="#was">Was ist das?</a>
+  <a href="#eigenschaften">Eigenschaften</a>
+  <a href="#formel">λ · f</a>
+  <a href="#spektrum">Spektrum</a>
+  <a href="#wechselwirkung">Verhalten</a>
+  <a href="#aufgaben">Aufgaben</a>
+  <a href="#tafelbild">Tafelbild</a>
+</nav>
+
+<header>
+  <div class="hero">
+    <div class="kicker">Astronomie / Physik · Klasse 10 · Schüler-HTML</div>
+    <h1>Elektromagnetische Wellen</h1>
+    <p>Licht, Radiowellen, Mikrowellen, Röntgen- und Gammastrahlung gehören zur selben Familie. Sie unterscheiden sich vor allem durch Frequenz und Wellenlänge.</p>
+    <div class="question">☀️ <b>Einstiegsfrage:</b> Wie kann Sonnenlicht durch den fast leeren Weltraum bis zur Erde gelangen, obwohl Schall dort nicht weiterkommt?</div>
+  </div>
+</header>
+
+<main>
+
+<section id="was">
+  <div class="sec-head"><span class="num">1</span><h2>Was ist eine elektromagnetische Welle?</h2></div>
+  <p class="lead">Bei einer elektromagnetischen Welle ändern sich ein elektrisches Feld und ein magnetisches Feld regelmäßig. Beide Felder stehen senkrecht zueinander – und senkrecht zur Ausbreitungsrichtung.</p>
+
+  <div class="em-svg-wrap">
+    <svg class="em-svg" viewBox="0 0 1100 470" role="img" aria-label="Schematische Darstellung einer elektromagnetischen Welle">
+      <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L9,3 z" fill="#ffd166"/>
+        </marker>
+      </defs>
+      <line class="axis" x1="85" y1="245" x2="1015" y2="245"/>
+      <line class="axis" x1="95" y1="420" x2="95" y2="65"/>
+      <line class="axis" x1="95" y1="245" x2="250" y2="355"/>
+      <line class="arrow" x1="780" y1="90" x2="1010" y2="90"/>
+      <text class="label" x="785" y="65">Ausbreitungsrichtung</text>
+
+      <g class="wave-group">
+        <path class="wave-e" d="M95 245 C145 85 195 85 245 245 S345 405 395 245 S495 85 545 245 S645 405 695 245 S795 85 845 245 S945 405 995 245"/>
+        <path class="wave-b" d="M95 245 C145 315 195 315 245 245 S345 175 395 245 S495 315 545 245 S645 175 695 245 S795 315 845 245 S945 175 995 245"/>
+      </g>
+
+      <text class="label" x="110" y="95">E-Feld</text>
+      <text class="label" x="180" y="375">B-Feld</text>
+      <text class="smalllabel" x="110" y="455">schematisch – nicht räumlich maßstabsgetreu</text>
+    </svg>
+  </div>
+
+  <div class="big-definition">
+    <b>Merksatz:</b> Eine elektromagnetische Welle ist eine sich ausbreitende Schwingung gekoppelter elektrischer und magnetischer Felder.
+  </div>
+</section>
+
+<section id="eigenschaften">
+  <div class="sec-head"><span class="num">2</span><h2>Welche Eigenschaften hat sie?</h2></div>
+  <div class="grid grid3">
+    <div class="fact"><span class="ico">↔️</span><b>Transversalwelle</b>E- und B-Feld schwingen quer zur Ausbreitungsrichtung.</div>
+    <div class="fact"><span class="ico">🌌</span><b>Kein Medium nötig</b>Elektromagnetische Wellen können sich auch im Vakuum ausbreiten.</div>
+    <div class="fact"><span class="ico">⚡</span><b>Lichtgeschwindigkeit</b>Im Vakuum gilt etwa <b>c = 3 · 10⁸ m/s</b>.</div>
+    <div class="fact"><span class="ico">📏</span><b>Wellenlänge λ</b>Abstand zweier Punkte gleicher Schwingungsphase, z. B. zweier Wellenberge.</div>
+    <div class="fact"><span class="ico">⏱️</span><b>Frequenz f</b>Anzahl der Schwingungen pro Sekunde. Einheit: Hertz (Hz).</div>
+    <div class="fact"><span class="ico">🎯</span><b>Polarisation</b>Weil es eine Transversalwelle ist, kann elektromagnetische Strahlung polarisiert werden.</div>
+  </div>
+</section>
+
+<section id="formel">
+  <div class="sec-head"><span class="num">3</span><h2>Wellenlänge und Frequenz</h2></div>
+  <p class="lead">Im Vakuum ist die Ausbreitungsgeschwindigkeit konstant. Deshalb müssen sich Wellenlänge und Frequenz gegenseitig ändern.</p>
+  <div class="formula">c = λ · f</div>
+  <div class="calc">
+    <div class="card">
+      <h3>Regler ausprobieren</h3>
+      <label for="freqSlider">Frequenzbereich:</label>
+      <input id="freqSlider" type="range" min="6" max="20" step="0.05" value="14.7">
+      <div class="readout">
+        <div class="metric"><b>Frequenz</b><span id="fOut">–</span></div>
+        <div class="metric"><b>Wellenlänge</b><span id="lOut">–</span></div>
+        <div class="metric"><b>Bereich</b><span id="bandOut">–</span></div>
+        <div class="metric"><b>Tendenz</b><span id="trendOut">–</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Was fällt auf?</h3>
+      <p><b>Je größer die Frequenz, desto kleiner die Wellenlänge.</b></p>
+      <p>Kurze Wellenlänge ⇄ hohe Frequenz</p>
+      <p>Lange Wellenlänge ⇄ niedrige Frequenz</p>
+      <p class="note"><b>Vertiefung:</b> Die Energie eines Photons steigt mit der Frequenz: E = h · f.</p>
+    </div>
+  </div>
+</section>
+
+<section id="spektrum">
+  <div class="sec-head"><span class="num">4</span><h2>Das elektromagnetische Spektrum</h2></div>
+  <p class="lead">Alle Bereiche sind elektromagnetische Wellen. Klicke auf einen Abschnitt.</p>
+  <div class="spectrum" id="spectrum">
+    <div class="band" data-band="radio">Radiowellen</div>
+    <div class="band" data-band="micro">Mikrowellen</div>
+    <div class="band" data-band="infra">Infrarot</div>
+    <div class="band" data-band="visible">sichtbares Licht</div>
+    <div class="band" data-band="uv">UV</div>
+    <div class="band" data-band="xray">Röntgen</div>
+    <div class="band" data-band="gamma">Gamma</div>
+  </div>
+  <div class="arrowline"><span>← lange Wellenlänge · kleine Frequenz</span><span>kurze Wellenlänge · große Frequenz →</span></div>
+  <div class="bandinfo" id="bandInfo">Klicke auf einen Bereich.</div>
+</section>
+
+<section id="wechselwirkung">
+  <div class="sec-head"><span class="num">5</span><h2>Was kann mit elektromagnetischen Wellen passieren?</h2></div>
+  <div class="grid grid2 interaction">
+    <div class="item"><span class="symbol">🪞</span><div><b>Reflexion</b><br>Eine Welle wird an einer Oberfläche zurückgeworfen.</div></div>
+    <div class="item"><span class="symbol">💧</span><div><b>Brechung</b><br>Beim Übergang in ein anderes Medium ändern sich Geschwindigkeit und Richtung.</div></div>
+    <div class="item"><span class="symbol">🌊</span><div><b>Beugung</b><br>Wellen breiten sich auch hinter Kanten oder durch enge Öffnungen aus.</div></div>
+    <div class="item"><span class="symbol">➕</span><div><b>Interferenz</b><br>Wellen können sich überlagern und verstärken oder abschwächen.</div></div>
+    <div class="item"><span class="symbol">🧱</span><div><b>Absorption</b><br>Materie nimmt Energie der Strahlung auf.</div></div>
+    <div class="item"><span class="symbol">🕶️</span><div><b>Polarisation</b><br>Eine bestimmte Schwingungsrichtung des elektrischen Feldes wird ausgewählt.</div></div>
+  </div>
+</section>
+
+<section id="aufgaben">
+  <div class="sec-head"><span class="num">6</span><h2>Aufgaben</h2></div>
+
+  <details class="task">
+    <summary>1. Warum kann Licht die Erde durch den Weltraum erreichen, Schall aber nicht?</summary>
+    <div class="answer">Elektromagnetische Wellen benötigen kein stoffliches Medium. Schall ist dagegen eine mechanische Welle und braucht Materie.</div>
+  </details>
+
+  <details class="task">
+    <summary>2. Nenne die beiden Felder einer elektromagnetischen Welle.</summary>
+    <div class="answer">Ein elektrisches Feld (E-Feld) und ein magnetisches Feld (B-Feld).</div>
+  </details>
+
+  <details class="task">
+    <summary>3. Was passiert mit der Frequenz, wenn die Wellenlänge kleiner wird?</summary>
+    <div class="answer">Die Frequenz wird größer, denn im Vakuum gilt c = λ · f.</div>
+  </details>
+
+  <details class="task">
+    <summary>4. Ordne: UV – Radiowelle – sichtbares Licht – Röntgen – Infrarot.</summary>
+    <div class="answer">Von großer zu kleiner Wellenlänge: Radiowelle → Infrarot → sichtbares Licht → UV → Röntgen.</div>
+  </details>
+
+  <div class="card" style="margin-top:1.3rem">
+    <h3>Mini-Check</h3>
+    <p id="qText">Welche Aussage ist richtig?</p>
+    <button class="quizopt" data-correct="0">A) Elektromagnetische Wellen brauchen immer Luft.</button>
+    <button class="quizopt" data-correct="1">B) E-Feld und B-Feld stehen senkrecht zueinander.</button>
+    <button class="quizopt" data-correct="0">C) Radiowellen sind mechanische Wellen.</button>
+    <div id="feedback" class="note"></div>
+  </div>
+</section>
+
+<section id="tafelbild">
+  <div class="sec-head"><span class="num">7</span><h2>Tafelbild / Hefteintrag</h2></div>
+  <div class="board">
+    <h3>Elektromagnetische Wellen</h3>
+    <div class="chalk">
+      <div>
+        <b>Was ist das?</b>
+        <ul>
+          <li>gekoppelte elektrische und magnetische Felder</li>
+          <li>E ⟂ B ⟂ Ausbreitungsrichtung</li>
+          <li>Transversalwelle</li>
+          <li>kein Medium nötig</li>
+        </ul>
+      </div>
+      <div>
+        <b>Im Vakuum</b>
+        <ul>
+          <li>c ≈ 3 · 10⁸ m/s</li>
+          <li>c = λ · f</li>
+          <li>λ kleiner → f größer</li>
+        </ul>
+      </div>
+      <div>
+        <b>Spektrum</b>
+        <ul>
+          <li>Radio → Mikro → IR → Licht</li>
+          <li>→ UV → Röntgen → Gamma</li>
+        </ul>
+      </div>
+      <div>
+        <b>Typisches Verhalten</b>
+        <ul>
+          <li>Reflexion</li>
+          <li>Brechung</li>
+          <li>Beugung / Interferenz</li>
+          <li>Absorption / Polarisation</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="footer">
+  <span class="badge">offline nutzbar</span>
+  <span class="badge">interaktiv</span>
+  <span class="badge">für Schülerinnen und Schüler</span>
+</div>
+
+<script>
+const c = 299792458;
+const slider = document.getElementById('freqSlider');
+const fOut = document.getElementById('fOut');
+const lOut = document.getElementById('lOut');
+const bandOut = document.getElementById('bandOut');
+const trendOut = document.getElementById('trendOut');
+
+function fmtFreq(f){
+  if(f>=1e18) return (f/1e18).toFixed(2)+' EHz';
+  if(f>=1e15) return (f/1e15).toFixed(2)+' PHz';
+  if(f>=1e12) return (f/1e12).toFixed(2)+' THz';
+  if(f>=1e9) return (f/1e9).toFixed(2)+' GHz';
+  if(f>=1e6) return (f/1e6).toFixed(2)+' MHz';
+  return f.toExponential(2)+' Hz';
+}
+function fmtLambda(l){
+  if(l>=1) return l.toFixed(2)+' m';
+  if(l>=1e-2) return (l*100).toFixed(2)+' cm';
+  if(l>=1e-3) return (l*1000).toFixed(2)+' mm';
+  if(l>=1e-6) return (l*1e6).toFixed(2)+' µm';
+  if(l>=1e-9) return (l*1e9).toFixed(2)+' nm';
+  if(l>=1e-12) return (l*1e12).toFixed(2)+' pm';
+  return l.toExponential(2)+' m';
+}
+function region(f){
+  if(f<3e8) return 'Radiowellen';
+  if(f<3e11) return 'Mikrowellen';
+  if(f<4e14) return 'Infrarot';
+  if(f<7.5e14) return 'sichtbares Licht';
+  if(f<3e16) return 'Ultraviolett';
+  if(f<3e19) return 'Röntgenstrahlung';
+  return 'Gammastrahlung';
+}
+function updateCalc(){
+  const exponent = parseFloat(slider.value);
+  const f = Math.pow(10, exponent);
+  const l = c/f;
+  fOut.textContent = fmtFreq(f);
+  lOut.textContent = fmtLambda(l);
+  bandOut.textContent = region(f);
+  trendOut.textContent = exponent>14 ? 'kurzwelliger / höherfrequent' : 'langwelliger / niederfrequent';
+}
+slider.addEventListener('input',updateCalc);
+updateCalc();
+
+const infos = {
+  radio:'<b>Radiowellen</b><br>Große Wellenlängen. Nutzung z. B. für Rundfunk und Funkkommunikation.',
+  micro:'<b>Mikrowellen</b><br>Kürzere Wellenlängen als klassische Radiowellen. Nutzung z. B. für Radar, WLAN und Mikrowellenherde.',
+  infra:'<b>Infrarot</b><br>Wird häufig mit Wärmestrahlung verbunden. Fernbedienungen und Wärmebildkameras nutzen diesen Bereich.',
+  visible:'<b>Sichtbares Licht</b><br>Nur ein sehr kleiner Teil des gesamten Spektrums. Für das menschliche Auge sichtbar.',
+  uv:'<b>Ultraviolett</b><br>Kurzwelliger als sichtbares Licht. Kann chemische Veränderungen auslösen und Haut schädigen.',
+  xray:'<b>Röntgenstrahlung</b><br>Sehr kurze Wellenlängen. Durchdringt weiches Gewebe stärker als Knochen.',
+  gamma:'<b>Gammastrahlung</b><br>Sehr hohe Frequenzen und Photonenergien. Entsteht z. B. bei Kernprozessen und astrophysikalischen Vorgängen.'
+};
+document.querySelectorAll('.band').forEach(el=>{
+  el.addEventListener('click',()=>document.getElementById('bandInfo').innerHTML=infos[el.dataset.band]);
+});
+
+document.querySelectorAll('.quizopt').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.quizopt').forEach(b=>b.disabled=true);
+    if(btn.dataset.correct==='1'){
+      btn.classList.add('correct');
+      document.getElementById('feedback').textContent='Richtig: Beide Felder stehen senkrecht zueinander und zur Ausbreitungsrichtung.';
+    } else {
+      btn.classList.add('wrong');
+      document.querySelector('.quizopt[data-correct="1"]').classList.add('correct');
+      document.getElementById('feedback').textContent='Nicht richtig. Die korrekte Aussage ist B.';
+    }
+  });
+});
+</script>
+</body>
+</html>
