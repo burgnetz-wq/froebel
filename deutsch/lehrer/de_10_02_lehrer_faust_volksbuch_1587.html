@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Das Volksbuch vom Doktor Faust – interaktive Lehrer-HTML</title>
+<style>
+:root {
+  --ink:#241d19; --muted:#6f6259; --paper:#f7f1e6; --paper2:#fffdf8;
+  --red:#7b1f24; --red2:#a93b3f; --gold:#c89b4b; --line:#d8c8ad;
+  --green:#315c4b; --shadow:0 8px 24px rgba(53,37,24,.12);
+  --base:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#e9dfcf;color:var(--ink);font-family:Georgia,"Times New Roman",serif;font-size:var(--base);line-height:1.55}
+button{font:inherit}
+button:focus-visible,a:focus-visible{outline:3px solid #1c6ea4;outline-offset:3px}
+.topbar{position:sticky;top:0;z-index:20;background:#2c201c;color:#fff;padding:10px 14px;box-shadow:0 3px 12px rgba(0,0,0,.25)}
+.toolbar{max-width:1180px;margin:auto;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.toolbar .title{font-weight:700;margin-right:auto;letter-spacing:.02em}
+.ctrl,.tab-btn{border:1px solid rgba(255,255,255,.3);background:#47332c;color:#fff;border-radius:8px;padding:8px 12px;cursor:pointer;min-height:42px}
+.ctrl:hover,.tab-btn:hover{background:#5c4035}
+.tab-btn.active{background:var(--gold);color:#21160e;border-color:var(--gold);font-weight:700}
+main{max-width:1180px;margin:0 auto;padding:22px 16px 60px}
+.hero{background:linear-gradient(135deg,#fffdf8,#f1e4ce);border:1px solid var(--line);border-left:7px solid var(--red);padding:24px;border-radius:14px;box-shadow:var(--shadow);margin-bottom:18px}
+.hero h1{margin:0 0 6px;font-size:clamp(1.65rem,3.6vw,2.6rem);color:var(--red)}
+.hero p{margin:6px 0;color:#4e433b}
+.badge{display:inline-block;background:#efe1c7;border:1px solid #d8c19d;border-radius:999px;padding:4px 10px;font:700 .82rem Arial,sans-serif;color:#60421e;margin-right:6px}
+.view{display:none}
+.view.active{display:block}
+.section-title{display:flex;justify-content:space-between;align-items:end;gap:12px;border-bottom:2px solid var(--red);margin:22px 0 14px;padding-bottom:6px}
+.section-title h2{margin:0;color:var(--red);font-size:1.55rem}
+.section-title p{margin:0;color:var(--muted);font-size:.92rem}
+.source-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.source-card,.task-card,.board,.compare-card{background:var(--paper2);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+.source-card{padding:18px}
+.card-head{display:flex;align-items:flex-start;gap:10px;justify-content:space-between}
+.card-head h3{margin:0 0 8px;color:#4c2926;font-size:1.14rem}
+.zoom-btn{border:1px solid #bda98b;background:#fff8ec;border-radius:7px;padding:6px 9px;cursor:pointer;white-space:nowrap;font-family:Arial,sans-serif;font-size:.82rem}
+.zoom-btn:hover{background:#f1dfc2}
+.original{background:#f3e8d6;border-left:4px solid var(--gold);padding:9px 12px;font-style:italic}
+.long-excerpt{margin-top:14px;background:#fffdf8;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:20px}
+.long-excerpt .story{columns:2;column-gap:34px;text-align:justify;hyphens:auto}
+.wordhelp{font-family:Arial,sans-serif;font-size:.9rem;background:#f1ece3;padding:9px 12px;border-radius:8px}
+.tasks{display:grid;gap:12px}
+.task-card{padding:16px;display:grid;grid-template-columns:50px minmax(0,1fr);gap:14px}
+.task-number{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--red);color:#fff;font:bold 1.15rem Arial,sans-serif}
+.prompt{font-weight:600;margin:6px 0 12px}
+.task-actions{display:flex;gap:8px;flex-wrap:wrap}
+.solution-toggle,.all-solutions,.board-btn{border:0;border-radius:8px;background:var(--red);color:#fff;padding:9px 13px;cursor:pointer;font-family:Arial,sans-serif;font-weight:700}
+.solution-toggle:hover,.all-solutions:hover,.board-btn:hover{background:var(--red2)}
+.solution{margin-top:12px;padding:13px 15px;background:#edf5ef;border-left:5px solid var(--green);border-radius:8px}
+.solution p{margin:5px 0 0}
+.task-tools{display:flex;justify-content:flex-end;margin:10px 0 14px}
+.board{padding:20px}
+.board h2{margin-top:0;color:var(--red)}
+.board-flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;align-items:stretch}
+.board-step{background:#faf5ec;border:2px solid #d3bd98;border-radius:10px;padding:14px;text-align:center;position:relative;min-width:0}
+.board-step strong{display:block;color:var(--red);font-size:1.05rem;margin-bottom:5px}
+.board-step:not(:last-child)::after{content:"→";position:absolute;right:-18px;top:45%;z-index:2;color:var(--red);font-size:1.5rem;font-weight:700}
+.board-question{margin-top:18px;background:#3b2a25;color:#fff;border-radius:10px;padding:14px 18px;text-align:center;font-size:1.12rem}
+.board-bottom{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.board-note{background:#f3eadb;border:1px solid #d9c7a8;border-radius:9px;padding:13px}
+.compare{width:100%;border-collapse:collapse;background:white;margin-top:12px}
+.compare th,.compare td{border:1px solid #cdbd9f;padding:10px;vertical-align:top}
+.compare th{background:#eee0c5;color:#4d2b28}
+.footer-note{margin-top:24px;color:#665a52;font-size:.85rem;font-family:Arial,sans-serif}
+.modal{position:fixed;inset:0;z-index:100;background:rgba(20,15,12,.92);display:none;padding:18px;overflow:auto}
+.modal.open{display:block}
+.modal-panel{background:#fffdf8;max-width:1500px;min-height:calc(100% - 4px);margin:auto;border-radius:12px;padding:26px 30px;box-shadow:0 12px 40px rgba(0,0,0,.45);font-size:clamp(20px,2.1vw,34px);line-height:1.48;position:relative}
+.modal-close{position:sticky;top:0;float:right;z-index:2;background:#2e211c;color:#fff;border:0;border-radius:8px;padding:10px 14px;cursor:pointer;font-family:Arial,sans-serif}
+.modal-panel .zoom-btn,.modal-panel .task-actions{display:none!important}
+.modal-panel .solution[hidden]{display:none}
+.modal-panel .solution:not([hidden]){display:block}
+.modal-panel .long-excerpt .story{columns:1}
+.modal-panel .board-flow{gap:16px}
+.modal-panel .board-step:not(:last-child)::after{right:-24px}
+body.presentation .topbar{position:static}
+body.presentation main{max-width:none;padding:12px}
+body.presentation .hero{display:none}
+body.presentation .view.active{font-size:1.08em}
+@media(max-width:900px){
+  .source-grid{grid-template-columns:1fr}
+  .long-excerpt .story{columns:1}
+  .board-flow{grid-template-columns:1fr}
+  .board-step:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-25px}
+  .board-bottom{grid-template-columns:1fr}
+}
+@media(max-width:620px){
+  .toolbar .title{width:100%;margin-bottom:4px}
+  .task-card{grid-template-columns:1fr}
+  .task-number{width:38px;height:38px}
+  .card-head{flex-direction:column}
+  .zoom-btn{align-self:flex-start}
+  main{padding-left:10px;padding-right:10px}
+  .modal{padding:6px}
+  .modal-panel{padding:18px 14px}
+}
+@media print{
+  .topbar,.zoom-btn,.task-actions,.task-tools{display:none!important}
+  body{background:#fff;font-size:12pt}
+  main{max-width:none;padding:0}
+  .hero,.source-card,.long-excerpt,.task-card,.board{box-shadow:none;break-inside:avoid}
+  .view{display:block!important}
+  .solution[hidden]{display:block}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="toolbar">
+    <div class="title">Volksbuch vom Doktor Faust · Lehreransicht</div>
+    <button class="tab-btn active" data-view="texte" type="button">Texte</button>
+    <button class="tab-btn" data-view="aufgaben" type="button">Aufgaben</button>
+    <button class="tab-btn" data-view="tafelbild" type="button">Tafelbild</button>
+    <button class="ctrl" id="fontMinus" type="button" aria-label="Schrift verkleinern">A−</button>
+    <button class="ctrl" id="fontPlus" type="button" aria-label="Schrift vergrößern">A+</button>
+    <button class="ctrl" id="presentation" type="button">Beamer-Modus</button>
+    <button class="ctrl" id="printBtn" type="button">Drucken</button>
+  </div>
+</div>
+
+<main>
+  <section class="hero">
+    <span class="badge">1587</span><span class="badge">Volksbuch</span><span class="badge">Fauststoff</span>
+    <h1>Das Volksbuch vom Doktor Faust</h1>
+    <p>Ausgewählte Stellen in behutsam modernisierter Fassung. Grundlage: <em>Historia von D. Johann Fausten</em>, Erstdruck Frankfurt am Main, Johann Spies, 1587.</p>
+  </section>
+
+  <section id="texte" class="view active">
+    <div class="section-title"><h2>Textgrundlage</h2><p>Kurze Originalformulierungen stehen hervorgehoben.</p></div>
+    <div class="source-grid">
+      <article class="source-card zoomable">
+      <div class="card-head"><h3>1. Herkunft, Studium und Wissensdrang</h3><button class="zoom-btn" type="button" aria-label="Abschnitt vergrößern">⤢ Vergrößern</button></div>
+      <p class="original"><strong>Original:</strong> „Doctor Faustus ist eines Bauwern Sohn gewest“</p>
+      <p>Faust stammt nach der <em>Historia</em> aus einfachen Verhältnissen. Verwandte ermöglichen ihm dennoch ein Studium. Er erweist sich als kluger, schneller und ehrgeiziger Student. Zunächst beschäftigt er sich mit der Theologie; doch das gewöhnliche Maß des Wissens genügt ihm bald nicht mehr. Er will nicht nur lesen, was andere erkannt haben, sondern selbst hinter die verborgenen Kräfte der Welt gelangen. Gerade dieser Stolz wird im Volksbuch als Anfang seines Verderbens erzählt. Faust wendet sich von der Heiligen Schrift ab, sucht Bücher über Zauberei und beginnt, sich mit Zeichen, Beschwörungen und geheimen Künsten zu beschäftigen.</p>
+    </article>
+<article class="source-card zoomable">
+      <div class="card-head"><h3>2. Faust beschwört den Teufel</h3><button class="zoom-btn" type="button" aria-label="Abschnitt vergrößern">⤢ Vergrößern</button></div>
+      <p class="original"><strong>Original:</strong> „wolte alle Gründ am Himmel vnd Erden erforschen“</p>
+      <p>Tag und Nacht verfolgt Faust den Gedanken, die Grenzen menschlichen Wissens zu überschreiten. Er bereitet eine Beschwörung vor und geht nachts in einen Wald. Dort zieht er einen Kreis, verwendet Zauberformeln und ruft den Teufel. Die Erscheinung wird als bedrohliches Schauspiel beschrieben: Wind, Lärm und Feuerzeichen lassen die Natur selbst aus den Fugen geraten. Schließlich erscheint der Geist in wechselnden Gestalten und zuletzt als grauer Mönch. Faust lässt sich von dem Schrecken nicht abbringen. Er verlangt, der Geist solle künftig auf seinen Ruf erscheinen und ihm dienen. Damit beginnt sein Umgang mit Mephostophiles.</p>
+    </article>
+<article class="source-card zoomable">
+      <div class="card-head"><h3>3. Der Pakt: 24 Jahre gegen Leib und Seele</h3><button class="zoom-btn" type="button" aria-label="Abschnitt vergrößern">⤢ Vergrößern</button></div>
+      <p class="original"><strong>Original:</strong> „O Mensch fleuhe vor jhme vnd thue recht“</p>
+      <p>Faust und Mephostophiles handeln ihre Bedingungen aus. Faust verlangt Wissen über die Welt, verborgene Dinge und die Macht, seine Wünsche durch den Geist ausführen zu lassen. Der Preis ist endgültig: Nach vierundzwanzig Jahren soll der Teufel über Faust verfügen dürfen. Faust schneidet sich mit einem Messer die linke Hand auf. Mit seinem eigenen Blut schreibt und bestätigt er die Verschreibung. Noch währenddessen erscheint an seiner Hand eine Warnung, die ihn zur Umkehr auffordert. Er ignoriert sie. Im Vertrag sagt Faust sich von Gott und den Menschen los und übergibt dem höllischen Geist Leib, Seele, Fleisch und Blut.</p>
+    </article>
+    </div>
+
+    <article class="long-excerpt zoomable">
+      <div class="card-head">
+        <div><h3>4. Längerer Auszug: Faust betrügt einen Pferdehändler</h3>
+        <p class="original"><strong>Kapitel 39:</strong> „da verschwand das Pferd, vnd saß er auff einem Bündel Stro“</p></div>
+        <button class="zoom-btn" type="button">⤢ Vergrößern</button>
+      </div>
+      <p class="wordhelp"><strong>Wort-Hilfe:</strong> Rosstäuscher = Pferdehändler · Schwemme = flache Wasserstelle/Tränke · Gulden = damalige Geldwährung</p>
+      <div class="story">Auf einem Jahrmarkt ließ Faust ein besonders schönes Pferd erscheinen. Das Tier sah kräftig, gesund und wertvoll aus,<br>und bald fanden sich mehrere Kaufinteressenten. Schließlich verkaufte Faust es einem Pferdehändler für vierzig Gulden.<br>Nur eine einzige Bedingung stellte er: Der Käufer dürfe mit dem Pferd keinesfalls in eine Tränke, einen Teich oder anderes Wasser reiten.<br><br>Gerade diese Warnung machte den Händler misstrauisch und neugierig. Er wollte wissen, was an dem Pferd nicht stimmen könne.<br>Kaum war er mit dem Tier unterwegs, ritt er absichtlich in eine Schwemme. Im selben Augenblick verschwand das Pferd unter ihm.<br>Statt auf einem prächtigen Tier saß der Mann plötzlich auf einem Bündel Stroh und geriet so tief ins Wasser, dass er beinahe ertrank.<br><br>Wütend machte er sich auf den Weg zu Fausts Herberge. Dort fand er den Doktor auf einem Bett liegen. Faust schlief und schnarchte,<br>als ginge ihn die ganze Sache nichts an. Der Händler rüttelte ihn, doch Faust reagierte nicht. Schließlich packte er ihn am Fuß<br>und wollte ihn vom Bett ziehen.<br><br>Da geschah das Nächste: Der Fuß löste sich scheinbar vollständig von Fausts Körper. Der Händler stürzte rückwärts zu Boden und<br>hielt das abgerissene Bein in der Hand. Faust begann sofort laut um Hilfe zu schreien, als habe man ihn schwer verletzt.<br>Nun bekam der Pferdehändler selbst Angst. Er glaubte, Faust tatsächlich ein Bein ausgerissen zu haben, ließ alles liegen und floh aus dem Haus.<br><br>Faust aber war unverletzt. Auch das abgerissene Bein war nur Täuschung. So hatte er sein Geld behalten, den Käufer erschreckt<br>und sich auf dessen Kosten einen weiteren grausamen Spaß erlaubt.</div>
+    </article>
+
+    <article class="source-card zoomable" style="margin-top:14px">
+      <div class="card-head"><h3>5. Reue, Angst und Fausts Ende</h3><button class="zoom-btn" type="button">⤢ Vergrößern</button></div>
+      <p>Als die vierundzwanzig Jahre vergehen, verliert Faust seine frühere Sicherheit. Was ihm zunächst wie ein Tausch erschien,
+wird nun zur unmittelbaren Todesangst. Er klagt darüber, jung sterben zu müssen, erinnert sich an seine Entscheidung und erkennt,
+dass Wissen, Lust und Zauberkunst ihn nicht vor dem Ende schützen können. Freunde und Studenten erleben seine Verzweiflung,
+können ihm aber nicht helfen. In der letzten Nacht zieht Faust sich in ein Zimmer zurück. Die Studenten hören einen gewaltigen Lärm,
+als sei das Haus von Sturm, Schlangen und unheimlichen Mächten erfüllt. Faust schreit noch um Hilfe; dann verstummt er.
+Am Morgen finden die Studenten den Raum verwüstet. Die Historia schließt seine Geschichte ausdrücklich als Warnung:
+Wer sich aus Hochmut über göttliche und menschliche Grenzen hinwegsetzt, richtet sich selbst zugrunde.</p>
+    </article>
+  </section>
+
+  <section id="aufgaben" class="view">
+    <div class="section-title"><h2>Aufgaben</h2><p>Lösungen einzeln oder gesammelt einblenden.</p></div>
+    <div class="task-tools">
+      <button class="all-solutions" id="allSolutions" type="button">Alle Lösungen einblenden</button>
+    </div>
+    <div class="tasks"><article class="task-card zoomable" data-task="1">
+      <div class="task-number">1</div>
+      <div class="task-main">
+        <div class="card-head"><h3>Fausts Ausgangssituation</h3><button class="zoom-btn" type="button">⤢ Vergrößern</button></div>
+        <p class="prompt">Beschreibe Fausts Ausgangssituation. Welche Herkunft hat er, und wodurch unterscheidet er sich von anderen Menschen?</p>
+        <div class="task-actions">
+          <button class="solution-toggle" type="button" aria-expanded="false">Lösung einblenden</button>
+        </div>
+        <div class="solution" hidden><strong>Musterlösung:</strong><p>Faust stammt aus einfachen, bäuerlichen Verhältnissen. Durch Verwandte kann er studieren. Er fällt durch Klugheit, Ehrgeiz und schnellen Lernerfolg auf. Anders als andere gibt er sich aber mit dem üblichen Wissen nicht zufrieden.</p></div>
+      </div>
+    </article>
+<article class="task-card zoomable" data-task="2">
+      <div class="task-number">2</div>
+      <div class="task-main">
+        <div class="card-head"><h3>Wissensdrang</h3><button class="zoom-btn" type="button">⤢ Vergrößern</button></div>
+        <p class="prompt">Erkläre Fausts Wissensdrang. Warum reichen ihm die normalen Wissenschaften nicht mehr aus?</p>
+        <div class="task-actions">
+          <button class="solution-toggle" type="button" aria-expanded="false">Lösung einblenden</button>
+        </div>
+        <div class="solution" hidden><strong>Musterlösung:</strong><p>Faust will verborgene Zusammenhänge und die Geheimnisse von Himmel und Erde erkennen. Das vorhandene Wissen setzt ihm Grenzen; er will diese Grenzen überschreiten. Im Volksbuch wird dieser Wissensdrang mit Stolz und Überheblichkeit verbunden.</p></div>
+      </div>
+    </article>
+<article class="task-card zoomable" data-task="3">
+      <div class="task-number">3</div>
+      <div class="task-main">
+        <div class="card-head"><h3>Der Teufelspakt</h3><button class="zoom-btn" type="button">⤢ Vergrößern</button></div>
+        <p class="prompt">Was verspricht Faust dem Teufel, und was erhält er dafür? Halte die Bedingungen des Paktes stichpunktartig fest.</p>
+        <div class="task-actions">
+          <button class="solution-toggle" type="button" aria-expanded="false">Lösung einblenden</button>
+        </div>
+        <div class="solution" hidden><strong>Musterlösung:</strong><p>Faust erhält für 24 Jahre die Dienste Mephostophiles, Zugang zu verborgenem Wissen und die Möglichkeit, Wünsche durch den Geist ausführen zu lassen. Danach soll der Teufel über Faust verfügen. Faust sagt sich von Gott und den Menschen los und übergibt Leib und Seele.</p></div>
+      </div>
+    </article>
+<article class="task-card zoomable" data-task="4">
+      <div class="task-number">4</div>
+      <div class="task-main">
+        <div class="card-head"><h3>Warum Blut?</h3><button class="zoom-btn" type="button">⤢ Vergrößern</button></div>
+        <p class="prompt">Deute die Bedeutung des Blutes beim Vertragsabschluss. Warum wird der Vertrag nicht einfach mit Tinte unterschrieben?</p>
+        <div class="task-actions">
+          <button class="solution-toggle" type="button" aria-expanded="false">Lösung einblenden</button>
+        </div>
+        <div class="solution" hidden><strong>Musterlösung:</strong><p>Das Blut macht den Vertrag körperlich und endgültig. Faust setzt nicht nur seine Unterschrift, sondern symbolisch sich selbst ein. Leib und Seele werden zum Einsatz des Paktes. Dass zugleich eine Warnung erscheint, verschärft seine Verantwortung: Er handelt trotz Warnung.</p></div>
+      </div>
+    </article>
+<article class="task-card zoomable" data-task="5">
+      <div class="task-number">5</div>
+      <div class="task-main">
+        <div class="card-head"><h3>Der Pferdehändler</h3><button class="zoom-btn" type="button">⤢ Vergrößern</button></div>
+        <p class="prompt">Erkläre in vier Schritten, wie Faust den Pferdehändler täuscht. Warum setzt gerade das Verbot, ins Wasser zu reiten, die Handlung in Gang?</p>
+        <div class="task-actions">
+          <button class="solution-toggle" type="button" aria-expanded="false">Lösung einblenden</button>
+        </div>
+        <div class="solution" hidden><strong>Musterlösung:</strong><p>1. Faust verkauft ein nur scheinbar echtes Pferd. 2. Er verbietet ausdrücklich den Ritt ins Wasser. 3. Die Warnung macht den Händler neugierig; er probiert es aus und das Pferd wird zu Stroh. 4. Als er Faust zur Rede stellt, täuscht Faust zusätzlich ein abgerissenes Bein vor. Das Verbot wirkt wie ein psychologischer Köder.</p></div>
+      </div>
+    </article>
+<article class="task-card zoomable" data-task="6">
+      <div class="task-number">6</div>
+      <div class="task-main">
+        <div class="card-head"><h3>Faust charakterisieren</h3><button class="zoom-btn" type="button">⤢ Vergrößern</button></div>
+        <p class="prompt">Nenne drei Eigenschaften Fausts aus der Pferdehändler-Episode und belege sie jeweils mit einer Handlung.</p>
+        <div class="task-actions">
+          <button class="solution-toggle" type="button" aria-expanded="false">Lösung einblenden</button>
+        </div>
+        <div class="solution" hidden><strong>Musterlösung:</strong><p>Mögliche Eigenschaften: listig – er plant den Betrug; manipulativ – er nutzt mit dem Verbot die Neugier des Händlers; skrupellos – er nimmt Geld für ein falsches Pferd und bringt den Käufer in Gefahr; machtbewusst – er setzt Magie ein, um andere zu beherrschen; spöttisch/grausam – er macht sich auf Kosten des Händlers einen Spaß.</p></div>
+      </div>
+    </article>
+<article class="task-card zoomable" data-task="7">
+      <div class="task-number">7</div>
+      <div class="task-main">
+        <div class="card-head"><h3>Schelm oder Betrüger?</h3><button class="zoom-btn" type="button">⤢ Vergrößern</button></div>
+        <p class="prompt">Ist Faust in der Pferdehändler-Episode eher ein unterhaltsamer Schelm, ein Betrüger oder bereits eine gefährliche Figur? Begründe.</p>
+        <div class="task-actions">
+          <button class="solution-toggle" type="button" aria-expanded="false">Lösung einblenden</button>
+        </div>
+        <div class="solution" hidden><strong>Musterlösung:</strong><p>Am stärksten lässt sich „Betrüger“ bzw. „gefährliche Figur“ begründen. Er täuscht den Händler bewusst, nimmt dessen Geld und bringt ihn im Wasser beinahe in Lebensgefahr. Die komische Darstellung ändert nichts daran, dass Faust seine Macht gegen andere einsetzt. Andere begründete Urteile sind möglich.</p></div>
+      </div>
+    </article>
+<article class="task-card zoomable" data-task="8">
+      <div class="task-number">8</div>
+      <div class="task-main">
+        <div class="card-head"><h3>Fausts Ende</h3><button class="zoom-btn" type="button">⤢ Vergrößern</button></div>
+        <p class="prompt">Wie verändert sich Fausts Haltung, als die 24 Jahre ablaufen? Welche Gefühle treten an die Stelle seines früheren Selbstvertrauens?</p>
+        <div class="task-actions">
+          <button class="solution-toggle" type="button" aria-expanded="false">Lösung einblenden</button>
+        </div>
+        <div class="solution" hidden><strong>Musterlösung:</strong><p>Sein Selbstvertrauen bricht zusammen. An die Stelle von Übermut und Machtgefühl treten Angst, Reue, Verzweiflung und Todesfurcht. Jetzt erkennt er, dass Wissen und Zauberkunst die Folgen seiner Entscheidung nicht aufheben.</p></div>
+      </div>
+    </article>
+<article class="task-card zoomable" data-task="9">
+      <div class="task-number">9</div>
+      <div class="task-main">
+        <div class="card-head"><h3>Warnung des Volksbuchs</h3><button class="zoom-btn" type="button">⤢ Vergrößern</button></div>
+        <p class="prompt">Formuliere in einem Satz, wovor das Volksbuch seine Leser warnt.</p>
+        <div class="task-actions">
+          <button class="solution-toggle" type="button" aria-expanded="false">Lösung einblenden</button>
+        </div>
+        <div class="solution" hidden><strong>Musterlösung:</strong><p>Muster: Das Volksbuch warnt davor, aus Hochmut und grenzenlosem Wissens- oder Machtstreben moralische und religiöse Grenzen zu überschreiten und dafür die eigene Menschlichkeit preiszugeben.</p></div>
+      </div>
+    </article>
+<article class="task-card zoomable" data-task="10">
+      <div class="task-number">10</div>
+      <div class="task-main">
+        <div class="card-head"><h3>Brücke zu Goethe</h3><button class="zoom-btn" type="button">⤢ Vergrößern</button></div>
+        <p class="prompt">Notiere für den späteren Vergleich mit Goethes „Faust I“: Was müsste man dort zu Wissensdrang, Teufelspakt, Mephisto, Schuld und Ende überprüfen?</p>
+        <div class="task-actions">
+          <button class="solution-toggle" type="button" aria-expanded="false">Lösung einblenden</button>
+        </div>
+        <div class="solution" hidden><strong>Musterlösung:</strong><p>Verglichen werden sollten besonders: Fausts Motiv für den Pakt, die genaue Form der Vereinbarung, die Darstellung Mephistos, die Bewertung des Wissensdrangs, Fausts Verantwortung für andere Menschen und die Frage, ob sein Ende ebenso eindeutig als Strafe erzählt wird.</p></div>
+      </div>
+    </article></div>
+  </section>
+
+  <section id="tafelbild" class="view">
+    <div class="section-title"><h2>Tafelbild</h2><p>Für Sicherung und Beameransicht.</p></div>
+    <div class="board zoomable">
+      <div class="card-head">
+        <h2>Faust im Volksbuch von 1587</h2>
+        <button class="zoom-btn" type="button">⤢ Tafelbild vergrößern</button>
+      </div>
+      <div class="board-flow">
+        <div class="board-step"><strong>1. Wissensdrang</strong>Faust will mehr wissen als Menschen gewöhnlich wissen können.</div>
+        <div class="board-step"><strong>2. Grenzüberschreitung</strong>Er wendet sich der Magie zu und beschwört den Teufel.</div>
+        <div class="board-step"><strong>3. Pakt</strong>24 Jahre Macht und Wissen gegen Leib und Seele.</div>
+        <div class="board-step"><strong>4. Machtmissbrauch</strong>Faust täuscht, betrügt und benutzt Magie gegen andere.</div>
+        <div class="board-step"><strong>5. Ende</strong>Übermut wird zu Angst, Reue und Verzweiflung.</div>
+      </div>
+      <div class="board-question"><strong>Leitfrage:</strong> Ist Faust im Volksbuch ein bewunderter Grenzgänger – oder vor allem ein abschreckendes Beispiel?</div>
+      <div class="board-bottom">
+        <div class="board-note"><strong>Fausts Entwicklung:</strong><br>Neugier → Hochmut → Machtgefühl → Schuld → Angst</div>
+        <div class="board-note"><strong>Warnung des Volksbuchs:</strong><br>Grenzenloses Wissen und Macht ohne Verantwortung führen zur Selbstzerstörung.</div>
+      </div>
+
+      <h3 style="margin-top:22px;color:#4c2926">Brücke zu Goethes <em>Faust I</em></h3>
+      <table class="compare">
+        <thead><tr><th>Vergleichspunkt</th><th>Volksbuch</th><th>Goethes Faust I – später ergänzen</th></tr></thead>
+        <tbody>
+          <tr><td>Wissensdrang</td><td>Grenzen überschreiten, verborgene Dinge erkennen</td><td></td></tr>
+          <tr><td>Pakt</td><td>24 Jahre Dienst gegen Leib und Seele</td><td></td></tr>
+          <tr><td>Mephisto</td><td>Dienender Geist und Vollstrecker des Pakts</td><td></td></tr>
+          <tr><td>Schuld</td><td>Bewusste Grenzüberschreitung und Missbrauch der Magie</td><td></td></tr>
+          <tr><td>Ende</td><td>Eindeutig als Strafe und Warnung erzählt</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <p class="footer-note">Textbasis: <em>Historia von D. Johann Fausten</em> (1587); die längeren Passagen sind für den Unterricht orthografisch und sprachlich behutsam modernisiert.</p>
+</main>
+
+<div class="modal" id="zoomModal" role="dialog" aria-modal="true" aria-label="Vergrößerte Ansicht">
+  <div class="modal-panel" id="modalPanel">
+    <button class="modal-close" id="modalClose" type="button">✕ Schließen</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const tabs = [...document.querySelectorAll('.tab-btn')];
+  const views = [...document.querySelectorAll('.view')];
+  const root = document.documentElement;
+  let fontSize = 18;
+
+  function showView(id) {
+    views.forEach(v => v.classList.toggle('active', v.id === id));
+    tabs.forEach(b => b.classList.toggle('active', b.dataset.view === id));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  tabs.forEach(b => b.addEventListener('click', () => showView(b.dataset.view)));
+
+  document.getElementById('fontPlus').addEventListener('click', () => {
+    fontSize = Math.min(28, fontSize + 2);
+    root.style.setProperty('--base', fontSize + 'px');
+  });
+  document.getElementById('fontMinus').addEventListener('click', () => {
+    fontSize = Math.max(14, fontSize - 2);
+    root.style.setProperty('--base', fontSize + 'px');
+  });
+  document.getElementById('presentation').addEventListener('click', (e) => {
+    document.body.classList.toggle('presentation');
+    e.currentTarget.textContent = document.body.classList.contains('presentation') ? 'Normalansicht' : 'Beamer-Modus';
+  });
+  document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+  document.querySelectorAll('.solution-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const solution = btn.closest('.task-main').querySelector('.solution');
+      const willShow = solution.hidden;
+      solution.hidden = !willShow;
+      btn.setAttribute('aria-expanded', String(willShow));
+      btn.textContent = willShow ? 'Lösung ausblenden' : 'Lösung einblenden';
+    });
+  });
+
+  const allBtn = document.getElementById('allSolutions');
+  let allShown = false;
+  allBtn.addEventListener('click', () => {
+    allShown = !allShown;
+    document.querySelectorAll('.solution').forEach(s => s.hidden = !allShown);
+    document.querySelectorAll('.solution-toggle').forEach(b => {
+      b.setAttribute('aria-expanded', String(allShown));
+      b.textContent = allShown ? 'Lösung ausblenden' : 'Lösung einblenden';
+    });
+    allBtn.textContent = allShown ? 'Alle Lösungen ausblenden' : 'Alle Lösungen einblenden';
+  });
+
+  const modal = document.getElementById('zoomModal');
+  const modalContent = document.getElementById('modalContent');
+  const closeBtn = document.getElementById('modalClose');
+
+  function openZoom(button) {
+    const box = button.closest('.zoomable');
+    if (!box) return;
+    const clone = box.cloneNode(true);
+    clone.querySelectorAll('.zoom-btn,.task-actions').forEach(x => x.remove());
+    modalContent.replaceChildren(clone);
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+  function closeZoom() {
+    modal.classList.remove('open');
+    modalContent.innerHTML = '';
+    document.body.style.overflow = '';
+  }
+  document.querySelectorAll('.zoom-btn').forEach(b => b.addEventListener('click', () => openZoom(b)));
+  closeBtn.addEventListener('click', closeZoom);
+  modal.addEventListener('click', e => { if (e.target === modal) closeZoom(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeZoom(); });
+})();
+</script>
+</body>
+</html>
