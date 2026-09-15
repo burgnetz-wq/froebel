@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Physik-Karteikarten: Stromdurchflossene Spule</title>
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-light: #dbeafe;
+      --primary-dark: #1e3a8a;
+      --accent: #dc2626;
+      --accent-blue: #2563eb;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --border: #e2e8f0;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+      --success: #16a34a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: var(--primary-light);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      color: var(--primary-dark);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      margin-top: 0.3rem;
+    }
+
+    /* Tab navigation */
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .tab-btn {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn:hover {
+      background: #f1f5f9;
+      color: var(--primary);
+    }
+
+    .tab-btn.active {
+      background: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25);
+    }
+
+    /* Card Box */
+    .card-deck {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .flashcard {
+      background: var(--card-bg);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: none;
+    }
+
+    .flashcard.active {
+      display: block;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Card Header */
+    .card-header {
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: white;
+      padding: 1.2rem 1.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-header h2 {
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    .card-header .card-nr {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* Card Content Grid: Vorderseite & Rückseite */
+    .card-body {
+      padding: 1.8rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .card-body {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+
+    .side-box {
+      border-radius: 12px;
+      padding: 1.4rem;
+      border: 1px solid var(--border);
+    }
+
+    .side-front {
+      background-color: #f8fafc;
+      border-left: 5px solid #3b82f6;
+    }
+
+    .side-back {
+      background-color: #ffffff;
+      border-left: 5px solid #10b981;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .side-label {
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .side-front .side-label {
+      color: #2563eb;
+    }
+
+    .side-back .side-label {
+      color: #059669;
+    }
+
+    .side-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      color: var(--text-main);
+    }
+
+    ul.bullet-list {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    ul.bullet-list li {
+      position: relative;
+      padding-left: 1.4rem;
+      font-size: 0.95rem;
+      color: #334155;
+    }
+
+    ul.bullet-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0.2rem;
+      color: var(--primary);
+      font-size: 1.3rem;
+      line-height: 1;
+    }
+
+    .highlight-box {
+      background-color: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      margin: 1rem 0;
+      font-size: 0.95rem;
+      color: #1e3a8a;
+    }
+
+    .formula-box {
+      background: #0f172a;
+      color: #38bdf8;
+      border-radius: 10px;
+      padding: 1.2rem;
+      text-align: center;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 1rem 0;
+      letter-spacing: 0.05em;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .formula-legend {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 0.6rem;
+      font-size: 0.82rem;
+      background: #f1f5f9;
+      padding: 0.8rem;
+      border-radius: 8px;
+      color: #334155;
+    }
+
+    .formula-legend span strong {
+      color: #0f172a;
+    }
+
+    /* Graphic / SVG styles */
+    .diagram-container {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    svg {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .diagram-caption {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+
+    /* Merkhilfe Badge */
+    .memo-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #fef3c7;
+      border: 1px solid #fde68a;
+      color: #92400e;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.3rem 0.6rem;
+      border-radius: 6px;
+      margin-bottom: 0.6rem;
+    }
+
+    /* Interactive Quiz Section */
+    .quiz-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .quiz-q {
+      font-weight: 700;
+      font-size: 1rem;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .quiz-a {
+      display: none;
+      margin-top: 0.8rem;
+      padding-top: 0.8rem;
+      border-top: 1px dashed var(--border);
+      font-size: 0.92rem;
+      color: #1e3a8a;
+      background: #f0fdf4;
+      padding: 0.8rem;
+      border-radius: 8px;
+    }
+
+    .quiz-a.show {
+      display: block;
+      animation: fadeIn 0.2s;
+    }
+
+    .toggle-btn {
+      font-size: 0.75rem;
+      background: #e2e8f0;
+      border: none;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      cursor: pointer;
+      color: #334155;
+      font-weight: 600;
+    }
+
+    .toggle-btn:hover {
+      background: #cbd5e1;
+    }
+
+    /* Print styling */
+    @media print {
+      body {
+        padding: 0;
+        background: white;
+      }
+      .nav-tabs, .print-btn {
+        display: none !important;
+      }
+      .flashcard {
+        display: block !important;
+        box-shadow: none;
+        border: 1px solid #94a3b8;
+        page-break-after: always;
+        margin-bottom: 2rem;
+      }
+    }
+
+    .action-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .print-btn {
+      background: #0f172a;
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .print-btn:hover {
+      background: #334155;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="badge">Physik • Elektromagnetismus</div>
+    <h1>Stromdurchflossene Spule</h1>
+    <p class="subtitle">Didaktische Karteikarten zum Lernen, Wiederholen und Verstehen (Sekundarstufe I & II)</p>
+  </header>
+
+  <!-- Karteikarten-Reiter -->
+  <div class="nav-tabs" id="navTabs">
+    <button class="tab-btn active" onclick="showCard(0)">1. Grundlagen & Feld</button>
+    <button class="tab-btn" onclick="showCard(1)">2. Rechte-Hand-Regel</button>
+    <button class="tab-btn" onclick="showCard(2)">3. Formel & Flussdichte</button>
+    <button class="tab-btn" onclick="showCard(3)">4. Eisenkern & Elektromagnet</button>
+    <button class="tab-btn" onclick="showCard(4)">5. Prüfungs-Check (Quiz)</button>
+    <button class="tab-btn" onclick="showAllCards()">Alle anzeigen (Druckansicht)</button>
+  </div>
+
+  <div class="card-deck">
+
+    <!-- ==================== KARTE 1 ==================== -->
+    <div class="flashcard active" id="card-0">
+      <div class="card-header">
+        <h2>Karte 1: Grundbegriff & Magnetfeldlinien</h2>
+        <span class="card-nr">DIN A6 • Grundlagen</span>
+      </div>
+      <div class="card-body">
+        
+        <!-- Vorderseite -->
+        <div class="side-box side-front">
+          <div class="side-label">Vorderseite (Frage / Impuls)</div>
+          <div class="side-title">Was passiert, wenn Strom durch eine zylindrische Spule fließt?</div>
+          <ul class="bullet-list">
+            <li>Welche Art von Magnetfeld entsteht im Inneren und im Außenraum?</li>
+            <li>Mit welchem einfachen Dauermagneten lässt sich das Außenfeld vergleichen?</li>
+            <li>In welche Richtung verlaufen die magnetischen Feldlinien?</li>
+          </ul>
+
+          <div class="diagram-container">
+            <!-- Schematische Spule mit Magnetfeldlinien -->
+            <svg viewBox="0 0 380 200" width="100%">
+              <defs>
+                <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb" />
+                </marker>
+                <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1 L 10 5 L 0 9 z" fill="#dc2626" />
+                </marker>
+              </defs>
+
+              <!-- Äußere Feldlinien (geschlossene Bögen) -->
+              <!-- Oben -->
+              <path d="M 280 85 C 330 30, 60 30, 110 85" fill="none" stroke="#2563eb" stroke-width="1.8" stroke-dasharray="4,2" marker-mid="url(#arrow-blue)" />
+              <path d="M 290 75 C 360 5, 30 5, 100 75" fill="none" stroke="#2563eb" stroke-width="1.8" />
+              <!-- Pfeile auf äußeren Feldlinien (von N nach S) -->
+              <polygon points="190,14 180,18 180,10" fill="#2563eb" />
+              <polygon points="190,38 180,42 180,34" fill="#2563eb" />
+
+              <!-- Unten -->
+              <path d="M 280 115 C 330 170, 60 170, 110 115" fill="none" stroke="#2563eb" stroke-width="1.8" />
+              <path d="M 290 125 C 360 195, 30 195, 100 125" fill="none" stroke="#2563eb" stroke-width="1.8" />
+              <polygon points="190,186 180,190 180,182" fill="#2563eb" />
+              <polygon points="190,162 180,166 180,158" fill="#2563eb" />
+
+              <!-- Feldlinien im Spuleninneren (parallel & homogen) -->
+              <line x1="90" y1="85" x2="300" y2="85" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+              <line x1="90" y1="100" x2="305" y2="100" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow-blue)" />
+              <line x1="90" y1="115" x2="300" y2="115" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+
+              <!-- Spulenkörper / Windungen (Helix) -->
+              <g stroke="#b45309" stroke-width="5" fill="none" stroke-linecap="round">
+                <!-- Windung 1 -->
+                <path d="M 120 70 Q 135 100, 120 130" stroke="#d97706" />
+                <path d="M 120 130 Q 105 100, 120 70" stroke="#b45309" stroke-dasharray="1,4" />
+                <!-- Windung 2 -->
+                <path d="M 150 70 Q 165 100, 150 130" stroke="#d97706" />
+                <!-- Windung 3 -->
+                <path d="M 180 70 Q 195 100, 180 130" stroke="#d97706" />
+                <!-- Windung 4 -->
+                <path d="M 210 70 Q 225 100, 210 130" stroke="#d97706" />
+                <!-- Windung 5 -->
+                <path d="M 240 70 Q 255 100, 240 130" stroke="#d97706" />
+                <!-- Windung 6 -->
+                <path d="M 270 70 Q 285 100, 270 130" stroke="#d97706" />
+              </g>
+
+              <!-- Stromanschlüsse -->
+              <line x1="120" y1="130" x2="100" y2="155" stroke="#dc2626" stroke-width="3" />
+              <text x="85" y="165" font-size="12" font-weight="bold" fill="#dc2626">+ (I)</text>
+              <line x1="270" y1="70" x2="290" y2="45" stroke="#2563eb" stroke-width="3" />
+              <text x="295" y="45" font-size="12" font-weight="bold" fill="#2563eb">−</text>
+
+              <!-- Polmarkierungen -->
+              <rect x="75" y="90" width="22" height="20" rx="4" fill="#0284c7" />
+              <text x="81" y="105" fill="white" font-weight="bold" font-size="13">S</text>
+
+              <rect x="295" y="90" width="22" height="20" rx="4" fill="#dc2626" />
+              <text x="300" y="105" fill="white" font-weight="bold" font-size="13">N</text>
+            </svg>
+            <div class="diagram-caption">Feldlinienmodell: Außen wie ein Stabmagnet, innen homogen</div>
+          </div>
+        </div>
+
+        <!-- Rückseite -->
+        <div class="side-box side-back">
+          <div class="side-label">Rückseite (Antwort & Physikalischer Kern)</div>
+          <div class="side-title">Antwort: Dipolfeld & homogenes Innenfeld</div>
+          
+          <ul class="bullet-list">
+            <li><strong>Feldüberlagerung:</strong> Jede einzelne Windung erzeugt ein kreisförmiges Magnetfeld (Oersted-Effekt). Im Inneren addieren sich die Felder vektoriell in eine gemeinsame Richtung.</li>
+            <li><strong>Im Inneren der Spule:</strong> Das Magnetfeld ist weitgehend <strong>homogen</strong> (Feldlinien verlaufen parallel, geradlinig und mit konstanter Dichte).</li>
+            <li><strong>Außerhalb der Spule:</strong> Das Feld ist <strong>inhomogen</strong> und gleicht exakt dem Feld eines <strong>Stabmagneten</strong>.</li>
+            <li><strong>Verlauf der Feldlinien:</strong>
+              <ul>
+                <li><em>Außen:</em> Vom <strong>Nordpol</strong> zum <strong>Südpol</strong>.</li>
+                <li><em>Innen:</em> Vom <strong>Südpol</strong> zum <strong>Nordpol</strong> (Magnetfeldlinien sind immer geschlossen, quellenfrei!).</li>
+              </ul>
+            </li>
+          </ul>
+
+          <div class="highlight-box">
+            💡 <strong>Wichtig fürs Verständnis:</strong> Ein Magnetfeld hat <em>keine</em> Quellen oder Senken ($\operatorname{div} \vec{B} = 0$). Die Feldlinien hören im Inneren nicht auf, sondern schließen sich in Endlosschleifen.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== KARTE 2 ==================== -->
+    <div class="flashcard" id="card-1">
+      <div class="card-header">
+        <h2>Karte 2: Polbestimmung (Rechte-Hand-Regel)</h2>
+        <span class="card-nr">DIN A6 • Methode</span>
+      </div>
+      <div class="card-body">
+        
+        <div class="side-box side-front">
+          <div class="side-label">Vorderseite (Frage / Impuls)</div>
+          <div class="side-title">Wie bestimmt man die magnetischen Pole einer Spule?</div>
+          <ul class="bullet-list">
+            <li>Welche Hand wird verwendet?</li>
+            <li>In welche Richtung müssen die gekrümmten Finger zeigen?</li>
+            <li>Was zeigt der abgespreizte Daumen an?</li>
+            <li><strong>Vorsicht:</strong> Welche Stromrichtung gilt hierbei immer?</li>
+          </ul>
+
+          <div class="diagram-container">
+            <!-- Rechte Hand Regel Illustration -->
+            <svg viewBox="0 0 340 180" width="100%">
+              <!-- Schematische Hand um Zylinder -->
+              <rect x="50" y="55" width="240" height="70" rx="10" fill="#f1f5f9" stroke="#94a3b8" stroke-dasharray="3,3" />
+              
+              <!-- Spulendraht -->
+              <g stroke="#d97706" stroke-width="4" fill="none">
+                <path d="M 70 45 L 90 135" />
+                <path d="M 110 45 L 130 135" />
+                <path d="M 150 45 L 170 135" />
+                <path d="M 190 45 L 210 135" />
+                <path d="M 230 45 L 250 135" />
+              </g>
+
+              <!-- Stromrichtungspfeile auf Draht -->
+              <polygon points="90,75 84,87 96,87" fill="#dc2626" />
+              <polygon points="130,75 124,87 136,87" fill="#dc2626" />
+              <polygon points="170,75 164,87 176,87" fill="#dc2626" />
+              <text x="75" y="35" fill="#dc2626" font-size="11" font-weight="bold">Strom I (↑ oben)</text>
+
+              <!-- Stilisierte rechte Hand -->
+              <g fill="#fde68a" stroke="#d97706" stroke-width="2">
+                <!-- 4 Finger umgreifen von hinten nach vorn -->
+                <path d="M 130 130 C 130 150, 160 150, 160 130" fill="#fbcfe8" />
+                <path d="M 160 130 C 160 150, 190 150, 190 130" fill="#fbcfe8" />
+                <!-- Daumen zeigt nach links -->
+                <path d="M 120 90 C 80 90, 70 90, 60 90 C 50 90, 50 105, 60 105 L 120 105 Z" fill="#fed7aa" stroke="#c2410c" />
+              </g>
+
+              <!-- Richtungspfeil Daumen = NORDPOL -->
+              <line x1="75" y1="97" x2="20" y2="97" stroke="#2563eb" stroke-width="3" marker-end="url(#arrow-blue)" />
+              <rect x="5" y="85" width="28" height="24" rx="4" fill="#dc2626" />
+              <text x="12" y="102" fill="white" font-weight="bold" font-size="14">N</text>
+              <text x="290" y="102" fill="#2563eb" font-weight="bold" font-size="14">S</text>
+
+              <text x="40" y="135" fill="#1e3a8a" font-size="11" font-weight="bold">Daumen = Nordpol (B-Feld)</text>
+            </svg>
+            <div class="diagram-caption">Rechte-Hand-Regel für Spulen (Umfassungsregel)</div>
+          </div>
+        </div>
+
+        <div class="side-box side-back">
+          <div class="side-label">Rückseite (Antwort & Merkregel)</div>
+          <div class="side-title">Die Rechte-Hand-Regel (Spulenregel)</div>
+
+          <div class="memo-tag">👉 Die Faustregel Schritt für Schritt:</div>
+          
+          <ul class="bullet-list">
+            <li><strong>1. Rechte Hand wählen:</strong> Niemals die linke Hand benutzen!</li>
+            <li><strong>2. Spule umgreifen:</strong> Die <strong>vier gekrümmten Finger</strong> umfassen die Spule so, dass sie in die <strong>technische Stromrichtung</strong> (von Plus nach Minus) zeigen.</li>
+            <li><strong>3. Daumen abspreizen:</strong> Der ausgestreckte Daumen zeigt nun direkt in Richtung des <strong>magnetischen Nordpols</strong> der Spule (dort treten die Feldlinien aus).</li>
+          </ul>
+
+          <div class="highlight-box">
+            ⚠️ <strong>Typische Prüfungsfalle:</strong> Immer auf die <em>technische Stromrichtung</em> achten ($+ \rightarrow -$)! Die physikalische Elektronenbewegung verläuft genau umgekehrt (von Minus nach Plus).
+          </div>
+
+          <div style="margin-top: 0.8rem; font-size: 0.9rem; color: #475569;">
+            <strong>Alternative Schraubenregel:</strong> Dreht man eine Rechtsschraube in Stromrichtung, bewegt sie sich in Richtung des Nordpols vorwärts.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== KARTE 3 ==================== -->
+    <div class="flashcard" id="card-2">
+      <div class="card-header">
+        <h2>Karte 3: Formel & Magnetische Flussdichte B</h2>
+        <span class="card-nr">DIN A6 • Quantitativ</span>
+      </div>
+      <div class="card-body">
+        
+        <div class="side-box side-front">
+          <div class="side-label">Vorderseite (Frage / Impuls)</div>
+          <div class="side-title">Wie berechnet sich die magnetische Flussdichte B im Spuleninneren?</div>
+          <ul class="bullet-list">
+            <li>Wie lautet die Berechnungsformel für eine schlanke Zylinderspule ($l \gg d$)?</li>
+            <li>Von welchen physikalischen Größen hängt die Stärke des Magnetfelds ab?</li>
+            <li>In welcher Einheit wird die magnetische Flussdichte gemessen?</li>
+            <li>Was bedeutet der Begriff <em>Windungsdichte</em>?</li>
+          </ul>
+
+          <div class="highlight-box" style="margin-top: 1.5rem; background: #fffbeb; border-color: #fde68a; color: #92400e;">
+            🧐 <strong>Denkaufgabe:</strong> Was passiert mit dem Magnetfeld $B$, wenn man die Stromstärke verdoppelt und gleichzeitig die Spulenlänge halbiert?
+          </div>
+        </div>
+
+        <div class="side-box side-back">
+          <div class="side-label">Rückseite (Antwort & Formel)</div>
+          <div class="side-title">Formel für das Spuleninnenfeld</div>
+
+          <div class="formula-box">
+            B = &mu;<sub>0</sub> &middot; &mu;<sub>r</sub> &middot; (N / l) &middot; I
+          </div>
+
+          <div class="formula-legend">
+            <span><strong>B</strong>: Flussdichte [Tesla, T]</span>
+            <span><strong>&mu;<sub>0</sub></strong>: magn. Feldkonstante (4&pi;&times;10<sup>-7</sup> Vs/Am)</span>
+            <span><strong>&mu;<sub>r</sub></strong>: relative Permeabilität</span>
+            <span><strong>N</strong>: Windungszahl (dimensionslos)</span>
+            <span><strong>l</strong>: Spulenlänge [Meter, m]</span>
+            <span><strong>I</strong>: Stromstärke [Ampere, A]</span>
+          </div>
+
+          <div style="margin-top: 1rem;">
+            <strong>Proportionalitäten im Überblick:</strong>
+            <ul class="bullet-list" style="margin-top: 0.4rem;">
+              <li>$B \sim I$: Je höher der Strom, desto stärker das Feld.</li>
+              <li>$B \sim N$: Mehr Windungen bedeuten ein stärkeres Feld.</li>
+              <li>$B \sim \frac{1}{l}$: Eine kürzere/dichter gewickelte Spule erzeugt ein stärkeres Feld.</li>
+              <li>$n = \frac{N}{l}$: Windungsdichte (Windungen pro Meter).</li>
+            </ul>
+          </div>
+
+          <div class="highlight-box" style="margin-top: 0.8rem;">
+            🎯 <strong>Lösung der Denkaufgabe:</strong> $B_{neu} = \mu \cdot \frac{N}{0{,}5 \cdot l} \cdot (2 \cdot I) = 4 \cdot B_{alt}$. Das Feld wird <strong>viermal so stark</strong>!
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== KARTE 4 ==================== -->
+    <div class="flashcard" id="card-3">
+      <div class="card-header">
+        <h2>Karte 4: Eisenkern & Elektromagnet</h2>
+        <span class="card-nr">DIN A6 • Praxis & Anwendungen</span>
+      </div>
+      <div class="card-body">
+        
+        <div class="side-box side-front">
+          <div class="side-label">Vorderseite (Frage / Impuls)</div>
+          <div class="side-title">Welche Rolle spielt der Eisenkern und wo wird die Spule angewendet?</div>
+          <ul class="bullet-list">
+            <li>Warum verstärkt ein Eisenkern das Magnetfeld so drastisch?</li>
+            <li>Was sind die sogenannten <em>Weiss'schen Bezirke</em>?</li>
+            <li>Welche riesigen Vorteile hat ein Elektromagnet gegenüber einem Permanentmagneten?</li>
+            <li>Nenne 4 wichtige Alltags- und Industrieanwendungen.</li>
+          </ul>
+
+          <div class="diagram-container">
+            <svg viewBox="0 0 320 120" width="100%">
+              <!-- Ohne Feld vs mit Feld der Weiss-Bezirke -->
+              <rect x="20" y="20" width="120" height="70" fill="#e2e8f0" stroke="#64748b" rx="6" />
+              <text x="25" y="15" font-size="10" font-weight="bold" fill="#475569">Ohne Feld: regellos</text>
+              <!-- chaotische Pfeile -->
+              <path d="M 40 40 L 60 55" stroke="#475569" stroke-width="2" marker-end="url(#arrow-blue)" />
+              <path d="M 80 75 L 70 45" stroke="#475569" stroke-width="2" marker-end="url(#arrow-blue)" />
+              <path d="M 110 40 L 95 65" stroke="#475569" stroke-width="2" marker-end="url(#arrow-blue)" />
+              <path d="M 115 75 L 125 45" stroke="#475569" stroke-width="2" marker-end="url(#arrow-blue)" />
+
+              <!-- Pfeil Übergang -->
+              <text x="155" y="55" font-size="18" fill="#1e40af">➔</text>
+              <text x="145" y="75" font-size="9" fill="#1e40af" font-weight="bold">+ B-Feld</text>
+
+              <rect x="180" y="20" width="120" height="70" fill="#dbeafe" stroke="#2563eb" rx="6" />
+              <text x="185" y="15" font-size="10" font-weight="bold" fill="#1e40af">Mit Feld: geordnet</text>
+              <!-- ausgerichtete Pfeile -->
+              <path d="M 195 40 L 225 40" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+              <path d="M 245 40 L 275 40" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+              <path d="M 195 70 L 225 70" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+              <path d="M 245 70 L 275 70" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow-blue)" />
+            </svg>
+            <div class="diagram-caption">Ausrichtung der Elementarmagnete (Weiss-Bezirke) im Ferromagnetikum</div>
+          </div>
+        </div>
+
+        <div class="side-box side-back">
+          <div class="side-label">Rückseite (Antwort & Anwendungen)</div>
+          <div class="side-title">Ferromagnetismus & Technische Nutzung</div>
+
+          <ul class="bullet-list">
+            <li><strong>Wirkung des Eisenkerns:</strong> Eisen ist ein <em>Ferromagnetikum</em> ($\mu_r \approx 300\dots 10.000$). Die mikroskopischen magnetischen Bereiche (<strong>Weiss'sche Bezirke</strong>) sind ohne äußeres Feld ungeordnet. Sobald Strom fließt, richten sie sich parallel aus und verstärken das Gesamtfeld um ein Tausendfaches!</li>
+            <li><strong>Vorteile des Elektromagneten:</strong>
+              <ol style="margin-left: 1.2rem; margin-top: 0.3rem;">
+                <li><strong>Ein- und ausschaltbar</strong> (über den Stromfluss).</li>
+                <li><strong>Regelbare Feldstärke</strong> (stufenlos über $I$).</li>
+                <li><strong>Umpolbar</strong> (durch Umkehrung der Stromrichtung).</li>
+              </ol>
+            </li>
+            <li><strong>Wichtige Anwendungen:</strong>
+              <ul>
+                <li><strong>Schrottplatz-Hebemagnet:</strong> Trägt Tonnen von Metall und lässt sie per Knopfdruck fallen.</li>
+                <li><strong>Relais & Schaltschütze:</strong> Galvanisch getrenntes Schalten großer Ströme.</li>
+                <li><strong>Lautsprecher:</strong> Wechselstrom bewegt Schwingspule in Dauermagnetfeld.</li>
+                <li><strong>Elektromotor, Transformator & MRT (Kernspintomographie).</strong></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ==================== KARTE 5 ==================== -->
+    <div class="flashcard" id="card-4">
+      <div class="card-header">
+        <h2>Karte 5: Klausur-Check & Selbsttest</h2>
+        <span class="card-nr">Interaktive Abfrage</span>
+      </div>
+      <div class="card-body" style="grid-template-columns: 1fr;">
+        
+        <p style="margin-bottom: 1rem; color: #475569;">
+          Klicke auf eine Frage oder den Button <strong>„Antwort anzeigen“</strong>, um dein Wissen direkt zu prüfen:
+        </p>
+
+        <!-- Frage 1 -->
+        <div class="quiz-card">
+          <div class="quiz-q" onclick="toggleAnswer(1)">
+            <span>1. Warum heben sich die Magnetfelder der Windungen außen teilweise auf, innen aber nicht?</span>
+            <button class="toggle-btn" id="btn-1">Antwort anzeigen</button>
+          </div>
+          <div class="quiz-a" id="ans-1">
+            <strong>Erklärung:</strong> Zwischen benachbarten Windungen fließen die Ströme in die gleiche Richtung. Die erzeugten Kreisringfelder verlaufen im Inneren alle in dieselbe Richtung (konstruktive Überlagerung $\rightarrow$ homogenes, starkes Feld). Im Außenraum laufen die Felder benachbarter Leiterabschnitte entgegengesetzt und schwächen sich mit wachsendem Abstand rasch ab.
+          </div>
+        </div>
+
+        <!-- Frage 2 -->
+        <div class="quiz-card">
+          <div class="quiz-q" onclick="toggleAnswer(2)">
+            <span>2. Ein Schüler vertauscht Plus- und Minuspol an der Spannungsquelle einer Spule. Was geschieht mit dem Magnetfeld?</span>
+            <button class="toggle-btn" id="btn-2">Antwort anzeigen</button>
+          </div>
+          <div class="quiz-a" id="ans-2">
+            <strong>Erklärung:</strong> Die Stromrichtung kehrt sich um. Dadurch klappt auch das Magnetfeld um 180° um: Der bisherige Nordpol wird zum Südpol und umgekehrt. Die Feldstärke bleibt unverändert, sofern die Stromstärke gleich bleibt.
+          </div>
+        </div>
+
+        <!-- Frage 3 -->
+        <div class="quiz-card">
+          <div class="quiz-q" onclick="toggleAnswer(3)">
+            <span>3. Warum verwendet man für Elektromagnete „Weicheisen“ statt gehärtetem Stahl?</span>
+            <button class="toggle-btn" id="btn-3">Antwort anzeigen</button>
+          </div>
+          <div class="quiz-a" id="ans-3">
+            <strong>Erklärung:</strong> <em>Weicheisen</em> besitzt eine sehr geringe Remanenz (geringe Koerzitivfeldstärke). Das bedeutet: Sobald der Strom abgeschaltet wird, verlieren die Weiss-Bezirke sofort ihre Ordnung – der Magnet ist augenblicklich aus. Gehärteter Stahl hingegen bleibt dauerhaft magnetisiert (wird zum Permanentmagneten), wodurch ein Hebemagnet die Last nicht mehr abwerfen könnte.
+          </div>
+        </div>
+
+        <!-- Frage 4 -->
+        <div class="quiz-card">
+          <div class="quiz-q" onclick="toggleAnswer(4)">
+            <span>4. Wie verändert sich die magnetische Flussdichte $B$, wenn die Spule wie eine Ziehharmonika auf die doppelte Länge auseinandergezogen wird?</span>
+            <button class="toggle-btn" id="btn-4">Antwort anzeigen</button>
+          </div>
+          <div class="quiz-a" id="ans-4">
+            <strong>Erklärung:</strong> Da $B \sim \frac{N}{l}$, halbiert sich bei doppelter Länge $l$ (bei gleicher Windungszahl $N$ und gleichem Strom $I$) die Windungsdichte $n = \frac{N}{l}$. Die magnetische Flussdichte sinkt daher auf <strong>die Hälfte ($50\,\%$)</strong>.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="action-bar">
+    <div style="font-size: 0.85rem; color: var(--text-muted);">
+      Tipp: Im Browser oder PDF-Export auf <strong>A4</strong> oder <strong>A6</strong> Querformat drucken.
+    </div>
+    <button class="print-btn" onclick="window.print()">
+      🖨️ Karteikarten drucken / als PDF speichern
+    </button>
+  </div>
+</div>
+
+<script>
+  function showCard(index) {
+    const cards = document.querySelectorAll('.flashcard');
+    const tabs = document.querySelectorAll('.tab-btn');
+    
+    cards.forEach((card, i) => {
+      card.classList.remove('active');
+      card.style.display = 'none';
+      if (i === index) {
+        card.classList.add('active');
+        card.style.display = 'block';
+      }
+    });
+
+    tabs.forEach((tab, i) => {
+      tab.classList.remove('active');
+      if (i === index) {
+        tab.classList.add('active');
+      }
+    });
+  }
+
+  function showAllCards() {
+    const cards = document.querySelectorAll('.flashcard');
+    const tabs = document.querySelectorAll('.tab-btn');
+    cards.forEach(card => {
+      card.classList.add('active');
+      card.style.display = 'block';
+    });
+    tabs.forEach(tab => tab.classList.remove('active'));
+    tabs[tabs.length - 1].classList.add('active');
+  }
+
+  function toggleAnswer(id) {
+    const ans = document.getElementById('ans-' + id);
+    const btn = document.getElementById('btn-' + id);
+    if (ans.classList.contains('show')) {
+      ans.classList.remove('show');
+      btn.textContent = 'Antwort anzeigen';
+    } else {
+      ans.classList.add('show');
+      btn.textContent = 'Antwort verbergen';
+    }
+  }
+</script>
+
+</body>
+</html>
