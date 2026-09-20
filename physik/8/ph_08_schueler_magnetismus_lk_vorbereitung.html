@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Magnetismus – intensive Vorbereitung auf die LK | Physik Klasse 8</title>
+<style>
+:root{
+  --bg:#eef7ff;--paper:#ffffff;--ink:#112447;--muted:#52647e;--line:#b9d9f8;
+  --blue:#1769e0;--blue2:#0b4fab;--blueSoft:#eaf5ff;--red:#e23b34;--redSoft:#fff1ef;
+  --green:#16984a;--greenSoft:#ecf9f0;--gold:#f2b21b;--goldSoft:#fff8d9;--purple:#7650c7;
+  --shadow:0 8px 28px rgba(20,67,126,.11);--radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;background:linear-gradient(180deg,#f8fcff 0,#eef7ff 100%);color:var(--ink);line-height:1.5}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #ffcc33;outline-offset:2px}
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(9px);border-bottom:1px solid var(--line);box-shadow:0 2px 14px rgba(20,67,126,.08)}
+.head{max-width:1500px;margin:auto;padding:.65rem 1rem;display:flex;gap:.8rem;align-items:center;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:.75rem;min-width:260px;flex:1}
+.atom{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#ddecff,#fff);border:1px solid #9ecbfb;display:grid;place-items:center;font-size:28px}
+.brand strong{display:block;font-size:clamp(1.05rem,2vw,1.35rem);color:#15377a}.brand small{display:block;color:var(--muted)}
+.hbtn{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:.58rem .75rem;font-weight:800}.hbtn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.progressBox{min-width:180px}.progressLabel{font-size:.78rem;color:var(--muted);font-weight:700}.progressTrack{height:10px;background:#e7eef7;border-radius:999px;overflow:hidden}.progressBar{height:100%;width:0;background:linear-gradient(90deg,var(--blue),#47a5ff)}
+.layout{max-width:1500px;margin:auto;display:grid;grid-template-columns:245px minmax(0,1fr);gap:1rem;padding:1rem}
+aside{position:sticky;top:80px;align-self:start;background:var(--paper);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;max-height:calc(100vh - 96px);overflow-y:auto}
+.navTitle{background:linear-gradient(135deg,var(--blue),#3e8ffc);color:#fff;padding:1rem;font-weight:900;font-size:1.05rem}
+.navBtn{width:100%;border:0;border-bottom:1px solid #e8f1fa;background:#fff;color:var(--ink);padding:.82rem .9rem;text-align:left;font-weight:750;display:flex;gap:.65rem;align-items:center}.navBtn:hover{background:#f4f9ff}.navBtn.active{background:#e6f2ff;color:var(--blue2);box-shadow:inset 4px 0 0 var(--blue)}.navIcon{width:28px;text-align:center;font-size:20px}
+main{min-width:0}.page{display:none}.page.active{display:block}
+.hero{background:linear-gradient(135deg,#e8f5ff,#fff);border:1px solid #a7d3fb;border-radius:22px;padding:1.15rem 1.25rem;box-shadow:var(--shadow);margin-bottom:1rem}.hero h1{margin:.1rem 0 .35rem;color:#13377e;font-size:clamp(2rem,4vw,3.4rem);line-height:1.04}.hero p{margin:.25rem 0;color:var(--muted);font-size:1.06rem}.chips{display:flex;gap:.45rem;flex-wrap:wrap;margin-top:.75rem}.chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:.32rem .62rem;font-size:.86rem;font-weight:800}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:1rem;box-shadow:var(--shadow)}.card h2,.card h3{margin:.1rem 0 .65rem;color:#153b80}.card h2{font-size:1.5rem}.card h3{font-size:1.18rem}
+.callout{border-left:6px solid var(--blue);background:#eef7ff;border-radius:12px;padding:.85rem 1rem;margin:.75rem 0}.callout.green{border-color:var(--green);background:var(--greenSoft)}.callout.gold{border-color:var(--gold);background:var(--goldSoft)}.callout.red{border-color:var(--red);background:var(--redSoft)}
+.magnet{display:flex;width:min(330px,100%);height:78px;border-radius:12px;overflow:hidden;border:2px solid #173054;box-shadow:0 8px 18px #0002;margin:1rem auto}.magnet .n,.magnet .s{flex:1;display:grid;place-items:center;color:#fff;font-weight:950;font-size:2.2rem}.magnet .n{background:linear-gradient(#f2534b,#cf251e)}.magnet .s{background:linear-gradient(#3087ef,#1459b2)}
+.poleDemo{display:grid;grid-template-columns:1fr 70px 1fr;align-items:center;gap:.5rem;margin:.9rem 0}.miniMag{height:54px;border:2px solid #173054;border-radius:8px;display:grid;grid-template-columns:1fr 1fr;overflow:hidden}.miniMag span{display:grid;place-items:center;color:#fff;font-weight:900;font-size:1.25rem}.miniMag .n{background:#e43a33}.miniMag .s{background:#1d6bd1}.arrow{text-align:center;font-size:2rem;font-weight:950}.arrow.attract{color:var(--green)}.arrow.repulse{color:var(--red)}
+.fieldSvg{width:100%;max-width:620px;margin:auto;display:block;background:#fbfdff;border-radius:16px;border:1px solid #d4e7fa}
+.termTable{width:100%;border-collapse:collapse}.termTable th,.termTable td{border:1px solid #d7e5f3;padding:.65rem;vertical-align:top}.termTable th{background:#eaf5ff;text-align:left}.termTable tr:nth-child(even) td{background:#fbfdff}
+.task{border:1px solid #bedaf6;border-radius:15px;padding:.9rem;background:#fbfdff;margin:.8rem 0}.task strong.op{display:inline-block;background:#173b80;color:#fff;border-radius:999px;padding:.2rem .5rem;font-size:.78rem;margin-right:.4rem}.opts{display:grid;gap:.45rem;margin:.65rem 0}.opt{display:flex;gap:.55rem;align-items:flex-start;border:1px solid #d4e2f0;border-radius:10px;padding:.58rem .65rem;background:#fff}.opt input{margin-top:.25rem;transform:scale(1.15)}
+.action{border:0;border-radius:10px;padding:.58rem .8rem;font-weight:850;background:var(--blue);color:#fff;margin:.25rem .25rem .25rem 0}.action.secondary{background:#e8f1fb;color:#163b7f}.action.green{background:var(--green)}.action.red{background:var(--red)}
+.feedback{font-weight:800;min-height:1.5rem;margin-top:.45rem}.ok{color:var(--green)}.bad{color:var(--red)}.solution{display:none;border-left:5px solid var(--green);background:var(--greenSoft);border-radius:10px;padding:.75rem;margin-top:.6rem}.solution.show{display:block}
+textarea.answer,input.answer{width:100%;border:1px solid #b8cfe5;border-radius:10px;padding:.7rem;background:#fff;color:var(--ink)}textarea.answer{min-height:100px;resize:vertical}
+.bigRule{font-size:clamp(1.25rem,3vw,2rem);font-weight:950;text-align:center;padding:1rem;border-radius:16px;background:linear-gradient(135deg,#e9f5ff,#fff);border:2px solid #98c9f6;margin:1rem 0}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}.compare>div{border:1px solid var(--line);border-radius:15px;padding:.9rem}.compare h3{margin-top:0}
+.strengthGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}.strength{border:1px solid #c8def4;border-radius:15px;padding:.8rem;text-align:center;background:#fff}.strength .big{font-size:2rem}.strength b{display:block;color:#153b80}.tag{display:inline-block;border-radius:999px;padding:.2rem .5rem;background:#eaf5ff;color:#173b80;font-weight:800;font-size:.82rem}.tag.rsa{background:#f1eafa;color:#6942a7}
+.appGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem}.app{border:1px solid #c8def4;border-radius:16px;padding:.8rem;background:#fff;text-align:center}.app .emoji{font-size:2.6rem}.app strong{display:block;margin:.35rem 0;color:#163b7f}
+.quizTop{display:flex;gap:.8rem;align-items:center;flex-wrap:wrap}.scoreBox{margin-left:auto;background:#eaf5ff;border-radius:12px;padding:.55rem .8rem;font-weight:900}.quizQ{border:1px solid #c8def4;border-radius:15px;padding:1rem;margin:.8rem 0;background:#fff}.quizQ legend{font-weight:850;color:#153b80;padding:0 .25rem}.quizQ.correct{border-color:#79c894;background:#f5fff8}.quizQ.wrong{border-color:#e7948f;background:#fff8f7}
+.timer{font-variant-numeric:tabular-nums;font-size:1.7rem;font-weight:950;color:#153b80;background:#eef7ff;border-radius:12px;padding:.45rem .7rem}.examBox{border:2px solid #9bcaf5;background:#fff;border-radius:18px;padding:1rem}.examResult{font-size:1.2rem;font-weight:900;margin-top:1rem}
+.memoryGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem}.memory{border:1px solid #ffd96f;background:#fff9de;border-radius:15px;padding:.85rem}.memory b{display:block;color:#76520a;margin-bottom:.2rem}
+.footerNote{text-align:center;color:var(--muted);font-size:.82rem;padding:1rem}.kbd{display:inline-block;border:1px solid #a9bbcd;background:#f7fafc;border-radius:6px;padding:.05rem .35rem;font-family:monospace}
+@media(max-width:1050px){.layout{grid-template-columns:1fr}aside{position:static;max-height:none;display:grid;grid-template-columns:repeat(3,1fr)}.navTitle{grid-column:1/-1}.navBtn{border:1px solid #e8f1fa}.grid3,.appGrid{grid-template-columns:1fr 1fr}.grid4{grid-template-columns:1fr 1fr}}
+@media(max-width:720px){.layout{padding:.6rem}.grid2,.grid3,.grid4,.compare,.strengthGrid,.appGrid,.memoryGrid{grid-template-columns:1fr}aside{grid-template-columns:1fr 1fr}.head{padding:.5rem}.brand small{display:none}.poleDemo{grid-template-columns:1fr}.arrow{transform:rotate(90deg)}.hero{padding:1rem}.card{padding:.85rem}}
+@media print{header,aside,.action,.hbtn,.quizTop button{display:none!important}.layout{display:block;max-width:none;padding:0}.page{display:block!important;break-after:page}.card,.hero{box-shadow:none}.solution{display:none!important}body{background:#fff}}
+</style>
+</head>
+<body>
+<header>
+  <div class="head">
+    <div class="brand"><div class="atom">⚛️</div><div><strong>Magnetismus – Vorbereitung auf die LK</strong><small>Interaktive Lernseite · Physik Klasse 8</small></div></div>
+    <div class="progressBox"><div class="progressLabel">Trainingsfortschritt: <span id="progressText">0 %</span></div><div class="progressTrack"><div class="progressBar" id="progressBar"></div></div></div>
+    <button class="hbtn" id="fontDown">A−</button><button class="hbtn" id="fontUp">A+</button><button class="hbtn" id="resetAll">Zurücksetzen</button><button class="hbtn primary" data-go="exam">Probe-LK</button>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <div class="navTitle">🧲 Themen</div>
+  <button class="navBtn active" data-page="start"><span class="navIcon">🏠</span>Start & Überblick</button>
+  <button class="navBtn" data-page="poles"><span class="navIcon">🧲</span>Magnetpole</button>
+  <button class="navBtn" data-page="field"><span class="navIcon">〰️</span>Magnetfeld & Feldlinien</button>
+  <button class="navBtn" data-page="earth"><span class="navIcon">🧭</span>Kompass & Erdmagnetfeld</button>
+  <button class="navBtn" data-page="materials"><span class="navIcon">⚙️</span>Magnetische Stoffe</button>
+  <button class="navBtn" data-page="electro"><span class="navIcon">🌀</span>Dauermagnet / Elektromagnet</button>
+  <button class="navBtn" data-page="coil"><span class="navIcon">🔁</span>Stromdurchflossene Spule</button>
+  <button class="navBtn" data-page="strength"><span class="navIcon">📊</span>Stärke des Elektromagneten</button>
+  <button class="navBtn" data-page="apps"><span class="navIcon">💡</span>Anwendungen</button>
+  <button class="navBtn" data-page="training"><span class="navIcon">🎯</span>Intensivtraining</button>
+  <button class="navBtn" data-page="exam"><span class="navIcon">⏱️</span>Probe-LK</button>
+  <button class="navBtn" data-page="memory"><span class="navIcon">📌</span>Merksätze</button>
+</aside>
+<main>
+<section class="page active" id="start">
+  <div class="hero"><h1>Magnetismus sicher beherrschen</h1><p>Arbeite die Themen nacheinander durch. Entscheidend ist nicht nur das Auswendiglernen: Du sollst <b>erklären, anwenden, vergleichen und Versuche auswerten</b> können.</p><div class="chips"><span class="chip">Klasse 8</span><span class="chip">Grundwissen + Anwendung</span><span class="chip">Sofortige Rückmeldung</span><span class="chip">25-Minuten-Probe-LK</span></div></div>
+  <div class="grid3">
+    <div class="card"><h2>1 · Verstehen</h2><p>Lies die kurzen Erklärungen und nutze die Skizzen.</p><div class="callout"><b>Ziel:</b> Fachbegriffe sicher verwenden.</div></div>
+    <div class="card"><h2>2 · Üben</h2><p>Jedes Kapitel enthält Aufgaben mit direkter Rückmeldung und Musterlösungen.</p><div class="callout green"><b>Ziel:</b> Wissen anwenden und begründen.</div></div>
+    <div class="card"><h2>3 · Prüfen</h2><p>Im Intensivtraining und in der Probe-LK trainierst du gemischte Aufgaben.</p><div class="callout gold"><b>Ziel:</b> unter Zeitdruck sicher arbeiten.</div></div>
+  </div>
+  <div class="card" style="margin-top:1rem"><h2>Das musst du können</h2>
+    <table class="termTable"><tr><th>Thema</th><th>Du solltest …</th></tr>
+      <tr><td>Magnetpole</td><td>Anziehung und Abstoßung vorhersagen und begründen.</td></tr>
+      <tr><td>Magnetfeld</td><td>Feldlinien deuten und ihre Eigenschaften nennen.</td></tr>
+      <tr><td>Kompass</td><td>erklären, warum sich eine Kompassnadel ausrichtet.</td></tr>
+      <tr><td>Magnetische Stoffe</td><td>Eisen, Nickel und Kobalt erkennen; „Metall = magnetisch“ widerlegen.</td></tr>
+      <tr><td>Elektromagnet</td><td>Aufbau, Wirkung und Einflussgrößen erklären.</td></tr>
+      <tr><td>Anwendungen</td><td>Magnetismus in Klingel, Relais, Kran und Lautsprecher beschreiben.</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="page" id="poles">
+  <div class="hero"><h1>Magnetpole</h1><p>Jeder Magnet hat einen Nordpol und einen Südpol. Entscheidend ist die Kombination der Pole.</p></div>
+  <div class="grid2">
+    <div class="card"><h2>Grundregel</h2><div class="magnet"><div class="n">N</div><div class="s">S</div></div><div class="bigRule">Gleichnamige Pole stoßen sich ab.<br>Ungleichnamige Pole ziehen sich an.</div></div>
+    <div class="card"><h2>So erkennst du die Wirkung</h2>
+      <div class="poleDemo"><div class="miniMag"><span class="n">N</span><span class="s">S</span></div><div class="arrow attract">⇄</div><div class="miniMag"><span class="s">S</span><span class="n">N</span></div></div><p style="text-align:center"><b>N gegenüber S → Anziehung</b></p>
+      <div class="poleDemo"><div class="miniMag"><span class="s">S</span><span class="n">N</span></div><div class="arrow repulse">↔</div><div class="miniMag"><span class="n">N</span><span class="s">S</span></div></div><p style="text-align:center"><b>N gegenüber N → Abstoßung</b></p>
+    </div>
+  </div>
+  <div class="card" style="margin-top:1rem"><h2>Übung</h2>
+    <div class="task" data-task="p1"><span class="op">ANWENDEN</span><b>Ein Nordpol wird einem Südpol genähert. Was passiert?</b><div class="opts"><label class="opt"><input type="radio" name="p1" value="a">Sie stoßen sich ab.</label><label class="opt"><input type="radio" name="p1" value="b">Sie ziehen sich an.</label><label class="opt"><input type="radio" name="p1" value="c">Es wirkt keine Kraft.</label></div><button class="action check" data-answer="b">Prüfen</button><div class="feedback"></div></div>
+    <div class="task" data-task="p2"><span class="op">BEGRÜNDEN</span><b>Warum kann ein frei drehbarer Stabmagnet zur Richtungsbestimmung dienen?</b><textarea class="answer" placeholder="Formuliere in 1–2 Sätzen."></textarea><button class="action secondary solBtn">Musterlösung</button><div class="solution">Ein frei drehbarer Magnet richtet sich im Erdmagnetfeld aus. Sein Nordpol zeigt ungefähr in Richtung des geografischen Nordens.</div></div>
+  </div>
+</section>
+
+<section class="page" id="field">
+  <div class="hero"><h1>Magnetfeld und Feldlinien</h1><p>Das Magnetfeld ist der Raum um einen Magneten, in dem magnetische Kräfte wirken. Feldlinien sind ein Modell zur Darstellung dieses Feldes.</p></div>
+  <div class="grid2">
+    <div class="card"><h2>Feldlinien eines Stabmagneten</h2>
+      <svg class="fieldSvg" viewBox="0 0 700 360" aria-label="Feldlinien eines Stabmagneten"><defs><marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7Z" fill="#1769e0"/></marker></defs><rect width="700" height="360" fill="#fbfdff"/><rect x="260" y="145" width="90" height="70" rx="7" fill="#e23b34"/><rect x="350" y="145" width="90" height="70" rx="7" fill="#1769e0"/><text x="305" y="192" text-anchor="middle" fill="white" font-size="34" font-weight="900">N</text><text x="395" y="192" text-anchor="middle" fill="white" font-size="34" font-weight="900">S</text><g fill="none" stroke="#1769e0" stroke-width="3" marker-end="url(#arr)"><path d="M260 160 C150 95 85 105 60 180 C85 255 150 265 260 200"/><path d="M260 173 C175 125 120 135 102 180 C120 225 175 235 260 187"/><path d="M260 185 C195 160 160 163 145 180 C160 197 195 200 260 175"/><path d="M440 200 C550 265 615 255 640 180 C615 105 550 95 440 160"/><path d="M440 187 C525 235 580 225 598 180 C580 135 525 125 440 173"/><path d="M440 175 C505 200 540 197 555 180 C540 163 505 160 440 185"/></g></svg>
+      <div class="callout"><b>Außerhalb</b> des Magneten: Feldlinien verlaufen vom Nordpol zum Südpol.<br><b>Im Inneren</b>: vom Südpol zum Nordpol. Insgesamt bilden sie geschlossene Linien.</div>
+    </div>
+    <div class="card"><h2>Was bedeutet die Darstellung?</h2><ul><li>Feldlinien schneiden sich nicht.</li><li>Je dichter die Feldlinien, desto stärker ist das Magnetfeld.</li><li>Eisenfeilspäne können den Verlauf des Feldes sichtbar machen.</li><li>Eine Kompassnadel zeigt lokal die Feldrichtung.</li></ul><div class="callout green"><b>Wichtig:</b> Feldlinien sind keine echten Drähte oder Bahnen. Sie sind ein Modell.</div></div>
+  </div>
+  <div class="card" style="margin-top:1rem"><h2>Übungen</h2>
+    <div class="task" data-task="f1"><b>Wo ist das Magnetfeld in einer Feldliniendarstellung besonders stark?</b><div class="opts"><label class="opt"><input type="radio" name="f1" value="a">Wo die Linien weit auseinanderliegen.</label><label class="opt"><input type="radio" name="f1" value="b">Wo die Linien dicht beieinanderliegen.</label><label class="opt"><input type="radio" name="f1" value="c">Nur in der Mitte des Magneten.</label></div><button class="action check" data-answer="b">Prüfen</button><div class="feedback"></div></div>
+    <div class="task"><span class="op">ERKLÄREN</span><b>Warum ordnen sich Eisenfeilspäne um einen Stabmagneten in typischen Mustern an?</b><textarea class="answer"></textarea><button class="action secondary solBtn">Musterlösung</button><div class="solution">Die Eisenfeilspäne werden im Magnetfeld selbst kurzzeitig magnetisiert. Sie richten sich entlang der lokalen Feldrichtung aus und machen dadurch den Feldverlauf sichtbar.</div></div>
+  </div>
+</section>
+
+<section class="page" id="earth">
+  <div class="hero"><h1>Kompass und Erdmagnetfeld</h1><p>Die Erde besitzt ein Magnetfeld. Eine Kompassnadel ist selbst ein kleiner Magnet und richtet sich darin aus.</p></div>
+  <div class="grid2">
+    <div class="card"><h2>Warum zeigt der Kompass nach Norden?</h2><div style="font-size:5rem;text-align:center">🌍 🧭</div><p>Der Nordpol der Kompassnadel wird in Richtung des geografischen Nordens gezogen. In der Nähe des geografischen Nordpols liegt physikalisch betrachtet ein <b>magnetischer Südpol</b> der Erde.</p><div class="callout red"><b>Nicht verwechseln:</b> geografischer Nordpol ≠ magnetischer Nordpol.</div></div>
+    <div class="card"><h2>Kompass richtig verwenden</h2><ol><li>Kompass waagerecht halten.</li><li>Von Eisen, Magneten und stromführenden Leitungen Abstand halten.</li><li>Warten, bis die Nadel zur Ruhe kommt.</li><li>Nordrichtung ablesen.</li></ol><div class="callout gold">Ein Magnet direkt neben dem Kompass verfälscht die Anzeige.</div></div>
+  </div>
+  <div class="card" style="margin-top:1rem"><h2>Übung</h2><div class="task" data-task="e1"><b>Warum dreht sich die Kompassnadel, wenn ein Stabmagnet daneben gelegt wird?</b><div class="opts"><label class="opt"><input type="radio" name="e1" value="a">Weil der Magnet den Kompass erwärmt.</label><label class="opt"><input type="radio" name="e1" value="b">Weil das Magnetfeld des Stabmagneten auf die Magnetnadel wirkt.</label><label class="opt"><input type="radio" name="e1" value="c">Weil die Erde dann kein Magnetfeld mehr besitzt.</label></div><button class="action check" data-answer="b">Prüfen</button><div class="feedback"></div></div></div>
+</section>
+
+<section class="page" id="materials">
+  <div class="hero"><h1>Magnetische Stoffe</h1><p>Nicht jedes Metall ist magnetisch. Besonders wichtig sind Eisen, Nickel und Kobalt sowie viele eisenhaltige Stähle.</p></div>
+  <div class="grid2">
+    <div class="card"><h2>Typisch magnetisch</h2><div class="grid3"><div class="strength"><div class="big">🔩</div><b>Eisen</b></div><div class="strength"><div class="big">⚙️</div><b>Nickel</b></div><div class="strength"><div class="big">🧱</div><b>Kobalt</b></div></div><p class="callout green">Diese Stoffe nennt man im Schulkontext häufig <b>ferromagnetisch</b>.</p></div>
+    <div class="card"><h2>Nicht automatisch magnetisch</h2><p>Aluminium, Kupfer, Messing, Holz, Kunststoff und Glas werden von einem normalen Dauermagneten nicht so angezogen wie Eisen.</p><div class="bigRule">Metall ≠ automatisch magnetisch</div></div>
+  </div>
+  <div class="card" style="margin-top:1rem"><h2>Sortiertraining</h2><div class="grid4" id="materialButtons"></div><div class="feedback" id="matFeedback"></div><button class="action secondary" id="resetMaterials">Neu mischen</button></div>
+</section>
+
+<section class="page" id="electro">
+  <div class="hero"><h1>Dauermagnet und Elektromagnet</h1><p>Beide erzeugen ein Magnetfeld – aber auf unterschiedliche Weise.</p></div>
+  <div class="compare">
+    <div><h3>🧲 Dauermagnet</h3><ul><li>besitzt ohne Strom ein Magnetfeld</li><li>hat Nord- und Südpol</li><li>Magnetwirkung ist ständig vorhanden</li><li>Beispiel: Kühlschrankmagnet, Kompassmagnet</li></ul></div>
+    <div><h3>🌀 Elektromagnet</h3><ul><li>Spule mit elektrischem Strom</li><li>oft mit Eisenkern</li><li>Magnetwirkung lässt sich ein- und ausschalten</li><li>Stärke lässt sich verändern</li></ul></div>
+  </div>
+  <div class="card" style="margin-top:1rem"><h2>Aufbau</h2><div style="display:flex;justify-content:center;align-items:center;gap:1rem;flex-wrap:wrap;font-size:2.2rem"><span>🔋</span><span>➜</span><span>🔘</span><span>➜</span><span>🌀</span><span style="font-size:3rem">🔩</span></div><p style="text-align:center"><b>Batterie/Netzgerät → Schalter → Spule → Eisenkern</b></p><div class="callout">Nur wenn Strom fließt, entsteht das Magnetfeld der Spule.</div></div>
+  <div class="card" style="margin-top:1rem"><div class="task" data-task="em1"><b>Welche Aussage trifft auf einen Elektromagneten zu?</b><div class="opts"><label class="opt"><input type="radio" name="em1" value="a">Seine Magnetwirkung ist immer gleich stark.</label><label class="opt"><input type="radio" name="em1" value="b">Er wirkt nur, wenn Strom durch die Spule fließt.</label><label class="opt"><input type="radio" name="em1" value="c">Er braucht grundsätzlich keinen Strom.</label></div><button class="action check" data-answer="b">Prüfen</button><div class="feedback"></div></div></div>
+</section>
+
+<section class="page" id="coil">
+  <div class="hero"><h1>Stromdurchflossene Spule</h1><p>Eine Spule, durch die Strom fließt, erzeugt ein Magnetfeld ähnlich dem eines Stabmagneten.</p></div>
+  <div class="grid2">
+    <div class="card"><h2>Spule als Magnet</h2><p>Die Spule besitzt einen Nord- und einen Südpol. Wird die Stromrichtung umgekehrt, vertauschen sich auch die Pole.</p><div class="callout green"><b>Merke:</b> Stromrichtung umkehren → Magnetpole der Spule tauschen.</div></div>
+    <div class="card"><h2>Zusatzwissen <span class="tag rsa">RSA+</span></h2><p>Mit der <b>Rechte-Hand-Regel</b> kann man die Polrichtung einer Spule bestimmen: Die gekrümmten Finger folgen der technischen Stromrichtung in den Windungen; der Daumen zeigt zum Nordpol der Spule.</p><div class="callout gold">Das ist ein hilfreiches Zusatzwissen, wenn die Richtung des Spulenfeldes gefragt wird.</div></div>
+  </div>
+  <div class="card" style="margin-top:1rem"><div class="task"><span class="op">TRANSFER</span><b>Eine Spule wird umgepolt. Was ändert sich?</b><textarea class="answer"></textarea><button class="action secondary solBtn">Musterlösung</button><div class="solution">Die Stromrichtung in der Spule kehrt sich um. Dadurch kehrt sich auch die Richtung des Magnetfeldes um: Nord- und Südpol der Spule vertauschen sich.</div></div></div>
+</section>
+
+<section class="page" id="strength">
+  <div class="hero"><h1>Stärke des Elektromagneten</h1><p>Drei Einflussgrößen sind für die LK besonders wichtig.</p></div>
+  <div class="strengthGrid">
+    <div class="strength"><div class="big">🌀🌀🌀</div><b>mehr Windungen</b><p>→ stärkeres Magnetfeld</p></div>
+    <div class="strength"><div class="big">🔋⬆️</div><b>größere Stromstärke</b><p>→ stärkeres Magnetfeld</p></div>
+    <div class="strength"><div class="big">🌀🔩</div><b>Eisenkern</b><p>→ deutlich stärkere Wirkung</p></div>
+  </div>
+  <div class="card" style="margin-top:1rem"><h2>Versuch richtig auswerten</h2><p>Wenn du den Einfluss einer Größe untersuchst, darfst du <b>immer nur diese eine Größe verändern</b>. Die anderen Bedingungen bleiben gleich.</p><div class="task"><span class="op">PLANEN</span><b>Du willst den Einfluss der Windungszahl untersuchen. Was muss gleich bleiben?</b><textarea class="answer" placeholder="Nenne mindestens zwei Größen."></textarea><button class="action secondary solBtn">Musterlösung</button><div class="solution">Zum Beispiel: gleiche Stromstärke, gleicher Eisenkern, gleicher Draht bzw. vergleichbare Anordnung und gleiche Messmethode. Nur die Windungszahl wird verändert.</div></div></div>
+</section>
+
+<section class="page" id="apps">
+  <div class="hero"><h1>Anwendungen des Elektromagnetismus</h1><p>Du solltest nicht nur Geräte nennen, sondern erklären können, welche Aufgabe der Elektromagnet darin übernimmt.</p></div>
+  <div class="appGrid">
+    <div class="app"><div class="emoji">🏗️</div><strong>Schrottkran</strong><p>Elektromagnet hebt Eisenteile an; Strom aus → Last fällt ab.</p></div>
+    <div class="app"><div class="emoji">🔔</div><strong>Elektrische Klingel</strong><p>Elektromagnet zieht einen Anker an; dadurch schlägt der Klöppel.</p></div>
+    <div class="app"><div class="emoji">🎛️</div><strong>Relais</strong><p>Elektromagnet bewegt einen Schaltkontakt.</p></div>
+    <div class="app"><div class="emoji">🔊</div><strong>Lautsprecher</strong><p>Strom und Magnetfeld bewegen die Membran; Schall entsteht.</p></div>
+  </div>
+  <div class="card" style="margin-top:1rem"><div class="task"><span class="op">ERKLÄREN</span><b>Warum ist ein Elektromagnet für einen Schrottkran günstiger als ein Dauermagnet?</b><textarea class="answer"></textarea><button class="action secondary solBtn">Musterlösung</button><div class="solution">Der Elektromagnet lässt sich ein- und ausschalten. So kann der Kran Metall anheben und am Ziel wieder gezielt loslassen.</div></div></div>
+</section>
+
+<section class="page" id="training">
+  <div class="hero"><h1>Intensivtraining</h1><p>20 gemischte Fragen. Löse sie ohne nachzusehen und werte danach aus.</p></div>
+  <div class="card"><div class="quizTop"><button class="action" id="newTraining">Neue Runde</button><button class="action secondary" id="gradeTraining">Auswerten</button><div class="scoreBox" id="trainingScore">0 / 20</div></div><div id="trainingQuiz"></div></div>
+</section>
+
+<section class="page" id="exam">
+  <div class="hero"><h1>Probe-LK · 25 Minuten</h1><p>15 zufällig ausgewählte Aufgaben. Bearbeite sie möglichst ohne Hilfen. Der Timer ist nur eine Trainingshilfe.</p></div>
+  <div class="examBox"><div class="quizTop"><button class="action green" id="startExam">Probe-LK starten</button><button class="action secondary" id="gradeExam">Abgeben & auswerten</button><div class="timer" id="examTimer">25:00</div><div class="scoreBox" id="examScore">noch nicht gestartet</div></div><div id="examQuiz"></div><div class="examResult" id="examResult"></div></div>
+</section>
+
+<section class="page" id="memory">
+  <div class="hero"><h1>Merksätze</h1><p>Diese Sätze solltest du sicher erklären können – nicht nur aufsagen.</p></div>
+  <div class="memoryGrid">
+    <div class="memory"><b>1 · Magnetpole</b>Gleichnamige Pole stoßen sich ab, ungleichnamige Pole ziehen sich an.</div>
+    <div class="memory"><b>2 · Feldlinien</b>Außerhalb eines Magneten verlaufen Feldlinien vom Nordpol zum Südpol und bilden geschlossene Linien.</div>
+    <div class="memory"><b>3 · Feldstärke</b>Je dichter die Feldlinien, desto stärker ist das Magnetfeld.</div>
+    <div class="memory"><b>4 · Kompass</b>Eine Kompassnadel ist ein kleiner Magnet und richtet sich im Erdmagnetfeld aus.</div>
+    <div class="memory"><b>5 · Magnetische Stoffe</b>Eisen, Nickel und Kobalt sind typische magnetische Stoffe; nicht jedes Metall ist magnetisch.</div>
+    <div class="memory"><b>6 · Elektromagnet</b>Eine stromdurchflossene Spule erzeugt ein Magnetfeld. Ein Eisenkern verstärkt die Wirkung.</div>
+    <div class="memory"><b>7 · Stärke</b>Mehr Windungen und größere Stromstärke verstärken den Elektromagneten.</div>
+    <div class="memory"><b>8 · Umpolen</b>Wird die Stromrichtung einer Spule umgekehrt, vertauschen sich ihre Magnetpole.</div>
+  </div>
+  <div class="card" style="margin-top:1rem"><h2>Eigene Lernnotizen</h2><textarea class="answer" id="notes" placeholder="Schreibe hier Begriffe oder Fragen hinein, die du noch wiederholen musst."></textarea><div class="callout green">Die Notizen werden auf diesem Gerät automatisch gespeichert.</div></div>
+</section>
+
+<div class="footerNote">Offline-Einzeldatei · Fortschritt und Notizen werden lokal im Browser gespeichert.</div>
+</main>
+</div>
+<script>
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+let fontScale=parseFloat(localStorage.getItem('mag8-font')||'1');
+function applyFont(){document.documentElement.style.fontSize=(16*fontScale)+'px'} applyFont();
+$('#fontUp').onclick=()=>{fontScale=Math.min(1.35,fontScale+.05);localStorage.setItem('mag8-font',fontScale);applyFont()};
+$('#fontDown').onclick=()=>{fontScale=Math.max(.85,fontScale-.05);localStorage.setItem('mag8-font',fontScale);applyFont()};
+function go(id){$$('.page').forEach(p=>p.classList.toggle('active',p.id===id));$$('.navBtn').forEach(b=>b.classList.toggle('active',b.dataset.page===id));window.scrollTo({top:0,behavior:'smooth'});localStorage.setItem('mag8-page',id)}
+$$('[data-page]').forEach(b=>b.onclick=()=>go(b.dataset.page));$$('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+const last=localStorage.getItem('mag8-page'); if(last&&$('#'+last)) go(last);
+const done=new Set(JSON.parse(localStorage.getItem('mag8-done')||'[]'));
+function mark(k){done.add(k);localStorage.setItem('mag8-done',JSON.stringify([...done]));updateProgress()}
+function updateProgress(){const pct=Math.min(100,Math.round(done.size/12*100));$('#progressText').textContent=pct+' %';$('#progressBar').style.width=pct+'%'} updateProgress();
+$$('.check').forEach(btn=>btn.onclick=()=>{const task=btn.closest('.task'), chosen=$('input[type=radio]:checked',task), fb=$('.feedback',task);if(!chosen){fb.textContent='Bitte zuerst eine Antwort wählen.';fb.className='feedback bad';return}const ok=chosen.value===btn.dataset.answer;fb.textContent=ok?'Richtig.':'Noch nicht. Prüfe die Regel noch einmal.';fb.className='feedback '+(ok?'ok':'bad');if(ok)mark(task.dataset.task||Math.random().toString())});
+$$('.solBtn').forEach(b=>b.onclick=()=>{$('.solution',b.closest('.task')).classList.toggle('show')});
+const notes=$('#notes');notes.value=localStorage.getItem('mag8-notes')||'';notes.addEventListener('input',()=>localStorage.setItem('mag8-notes',notes.value));
+$('#resetAll').onclick=()=>{if(confirm('Fortschritt, Notizen und Quizstände wirklich löschen?')){['mag8-done','mag8-notes','mag8-page'].forEach(k=>localStorage.removeItem(k));location.reload()}};
+
+const materialData=[['Eisen',true],['Nickel',true],['Kobalt',true],['Kupfer',false],['Aluminium',false],['Holz',false],['Kunststoff',false],['Stahl',true]];
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function drawMaterials(){const box=$('#materialButtons');box.innerHTML='';shuffle(materialData).forEach(([name,mag])=>{const b=document.createElement('button');b.className='action secondary';b.textContent=name;b.dataset.mag=mag;b.onclick=()=>{const ans=confirm(name+': Ist dieser Stoff im Schulversuch typischerweise magnetisch?\nOK = ja, Abbrechen = nein');const ok=(ans===mag);$('#matFeedback').textContent=ok?'Richtig: '+name+(mag?' ist magnetisch.':' ist nicht typisch magnetisch.'):'Noch nicht richtig.';$('#matFeedback').className='feedback '+(ok?'ok':'bad');if(ok)mark('materials')};box.appendChild(b)})} drawMaterials();$('#resetMaterials').onclick=drawMaterials;
+
+const bank=[
+['Gleichnamige Magnetpole …',['ziehen sich an','stoßen sich ab','wirken nicht aufeinander'],'stoßen sich ab','poles'],
+['Ungleichnamige Magnetpole …',['ziehen sich an','stoßen sich ab','werden unmagnetisch'],'ziehen sich an','poles'],
+['Ein Magnet besitzt …',['nur einen Pol','immer Nord- und Südpol','nur bei Strom zwei Pole'],'immer Nord- und Südpol','poles'],
+['Außerhalb eines Stabmagneten verlaufen Feldlinien …',['von N nach S','von S nach N','zufällig'],'von N nach S','field'],
+['Wo Feldlinien dicht liegen, ist das Magnetfeld …',['schwach','stark','nicht vorhanden'],'stark','field'],
+['Feldlinien …',['schneiden sich häufig','schneiden sich nicht','enden immer im Raum'],'schneiden sich nicht','field'],
+['Eisenfeilspäne machen sichtbar …',['die Temperatur','den Verlauf des Magnetfeldes','die elektrische Spannung'],'den Verlauf des Magnetfeldes','field'],
+['Eine Kompassnadel ist …',['ein kleiner Magnet','ein Elektromotor','ein Widerstand'],'ein kleiner Magnet','earth'],
+['Der Kompass richtet sich aus durch …',['das Erdmagnetfeld','die Erdrotation allein','die Luftströmung'],'das Erdmagnetfeld','earth'],
+['Direkt neben einem Kompass sollte kein starker Magnet liegen, weil …',['die Anzeige verfälscht wird','der Kompass schmilzt','die Erde entmagnetisiert wird'],'die Anzeige verfälscht wird','earth'],
+['Welcher Stoff ist typisch magnetisch?',['Kupfer','Eisen','Aluminium'],'Eisen','materials'],
+['Welche Aussage stimmt?',['Alle Metalle sind magnetisch','Nicht jedes Metall ist magnetisch','Holz ist ferromagnetisch'],'Nicht jedes Metall ist magnetisch','materials'],
+['Nickel gehört im Schulkontext zu den …',['magnetischen Stoffen','Nichtmetallen','Isolatoren ohne Ausnahme'],'magnetischen Stoffen','materials'],
+['Ein Elektromagnet wirkt, wenn …',['Strom durch die Spule fließt','die Spule warm ist','kein Strom fließt'],'Strom durch die Spule fließt','electro'],
+['Ein Eisenkern in einer stromdurchflossenen Spule …',['schwächt die Wirkung','verstärkt die Wirkung','ändert nichts'],'verstärkt die Wirkung','strength'],
+['Mehr Windungen bei sonst gleichen Bedingungen machen den Elektromagneten meist …',['stärker','schwächer','wirkungslos'],'stärker','strength'],
+['Größere Stromstärke bei gleicher Spule macht das Magnetfeld meist …',['stärker','schwächer','unverändert'],'stärker','strength'],
+['Beim Vergleich der Windungszahl sollte man …',['gleichzeitig die Stromstärke verändern','nur die Windungszahl verändern','auch den Kern wechseln'],'nur die Windungszahl verändern','strength'],
+['Wird die Stromrichtung in einer Spule umgekehrt, …',['vertauschen sich die Pole','verschwindet jede Magnetwirkung','bleibt die Polung immer gleich'],'vertauschen sich die Pole','coil'],
+['Ein Schrottkran nutzt einen Elektromagneten, weil …',['er ein- und ausschaltbar ist','er niemals Strom benötigt','er nur Holz anzieht'],'er ein- und ausschaltbar ist','apps'],
+['Beim Relais bewegt ein Elektromagnet …',['einen Schaltkontakt','eine Glühlampe direkt','einen Kompass'],'einen Schaltkontakt','apps'],
+['Bei der elektrischen Klingel zieht der Elektromagnet …',['einen beweglichen Anker an','die Luft an','das Kabel an'],'einen beweglichen Anker an','apps'],
+['Ein Lautsprecher wandelt elektrische Signale mithilfe von Magnetismus vor allem in …',['Schall','Licht','Wärme'],'Schall','apps'],
+['Das Magnetfeld ist …',['der Raum, in dem magnetische Kräfte wirken','nur der Magnet selbst','eine sichtbare Flüssigkeit'],'der Raum, in dem magnetische Kräfte wirken','field'],
+['Eine Spule ohne Strom …',['erzeugt im einfachen Schulmodell kein elektromagnetisches Feld','ist immer ein starker Elektromagnet','zieht jedes Metall an'],'erzeugt im einfachen Schulmodell kein elektromagnetisches Feld','electro'],
+['Ein Dauermagnet …',['braucht dauerhaft Strom','besitzt auch ohne Strom ein Magnetfeld','hat keinen Südpol'],'besitzt auch ohne Strom ein Magnetfeld','electro'],
+['Die Nordspitze einer Kompassnadel zeigt ungefähr …',['zum geografischen Norden','zum geografischen Süden','immer nach Osten'],'zum geografischen Norden','earth'],
+['Im Inneren eines Stabmagneten verlaufen Feldlinien …',['von S nach N','von N nach S','gar nicht'],'von S nach N','field'],
+['Welche Kombination führt zu besonders starkem Elektromagneten?',['wenige Windungen, kleiner Strom, kein Kern','viele Windungen, größerer Strom, Eisenkern','kein Strom, Eisenkern allein'],'viele Windungen, größerer Strom, Eisenkern','strength'],
+['Warum ist „Metall = magnetisch“ falsch?',['Weil z. B. Kupfer und Aluminium nicht wie Eisen angezogen werden','Weil Eisen kein Metall ist','Weil Magnete nur Holz anziehen'],'Weil z. B. Kupfer und Aluminium nicht wie Eisen angezogen werden','materials'],
+['Was zeigt ein Kompass lokal an?',['die Richtung des Magnetfeldes','die Feldstärke als Zahl','die elektrische Spannung'],'die Richtung des Magnetfeldes','earth'],
+['Welche Aussage zu Feldlinien stimmt?',['Sie sind ein Modell','Sie sind echte sichtbare Fäden','Sie können sich beliebig kreuzen'],'Sie sind ein Modell','field'],
+['Ein Elektromagnet eignet sich für technische Schalter, weil …',['seine Magnetwirkung steuerbar ist','er keine Energie braucht','er nur einen Pol besitzt'],'seine Magnetwirkung steuerbar ist','apps'],
+['Welche Größe sollte beim Versuch zur Stromstärke konstant bleiben?',['Windungszahl und Kern','nur die Farbe des Drahtes','nichts'],'Windungszahl und Kern','strength'],
+['N und N gegenüber bedeutet …',['Abstoßung','Anziehung','keine Wirkung'],'Abstoßung','poles'],
+['S und N gegenüber bedeutet …',['Anziehung','Abstoßung','Entmagnetisierung'],'Anziehung','poles']
+];
+function renderQuiz(target,count,key){const el=$(target);el.innerHTML='';const qs=shuffle(bank).slice(0,count);el.dataset.answers=JSON.stringify(qs.map(q=>q[2]));el.dataset.key=key;qs.forEach((q,i)=>{const fs=document.createElement('fieldset');fs.className='quizQ';fs.innerHTML=`<legend>${i+1}. ${q[0]}</legend><div class="opts">${shuffle(q[1]).map(o=>`<label class="opt"><input type="radio" name="${key}${i}" value="${o.replace(/"/g,'&quot;')}">${o}</label>`).join('')}</div>`;el.appendChild(fs)})}
+function gradeQuiz(target,scoreTarget){const el=$(target),answers=JSON.parse(el.dataset.answers||'[]');let pts=0;$$('.quizQ',el).forEach((q,i)=>{q.classList.remove('correct','wrong');const c=$('input:checked',q);if(c&&c.value===answers[i]){pts++;q.classList.add('correct')}else q.classList.add('wrong')});$(scoreTarget).textContent=`${pts} / ${answers.length}`;return [pts,answers.length]}
+renderQuiz('#trainingQuiz',20,'t');$('#newTraining').onclick=()=>renderQuiz('#trainingQuiz',20,'t');$('#gradeTraining').onclick=()=>{const [p,n]=gradeQuiz('#trainingQuiz','#trainingScore');if(p>=15)mark('training')};
+let examInterval=null,examSeconds=1500,examActive=false;
+function setTimer(){const m=Math.floor(examSeconds/60),s=examSeconds%60;$('#examTimer').textContent=`${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`}
+$('#startExam').onclick=()=>{clearInterval(examInterval);examSeconds=1500;examActive=true;renderQuiz('#examQuiz',15,'e');$('#examScore').textContent='läuft';$('#examResult').textContent='';setTimer();examInterval=setInterval(()=>{examSeconds--;setTimer();if(examSeconds<=0){clearInterval(examInterval);examActive=false;gradeExam()}},1000)};
+function gradeExam(){if(!$('#examQuiz').children.length)return;clearInterval(examInterval);examActive=false;const [p,n]=gradeQuiz('#examQuiz','#examScore');const pct=Math.round(p/n*100);$('#examResult').textContent=`Trefferquote: ${pct} %. ${pct>=80?'Sehr sicher – prüfe nur noch einzelne Unsicherheiten.':pct>=60?'Gute Grundlage – wiederhole die falsch markierten Bereiche.':'Arbeite die Themenkarten noch einmal systematisch durch.'}`;if(pct>=70)mark('exam')}
+$('#gradeExam').onclick=gradeExam;setTimer();
+</script>
+</body>
+</html>
