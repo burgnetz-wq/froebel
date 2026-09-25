@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faust I – Lesetrainer · sofort offline</title>
+<style>
+:root{
+  --bg:#f5f7fb;--card:#fff;--ink:#172033;--muted:#667085;--line:#d7deea;
+  --blue:#3347b0;--blue2:#24358c;--green:#1d7a3b;--yellow:#fff2a8;
+  --shadow:0 10px 28px rgba(25,40,70,.10);--fs:24px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Segoe UI,Arial,sans-serif}
+header,main,footer{width:min(1000px,calc(100% - 24px));margin:auto}
+header{text-align:center;padding:22px 0 12px}
+h1{margin:0;font-size:clamp(30px,5vw,48px)}
+header p{color:var(--muted);margin:7px 0}
+.card,.reader{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:18px;margin-bottom:16px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.space{justify-content:space-between}
+select,button,input{font:inherit;border:1px solid #b9c4d5;border-radius:10px;background:#fff;color:var(--ink)}
+select{padding:10px 12px;min-width:min(100%,420px)}
+button{padding:9px 12px;font-weight:800;cursor:pointer}
+button.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+button.primary:hover{background:var(--blue2)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.status{margin-top:12px;padding:11px 13px;border-radius:10px;font-size:14px;line-height:1.45}
+.status.good{background:#eaf7ee;color:#176231;border:1px solid #b8dfc4}
+.notice{margin-top:12px;padding:11px 13px;border-radius:10px;background:#fff8df;color:#755400;border:1px solid #ead99b;font-size:14px;line-height:1.45}
+.audio{background:#29357f;color:white;border-radius:15px;padding:14px 16px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.audio .range{display:flex;gap:8px;align-items:center;flex:1;min-width:250px}
+.audio input{width:100%}
+.navrow{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
+.sceneTitle{text-align:center;font-size:1.3rem;font-weight:900}
+.sceneMeta{text-align:center;color:var(--muted);font-size:13px;margin-top:3px}
+.reader{min-height:360px;padding:24px 22px}
+.reading-line{font-size:var(--fs);line-height:1.8;letter-spacing:.02em;word-spacing:.07em;padding:5px 10px;border-radius:8px;cursor:pointer}
+.reading-line.dimmed{opacity:.24}
+.reading-line.active{opacity:1;background:var(--yellow);outline:2px solid #d2aa00}
+.reading-line.speaking{background:#dff1ff;outline:2px solid #5ba5df}
+.reading-line.stage{font-style:italic;color:#536078}
+.reading-line.speaker{font-weight:900;margin-top:12px;color:#24358c}
+.reading-line.marker{font-weight:900;margin-top:16px;color:#176231}
+.syl1{color:#194aa6;font-weight:700}
+.syl2{color:#b4262d;font-weight:700}
+.switch{display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:14px}
+.switch input{width:20px;height:20px}
+.help{font-size:13px;color:var(--muted);margin-top:14px;border-top:1px solid #edf0f5;padding-top:12px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:12px 0 30px}
+kbd{background:#eef1f6;border:1px solid #c8d0dc;border-radius:5px;padding:1px 5px}
+.badge{display:inline-block;background:#eaf7ee;color:#176231;border:1px solid #b8dfc4;border-radius:999px;padding:3px 9px;font-weight:800;font-size:12px}
+@media(max-width:650px){
+  .navrow{grid-template-columns:1fr 1fr}
+  .sceneTitle,.sceneMeta{grid-column:1/-1;grid-row:1}
+  .navrow button{grid-row:2}
+  .reader{padding:14px 9px}
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📖 Faust I – Lesetrainer</h1>
+  <p><span class="badge">SOFORT OFFLINE</span> · 28 Szenen · Silbenfarben · Leselineal · Vorlesen</p>
+</header>
+
+<main>
+<section class="card">
+  <div class="row space">
+    <div class="row">
+      <strong>Szene:</strong>
+      <select id="sceneSelect"></select>
+      <button id="loadBtn" class="primary" type="button">Laden</button>
+    </div>
+    <div class="row">
+      <strong>Schrift:</strong>
+      <button id="fontMinus" type="button">A−</button>
+      <span id="fontLabel">24 px</span>
+      <button id="fontPlus" type="button">A+</button>
+    </div>
+  </div>
+
+  <div class="row space" style="margin-top:14px;padding-top:14px;border-top:1px solid #edf0f5">
+    <label class="switch"><input id="syllables" type="checkbox" checked> Silbenfarben</label>
+    <label class="switch"><input id="ruler" type="checkbox" checked> Leselineal</label>
+  </div>
+
+  <div class="status good"><strong>Offline bereit:</strong> Alle 28 Szenen sind fest in dieser HTML-Datei gespeichert. Kein Internet, kein Import und kein vorheriges Laden nötig.</div>
+  <div class="notice"><strong>Textart:</strong> Schülergerechte Lesefassungen zu allen Szenen von <em>Faust I</em>. Sie geben Handlung, Figuren und zentrale Konflikte wieder, sind aber keine vollständige Wortlaut-Ausgabe des Goethe-Textes.</div>
+</section>
+
+<section class="audio">
+  <button id="speakBtn" class="primary" type="button">▶ Vorlesen</button>
+  <button id="stopBtn" type="button">■ Stopp</button>
+  <div class="range">
+    <span>langsamer</span>
+    <input id="speed" type="range" min="0.5" max="1.25" step="0.05" value="0.75">
+    <span>schneller</span>
+    <strong id="speedLabel">0,75×</strong>
+  </div>
+</section>
+
+<section class="card">
+  <div class="navrow">
+    <button id="prev" type="button">← vorige Szene</button>
+    <div>
+      <div class="sceneTitle" id="sceneTitle">Nacht</div>
+      <div class="sceneMeta" id="sceneMeta"></div>
+    </div>
+    <button id="next" type="button">nächste Szene →</button>
+  </div>
+</section>
+
+<section class="reader">
+  <div id="text" tabindex="0"></div>
+  <div class="help">
+    Klick auf eine Zeile = Leselineal. Mit <kbd>↑</kbd>/<kbd>↓</kbd> geht es zeilenweise weiter.
+    Die Vorlesefunktion verwendet die auf dem Gerät vorhandene deutsche Systemstimme und benötigt keine Internetverbindung.
+  </div>
+</section>
+</main>
+
+<footer>
+Johann Wolfgang von Goethe: <em>Faust. Der Tragödie erster Teil</em> · Offline-Lesetrainer mit schülergerechten Szenenfassungen
+</footer>
+
+<script id="embeddedData" type="application/json">{"Zueignung": ["SZENENKERN:", "Der Dichter erinnert sich an Menschen und Erlebnisse aus früheren Jahren.", "Alte Gestalten aus der Jugend treten in seiner Erinnerung wieder hervor.", "Er denkt an Freunde, von denen manche nicht mehr leben oder weit entfernt sind.", "Die Vergangenheit wird für ihn plötzlich wieder gegenwärtig.", "Er empfindet Freude und Trauer zugleich.", "Die Erinnerungen lösen starke Gefühle aus.", "Was früher wirklich erlebt wurde, erscheint ihm nun wie ein Schattenbild.", "Was längst vergangen schien, wird beim Schreiben wieder lebendig.", "Der Dichter wendet sich innerlich an die Menschen seiner Jugend.", "Er spürt, dass die Dichtung Vergangenheit bewahren kann.", "Die Zueignung stimmt auf das Drama ein.", "Sie handelt von Erinnerung, Verlust, Freundschaft und der Kraft der Kunst.", "MERKSATZ:", "Bevor die Handlung beginnt, schaut der Dichter zurück auf sein eigenes Leben und auf die Entstehungszeit des Werkes."], "Vorspiel auf dem Theater": ["PERSONEN:", "DIREKTOR:", "Ich will ein Stück, das viele Menschen ins Theater lockt.", "Das Publikum soll unterhalten werden und gern wiederkommen.", "DICHTER:", "Für mich zählt nicht nur der schnelle Erfolg.", "Ein gutes Werk braucht Zeit, Wahrheit und künstlerische Qualität.", "LUSTIGE PERSON:", "Das Publikum will lachen, staunen und etwas erleben.", "Macht es lebendig! Mischt Ernstes und Komisches.", "DIREKTOR:", "Wir müssen an das wirkliche Theater denken.", "Viele Zuschauer kommen mit ganz verschiedenen Erwartungen.", "DICHTER:", "Ich möchte nicht bloß nach dem Geschmack der Menge schreiben.", "Kunst soll mehr sein als ein kurzer Zeitvertreib.", "LUSTIGE PERSON:", "Dann verbindet beides: Gedanken und Handlung, Gefühl und Spaß.", "DIREKTOR:", "Genug geredet. Nutzt Bühne, Menschen, Licht und Bewegung.", "Vom Himmel durch die Welt zur Hölle – zeigt alles, was möglich ist.", "SZENENKERN:", "Drei Auffassungen von Theater treffen aufeinander: Geschäft, Kunst und Unterhaltung."], "Prolog im Himmel": ["ORT:", "Im Himmel sprechen der Herr, die Erzengel und Mephistopheles.", "MEPHISTOPHELES:", "Die Menschen machen sich das Leben schwer.", "Ihre Vernunft hilft ihnen oft nicht weiter.", "DER HERR:", "Kennst du Faust?", "MEPHISTOPHELES:", "Den Doktor? Er verlangt immer nach mehr und ist nie zufrieden.", "DER HERR:", "Gerade weil er sucht und irrt, kann er den richtigen Weg finden.", "MEPHISTOPHELES:", "Ich wette, ich kann ihn vom rechten Weg abbringen.", "DER HERR:", "Du darfst ihn versuchen.", "Solange ein Mensch strebt, kann er irren.", "Aber ich traue Faust zu, dass er sich nicht völlig verliert.", "MEPHISTOPHELES:", "Dann werde ich mich an ihn machen.", "SZENENKERN:", "Zwischen dem Herrn und Mephistopheles entsteht eine Wette um Faust.", "Faust wird nicht als fertiger Mensch gezeigt, sondern als jemand, der unruhig sucht.", "Sein Streben kann ihn in die Irre führen, ist aber zugleich seine besondere Stärke.", "MERKSATZ:", "Die Frage des Dramas lautet nun: Wird Mephistopheles Faust so zufrieden machen, dass Faust sein Streben aufgibt?"], "Nacht": ["ORT:", "Faust sitzt nachts in seinem engen Studierzimmer.", "FAUST:", "Ich habe Philosophie, Jura, Medizin und Theologie studiert.", "Trotz all meines Wissens fühle ich mich nicht wirklich klüger.", "Ich kann meinen Schülern vieles erklären, aber die letzten Wahrheiten kenne ich nicht.", "Bücher und Gelehrsamkeit reichen mir nicht mehr.", "Ich möchte erkennen, was die Welt im Innersten zusammenhält.", "FAUST:", "Darum wende ich mich der Magie zu.", "Vielleicht kann ich so die Grenzen des gewöhnlichen Wissens überschreiten.", "SZENENKERN:", "Faust betrachtet das Zeichen des Makrokosmos.", "Für einen Augenblick glaubt er, die Ordnung der Natur zu erfassen.", "Dann merkt er: Er sieht nur ein Bild, nicht die Wirklichkeit selbst.", "FAUST:", "Der Erdgeist erscheint mir näher.", "Ich rufe ihn.", "ERDGEIST:", "Du glaubst, mir ähnlich zu sein – doch du überschätzt dich.", "FAUST:", "Die Begegnung erschüttert mich.", "WAGNER:", "Faust, ich hörte dich sprechen. Können wir über Wissenschaft und Redekunst reden?", "FAUST:", "Wissen allein genügt nicht. Worte müssen aus wirklicher Erfahrung kommen.", "SZENENKERN:", "Nachdem Wagner gegangen ist, fällt Faust erneut in Verzweiflung.", "Er denkt daran, Gift zu trinken.", "Glocken und Ostergesang erinnern ihn an seine Kindheit.", "FAUST:", "Ich glaube nicht einfach wie früher, aber die Erinnerung hält mich am Leben.", "MERKSATZ:", "Faust leidet an den Grenzen seines Wissens. Er verlangt nach unmittelbarer Erkenntnis und nach einem intensiveren Leben."], "Vor dem Tor": ["ORT:", "Am Ostersonntag gehen viele Menschen vor die Stadt.", "BÜRGER UND BÜRGERINNEN:", "Endlich Frühling! Wir wollen hinaus, reden, feiern und uns erholen.", "FAUST:", "Die Menschen genießen das einfache Leben.", "Ihre Freude zieht mich aus meinem düsteren Studierzimmer heraus.", "WAGNER:", "Mir ist dieses Gedränge zu laut. Ich bleibe lieber bei meinen Büchern.", "EIN ALTER BAUER:", "Herr Doktor, wir danken Euch.", "Euer Vater und Ihr habt uns in schweren Krankheitszeiten geholfen.", "FAUST:", "Das Lob bedrückt mich.", "Ich weiß, dass unsere damaligen Heilmittel vielleicht sogar geschadet haben.", "SZENENKERN:", "Faust spürt zwei widersprüchliche Wünsche in sich.", "Ein Teil von ihm liebt die Erde, das sinnliche Leben und die Nähe zu Menschen.", "Ein anderer Teil will höher hinaus und nach unbegrenzter Erkenntnis streben.", "FAUST:", "Zwei Seelen wohnen in meiner Brust.", "WAGNER:", "Faust, seht dort den schwarzen Pudel.", "FAUST:", "Er scheint uns zu folgen.", "MERKSATZ:", "Der Spaziergang zeigt Faust für kurze Zeit mitten im Leben. Gleichzeitig wird sein innerer Konflikt deutlich."], "Studierzimmer I": ["ORT:", "Faust kehrt mit dem schwarzen Pudel in sein Studierzimmer zurück.", "FAUST:", "Die ruhige Stimmung des Abends tut mir gut.", "Ich möchte das Johannesevangelium übersetzen.", "FAUST:", "Wie soll ich „Im Anfang war das Wort“ verstehen?", "Nur das Wort kann doch nicht alles erklären.", "Vielleicht heißt es: Im Anfang war der Sinn.", "Oder die Kraft.", "Schließlich schreibt Faust: Im Anfang war die Tat.", "SZENENKERN:", "Während Faust arbeitet, wird der Pudel unruhig.", "Er wächst und verändert sich.", "FAUST:", "Das ist kein gewöhnliches Tier.", "Er spricht einen Zauberspruch.", "MEPHISTOPHELES:", "Aus dem Pudel erscheint Mephistopheles.", "FAUST:", "Wer bist du?", "MEPHISTOPHELES:", "Ein Teil jener Kraft, die Böses will und doch oft Gutes bewirkt.", "FAUST:", "Du bist also der Geist der Verneinung.", "MEPHISTOPHELES:", "Ich lehne vieles ab, was entsteht.", "Doch heute bin ich zunächst dein Gast.", "SZENENKERN:", "Faust begegnet Mephistopheles erstmals direkt.", "Mephistopheles kann das Zimmer zunächst nicht verlassen, weil ein magisches Zeichen an der Tür ihn hindert.", "Mit einer List sorgt er dafür, dass Faust einschläft, und entkommt.", "MERKSATZ:", "Aus dem unscheinbaren Pudel wird Fausts gefährlicher Begleiter."], "Studierzimmer II": ["ORT:", "Mephistopheles besucht Faust erneut.", "FAUST:", "Mein bisheriges Leben genügt mir nicht.", "Wissen, Besitz, Ruhm und gewöhnliche Vergnügungen machen mich nicht dauerhaft zufrieden.", "MEPHISTOPHELES:", "Dann lass mich dir die Welt zeigen.", "Ich kann dir Erfahrungen verschaffen, die du allein nie erreichen würdest.", "FAUST:", "Ich traue dir nicht.", "MEPHISTOPHELES:", "Ich diene dir hier auf Erden.", "Dafür sollst du mir später dienen.", "FAUST:", "Eine bloße Zeitspanne ist mir gleichgültig.", "Entscheidend ist etwas anderes.", "Wenn ich jemals zu einem Augenblick sage, er solle bleiben, weil er vollkommen sei, dann hast du gewonnen.", "MEPHISTOPHELES:", "Das gilt.", "SZENENKERN:", "Faust und Mephistopheles schließen ihre Vereinbarung.", "Faust setzt darauf, dass kein einzelner Genuss sein unendliches Streben stillen kann.", "Ein Schüler kommt, um Rat für sein Studium zu suchen.", "MEPHISTOPHELES:", "Als Faust verkleidet macht Mephistopheles sich über Universität, Wissenschaft und verschiedene Fächer lustig.", "Danach brechen Faust und Mephistopheles gemeinsam auf.", "MERKSATZ:", "Die Wette betrifft Fausts Lebenshaltung: Er verliert, wenn er sich mit einem Augenblick vollkommen zufriedengibt."], "Auerbachs Keller in Leipzig": ["ORT:", "Studenten trinken und singen in Auerbachs Keller.", "FROSCH, BRANDER, SIEBEL UND ALTMAYER:", "Sie scherzen, streiten, singen und wollen sich amüsieren.", "MEPHISTOPHELES:", "Hier soll Faust sehen, wie leicht manche Menschen zufrieden sind.", "FAUST:", "Die lärmende Unterhaltung beeindruckt ihn kaum.", "MEPHISTOPHELES:", "Er verspricht den Studenten Wein.", "Aus dem Tisch lässt er für jeden die gewünschte Sorte fließen.", "STUDENTEN:", "Sie sind begeistert und werden immer ausgelassener.", "SZENENKERN:", "Als Wein verschüttet wird, scheint er plötzlich zu brennen.", "Die Studenten fühlen sich getäuscht und greifen Mephistopheles an.", "Mephistopheles verzaubert sie.", "Für einen Moment halten sie die Umgebung für einen Weinberg.", "Als der Zauber endet, sind Faust und Mephistopheles verschwunden.", "MERKSATZ:", "Die Szene ist komisch und derb. Sie zeigt eine Form des Genusses, die Faust nicht erfüllt."], "Hexenküche": ["ORT:", "Faust und Mephistopheles besuchen eine Hexenküche.", "FAUST:", "Die Umgebung ist mir widerwärtig.", "Warum soll ich hierherkommen?", "MEPHISTOPHELES:", "Du willst jung wirken und das Leben genießen.", "Dafür brauchen wir einen Zaubertrank.", "SZENENKERN:", "Faust sieht in einem Spiegel das Bild einer außergewöhnlich schönen Frau.", "Er ist sofort fasziniert.", "MEPHISTOPHELES:", "Mit dem Trank wirst du in jeder Frau etwas von diesem Idealbild sehen.", "HEXE:", "Die Hexe bereitet den Trank und spricht eine verwirrende Zauberformel.", "FAUST:", "Er trinkt.", "MEPHISTOPHELES:", "Nun hinaus! Das Abenteuer beginnt.", "MERKSATZ:", "Fausts Streben verschiebt sich. Nach Wissen und Magie rücken nun Jugend, Sinnlichkeit und Liebe in den Vordergrund."], "Straße I": ["ORT:", "Faust begegnet Margarete auf der Straße.", "FAUST:", "Mein schönes Fräulein, darf ich Euch begleiten?", "MARGARETE:", "Ich bin weder Fräulein noch schön und brauche keine Begleitung.", "Sie geht weiter.", "FAUST:", "Er ist sofort von ihr beeindruckt.", "Er verlangt von Mephistopheles, dass Margarete seine Geliebte wird.", "MEPHISTOPHELES:", "So einfach ist das nicht.", "Das Mädchen ist jung, fromm und bisher schwer zu verführen.", "FAUST:", "Dann besorge mir wenigstens ein Geschenk für sie.", "MEPHISTOPHELES:", "Das lässt sich machen.", "MERKSATZ:", "Mit der Begegnung beginnt die Gretchenhandlung. Faust behandelt seine Liebe zunächst wie einen Wunsch, den Mephistopheles erfüllen soll."], "Abend – Ein kleines reinliches Zimmer": ["ORT:", "Margarete ist allein in ihrem Zimmer.", "MARGARETE:", "Wer war dieser fremde Mann auf der Straße?", "Er wirkte vornehm und selbstbewusst.", "Sie verlässt das Zimmer.", "FAUST UND MEPHISTOPHELES:", "Sie betreten heimlich Margaretes Zimmer.", "FAUST:", "Die einfache, ordentliche Umgebung berührt ihn.", "Er empfindet plötzlich Achtung vor Margaretes Lebenswelt.", "FAUST:", "Für einen Moment schämt er sich für seinen Plan.", "MEPHISTOPHELES:", "Er drängt zur Eile.", "Sie legen ein Kästchen mit Schmuck in den Schrank.", "Später kehrt Margarete zurück.", "MARGARETE:", "Im Zimmer ist eine seltsame Stimmung.", "Sie findet das Schmuckkästchen.", "MARGARETE:", "Sie probiert die Kette und die Ohrringe an.", "Der Schmuck gefällt ihr.", "MERKSATZ:", "Faust erlebt Margarete nicht mehr nur als Objekt seines Begehrens. Zugleich beginnt Mephistopheles mit dem Schmuck ihre Lebenswelt zu verändern."], "Spaziergang": ["MEPHISTOPHELES:", "Er berichtet Faust verärgert, was mit dem Schmuck geschehen ist.", "Margaretes Mutter hat die wertvollen Stücke entdeckt.", "Sie hält das Geschenk für verdächtig.", "Aus Frömmigkeit übergibt sie den Schmuck der Kirche.", "FAUST:", "Er ist ungeduldig und will Margarete näherkommen.", "MEPHISTOPHELES:", "Dann brauchen wir ein neues Geschenk.", "Außerdem soll Margaretes Nachbarin Marthe ins Spiel kommen.", "SZENENKERN:", "Der erste Versuch ist gescheitert, doch Faust und Mephistopheles geben nicht auf.", "MERKSATZ:", "Mephistopheles nutzt Geld, Schmuck und andere Menschen, um die Begegnung zwischen Faust und Margarete vorzubereiten."], "Der Nachbarin Haus": ["ORT:", "Margarete besucht ihre Nachbarin Marthe Schwerdtlein.", "MARGARETE:", "Sie zeigt Marthe einen zweiten Schmuckfund.", "MARTHE:", "Diesmal soll Margarete den Schmuck heimlich tragen.", "MEPHISTOPHELES:", "Er kommt hinzu und bringt Marthe angebliche Nachrichten über ihren verschwundenen Mann.", "Er behauptet, der Mann sei gestorben.", "MARTHE:", "Sie möchte einen sicheren Nachweis und Zeugen für seinen Tod.", "MEPHISTOPHELES:", "Er verspricht, einen zweiten Zeugen mitzubringen.", "Dieser Zeuge soll Faust sein.", "SZENENKERN:", "Mephistopheles nutzt Marthes Wunsch nach Gewissheit, um ein Treffen zu organisieren.", "Margarete soll ebenfalls im Garten sein.", "So bekommt Faust die gewünschte Gelegenheit, mit ihr zu sprechen.", "MERKSATZ:", "Die Intrige wird konkreter. Mephistopheles verbindet eine Lüge über Marthes Mann mit Fausts Wunsch, Margarete zu treffen."], "Straße II": ["FAUST:", "Ich soll für Marthe bestätigen, dass ihr Mann gestorben ist?", "Aber ich weiß doch gar nichts davon.", "MEPHISTOPHELES:", "Du hast in deinem Leben schon oft Dinge behauptet, die du nicht sicher wissen konntest.", "FAUST:", "Das ist etwas anderes.", "MEPHISTOPHELES:", "Du willst Margarete treffen.", "Dann musst du bei diesem Spiel mitmachen.", "SZENENKERN:", "Faust wehrt sich kurz gegen die Lüge.", "Mephistopheles hält ihm jedoch seine eigenen Widersprüche vor.", "Schließlich geht Faust auf den Plan ein.", "MERKSATZ:", "Faust lässt sich zunehmend auf Mephistopheles’ Mittel ein. Für sein Ziel nimmt er eine bewusste Täuschung in Kauf."], "Garten": ["ORT:", "Faust, Margarete, Marthe und Mephistopheles gehen paarweise durch den Garten.", "FAUST:", "Er spricht mit Margarete und fragt nach ihrem Leben.", "MARGARETE:", "Sie erzählt von ihrer Familie und von ihrer vielen Arbeit im Haushalt.", "Ihr Vater ist tot.", "Eine kleine Schwester starb früh.", "Den jüngeren Bruder hat Margarete selbst mit aufgezogen.", "FAUST:", "Er bewundert ihre Fürsorge und Natürlichkeit.", "MARGARETE:", "Sie fühlt sich zu Faust hingezogen, obwohl sie den Unterschied zwischen ihnen spürt.", "SZENENKERN:", "Margarete erzählt die Geschichte mit der Blume: „Er liebt mich – er liebt mich nicht.“", "Das letzte Blatt sagt: „Er liebt mich.“", "FAUST:", "Er bestätigt seine Liebe.", "MARGARETE:", "Sie ist glücklich und zugleich unsicher.", "MARTHE:", "Sie versucht währenddessen, Mephistopheles für eine feste Beziehung zu interessieren.", "MEPHISTOPHELES:", "Er weicht ihren Fragen aus.", "MERKSATZ:", "Im Garten kommen Faust und Margarete einander wirklich näher. Ihre Lebenswelten bleiben aber sehr verschieden."], "Ein Gartenhäuschen": ["ORT:", "Faust und Margarete treffen sich kurz allein im Gartenhäuschen.", "MARGARETE:", "Sie neckt Faust und läuft davon.", "FAUST:", "Er folgt ihr.", "Beide küssen sich.", "MARGARETE:", "Marthe ruft nach ihr.", "Faust und Margarete müssen sich trennen.", "MEPHISTOPHELES:", "Er holt Faust fort.", "MERKSATZ:", "Die Beziehung wird körperlich und vertrauter. Gleichzeitig bleibt kaum Raum für ruhige Entscheidungen."], "Wald und Höhle": ["ORT:", "Faust zieht sich allein in die Natur zurück.", "FAUST:", "Er empfindet Dankbarkeit für die Größe der Natur.", "In der Einsamkeit glaubt er, sich selbst und die Welt tiefer zu fühlen.", "FAUST:", "Doch mein Verlangen nach Margarete lässt mich nicht los.", "MEPHISTOPHELES:", "Er verspottet Fausts feierliche Naturgefühle.", "Er erinnert ihn daran, dass Margarete auf ihn wartet und leidet.", "FAUST:", "Er erkennt, dass seine Nähe Margarete gefährdet.", "Trotzdem kann er sich nicht von ihr lösen.", "MEPHISTOPHELES:", "Er reizt Faust und drängt ihn zurück zu Margarete.", "SZENENKERN:", "Faust sieht die möglichen Folgen seines Handelns, entscheidet sich aber nicht für einen Rückzug.", "MERKSATZ:", "Faust weiß mehr, als er verantwortet. Gerade diese Einsicht macht seine spätere Schuld besonders bedeutsam."], "Gretchens Stube": ["ORT:", "Margarete sitzt allein am Spinnrad.", "MARGARETE:", "Meine Ruhe ist verschwunden.", "Meine Gedanken kreisen ständig um Faust.", "Wenn er nicht da ist, wirkt die Welt leer.", "Ich denke an seinen Gang, seine Gestalt, seinen Blick und seine Worte.", "Ich wünsche mir seine Nähe.", "Ich möchte ihn umarmen und küssen.", "SZENENKERN:", "Das gleichmäßige Drehen des Spinnrads passt zu Margaretes kreisenden Gedanken.", "Sie kann sich innerlich nicht mehr von Faust lösen.", "MERKSATZ:", "Margaretes Liebe ist tief und beherrscht inzwischen ihr Denken und Fühlen."], "Marthens Garten": ["ORT:", "Faust und Margarete sprechen allein miteinander.", "MARGARETE:", "Wie hältst du es mit der Religion?", "Du bist ein guter Mensch, aber ich glaube, dass dir der Glaube nicht sehr wichtig ist.", "FAUST:", "Er antwortet ausweichend.", "Er spricht von Gefühl, Natur, Liebe und einer höheren Macht.", "Er will sich nicht auf ein klares Glaubensbekenntnis festlegen.", "MARGARETE:", "Sie spürt, dass seine Haltung anders ist als ihre eigene.", "Außerdem sagt sie offen, dass sie Mephistopheles nicht leiden kann.", "FAUST:", "Er möchte Margarete nachts allein sehen.", "MARGARETE:", "Meine Mutter schläft leicht.", "FAUST:", "Er gibt ihr ein Mittel, das die Mutter tief schlafen lassen soll.", "MARGARETE:", "Sie nimmt es an.", "SZENENKERN:", "Margarete stellt Faust die berühmte Religionsfrage.", "Danach wird aus der Liebesbeziehung eine konkrete Gefahr: Das Schlafmittel für die Mutter hat schwere Folgen.", "MERKSATZ:", "Liebe, Religion und Verantwortung treffen in dieser Szene unmittelbar aufeinander."], "Am Brunnen": ["ORT:", "Margarete und Lieschen treffen sich am Brunnen.", "LIESCHEN:", "Sie erzählt spöttisch von Bärbelchen.", "Das Mädchen ist schwanger geworden und wurde von seinem Geliebten verlassen.", "Nun wird die Nachbarschaft über sie reden.", "MARGARETE:", "Sie hört still zu.", "Früher hätte sie vielleicht selbst streng über ein solches Mädchen geurteilt.", "Nun erkennt sie sich in ihrer Situation wieder.", "MARGARETE:", "Sie empfindet Mitleid und zugleich Angst um sich selbst.", "SZENENKERN:", "Die gesellschaftlichen Maßstäbe treffen unverheiratete Frauen hart.", "Margarete beginnt zu begreifen, welche Folgen ihre Beziehung zu Faust für sie haben kann.", "MERKSATZ:", "Am Brunnen kippt die Liebesgeschichte sichtbar in die Tragödie."], "Zwinger": ["ORT:", "Margarete steht allein vor einem Bild der Mater Dolorosa, der schmerzensreichen Mutter Maria.", "MARGARETE:", "Sie bittet Maria um Hilfe.", "Ihr Herz ist voller Angst und Schmerz.", "Sie fühlt sich verlassen.", "Niemand in ihrer Umgebung soll ganz verstehen, was sie durchmacht.", "MARGARETE:", "Sie denkt an Scham, Schuld und ihre unsichere Zukunft.", "SZENENKERN:", "Margarete sucht im Gebet Halt.", "Ihre frühere unbeschwerte Frömmigkeit ist nun von persönlichem Leid geprägt.", "MERKSATZ:", "Die Szene zeigt Margarete isoliert. Ihr Konflikt wird nicht nur gesellschaftlich, sondern auch religiös und seelisch."], "Nacht – Straße vor Gretchens Türe": ["ORT:", "Valentin, Margaretes Bruder, steht nachts vor ihrem Haus.", "VALENTIN:", "Er hat gehört, dass über seine Schwester geredet wird.", "Früher war er stolz auf ihren guten Ruf.", "Nun fühlt er sich entehrt.", "FAUST UND MEPHISTOPHELES:", "Sie kommen durch die Straße.", "Mephistopheles singt ein spöttisches Lied.", "VALENTIN:", "Er greift die beiden an.", "FAUST:", "Faust kämpft mit Valentin.", "MEPHISTOPHELES:", "Er hilft Faust und lenkt den Kampf.", "Valentin wird tödlich verwundet.", "NACHBARN UND MARGARETE:", "Sie kommen herbei.", "VALENTIN:", "Im Sterben beschimpft er Margarete vor allen Leuten.", "Er erklärt öffentlich, dass sie ihre Ehre verloren habe.", "MARGARETE:", "Sie muss die Demütigung vor der Nachbarschaft ertragen.", "MERKSATZ:", "Fausts Beziehung zu Margarete hat nun auch den Tod ihres Bruders zur Folge. Die private Tragödie wird öffentlich."], "Dom": ["ORT:", "Margarete nimmt an einem Gottesdienst teil.", "CHOR:", "Die feierliche Totenmesse erklingt.", "BÖSER GEIST:", "Eine innere Stimme klagt Margarete an.", "Sie erinnert sie an die tote Mutter, den gefallenen Bruder und ihre Schwangerschaft.", "MARGARETE:", "Sie versucht zu beten und Halt zu finden.", "BÖSER GEIST:", "Die Schuldgedanken werden immer stärker.", "Die Menschen um sie herum erscheinen ihr bedrängend.", "MARGARETE:", "Ihr wird die Luft knapp.", "Sie bricht zusammen.", "SZENENKERN:", "Äußerer Gottesdienst und inneres Schuldbewusstsein verschmelzen.", "MERKSATZ:", "Margarete erlebt ihre Schuld nicht abstrakt. Sie wird körperlich und seelisch überwältigt."], "Walpurgisnacht": ["ORT:", "Faust und Mephistopheles steigen zum Brocken im Harz hinauf.", "MEPHISTOPHELES:", "Heute ist Walpurgisnacht.", "Hexen, Geister und seltsame Gestalten feiern.", "FAUST:", "Er lässt sich von dem wilden Fest mitziehen.", "SZENENKERN:", "Die Szene ist laut, sprunghaft und voller wechselnder Bilder.", "Faust begegnet verschiedenen Gestalten.", "Musik, Tanz, Spott und Sexualität bestimmen die Atmosphäre.", "MEPHISTOPHELES:", "Er versucht, Faust abzulenken und in das Fest hineinzuziehen.", "FAUST:", "Plötzlich sieht er eine blasse junge Gestalt.", "Sie erinnert ihn an Margarete.", "An ihrem Hals glaubt er eine rote Linie zu erkennen.", "FAUST:", "Die Erscheinung erschreckt ihn.", "MEPHISTOPHELES:", "Er versucht, das Bild als bloße Täuschung abzutun.", "MERKSATZ:", "Mitten im Rausch kehrt Margarete in Fausts Bewusstsein zurück. Die Verdrängung funktioniert nicht mehr vollständig."], "Walpurgisnachtstraum": ["ORT:", "Auf dem Brocken wird ein kleines Theaterstück aufgeführt.", "SZENENKERN:", "Viele kurze Figuren treten nacheinander auf.", "Sie kommentieren Kunst, Gesellschaft, Mode, Wissenschaft und Zeitgenossen.", "Die Szene wirkt wie eine Folge von satirischen Miniaturen.", "Ein fester Handlungsfaden ist kaum vorhanden.", "MEPHISTOPHELES UND FAUST:", "Die Haupthandlung tritt vorübergehend zurück.", "MERKSATZ:", "Der Walpurgisnachtstraum ist ein satirisches Zwischenspiel. Für die Gretchenhandlung ist er weniger wichtig als die Szenen unmittelbar davor und danach."], "Trüber Tag – Feld": ["ORT:", "Faust erfährt, dass Margarete im Gefängnis sitzt.", "FAUST:", "Margarete ist im Elend – und ich habe sie allein gelassen!", "Er wirft Mephistopheles vor, ihn abgelenkt und getäuscht zu haben.", "MEPHISTOPHELES:", "Er weist die Schuld zurück.", "Faust habe selbst entschieden und gehandelt.", "FAUST:", "Er verlangt, Margarete sofort zu retten.", "MEPHISTOPHELES:", "Ich kann nicht jede Folge menschlichen Handelns ungeschehen machen.", "Doch ich kann Pferde beschaffen und den Wächter beeinflussen.", "FAUST:", "Dann müssen wir aufbrechen.", "SZENENKERN:", "Faust erkennt die Katastrophe und will handeln.", "Gleichzeitig zeigt das Gespräch, dass er seine eigene Verantwortung gern auf Mephistopheles schiebt.", "MERKSATZ:", "Die Schuldfrage lässt sich nicht einfach auf den Teufel übertragen. Faust hat selbst Entscheidungen getroffen."], "Nacht – offen Feld": ["ORT:", "Faust und Mephistopheles reiten nachts in Richtung Gefängnis.", "FAUST:", "Er bemerkt unheimliche Gestalten auf dem Feld.", "MEPHISTOPHELES:", "Er drängt zur Eile.", "SZENENKERN:", "Die kurze Szene schafft eine düstere Übergangsstimmung.", "Faust nähert sich Margarete, doch die Rettung ist unsicher.", "MERKSATZ:", "Die Handlung läuft nun direkt auf die Kerker-Szene und das Ende der Gretchenhandlung zu."], "Kerker": ["ORT:", "Margarete sitzt im Gefängnis und erwartet ihre Hinrichtung.", "FAUST:", "Er verschafft sich Zugang und will sie befreien.", "MARGARETE:", "Zunächst erkennt sie Faust nicht.", "Sie ist verwirrt und erinnert sich an die Menschen, die durch ihre Geschichte gestorben sind.", "FAUST:", "Gretchen! Ich bin es. Komm mit mir!", "MARGARETE:", "Langsam erkennt sie Faust.", "Für einen Moment freut sie sich über seine Nähe.", "Dann merkt sie, dass er sie zur Flucht bewegen will.", "MARGARETE:", "Sie denkt an ihre Mutter, ihren Bruder und ihr Kind.", "Sie fühlt sich schuldig und kann nicht einfach in ihr früheres Leben zurückkehren.", "FAUST:", "Er drängt. Die Zeit wird knapp.", "MEPHISTOPHELES:", "Von draußen fordert er Faust zur Eile auf.", "MARGARETE:", "Sie erschrickt vor Mephistopheles.", "Sie entscheidet sich gegen die Flucht mit Faust.", "Stattdessen vertraut sie sich dem Gericht Gottes an.", "MEPHISTOPHELES:", "Er erklärt sie für verloren.", "STIMME VON OBEN:", "Margarete wird als gerettet bezeichnet.", "FAUST:", "Mephistopheles zieht Faust fort.", "SZENENKERN:", "Faust kann Margarete körperlich nicht retten.", "Margarete übernimmt Verantwortung und verweigert die Flucht mit Mephistopheles.", "Das Drama endet für sie mit einer religiösen Rettung, während Faust weiterziehen muss.", "MERKSATZ:", "Der Schluss trennt äußeres Scheitern und innere Rettung voneinander."]}</script>
+<script>
+(() => {
+'use strict';
+
+const $ = id => document.getElementById(id);
+const scenes = ["Zueignung", "Vorspiel auf dem Theater", "Prolog im Himmel", "Nacht", "Vor dem Tor", "Studierzimmer I", "Studierzimmer II", "Auerbachs Keller in Leipzig", "Hexenküche", "Straße I", "Abend – Ein kleines reinliches Zimmer", "Spaziergang", "Der Nachbarin Haus", "Straße II", "Garten", "Ein Gartenhäuschen", "Wald und Höhle", "Gretchens Stube", "Marthens Garten", "Am Brunnen", "Zwinger", "Nacht – Straße vor Gretchens Türe", "Dom", "Walpurgisnacht", "Walpurgisnachtstraum", "Trüber Tag – Feld", "Nacht – offen Feld", "Kerker"];
+const data = JSON.parse($('embeddedData').textContent);
+const sel = $('sceneSelect');
+const textEl = $('text');
+
+let current = 3;
+let active = 0;
+let fontSize = 24;
+let speaking = false;
+
+scenes.forEach((label,i)=>{
+  const o=document.createElement('option');
+  o.value=i;
+  o.textContent=(i+1)+'. '+label;
+  sel.appendChild(o);
+});
+sel.value=current;
+
+function esc(s){
+  return String(s).replace(/[&<>"']/g,c=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  })[c]);
+}
+
+function syllabify(word){
+  if(word.length<5)return[word];
+  const pre=(word.match(/^[^A-Za-zÄÖÜäöüß]+/)||[''])[0];
+  const post=(word.match(/[^A-Za-zÄÖÜäöüß]+$/)||[''])[0];
+  const core=word.slice(pre.length,word.length-post.length);
+  if(core.length<5)return[word];
+  const V='aeiouyäöüAEIOUYÄÖÜ';
+  let parts=[],start=0;
+  for(let i=2;i<core.length-1;i++){
+    if(V.includes(core[i-1])&&!V.includes(core[i])&&i-start>=2){
+      let cut=i;
+      if(i+1<core.length&&!V.includes(core[i+1]))cut=i+1;
+      parts.push(core.slice(start,cut));start=cut;i=cut;
+    }
+  }
+  parts.push(core.slice(start));
+  if(parts.length===1)return[word];
+  parts[0]=pre+parts[0];
+  parts[parts.length-1]+=post;
+  return parts;
+}
+
+function lineHTML(line){
+  if(!$('syllables').checked)return esc(line);
+  return line.split(/(\s+)/).map(t=>{
+    if(/^\s+$/.test(t))return t;
+    return syllabify(t).map((p,i)=>
+      '<span class="'+(i%2?'syl2':'syl1')+'">'+esc(p)+'</span>'
+    ).join('');
+  }).join('');
+}
+
+function isSpeaker(line){
+  return /^[A-ZÄÖÜ][A-ZÄÖÜa-zäöüß .,'’()\-](0, 35):$/.test(line.trim());
+}
+function isMarker(line){
+  return /^(ORT|PERSONEN|SZENENKERN|MERKSATZ):$/.test(line.trim());
+}
+function isStage(line){
+  const t=line.trim();
+  return /^(Im Himmel|Am |Auf |In |Faust sitzt|Faust kehrt|Faust begegnet|Margarete sitzt|Margarete steht|Margarete besucht|Faust und Mephistopheles|Studenten trinken)/i.test(t);
+}
+
+function linesFor(i){ return data[scenes[i]] || []; }
+function visibleLines(){return [...textEl.querySelectorAll('.reading-line')];}
+
+function render(i,scroll=true){
+  current=Math.max(0,Math.min(scenes.length-1,Number(i)));
+  sel.value=current;
+  const label=scenes[current], lines=linesFor(current);
+
+  $('sceneTitle').textContent=label;
+  $('sceneMeta').textContent='Szene '+(current+1)+' von 28 · Offline-Lesefassung · '+lines.length+' Lesezeilen';
+  textEl.innerHTML='';
+
+  lines.forEach((line,idx)=>{
+    const d=document.createElement('div');
+    d.className='reading-line';
+    if(isSpeaker(line))d.classList.add('speaker');
+    if(isMarker(line))d.classList.add('marker');
+    if(isStage(line))d.classList.add('stage');
+    d.dataset.i=idx;
+    d.innerHTML=lineHTML(line);
+    d.addEventListener('click',()=>setActive(idx));
+    textEl.appendChild(d);
+  });
+  active=0;
+  applyRuler();
+  $('prev').disabled=current===0;
+  $('next').disabled=current===scenes.length-1;
+  stopSpeaking();
+  if(scroll)window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function setActive(i){
+  const els=visibleLines();
+  if(!els.length)return;
+  active=Math.max(0,Math.min(linesFor(current).length-1,i));
+  applyRuler();
+  const el=els.find(x=>Number(x.dataset.i)===active);
+  if(el)el.scrollIntoView({block:'center',behavior:'smooth'});
+}
+
+function applyRuler(){
+  visibleLines().forEach(el=>{
+    el.classList.remove('active','dimmed');
+    if($('ruler').checked)
+      el.classList.add(Number(el.dataset.i)===active?'active':'dimmed');
+  });
+}
+
+function refresh(){render(current,false);}
+
+function stopSpeaking(){
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  speaking=false;
+  visibleLines().forEach(x=>x.classList.remove('speaking'));
+  $('speakBtn').textContent='▶ Vorlesen';
+}
+
+function speakFrom(idx){
+  if(!('speechSynthesis' in window))return;
+  const lines=linesFor(current);
+  if(idx>=lines.length){stopSpeaking();return;}
+  active=idx;
+  applyRuler();
+  const el=visibleLines().find(x=>Number(x.dataset.i)===idx);
+  visibleLines().forEach(x=>x.classList.remove('speaking'));
+  if(el){el.classList.add('speaking');el.scrollIntoView({block:'center',behavior:'smooth'});}
+
+  const u=new SpeechSynthesisUtterance(lines[idx]);
+  u.lang='de-DE';
+  u.rate=Number($('speed').value);
+  u.onend=()=>{if(speaking)speakFrom(idx+1);};
+  u.onerror=stopSpeaking;
+  speechSynthesis.speak(u);
+}
+
+$('loadBtn').addEventListener('click',()=>render(sel.value));
+sel.addEventListener('change',()=>render(sel.value));
+$('prev').addEventListener('click',()=>render(current-1));
+$('next').addEventListener('click',()=>render(current+1));
+
+$('fontPlus').addEventListener('click',()=>{
+  fontSize=Math.min(40,fontSize+2);
+  document.documentElement.style.setProperty('--fs',fontSize+'px');
+  $('fontLabel').textContent=fontSize+' px';
+});
+$('fontMinus').addEventListener('click',()=>{
+  fontSize=Math.max(16,fontSize-2);
+  document.documentElement.style.setProperty('--fs',fontSize+'px');
+  $('fontLabel').textContent=fontSize+' px';
+});
+$('syllables').addEventListener('change',refresh);
+$('ruler').addEventListener('change',applyRuler);
+
+$('speed').addEventListener('input',e=>{
+  $('speedLabel').textContent=Number(e.target.value).toFixed(2).replace('.',',')+'×';
+});
+$('speakBtn').addEventListener('click',()=>{
+  if(speaking){stopSpeaking();return;}
+  if(!('speechSynthesis' in window)){
+    alert('Auf diesem Gerät ist keine System-Vorlesestimme verfügbar.');
+    return;
+  }
+  speaking=true;
+  $('speakBtn').textContent='Ⅱ Pause';
+  speakFrom(active);
+});
+$('stopBtn').addEventListener('click',stopSpeaking);
+
+textEl.addEventListener('keydown',e=>{
+  const lines=linesFor(current);
+  if(!lines.length)return;
+  if(e.key==='ArrowDown'){e.preventDefault();setActive(Math.min(lines.length-1,active+1));}
+  if(e.key==='ArrowUp'){e.preventDefault();setActive(Math.max(0,active-1));}
+});
+
+render(current,false);
+})();
+</script>
+</body>
+</html>
