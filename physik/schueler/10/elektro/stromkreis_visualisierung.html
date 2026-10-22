@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physik-Visualisierung: Spannung, Widerstand, Stromstärke & Ladung</title>
+    <!-- Tailwind CSS CDN für modernes Layout -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom Styling für Canvas & Slider */
+        input[type=range] {
+            accent-color: #2563eb;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen p-4 md:p-8 flex flex-col items-center justify-center">
+
+    <div class="max-w-5xl w-full bg-slate-800 rounded-2xl shadow-2xl border border-slate-700 overflow-hidden">
+        
+        <!-- Header -->
+        <header class="bg-slate-800/80 backdrop-blur border-b border-slate-700 p-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
+                    Elektrischer Stromkreis & Wasserleitungsmodell
+                </h1>
+                <p class="text-slate-400 text-sm mt-1">
+                    Interaktive Simulation: Zusammenhang von Spannung ($U$), Widerstand ($R$), Stromstärke ($I$) und Ladung ($Q$)
+                </p>
+            </div>
+            <div class="bg-blue-950/60 border border-blue-500/30 px-4 py-2 rounded-xl flex items-center gap-3">
+                <i data-lucide="zap" class="text-yellow-400 w-6 h-6 animate-pulse"></i>
+                <div class="text-right">
+                    <div class="text-xs text-slate-400 font-medium">Ohm'sches Gesetz</div>
+                    <div class="text-lg font-bold text-blue-300">I = U / R</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hauptbereich Canvas & Visualisierung -->
+        <main class="p-6 space-y-6">
+            
+            <!-- Canvas Simulation Container -->
+            <div class="relative bg-slate-950 rounded-xl border border-slate-700/80 overflow-hidden shadow-inner">
+                <!-- Overlay Header im Canvas -->
+                <div class="absolute top-3 left-4 right-4 flex justify-between items-center pointer-events-none z-10">
+                    <span class="text-xs font-semibold tracking-wider uppercase bg-slate-800/80 text-slate-300 px-3 py-1 rounded-full border border-slate-600">
+                        Rohr-Simulation (Wasser- & Elektronenmodell)
+                    </span>
+                    <span id="particle-count" class="text-xs bg-slate-800/80 text-blue-400 px-3 py-1 rounded-full border border-slate-600 font-mono">
+                        Ladungsträger (Q): 60 Teilchen
+                    </span>
+                </div>
+
+                <!-- Simulation Canvas -->
+                <canvas id="circuitCanvas" class="w-full h-[320px] block cursor-crosshair"></canvas>
+            </div>
+
+            <!-- Live-Messwerte Karten -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Spannung U -->
+                <div class="bg-slate-700/40 border border-amber-500/30 rounded-xl p-4 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs font-semibold text-amber-400 uppercase tracking-wider">Spannung (U)</div>
+                        <div class="text-2xl font-bold text-slate-100 mt-1"><span id="valU">12.0</span> <span class="text-base font-normal text-slate-400">V</span></div>
+                        <div class="text-xs text-slate-400 mt-1">"Druck" / Ursache der Bewegung</div>
+                    </div>
+                    <div class="p-3 bg-amber-500/10 rounded-lg text-amber-400">
+                        <i data-lucide="gauge"></i>
+                    </div>
+                </div>
+
+                <!-- Widerstand R (Engstelle) -->
+                <div class="bg-slate-700/40 border border-rose-500/30 rounded-xl p-4 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs font-semibold text-rose-400 uppercase tracking-wider">Widerstand / Engstelle (R)</div>
+                        <div class="text-2xl font-bold text-slate-100 mt-1"><span id="valR">6.0</span> <span class="text-base font-normal text-slate-400">Ω</span></div>
+                        <div class="text-xs text-slate-400 mt-1">Verengung / Hemmung des Flusses</div>
+                    </div>
+                    <div class="p-3 bg-rose-500/10 rounded-lg text-rose-400">
+                        <i data-lucide="shrink"></i>
+                    </div>
+                </div>
+
+                <!-- Stromstärke I -->
+                <div class="bg-slate-700/40 border border-blue-500/30 rounded-xl p-4 flex items-center justify-between">
+                    <div>
+                        <div class="text-xs font-semibold text-blue-400 uppercase tracking-wider">Stromstärke (I)</div>
+                        <div class="text-2xl font-bold text-blue-400 mt-1"><span id="valI">2.00</span> <span class="text-base font-normal text-slate-400">A</span></div>
+                        <div class="text-xs text-slate-400 mt-1">Durchflussmenge pro Zeit ($I = \Delta Q / \Delta t$)</div>
+                    </div>
+                    <div class="p-3 bg-blue-500/10 rounded-lg text-blue-400">
+                        <i data-lucide="activity"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interaktive Regler / Controls -->
+            <div class="bg-slate-700/30 border border-slate-700 rounded-xl p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Regler Spannung U -->
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <label for="sliderU" class="font-semibold text-amber-300 flex items-center gap-2">
+                            <i data-lucide="zap" class="w-4 h-4"></i> Spannung U (Volt)
+                        </label>
+                        <span class="font-mono bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded text-sm font-bold" id="labelSliderU">12 V</span>
+                    </div>
+                    <input type="range" id="sliderU" min="1" max="24" value="12" step="0.5" 
+                           class="w-full h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer">
+                    <p class="text-xs text-slate-400">
+                        Erhöht die treibende Kraft. Im Wasser modelliert als Pumpe oder Höhendifferenz des Wassertanks.
+                    </p>
+                </div>
+
+                <!-- Regler Widerstand R (Engstelle) -->
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <label for="sliderR" class="font-semibold text-rose-300 flex items-center gap-2">
+                            <i data-lucide="sliders" class="w-4 h-4"></i> Widerstand R (Ohm - Engstelle)
+                        </label>
+                        <span class="font-mono bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded text-sm font-bold" id="labelSliderR">6 Ω</span>
+                    </div>
+                    <input type="range" id="sliderR" min="1" max="20" value="6" step="0.5" 
+                           class="w-full h-2 bg-slate-600 rounded-lg appearance-none cursor-pointer">
+                    <p class="text-xs text-slate-400">
+                        Bestimmt die Breite der Rohr-Engstelle. Höherer Widerstand = verengtes Rohr = weniger Durchfluss.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Didaktische Erklärungs-Box -->
+            <div class="bg-slate-800/60 border border-slate-700 rounded-xl p-5 text-sm text-slate-300 space-y-3">
+                <h3 class="font-bold text-base text-slate-100 flex items-center gap-2">
+                    <i data-lucide="book-open" class="text-blue-400 w-5 h-5"></i>
+                    Physikalische Beobachtungen im Experiment
+                </h3>
+                <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs leading-relaxed">
+                    <li class="bg-slate-900/50 p-3 rounded-lg border border-slate-700/50">
+                        <strong class="text-rose-400 block mb-1">1. Optische Engstelle (Widerstand R):</strong>
+                        Je höher du den Widerstand $R$ einstellst, desto stärker verengt sich die Rohrleitung im mittleren Bereich. Die frei fließende Querschnittsfläche nimmt ab.
+                    </li>
+                    <li class="bg-slate-900/50 p-3 rounded-lg border border-slate-700/50">
+                        <strong class="text-blue-400 block mb-1">2. Stau- & Bremseffekt der Ladung (Q):</strong>
+                        Vor der Engstelle drängeln sich die Kügelchen (Ladungen $Q$). Sie verlangsamen sich beim Eintritt in die Verengung sichtbar, was zu einer reduzierten Gesamstromstärke $I$ führt.
+                    </li>
+                    <li class="bg-slate-900/50 p-3 rounded-lg border border-slate-700/50">
+                        <strong class="text-amber-400 block mb-1">3. Die Rolle der Spannung (U):</strong>
+                        Die Spannung drückt die Teilchen an. Eine höhere Spannung beschleunigt alle Teilchen und erhöht den Druck gegen die Engstelle.
+                    </li>
+                    <li class="bg-slate-900/50 p-3 rounded-lg border border-slate-700/50">
+                        <strong class="text-purple-400 block mb-1">4. Stromstärke (I):</strong>
+                        Gibt an, wie viele Teilchen pro Sekunde einen Rohrquerschnitt passieren. Sie ist proportional zur Teilchengeschwindigkeit und umgekehrt proportional zum Widerstand.
+                    </li>
+                </ul>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // Lucide Icons initialisieren
+        lucide.createIcons();
+
+        // Canvas und Kontext initialisieren
+        const canvas = document.getElementById('circuitCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // UI Elemente
+        const sliderU = document.getElementById('sliderU');
+        const sliderR = document.getElementById('sliderR');
+        const labelSliderU = document.getElementById('labelSliderU');
+        labelSliderR = document.getElementById('labelSliderR');
+        const valU = document.getElementById('valU');
+        const valR = document.getElementById('valR');
+        const valI = document.getElementById('valI');
+
+        // Simulationsparameter
+        let U = parseFloat(sliderU.value);
+        let R = parseFloat(sliderR.value);
+        let I = U / R;
+
+        // Anpassen der Canvas-Auflösung an Retina/High-DPI Screens
+        function resizeCanvas() {
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Ladungsträger (Teilchen / Elektronen / Wasserperlen)
+        const PARTICLE_COUNT = 70;
+        const particles = [];
+
+        for (let i = 0; i < PARTICLE_COUNT; i++) {
+            particles.push({
+                x: Math.random() * 1000,
+                yOffset: (Math.random() - 0.5) * 0.8, // Relativer Versatz innerhalb der Rohrbreite (-0.4 bis +0.4)
+                radius: 6,
+                speedMultiplier: 0.8 + Math.random() * 0.4
+            });
+        }
+
+        // Hauptschleife für die Simulation & Zeichnung
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const width = canvas.width;
+            const height = canvas.height;
+            const centerY = height / 2;
+
+            // Definition der Rohrgeometrie
+            const normalPipeRadius = height * 0.28; // Normale Rohrhalbhöhe
+            const constrictStart = width * 0.35;    // Beginn der Engstelle
+            const constrictEnd = width * 0.65;      // Ende der Engstelle
+            
+            // Berechnung der verengten Rohrbreite basierend auf R (Widerstand)
+            // Bei R = 1 -> breite Engstelle, Bei R = 20 -> sehr schmale Engstelle
+            const minRadius = 6; // Minimale Durchlassbreite
+            const maxConstrictedRadius = normalPipeRadius * 0.85;
+            const targetConstrictedRadius = Math.max(minRadius, maxConstrictedRadius - (R - 1) * 3.2);
+
+            // Hilfsfunktion zur Ermittlung des Rohrradius an einer x-Position
+            function getPipeRadiusAt(x) {
+                if (x < constrictStart) {
+                    return normalPipeRadius;
+                } else if (x >= constrictStart && x <= constrictEnd) {
+                    // Sanfter Übergang mit Cosinus-Form
+                    const progress = (x - constrictStart) / (constrictEnd - constrictStart);
+                    const factor = 0.5 * (1 + Math.cos(progress * Math.PI * 2));
+                    return targetConstrictedRadius + (normalPipeRadius - targetConstrictedRadius) * factor;
+                } else {
+                    return normalPipeRadius;
+                }
+            }
+
+            // --- 1. Zeichnen der Hintergründe & Wasserflüssigkeit ---
+            
+            // Flüssigkeitsstrom im Rohrinneren
+            ctx.beginPath();
+            ctx.moveTo(0, centerY - getPipeRadiusAt(0));
+            for (let x = 0; x <= width; x += 5) {
+                ctx.lineTo(x, centerY - getPipeRadiusAt(x));
+            }
+            for (let x = width; x >= 0; x -= 5) {
+                ctx.lineTo(x, centerY + getPipeRadiusAt(x));
+            }
+            ctx.closePath();
+
+            // Wasser-Gradients basierend auf Spannung U (Druck = Farbintensität)
+            const pipeGradient = ctx.createLinearGradient(0, 0, width, 0);
+            const intensity = Math.min(1, U / 24);
+            pipeGradient.addColorStop(0, `rgba(37, 99, 235, ${0.2 + intensity * 0.25})`);
+            pipeGradient.addColorStop(0.5, `rgba(147, 51, 234, ${0.25 + intensity * 0.3})`);
+            pipeGradient.addColorStop(1, `rgba(37, 99, 235, ${0.2 + intensity * 0.25})`);
+            ctx.fillStyle = pipeGradient;
+            ctx.fill();
+
+            // --- 2. Zeichnen der Rohrwände (Top & Bottom) ---
+            
+            // Oberer Rohrwall
+            ctx.beginPath();
+            ctx.moveTo(0, centerY - getPipeRadiusAt(0));
+            for (let x = 0; x <= width; x += 4) {
+                ctx.lineTo(x, centerY - getPipeRadiusAt(x));
+            }
+            ctx.lineTo(width, 0);
+            ctx.lineTo(0, 0);
+            ctx.closePath();
+            ctx.fillStyle = '#1e293b'; // Slate-800 Außenwand
+            ctx.fill();
+
+            // Unterer Rohrwall
+            ctx.beginPath();
+            ctx.moveTo(0, centerY + getPipeRadiusAt(0));
+            for (let x = 0; x <= width; x += 4) {
+                ctx.lineTo(x, centerY + getPipeRadiusAt(x));
+            }
+            ctx.lineTo(width, height);
+            ctx.lineTo(0, height);
+            ctx.closePath();
+            ctx.fillStyle = '#1e293b';
+            ctx.fill();
+
+            // Rohr-Konturen / Ränder hervorheben
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#475569'; // Slate-600 Line
+            
+            // Obere Innenkante
+            ctx.beginPath();
+            for (let x = 0; x <= width; x += 5) {
+                if (x === 0) ctx.moveTo(x, centerY - getPipeRadiusAt(x));
+                else ctx.lineTo(x, centerY - getPipeRadiusAt(x));
+            }
+            ctx.stroke();
+
+            // Untere Innenkante
+            ctx.beginPath();
+            for (let x = 0; x <= width; x += 5) {
+                if (x === 0) ctx.moveTo(x, centerY + getPipeRadiusAt(x));
+                else ctx.lineTo(x, centerY + getPipeRadiusAt(x));
+            }
+            ctx.stroke();
+
+            // Optische Kennzeichnung der Widerstandszone (Pfeile/R-Markierung)
+            ctx.save();
+            ctx.setLineDash([4, 4]);
+            ctx.strokeStyle = 'rgba(244, 63, 94, 0.4)'; // Rose highlight
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(constrictStart, 10);
+            ctx.lineTo(constrictStart, height - 10);
+            ctx.moveTo(constrictEnd, 10);
+            ctx.lineTo(constrictEnd, height - 10);
+            ctx.stroke();
+            ctx.restore();
+
+            // Textmarkierung Engstelle
+            ctx.fillStyle = '#f43f5e';
+            ctx.font = 'bold 12px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('ENGSTELLE (R)', width * 0.5, 25);
+
+            // --- 3. Teilchen-Animation (Ladungen Q) ---
+
+            // Basis-Geschwindigkeit berechnen (Proportional zu I = U/R)
+            const baseSpeed = I * 1.8;
+
+            particles.forEach((p) => {
+                // Aktueller Rohrradius am Punkt x des Teilchens
+                const currentRadius = getPipeRadiusAt(p.x);
+
+                // Engstellen-Verlangsamung & Stau-Phänomen:
+                // Wenn Teilchen sich der Engstelle nähern und durchfließen, passt sich die lokale Dichte an
+                let localSpeedFactor = 1.0;
+                
+                // Vor der Engstelle leichtes Abbremsen (Stau)
+                if (p.x > constrictStart - 60 && p.x < constrictStart) {
+                    localSpeedFactor = 0.75;
+                } 
+                // Direkt in der Engstelle
+                else if (p.x >= constrictStart && p.x <= constrictEnd) {
+                    // Abhängig von der Enge steigt der Reibungswiderstand
+                    localSpeedFactor = Math.max(0.3, targetConstrictedRadius / normalPipeRadius);
+                }
+
+                // x-Position aktualisieren
+                p.x += baseSpeed * p.speedMultiplier * localSpeedFactor;
+
+                // Loop-Funktion: Teilchen, die rechts austreten, treten links wieder ein
+                if (p.x > width + 10) {
+                    p.x = -10;
+                    p.yOffset = (Math.random() - 0.5) * 0.8; // Neue zufällige Höhenverteilung
+                }
+
+                // Y-Position dynamisch an den aktuellen Rohrquerschnitt anpassen
+                // Damit bleiben Teilchen immer exakt innerhalb der verengten Grenzen!
+                const allowedMargin = Math.max(2, currentRadius - p.radius - 2);
+                const particleY = centerY + p.yOffset * allowedMargin;
+
+                // Teilchen (Ladung Q / Elektron) zeichnen
+                ctx.beginPath();
+                ctx.arc(p.x, particleY, p.radius, 0, Math.PI * 2);
+
+                // Farbverlauf der Teilchen je nach Geschwindigkeit/Spannung
+                const particleGradient = ctx.createRadialGradient(
+                    p.x - 2, particleY - 2, 1,
+                    p.x, particleY, p.radius
+                );
+                particleGradient.addColorStop(0, '#ffffff');
+                particleGradient.addColorStop(0.6, '#60a5fa'); // Hellblau
+                particleGradient.addColorStop(1, '#1d4ed8');   // Dunkelblau
+
+                ctx.fillStyle = particleGradient;
+                ctx.fill();
+
+                // Zarter Glow-Effekt
+                ctx.strokeStyle = 'rgba(147, 197, 253, 0.6)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Minus-Zeichen auf Elektronen zeichnen
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 9px sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('-', p.x, particleY);
+            });
+
+            // Erneuter Aufruf für geschmeidige 60 FPS Animation
+            requestAnimationFrame(animate);
+        }
+
+        // --- Event Listener & UI Updates ---
+
+        function updateValues() {
+            U = parseFloat(sliderU.value);
+            R = parseFloat(sliderR.value);
+            I = U / R;
+
+            // UI Text-Aktualisierungen
+            valU.textContent = U.toFixed(1);
+            valR.textContent = R.toFixed(1);
+            valI.textContent = I.toFixed(2);
+
+            labelSliderU.textContent = U.toFixed(1) + ' V';
+            labelSliderR.textContent = R.toFixed(1) + ' Ω';
+        }
+
+        sliderU.addEventListener('input', updateValues);
+        sliderR.addEventListener('input', updateValues);
+
+        // Erstes Update ausführen & Animation starten
+        updateValues();
+        animate();
+
+    </script>
+</body>
+</html>
