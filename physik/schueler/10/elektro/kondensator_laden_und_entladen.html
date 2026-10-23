@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kondensator – Laden und Entladen mit LEDs und Umschalter</title>
+<style>
+:root{
+  font-family:Arial,Helvetica,sans-serif;
+  color:#e7edf5;
+  background:#101827;
+}
+*{box-sizing:border-box}
+body{margin:0;padding:24px;background:#101827;color:#e7edf5}
+main{max-width:1380px;margin:auto}
+h1{font-size:clamp(23px,3vw,35px);margin:0 0 8px}
+p{line-height:1.5}
+.sub{color:#a6b5c8;margin:0 0 24px}
+.panel{background:#1b2738;border:1px solid #354357;border-radius:16px;padding:18px;margin-bottom:16px}
+.controls{display:flex;flex-wrap:wrap;gap:10px}
+button{background:#29374b;color:#e7edf5;border:1px solid #53667d;border-radius:12px;padding:14px 20px;cursor:pointer;font-size:17px;font-weight:650}
+button.selected{background:#165c71;border-color:#5bccd5}
+button:hover{filter:brightness(1.1)}
+svg{display:block;width:100%;height:auto}
+.wire{fill:none;stroke:#9daec4;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.symbol{fill:none;stroke:#dee6ed;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.caption{font-size:16px;fill:#c7d3df}
+.small{font-size:13px;fill:#a6b5c8}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.metric{background:#111e2f;padding:13px;border-radius:10px}
+.metric span{display:block;font-size:13px;color:#a6b5c8;margin-bottom:6px}
+.metric strong{font-size:clamp(15px,2.4vw,25px)}
+.config{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.visuals{display:grid;grid-template-columns:minmax(520px,1.65fr) minmax(340px,1fr);gap:18px;align-items:start}
+.visual-card{background:#111e2f;border:1px solid #2d3d50;border-radius:14px;padding:14px}
+.visual-title{margin:0 0 8px;font-size:18px}
+label{display:block;margin-bottom:10px;font-weight:600;font-size:18px}
+output{font-weight:700}
+input[type="range"]{
+  width:100%;
+  -webkit-appearance:none;
+  appearance:none;
+  background:transparent;
+  margin:14px 0 8px;
+}
+input[type="range"]:focus{outline:none}
+input[type="range"]::-webkit-slider-runnable-track{
+  height:14px;background:#36465a;border-radius:999px;border:1px solid #53667d;
+}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:34px;height:34px;border-radius:50%;
+  background:#43cfe0;border:3px solid #d7fbff;cursor:pointer;
+  margin-top:-11px;box-shadow:0 0 0 3px rgba(67,207,224,.15);
+}
+input[type="range"]::-moz-range-track{
+  height:14px;background:#36465a;border-radius:999px;border:1px solid #53667d;
+}
+input[type="range"]::-moz-range-thumb{
+  width:34px;height:34px;border-radius:50%;
+  background:#43cfe0;border:3px solid #d7fbff;cursor:pointer;
+}
+.note{font-size:13px;color:#b8c6d7}
+.bar{height:13px;background:#36465a;border-radius:10px;overflow:hidden;margin-top:15px}
+.fill{height:100%;width:0;background:#e8b148}
+.graph{min-height:380px}
+.graph svg{width:100%;height:auto}
+ol{line-height:1.9;padding-left:24px}
+@media(max-width:1100px){
+  .visuals{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  body{padding:12px}
+  .panel{padding:12px}
+  .config{grid-template-columns:1fr}
+  .metrics{grid-template-columns:1fr;gap:8px}
+  .metric{padding:8px}
+  .caption{font-size:14px}
+  button{font-size:15px;padding:12px 15px}
+  label{font-size:16px}
+  input[type="range"]::-webkit-slider-thumb{width:30px;height:30px;margin-top:-9px}
+  input[type="range"]::-moz-range-thumb{width:30px;height:30px}
+}
+</style>
+</head>
+<body>
+<main>
+  <h1>Kondensator: Laden und Entladen mit LEDs</h1>
+  <p class="sub">Interaktive Schaltung mit Umschalter S1 (Laden – Aus – Entladen). Die LEDs zeigen die jeweilige Stromrichtung und werden mit abnehmendem Strom dunkler.</p>
+
+  <section class="panel">
+    <div class="controls">
+      <button data-mode="charge">1 · Laden</button>
+      <button data-mode="off" class="selected">0 · Aus</button>
+      <button data-mode="discharge">2 · Entladen</button>
+      <button id="reset">↺ Zurücksetzen</button>
+    </div>
+  </section>
+
+  <section class="panel visuals">
+    <div class="visual-card">
+      <h2 class="visual-title">Stromkreis</h2>
+      <svg viewBox="0 0 900 480" role="img" aria-label="Schaltplan: Die positive Kondensatorplatte ist über einen einpoligen Umschalter entweder mit dem Ladezweig aus 9-Volt-Batterie, Widerstand und grüner LED oder dem Entladezweig aus roter LED, Widerstand und Masse verbunden. Kondensator-Minus und Batterie-Minus liegen an Masse.">
+        <defs><filter id="glow"><feGaussianBlur stdDeviation="13"/></filter></defs>
+        <path class="wire" d="M90 280 V400 H750 V316"/>
+        <path class="wire" d="M90 202 V95 H200"/>
+        <rect x="70" y="202" width="40" height="78" rx="6" fill="#23374b" stroke="#71859b"/>
+        <path class="symbol" d="M72 221 H108 M80 251 H100"/><text x="44" y="225" class="caption">+</text><text x="44" y="255" class="caption">−</text><text x="90" y="183" text-anchor="middle" class="caption">9 V</text>
+        <path d="M200 95 h10 l10 -13 14 26 14 -26 14 26 14 -26 14 13 h10" stroke="#e4b45e" stroke-width="3" fill="none"/><text x="251" y="62" text-anchor="middle" class="caption">R₁</text>
+        <path class="wire" d="M300 95 H344 M390 95 H455 V155"/>
+        <path d="M344 76 V114 L380 95 Z" fill="#1ebc70" stroke="#a5f2c8" stroke-width="2"/><path d="M390 76 V114" stroke="#a5f2c8" stroke-width="4"/>
+        <path d="M354 75 l-14 -19 m28 19 l-14 -19" stroke="#66e4a1" stroke-width="2.5"/><path d="M337 58 l3 -10 7 7 M351 58 l3 -10 7 7" fill="none" stroke="#66e4a1" stroke-width="2"/>
+        <circle id="green-glow" cx="367" cy="95" r="31" fill="#19ed83" filter="url(#glow)" opacity="0"/>
+        <text x="367" y="145" text-anchor="middle" class="caption">LED grün</text>
+        <circle cx="455" cy="155" r="7" fill="#e6eff8"/><circle cx="640" cy="155" r="7" fill="#e6eff8"/><circle cx="548" cy="245" r="7" fill="#e6eff8"/>
+        <path id="lever" d="M548 245 L548 193" stroke="#f0b84b" stroke-width="7" stroke-linecap="round"/>
+        <text x="548" y="283" text-anchor="middle" class="caption">S1</text><text x="455" y="180" text-anchor="middle" class="small">Laden</text><text x="640" y="180" text-anchor="middle" class="small">Entladen</text>
+        <path class="wire" d="M640 155 H750 V189"/>
+        <path d="M730 189 H770 L750 222 Z" fill="#e34b53" stroke="#ffc3c6" stroke-width="2"/><path d="M730 228 H770" stroke="#ffc3c6" stroke-width="4"/>
+        <path d="M766 208 l19 -14 M766 222 l19 -14" stroke="#ff939c" stroke-width="2.5"/><path d="M779 193 l9 -1 -2 9 M779 207 l9 -1 -2 9" fill="none" stroke="#ff939c" stroke-width="2"/>
+        <circle id="red-glow" cx="750" cy="209" r="29" fill="#fa454e" filter="url(#glow)" opacity="0"/>
+        <text x="805" y="217" class="caption">LED rot</text>
+        <path class="wire" d="M750 228 V254"/>
+        <path d="M750 254 v6 l-13 9 26 12 -26 12 26 12 -13 9 v6" stroke="#e4b45e" stroke-width="3" fill="none"/><text x="788" y="291" class="caption">R₂</text>
+        <path class="wire" d="M548 245 V323 H570 V330"/><path d="M532 330 H608 M532 353 H608" stroke="#e7b459" stroke-width="7" stroke-linecap="round"/><path class="wire" d="M570 353 V400"/>
+        <text x="625" y="348" class="caption">C</text><text x="614" y="326" fill="#e9b54d" font-size="19">+</text><text x="614" y="368" fill="#67aee9" font-size="19">−</text>
+        <g id="charges"></g>
+        <circle cx="90" cy="400" r="5" fill="#b9c9d9"/><circle cx="570" cy="400" r="5" fill="#b9c9d9"/><circle cx="750" cy="400" r="5" fill="#b9c9d9"/>
+        <g id="particles"></g>
+        <text x="35" y="448" class="small">Schaltungsprinzip · R₁ und R₂ begrenzen den LED-Strom · Masse ist der gemeinsame Rückleiter</text>
+      </svg>
+
+      <div class="metrics">
+        <div class="metric"><span>Spannung am Kondensator</span><strong id="uc">0,00 V</strong></div>
+        <div class="metric"><span>Stromstärke im aktiven Zweig</span><strong id="ic">0,00 mA</strong></div>
+        <div class="metric"><span>LED</span><strong id="led-status">Beide aus</strong></div>
+      </div>
+      <div class="bar"><div class="fill" id="progress"></div></div>
+    </div>
+
+    <div class="visual-card graph">
+      <h2 class="visual-title">Spannungsverlauf</h2>
+      <svg id="plot" viewBox="0 0 430 330" role="img" aria-label="Diagramm der Kondensatorspannung über die letzten 40 Sekunden">
+        <path d="M52 22 V280 H415" stroke="#8090a3" fill="none" stroke-width="2"/>
+        <path d="M52 72 H415 M52 128 H415 M52 184 H415 M52 240 H415" stroke="#40526a" stroke-dasharray="5 6"/>
+        <text x="10" y="28" fill="#a6b5c8" font-size="14">9 V</text>
+        <text x="10" y="78" fill="#a6b5c8" font-size="14">7 V</text>
+        <text x="10" y="134" fill="#a6b5c8" font-size="14">5 V</text>
+        <text x="10" y="190" fill="#a6b5c8" font-size="14">3 V</text>
+        <text x="10" y="246" fill="#a6b5c8" font-size="14">1 V</text>
+        <text x="35" y="284" fill="#a6b5c8" font-size="14">0</text>
+        <path id="curve" d="M52 280" fill="none" stroke="#41d7b1" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+        <text id="timeleft" x="52" y="310" fill="#a6b5c8" font-size="13">0 s</text>
+        <text id="timeright" x="415" y="310" text-anchor="end" fill="#a6b5c8" font-size="13">40 s</text>
+      </svg>
+      <p id="description">Der Schalter steht auf Aus. Der Kondensator ist ungeladen.</p>
+    </div>
+  </section>
+
+  <section class="panel config">
+    <div>
+      <label for="r">Vorwiderstände R₁ = R₂: <output id="rv">1.000 Ω</output></label>
+      <input type="range" id="r" min="0" max="4" step="1" value="2"/>
+      <p class="note">Größerer Widerstand: geringerer Strom, schwächere LEDs und längere Lade- bzw. Entladezeit.</p>
+    </div>
+    <div>
+      <label for="c">Kapazität C: <output id="cv">2.200 µF</output></label>
+      <input type="range" id="c" min="0" max="4" step="1" value="2"/>
+      <p class="note">Größere Kapazität: längere Lade- und Entladezeit.</p>
+    </div>
+  </section>
+
+  <section class="panel">
+    <strong>Aufgaben für den Unterricht</strong>
+    <ol>
+      <li>Schalte auf „Laden“. Beobachte die grüne LED und die Stromstärke.</li>
+      <li>Schalte auf „Aus“. Was geschieht mit der Kondensatorspannung?</li>
+      <li>Schalte auf „Entladen“. Warum erlischt die rote LED allmählich?</li>
+      <li>Vergrößere die Kapazität und wiederhole den Versuch. Was verändert sich?</li>
+    </ol>
+    <p class="note">Vereinfachtes physikalisches Modell: Durchlassspannung der grünen LED ca. 2,1 V, der roten LED ca. 1,9 V. Deshalb lädt der Kondensator über die grüne LED höchstens auf etwa 6,9 V. Beim Entladen über die rote LED verbleiben idealisiert etwa 1,9 V Restspannung. Für den realen Aufbau nur mit korrekt gepolten LEDs, Vorwiderständen und einem Elektrolytkondensator von mindestens 16 V Spannungsfestigkeit arbeiten.</p>
+  </section>
+</main>
+
+<script>
+(()=>{
+  'use strict';
+  const $=id=>document.getElementById(id), rValues=[330,470,1000,2200,4700], cValues=[470,1000,2200,4700,10000];
+  let r=1000,c=2200,u=0,mode='off',time=0,last=null,lastSample=0,hist=[[0,0]];
+  const fmt=(n,d=2)=>n.toLocaleString('de-DE',{minimumFractionDigits:d,maximumFractionDigits:d});
+  function amps(){
+    if(mode==='charge') return Math.max(0,9-2.1-u)/r;
+    if(mode==='discharge') return -Math.max(0,u-1.9)/r;
+    return 0;
+  }
+  function switchMode(m){
+    mode=m;
+    document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('selected',b.dataset.mode===m));
+    $('lever').setAttribute('d',m==='charge'?'M548 245 L455 155':m==='discharge'?'M548 245 L640 155':'M548 245 L548 193');
+    render();
+  }
+  document.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>switchMode(b.dataset.mode)));
+  $('reset').onclick=()=>{u=0;time=0;lastSample=0;hist=[[0,0]];switchMode('off');};
+  $('r').oninput=e=>{r=rValues[Number(e.target.value)];$('rv').textContent=fmt(r,0)+' Ω';render();};
+  $('c').oninput=e=>{c=cValues[Number(e.target.value)];$('cv').textContent=fmt(c,0)+' µF';render();};
+
+  function render(){
+    const ia=amps(), ma=Math.abs(ia)*1000, b=Math.min(1,ma/5), fraction=Math.max(0,Math.min(1,u/6.9));
+    $('uc').textContent=fmt(u)+' V';
+    $('ic').textContent=fmt(ma)+' mA';
+    $('led-status').textContent=ma<.04?'Beide aus':mode==='charge'?'Grün':'Rot';
+    $('progress').style.width=(fraction*100)+'%';
+    $('green-glow').setAttribute('opacity',mode==='charge'?String(.75*Math.sqrt(b)):'0');
+    $('red-glow').setAttribute('opacity',mode==='discharge'?String(.75*Math.sqrt(b)):'0');
+
+    let cs=[];
+    for(let j=0;j<Math.round(fraction*7);j++){
+      const x=538+j*9;
+      cs.push(`<text x="${x}" y="321" fill="#f1b649" font-size="13">+</text><text x="${x}" y="372" fill="#62aee6" font-size="13">−</text>`);
+    }
+    $('charges').innerHTML=cs.join('');
+
+    let spots=[];
+    const segments=mode==='charge'?[[110,95,200,95],[301,95,344,95],[390,95,455,95]]:[[640,155,710,155],[750,228,750,254],[750,320,750,387]];
+    for(let j=0;j<Math.min(12,Math.round(ma*1.5));j++){
+      const v=segments[j%3], s=(time*.65+j*.24)%1;
+      spots.push(`<circle cx="${v[0]+(v[2]-v[0])*s}" cy="${v[1]+(v[3]-v[1])*s}" r="4" fill="${mode==='charge'?'#38d68c':'#fa7176'}"/>`);
+    }
+    $('particles').innerHTML=spots.join('');
+
+    const left=Math.max(0,time-40);
+    const pts=hist.filter(z=>z[0]>=left).map(z=>`${(52+(z[0]-left)/40*363).toFixed(1)},${(280-z[1]/9*258).toFixed(1)}`);
+    $('curve').setAttribute('d',pts.length?'M'+pts.join(' L'):'M52 280');
+    $('timeleft').textContent=fmt(left,0)+' s';
+    $('timeright').textContent=fmt(left+40,0)+' s';
+
+    $('description').textContent=
+      mode==='charge'
+      ?'Die grüne LED leuchtet beim Laden. Je höher die Kondensatorspannung, desto kleiner wird der Ladestrom.'
+      :mode==='discharge'
+      ?'Der Kondensator liefert Strom über die rote LED und R₂. Mit sinkender Spannung wird die LED dunkler.'
+      :'Der Umschalter trennt beide Zweige. Im idealisierten Modell bleibt die Ladung erhalten.';
+  }
+
+  function animate(now){
+    if(last===null) last=now;
+    const dt=Math.min(.08,(now-last)/1000);
+    last=now;
+    u=Math.max(0,Math.min(9,u+amps()*dt/(c/1e6)));
+    time+=dt;
+    if(time-lastSample>=.12){
+      hist.push([time,u]);
+      lastSample=time;
+      if(hist.length>1400) hist.shift();
+    }
+    render();
+    requestAnimationFrame(animate);
+  }
+  switchMode('off');
+  requestAnimationFrame(animate);
+})();
+</script>
+</body>
+</html>
