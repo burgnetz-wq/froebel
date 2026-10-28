@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Joan Miró – Pro und Kontra | Interaktives Arbeitsblatt</title>
+<style>
+:root{--paper:#faf9f4;--white:#fff;--ink:#202426;--muted:#596268;--rule:#d5d8d5;--blue:#174caa;--red:#bc302c;--yellow:#f4cc49;--green:#27634e;--pale:#f1f3f0;--shadow:0 13px 32px rgba(30,42,54,.075)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.48}
+button,input,textarea{font:inherit}button{cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #1b65bc;outline-offset:3px}
+button:disabled{cursor:not-allowed;opacity:.45}
+.page{max-width:1170px;margin:auto;padding:20px 26px 70px}
+.hero{background:#161d22;color:white;border-radius:20px;padding:30px 36px 24px;position:relative;overflow:hidden;isolation:isolate}
+.hero::before{content:"";position:absolute;width:195px;height:195px;border:30px solid #225cbb;border-radius:50%;right:-50px;top:-125px;z-index:-1}
+.hero::after{content:"";position:absolute;width:45px;height:130px;border-radius:50%;background:#d34338;transform:rotate(24deg);right:100px;bottom:-80px;z-index:-1}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#f5d466;font-weight:800}
+h1{margin:8px 0 8px;font-size:clamp(28px,4vw,42px);font-weight:850;letter-spacing:-.035em;line-height:1.12}
+.hero p{margin:0;max-width:670px;color:#e2e8ea}
+.hero .hero-bottom{margin-top:19px;display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap}
+.hero-tag{display:inline-block;background:#f1cc4d;color:#182027;font-weight:800;border-radius:5px;padding:5px 11px;font-size:13px}
+.student-fields{display:flex;gap:12px;flex-wrap:wrap;margin:19px 0 17px}
+.student-fields label{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;font-weight:bold}
+.student-fields input{border:1px solid #bfc7ca;border-radius:8px;background:#fff;padding:9px 10px;min-width:150px;color:var(--ink)}
+.controls{display:flex;gap:9px;flex-wrap:wrap;align-items:center;padding:13px;background:#fff;border:1px solid var(--rule);border-radius:13px;box-shadow:var(--shadow)}
+.btn{border:1px solid #cbd1d3;background:white;color:#222e34;padding:10px 13px;border-radius:9px;font-size:14px;font-weight:700;line-height:1.2}
+.btn:hover:not(:disabled){background:#eaeef0}
+.btn.dark{background:#1b252c;border-color:#1b252c;color:#fff}.btn.dark:hover{background:#374650}
+.btn.warn{color:#a3332c;border-color:#d8afa9}
+.btn.sm{padding:7px 10px;font-size:12px}
+.btn.active,.btn[aria-pressed="true"]{background:#e1ecfa;color:#154d9e;border-color:#83b1e4}
+.flex-spacer{flex:1}
+.info-panel{margin-top:14px;background:#fff;border:1px solid var(--rule);border-left:5px solid var(--blue);border-radius:10px;padding:15px 19px;box-shadow:var(--shadow)}
+.info-panel[hidden],.panel[hidden],.help[hidden],.sample[hidden],.assessment[hidden]{display:none!important}
+.info-panel h2{margin:0 0 6px;font-size:19px}
+.info-panel p{margin:6px 0}
+.info-panel ol{padding-left:24px;margin:9px 0}
+.smallnote{color:var(--muted);font-size:13px}
+.tracker{display:grid;grid-template-columns:minmax(240px,1fr) auto;gap:20px;align-items:center;margin:20px 0 16px}
+.progress-label{display:flex;justify-content:space-between;align-items:center;gap:15px;font-size:13px;font-weight:bold;color:#354248;margin-bottom:7px}
+.progress-line{height:11px;background:#e6e9e9;border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0%;background:var(--blue);transition:width .2s ease}
+.counter{font-size:13px;color:#505b5e}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 18px}
+.tab{border:1px solid #cdd1d0;background:#fff;padding:12px 20px;border-radius:10px;font-weight:800}
+.tab.active{background:var(--ink);color:white;border-color:var(--ink)}
+.tab .count{font-weight:normal;font-size:12px;opacity:.8;margin-left:5px}
+.section-head{display:flex;align-items:flex-start;gap:15px;margin:25px 0 13px}
+.mark{width:43px;min-width:43px;height:43px;border-radius:13px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;font-weight:900}
+.pro .mark{background:#14664f}.contra .mark{background:#a72e2b}
+.section-head h2{font-size:25px;letter-spacing:-.025em;margin:0 0 1px}
+.section-head p{margin:0;color:var(--muted);font-size:14px}
+.column-head{display:grid;grid-template-columns:minmax(215px,0.9fr) minmax(370px,1.58fr);background:#e8eceb;border:1px solid var(--rule);border-radius:12px 12px 0 0;font-weight:800;color:#28363e;font-size:13px;text-transform:uppercase;letter-spacing:.055em}
+.column-head>div{padding:13px 18px}.column-head>div+div{border-left:1px solid #cbd0ce}
+.item{display:grid;grid-template-columns:minmax(215px,.9fr) minmax(370px,1.58fr);background:#fff;border:1px solid var(--rule);border-top:0;min-width:0}
+.item:last-child{border-radius:0 0 12px 12px;overflow:hidden}
+.item>div:first-child{padding:19px 19px;background:#fbfcfa}
+.item>div:nth-child(2){border-left:1px solid var(--rule);padding:17px 18px;min-width:0}
+.item-no{font-size:12px;font-weight:bold;letter-spacing:.06em;color:#697679;margin-bottom:6px}
+.argument{font-size:16px;font-weight:800;line-height:1.42}
+.argument-detail{color:#667179;font-size:13px;margin-top:7px}
+.reason{display:block;border-radius:8px;width:100%;height:90px;min-height:90px;resize:vertical;border:1px solid #b8c2c4;background:#fff;padding:11px 12px;color:#172831}
+.reason::placeholder{color:#8a969b}
+.row-footer{display:flex;justify-content:space-between;gap:7px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.hint-tools{display:flex;gap:6px;flex-wrap:wrap}
+.hint-btn{padding:7px 10px;background:#f6f8f7;border:1px solid #d7dedd;border-radius:7px;font-size:12px;color:#30434a;font-weight:bold}
+.hint-btn[aria-expanded="true"]{background:#e7f0fc;border-color:#9dbce2;color:#164a97}
+.hint-btn:hover{background:#e8efee}
+.charcount{font-size:12px;color:#6f7a7c;white-space:nowrap}
+.help{margin-top:9px;border-radius:7px;padding:10px 12px;font-size:13px;background:#f3f7fc;border-left:3px solid #3b74c2}
+.help strong{color:#154d9c}
+.sample-toggle{border:0;padding:5px 0;background:transparent;color:#18569b;text-align:left;text-decoration:underline;text-underline-offset:3px;font-size:13px;margin-top:10px}
+.sample{margin-top:10px;border:1px solid #cad7c7;background:#f4f8f2;border-radius:9px;padding:12px 14px}
+.sample strong{font-size:13px;color:#2c5c44}
+.sample p{margin:5px 0 0;font-size:14px}
+.self-check{border-top:1px solid #d1dbd2;padding-top:11px;margin-top:12px}
+.self-check>p{font-size:13px;font-weight:bold;margin:0 0 8px}
+.ratings{display:flex;gap:6px;flex-wrap:wrap}
+.rate-btn{font-size:12px;font-weight:bold;padding:7px 9px;border:1px solid #bec9c5;border-radius:7px;background:#fff}
+.rate-btn[aria-pressed="true"]{background:#174b3a;color:#fff;border-color:#174b3a}
+.rate-btn:hover{background:#e9efe8}
+.rating-caption{margin-top:8px;color:var(--muted);font-size:12px}
+.assessment{border-top:5px solid #1d579e}
+.assessment .score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.score-item{background:#f0f3f3;border-radius:9px;padding:13px}
+.score-number{font-size:29px;font-weight:900;line-height:1}
+.score-label{color:#526064;font-size:12px;margin-top:4px}
+.mini{background:#fff4df;border-left:3px solid #e0a53b;padding:11px 13px;border-radius:5px;font-size:13px}
+.footer{text-align:center;color:#677174;font-size:12px;margin-top:28px}
+.print-answer{display:none}
+@media (max-width:730px){.page{padding:10px 12px 50px}.hero{padding:25px 21px}.tracker{grid-template-columns:1fr;gap:8px}.column-head{display:none}.item{grid-template-columns:1fr;gap:0;border-top:1px solid var(--rule);margin-bottom:9px;border-radius:10px;overflow:hidden}.item>div:first-child{padding:13px 15px;border-bottom:1px solid #e3e5e5}.item>div:nth-child(2){border-left:0;padding:13px 15px}.section-head{margin-top:20px}.controls{padding:10px}.tabs .tab{flex:1;padding:12px 8px}.student-fields label{flex:1;min-width:100px}.student-fields input{width:100%;min-width:0}.assessment .score-grid{grid-template-columns:1fr 1fr 1fr}.score-number{font-size:23px}.score-item{padding:9px}}
+@media print{@page{size:A4;margin:11mm}html,body{background:white!important;color:black!important;font-size:11pt}.page{max-width:none;padding:0}.hero{background:#fff!important;color:black!important;padding:2mm 0 4mm;border-radius:0;border-bottom:2px solid black}.hero::before,.hero::after,.eyebrow,.hero-bottom,.controls,.tracker,.tabs,.hint-tools,.sample-toggle,.sample,.help,.row-footer,.assessment,.footer{display:none!important}h1{color:black;font-size:21pt!important}.hero p{color:#333;font-size:10pt}.student-fields{margin:4mm 0}.student-fields input{border:0;border-bottom:1px solid #444;border-radius:0}.section-head{margin:5mm 0 3mm}.mark{height:27px;width:27px;min-width:27px;color:black!important;border:1px solid #444;background:#fff!important;font-size:12pt}.section-head h2{font-size:16pt}.column-head{display:grid;grid-template-columns:35% 65%;background:#eee!important;print-color-adjust:exact}.column-head>div{padding:6px 8px}.panel{display:block!important}.item{grid-template-columns:35% 65%;break-inside:avoid;border-color:#999}.item>div:first-child{padding:7px 8px}.item>div:nth-child(2){padding:7px 8px;border-color:#999}.argument{font-size:11pt}.argument-detail{display:none}.item-no{font-size:9pt}.reason{display:none}.print-answer{display:block;min-height:42px;white-space:pre-wrap;word-break:break-word;font-size:10pt}.print-answer:empty::after{content:"__________________________________________________________________";color:#aaa}.info-panel{display:none!important}}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="hero">
+  <div class="eyebrow">Kunst · Surrealismus · Argumentieren</div>
+  <h1>Joan Miró – Kinderleicht?</h1>
+  <p>„Das kann doch jedes Kind!“ – Du prüfst diese Behauptung, indem du Pro- und Kontra-Argumente begründest.</p>
+  <div class="hero-bottom"><span class="hero-tag">Interaktives Arbeitsblatt · Klasse 9/10</span><span style="font-size:13px;color:#ccd6db">Offline nutzbar · Antworten bleiben in diesem Browser</span></div>
+</header>
+<div class="student-fields">
+  <label>Name <input type="text" id="student" aria-label="Name" autocomplete="name" placeholder="Dein Name"></label>
+  <label>Klasse <input type="text" id="klasse" aria-label="Klasse" placeholder="z. B. 10"></label>
+  <label>Datum <input type="date" id="datum" aria-label="Datum"></label>
+</div>
+<nav class="controls" aria-label="Werkzeuge">
+  <button class="btn dark" id="tasksBtn" aria-controls="tasksPanel" aria-expanded="false">Aufgaben anzeigen</button>
+  <button class="btn" id="gradeBtn" aria-controls="assessment" aria-expanded="false">Bewertung anzeigen</button>
+  <button class="btn" id="speakBtn" title="Liest die Arbeitsanweisung vor, sofern dein Browser eine deutsche Stimme anbietet">▶ Vorlesen</button>
+  <div class="flex-spacer"></div>
+  <button class="btn" id="printBtn">Drucken / PDF</button>
+  <button class="btn warn" id="resetBtn">Zurücksetzen</button>
+</nav>
+<section class="info-panel" id="tasksPanel" hidden>
+  <h2>Deine Aufgaben</h2>
+  <ol>
+    <li>Wähle Pro oder Kontra. Lies die vorgegebenen Argumente.</li>
+    <li>Begründe <strong>mindestens acht Pro- und acht Kontra-Argumente</strong>. Schreibe jeweils zwei bis drei eigene Sätze oder nenne ein treffendes Bildbeispiel.</li>
+    <li>Bei Schwierigkeiten kannst du eine <strong>Denkfrage</strong> und einen <strong>Satzanfang</strong> einblenden.</li>
+    <li>Vergleiche anschließend mit einer Musterbegründung und schätze deine Antwort selbst ein.</li>
+  </ol>
+  <p class="smallnote">Eine Begründung erklärt, <strong>warum</strong> ein Argument zutrifft. Die Wiederholung des Arguments allein reicht nicht. Die Musterbegründung ist nur ein möglicher Lösungsweg.</p>
+</section>
+<div class="tracker" aria-live="polite">
+  <div><div class="progress-label"><span>Bearbeitungsstand</span><span id="progressLabel">0 von 20 begründet</span></div><div class="progress-line"><div class="progress-fill" id="progressFill"></div></div></div>
+  <div class="counter" id="goalLabel">Ziel: mindestens 8 Pro und 8 Kontra</div>
+</div>
+<div class="tabs" role="tablist" aria-label="Argumente auswählen">
+  <button role="tab" aria-selected="true" class="tab active" data-tab="pro" id="tab-pro">Pro <span class="count" id="countPro">0/10</span></button>
+  <button role="tab" aria-selected="false" class="tab" data-tab="contra" id="tab-contra">Kontra <span class="count" id="countContra">0/10</span></button>
+  <button role="tab" aria-selected="false" class="tab" data-tab="all" id="tab-all">Alle Argumente</button>
+</div>
+<main id="workspace">
+  <section id="proPanel" class="panel pro" aria-label="Pro-Argumente">
+    <header class="section-head"><div class="mark">+</div><div><h2>Pro: Mirós Kunst wirkt einfach</h2><p>Diese Argumente stützen die Behauptung, dass Kinder ähnliche Bilder malen könnten.</p></div></header>
+    <div class="column-head"><div>Argument</div><div>Deine Begründung / dein Beispiel</div></div>
+    <div id="proRows"></div>
+  </section>
+  <section id="contraPanel" class="panel contra" aria-label="Kontra-Argumente" hidden>
+    <header class="section-head"><div class="mark">−</div><div><h2>Kontra: Mirós Kunst ist anspruchsvoll</h2><p>Diese Argumente widersprechen der Behauptung, dass seine Kunst jeder ohne Weiteres schaffen könnte.</p></div></header>
+    <div class="column-head"><div>Argument</div><div>Deine Begründung / dein Beispiel</div></div>
+    <div id="contraRows"></div>
+  </section>
+</main>
+<section class="info-panel assessment" id="assessment" hidden aria-live="polite">
+  <h2>Bewertung anzeigen – Selbsteinschätzung</h2>
+  <p>Vergleiche deine Antworten mit den Musterbegründungen. Vergib danach je Argument <strong>2 Punkte</strong> (treffend und erklärt), <strong>1 Punkt</strong> (teilweise erklärt) oder <strong>0 Punkte</strong> (nicht ausreichend).</p>
+  <div class="score-grid">
+    <div class="score-item"><div id="scoreTotal" class="score-number">0/40</div><div class="score-label">Punkte bei 20 Argumenten</div></div>
+    <div class="score-item"><div id="reviewed" class="score-number">0</div><div class="score-label">Selbst eingeschätzt</div></div>
+    <div class="score-item"><div id="completed" class="score-number">0</div><div class="score-label">Begründungen geschrieben</div></div>
+  </div>
+  <div class="mini">Die Punkte entstehen durch deine <strong>eigene Einschätzung</strong>. Das Programm überprüft den Inhalt deiner Texte nicht automatisch. Eine Begründung zählt für den Bearbeitungsstand, sobald sie mindestens 20 Zeichen enthält.</div>
+</section>
+<footer class="footer">Die Texte werden nur im lokalen Speicher dieses Browsers gesichert. Keine Anmeldung und keine Internetverbindung erforderlich.</footer>
+</div>
+<script>
+'use strict';
+const ITEMS = [
+ {id:'p1',side:'pro',a:'Einfache Formen',d:'Kreise, Punkte, Sterne und Striche kann fast jeder zeichnen.',q:'Welche Formen erkennst du? Welche davon lassen sich mit wenigen Strichen zeichnen?',s:'Viele Formen wirken einfach, weil …',m:'Ein Kreis oder ein Stern gelingt schon mit wenigen Strichen. Wer nur einzelne Zeichen aus einem Miró-Bild betrachtet, braucht dafür keine komplizierte Zeichentechnik.'},
+ {id:'p2',side:'pro',a:'Wenige Farben',d:'Miró verwendet häufig kräftige Grundfarben.',q:'Welche Farben fallen zuerst auf? Braucht man viele verschiedene Farbtöne?',s:'Man benötigt nur wenige Farben, denn …',m:'In vielen Werken reichen auffällige Farben wie Rot, Gelb und Blau zusammen mit Schwarz. Eine solche kleine Farbauswahl können auch Kinder einsetzen.'},
+ {id:'p3',side:'pro',a:'Keine realistische Darstellung',d:'Figuren und Gegenstände müssen nicht naturgetreu aussehen.',q:'Muss ein Vogel wirklich aussehen wie ein Vogel? Muss eine Figur richtige Körperproportionen haben?',s:'Eine genaue Darstellung ist nicht nötig, weil …',m:'Mirós Vögel oder Menschen müssen keine naturgetreuen Proportionen haben. Deshalb kann man ähnliche Fantasiegestalten malen, ohne den menschlichen Körper oder Tiere genau zeichnen zu können.'},
+ {id:'p4',side:'pro',a:'Kindliche Fantasie',d:'Die Bilder erinnern teilweise an spontane Kinderzeichnungen.',q:'Was an den Figuren erinnert dich an Bilder aus der Grundschule?',s:'Die Bilder wirken kindlich, da …',m:'Ungewöhnliche Wesen, Sterne und verspielte Linien erinnern an Fantasiezeichnungen von Kindern. Sie verbinden Dinge frei miteinander, statt die Wirklichkeit genau abzubilden.'},
+ {id:'p5',side:'pro',a:'Wenig technische Perfektion',d:'Perspektive sowie Licht und Schatten sind häufig kaum sichtbar.',q:'Siehst du Fluchtpunkte, räumliche Tiefe oder ausgearbeitete Schatten?',s:'Auf den ersten Blick braucht man kaum klassische Zeichentechniken, weil …',m:'In vielen Bildern fehlen Fluchtpunktperspektive und plastische Schattierung. Für den ersten Eindruck kommt es daher nicht darauf an, einen Körper räumlich perfekt auszuarbeiten.'},
+ {id:'p6',side:'pro',a:'Scheinbare Zufälligkeit',d:'Manche Formen wirken willkürlich verteilt.',q:'Kannst du sofort erkennen, nach welcher Ordnung die Formen angeordnet sind?',s:'Die Anordnung scheint zufällig, denn …',m:'Die Linien und Zeichen stehen zum Teil weit voneinander entfernt oder wirken ungeordnet. Ein Betrachter könnte glauben, Miró habe sie ohne festen Plan auf die Fläche gesetzt.'},
+ {id:'p7',side:'pro',a:'Leichte Nachahmung',d:'Einzelne Symbole lassen sich rasch kopieren.',q:'Welche kleine Figur oder welches Zeichen könntest du sofort nachzeichnen?',s:'Einzelne Motive lassen sich leicht kopieren, weil …',m:'Ein Stern, ein Auge oder eine geschwungene Linie lässt sich relativ schnell übernehmen. Dafür muss man den ganzen künstlerischen Gedanken des Bildes nicht verstanden haben.'},
+ {id:'p8',side:'pro',a:'Einfache Materialien',d:'Papier, Pinsel und Farben reichen für ähnliche Bilder.',q:'Welche Werkzeuge würdest du selbst für ein Bild im Miró-Stil verwenden?',s:'Für ein ähnliches Bild reichen gewöhnliche Materialien, denn …',m:'Für eine eigene Arbeit mit Zeichen, Linien und Farbflächen genügen oft Papier, Pinsel und wenige Farben. Teure Spezialwerkzeuge sind für einen ersten Versuch nicht notwendig.'},
+ {id:'p9',side:'pro',a:'Schwer erkennbare Aussage',d:'Die Bedeutung mancher Bilder bleibt unklar.',q:'Kannst du auf Anhieb sagen, worum es in einem der Bilder geht?',s:'Manche Betrachter halten die Bilder für einfach, weil …',m:'Viele Betrachter erkennen keine eindeutige Handlung und keine klare Botschaft. Deshalb könnten sie vermuten, dass hinter den Zeichen keine besondere Überlegung steckt.'},
+ {id:'p10',side:'pro',a:'Geschmackssache',d:'Nicht jeder erkennt in den Bildern einen besonderen künstlerischen Wert.',q:'Wie könnte jemand reagieren, der nur wirklichkeitsgetreue Gemälde als Kunst schätzt?',s:'Jemand könnte Mirós Kunst unterschätzen, wenn …',m:'Wer große Genauigkeit und wirklichkeitsnahe Darstellungen erwartet, hält einfache Linien und Zeichen vielleicht für wenig beeindruckend. Das ist ein persönliches Urteil, kein Beweis für mangelnde Qualität.'},
+ {id:'k1',side:'contra',a:'Bewusste Komposition',d:'Miró setzt Formen, Linien und Farben gezielt ins Verhältnis.',q:'Wie verändert sich ein Bild, wenn du eine rote Form von der Mitte an den Rand verschiebst?',s:'Die Anordnung ist nicht beliebig, weil …',m:'Die Wirkung verändert sich, wenn ein großer Fleck, eine Linie oder eine kleine Figur an einer anderen Stelle steht. Miró gestaltet bewusst das Verhältnis zwischen leeren und gefüllten Flächen.'},
+ {id:'k2',side:'contra',a:'Eigene Bildsprache',d:'Seine Zeichen bilden einen wiedererkennbaren Stil.',q:'Welche Zeichen tauchen bei mehreren Werken wieder auf?',s:'Man erkennt Mirós Handschrift, weil …',m:'Augen, Sterne, Vögel und eigenwillige Linien erscheinen in vielen Werken. Durch ihre besondere Gestaltung entwickelt Miró einen Stil, den man wiedererkennen kann.'},
+ {id:'k3',side:'contra',a:'Versteckte Bedeutungen',d:'Ein Zeichen kann mehrere Assoziationen auslösen.',q:'Wofür könnte ein Stern stehen – nur für einen Himmelskörper?',s:'Ein Symbol kann mehr bedeuten, als man zunächst sieht, beispielsweise …',m:'Ein Stern kann an den Nachthimmel, an Hoffnung oder an einen Traum erinnern. Mirós Symbole lassen unterschiedliche Deutungen zu und sind nicht bloß einfache Zeichnungen.'},
+ {id:'k4',side:'contra',a:'Farbwirkung',d:'Starke Kontraste erzeugen Spannung oder Ruhe.',q:'Wie wirken Rot und Schwarz nebeneinander? Was bewirkt eine große blaue Fläche?',s:'Die Farben beeinflussen die Stimmung, indem …',m:'Ein kräftiger roter Fleck auf ruhigem Grund zieht sofort die Aufmerksamkeit auf sich. Miró nutzt Farbkontraste und freie Flächen, um die Wirkung seiner Bilder zu steuern.'},
+ {id:'k5',side:'contra',a:'Künstlerische Erfahrung',d:'Die Schlichtheit entstand aus Übung und Experimenten.',q:'Kann ein Künstler erst kompliziert zeichnen lernen und später bewusst vereinfachen?',s:'Hinter der einfachen Wirkung steckt Erfahrung, denn …',m:'Miró beschäftigte sich über viele Jahre mit Zeichnung, Malerei und verschiedenen Techniken. Seine vereinfachten Formen entstanden aus bewussten künstlerischen Entscheidungen und nicht allein aus fehlendem Können.'},
+ {id:'k6',side:'contra',a:'Kreative Originalität',d:'Einen eigenen Stil zu entwickeln ist schwieriger als ihn zu kopieren.',q:'Ist es dasselbe, ein Zeichen zu erfinden oder ein bekanntes Zeichen nachzuzeichnen?',s:'Nachahmen ist leichter als Erfinden, weil …',m:'Ein bekanntes Miró-Zeichen kann jeder abzeichnen. Eine neue, überzeugende Bildsprache mit eigenen Formen und Ideen zu entwickeln, verlangt hingegen Fantasie und viele Entscheidungen.'},
+ {id:'k7',side:'contra',a:'Wirkung auf den Betrachter',d:'Die Bilder öffnen Raum für Fantasie und Deutung.',q:'Könnten zwei Mitschüler dasselbe Bild verschieden erklären?',s:'Das Bild ist anspruchsvoll, weil es beim Betrachter …',m:'Die Zeichen erzählen nicht alles direkt. Gerade deshalb überlegen verschiedene Betrachter, welche Wesen oder Erlebnisse sie erkennen, und kommen zu unterschiedlichen Deutungen.'},
+ {id:'k8',side:'contra',a:'Bewusste Vereinfachung',d:'Miró entscheidet sich absichtlich gegen eine genaue Abbildung.',q:'Was ist der Unterschied zwischen „nicht können“ und „nicht wollen“?',s:'Die Reduktion auf einfache Formen ist eine Entscheidung, weil …',m:'Miró verzichtet oft absichtlich auf Details und eine wirklichkeitsnahe Darstellung. Er wählt nur die Formen aus, die für die gewünschte Bildwirkung nötig sind.'},
+ {id:'k9',side:'contra',a:'Surrealistische Gedankenwelt',d:'Seine Werke verbinden Traum, Fantasie und Wirklichkeit.',q:'Welche merkwürdigen Wesen oder unmöglichen Situationen wirken wie aus einem Traum?',s:'Die Bilder gehören zum Surrealismus, denn …',m:'Vertraute Motive erscheinen verwandelt und in ungewöhnlichen Beziehungen. Dadurch entstehen traumartige Bildwelten, die sich nicht nach den Regeln des Alltags richten.'},
+ {id:'k10',side:'contra',a:'Kunstgeschichtliche Bedeutung',d:'Miró entwickelte eine prägende Form moderner Kunst.',q:'Was sagt es aus, wenn spätere Künstler sich an einer Bildsprache orientieren?',s:'Seine Kunst ist bedeutsam, weil …',m:'Miró gehört zu den bekannten Künstlern des Surrealismus. Seine ungewöhnliche Zeichenwelt erweiterte die Ausdrucksmöglichkeiten der modernen Malerei und beeinflusste spätere Künstler.'}
+];
+const STORAGE_KEY='miro-pro-kontra-interaktiv-v1';
+let state={name:'',klasse:'',date:'',answers:{},ratings:{},shown:{},hints:{}};
+try{const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||'null');if(saved && typeof saved==='object'){state={...state,...saved,answers:saved.answers||{},ratings:saved.ratings||{},shown:saved.shown||{},hints:saved.hints||{}}}}catch(_){/* browser may block storage */}
+const $=id=>document.getElementById(id);
+function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(_){}}
+function escaped(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderItems(){
+  for(const side of ['pro','contra']){
+    $(side==='pro'?'proRows':'contraRows').innerHTML=ITEMS.filter(x=>x.side===side).map((x,i)=>{
+      const q=Boolean(state.hints[x.id+'q']);const s=Boolean(state.hints[x.id+'s']);const shown=Boolean(state.shown[x.id]);const rating=state.ratings[x.id];
+      return `<article class="item" data-item="${x.id}">
+        <div><div class="item-no">${side==='pro'?'PRO':'KONTRA'} ${String(i+1).padStart(2,'0')}</div><div class="argument">${escaped(x.a)}</div><div class="argument-detail">${escaped(x.d)}</div></div>
+        <div><label class="smallnote" for="answer-${x.id}" style="display:block;margin-bottom:6px;font-weight:bold">Warum trifft das Argument zu?</label>
+          <textarea class="reason" id="answer-${x.id}" data-id="${x.id}" aria-label="Begründung zu ${escaped(x.a)}" placeholder="Schreibe hier deine eigene Begründung …" spellcheck="true"></textarea>
+          <div class="print-answer" id="print-${x.id}"></div>
+          <div class="row-footer"><div class="hint-tools">
+            <button class="hint-btn" type="button" data-act="question" data-id="${x.id}" aria-expanded="${q}">? Denkfrage</button>
+            <button class="hint-btn" type="button" data-act="starter" data-id="${x.id}" aria-expanded="${s}">✎ Satzanfang</button>
+          </div><span class="charcount" id="len-${x.id}">0 Zeichen</span></div>
+          <div class="help" id="question-${x.id}" ${q?'':'hidden'}><strong>Denkfrage:</strong> ${escaped(x.q)}</div>
+          <div class="help" id="starter-${x.id}" ${s?'':'hidden'}><strong>Satzanfang:</strong> ${escaped(x.s)}</div>
+          <button class="sample-toggle" type="button" data-act="sample" data-id="${x.id}" aria-expanded="${shown}">${shown?'Musterbegründung ausblenden':'Musterbegründung zum Vergleichen anzeigen'}</button>
+          <div class="sample" id="sample-${x.id}" ${shown?'':'hidden'}><strong>Eine mögliche Begründung:</strong><p>${escaped(x.m)}</p>
+            <div class="self-check"><p>Wie gut hast du das Argument selbst begründet?</p>
+              <div class="ratings" role="group" aria-label="Selbsteinschätzung für ${escaped(x.a)}">
+                ${[[2,'2 P. · treffend'],[1,'1 P. · teilweise'],[0,'0 P. · fehlt']].map(([value,label])=>`<button type="button" class="rate-btn" data-act="rate" data-id="${x.id}" data-score="${value}" aria-pressed="${rating===value}">${label}</button>`).join('')}
+              </div><div class="rating-caption">Überprüfe zuerst deine eigene Antwort. Die Musterbegründung muss nicht wortgleich sein.</div>
+            </div></div>
+        </div>
+      </article>`
+    }).join('');
+  }
+  document.querySelectorAll('textarea.reason').forEach(el=>{el.value=state.answers[el.dataset.id]||'';updateLen(el.dataset.id)});
+  updateProgress();
+}
+function updateLen(id){const value=state.answers[id]||'';const e=$('len-'+id);if(e)e.textContent=value.length+' Zeichen';const p=$('print-'+id);if(p)p.textContent=value}
+function complete(id){return (state.answers[id]||'').trim().length>=20}
+function updateProgress(){
+  const n=ITEMS.filter(x=>complete(x.id)).length;
+  const np=ITEMS.filter(x=>x.side==='pro'&&complete(x.id)).length;
+  const nk=ITEMS.filter(x=>x.side==='contra'&&complete(x.id)).length;
+  $('progressLabel').textContent=n+' von 20 begründet';$('progressFill').style.width=(n/20*100)+'%';
+  $('countPro').textContent=np+'/10';$('countContra').textContent=nk+'/10';
+  $('goalLabel').textContent=np>=8&&nk>=8?'✓ Mindestziel erreicht!':`Ziel: Pro ${np}/8 · Kontra ${nk}/8`;
+  const checked=ITEMS.filter(x=>Object.prototype.hasOwnProperty.call(state.ratings,x.id));
+  const score=checked.reduce((sum,x)=>sum+Number(state.ratings[x.id]),0);
+  $('scoreTotal').textContent=score+'/40';$('reviewed').textContent=checked.length+'/20';$('completed').textContent=n;
+}
+function switchTab(selected){
+  for(const t of ['pro','contra','all']){const active=t===selected;const btn=$('tab-'+t);btn.classList.toggle('active',active);btn.setAttribute('aria-selected',String(active))}
+  $('proPanel').hidden=selected==='contra';$('contraPanel').hidden=selected==='pro';
+}
+function togglePanel(btnId,panelId){const panel=$(panelId);panel.hidden=!panel.hidden;$(btnId).setAttribute('aria-expanded',String(!panel.hidden));if(!panel.hidden)panel.scrollIntoView({behavior:'smooth',block:'nearest'})}
+$('student').value=state.name;$('klasse').value=state.klasse;$('datum').value=state.date;
+for(const [inputId,key] of [['student','name'],['klasse','klasse'],['datum','date']])$(inputId).addEventListener('input',e=>{state[key]=e.target.value;save()});
+renderItems();
+$('tasksBtn').addEventListener('click',()=>togglePanel('tasksBtn','tasksPanel'));
+$('gradeBtn').addEventListener('click',()=>{updateProgress();togglePanel('gradeBtn','assessment')});
+$('printBtn').addEventListener('click',()=>window.print());
+$('resetBtn').addEventListener('click',()=>{if(!window.confirm('Alle Begründungen, Hilfen, Punkte und Namensangaben wirklich löschen?'))return;state={name:'',klasse:'',date:'',answers:{},ratings:{},shown:{},hints:{}};save();$('student').value='';$('klasse').value='';$('datum').value='';renderItems();switchTab('pro');$('assessment').hidden=true;$('gradeBtn').setAttribute('aria-expanded','false')});
+for(const btn of document.querySelectorAll('.tab'))btn.addEventListener('click',()=>switchTab(btn.dataset.tab));
+$('workspace').addEventListener('input',e=>{if(!e.target.matches('textarea.reason'))return;const id=e.target.dataset.id;state.answers[id]=e.target.value;updateLen(id);updateProgress();save()});
+$('workspace').addEventListener('click',e=>{
+ const b=e.target.closest('button[data-act]');if(!b)return;const {act,id}=b.dataset;
+ if(act==='question'||act==='starter'){
+   const key=id+(act==='question'?'q':'s');state.hints[key]=!state.hints[key];$(''+(act==='question'?'question':'starter')+'-'+id).hidden=!state.hints[key];b.setAttribute('aria-expanded',String(state.hints[key]));save();
+ } else if(act==='sample'){
+   state.shown[id]=!state.shown[id];$('sample-'+id).hidden=!state.shown[id];b.setAttribute('aria-expanded',String(state.shown[id]));b.textContent=state.shown[id]?'Musterbegründung ausblenden':'Musterbegründung zum Vergleichen anzeigen';save();
+ } else if(act==='rate'){
+   state.ratings[id]=Number(b.dataset.score);
+   document.querySelectorAll(`button[data-act="rate"][data-id="${id}"]`).forEach(el=>el.setAttribute('aria-pressed',String(Number(el.dataset.score)===state.ratings[id])));
+   updateProgress();save();
+ }
+});
+let speaking=false;
+$('speakBtn').addEventListener('click',()=>{
+ if(!('speechSynthesis'in window)){alert('Dein Browser unterstützt das Vorlesen nicht.');return}
+ if(speaking){speechSynthesis.cancel();speaking=false;$('speakBtn').textContent='▶ Vorlesen';return}
+ const current=document.querySelector('.tab.active')?.dataset.tab||'pro';
+ const text='Joan Miró. Das kann doch jedes Kind! Begründe mindestens acht Pro- und acht Kontra-Argumente. Schreibe jeweils zwei bis drei Sätze. Nutze bei Bedarf eine Denkfrage oder einen Satzanfang. '+(current==='contra'?'Kontra. Mirós Kunst ist anspruchsvoll.':current==='pro'?'Pro. Mirós Kunst wirkt einfach.':'Pro und Kontra.');
+ const speech=new SpeechSynthesisUtterance(text);speech.lang='de-DE';speech.rate=.94;
+ speaking=true;$('speakBtn').textContent='■ Stopp';speech.onend=speech.onerror=()=>{speaking=false;$('speakBtn').textContent='▶ Vorlesen'};speechSynthesis.cancel();speechSynthesis.speak(speech);
+});
+</script>
+</body>
+</html>
