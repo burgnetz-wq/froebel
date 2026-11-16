@@ -1,0 +1,79 @@
+<!doctype html><html lang="de"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Optik · Übungstest Klasse 7</title><style>
+*{box-sizing:border-box}body{margin:0;background:#eef3f8;color:#152739;font:clamp(17px,2vw,22px)/1.5 system-ui,sans-serif}header{background:#132c44;color:white;padding:1.6rem max(5vw,calc((100vw - 1000px)/2))}header p{margin:.3rem 0;color:#d4e5f3}h1{margin:0;font-size:2rem}main{max-width:1030px;margin:auto;padding:1.2rem}article{background:white;border:1px solid #b3c4d4;border-radius:16px;padding:clamp(16px,4vw,36px);margin:1rem 0}h2{font-size:1.35rem;margin:.35rem 0 1rem}button,select{font:inherit;color:inherit;border:1px solid #8ba4bc;border-radius:9px;padding:.5rem .75rem;background:white}button{cursor:pointer}button:disabled{cursor:default;opacity:.55}button:not(:disabled):hover{border-color:#075898;background:#e4f1ff;color:#152739}:focus-visible{outline:3px solid #0470bd;outline-offset:3px}.choice{display:block;width:100%;text-align:left;margin:.55rem 0}.choice[aria-pressed=true]{background:#dbeaff;border-color:#1e5b96}.choice.right{background:#def3e6;border-color:#237249;opacity:1}.choice.wrong{background:#fbe4df;border-color:#a53329;opacity:1}.bar{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem}.primary{background:#174e79;color:white}.meta{color:#415d75;font-weight:650}#feedback:not(:empty){background:#eef5fa;border-left:4px solid #325f83;padding:.65rem 1rem}progress{width:100%;accent-color:#174e79}details{margin-top:1rem}li{margin:.4rem 0}
+</style><header><p>Physik · Klasse 7</p><h1>Optik – Übungstest</h1><p>30 Fragen zur Vorbereitung auf den Test. Pro Frage ist eine Antwort richtig.</p></header><main>
+<div class="bar"><label for="topic">Thema</label><select id="topic"></select><button id="reset">Neu starten</button></div>
+<article><div id="meta" class="meta"></div><progress id="progress" aria-label="Geprüfte Fragen"></progress><h2 id="question" tabindex="-1"></h2><div id="choices" aria-label="Antwortmöglichkeiten"></div><p id="feedback" role="status"></p><div class="bar"><button id="prev">Zurück</button><button class="primary" id="check">Antwort prüfen</button><button id="next">Weiter</button></div></article>
+<details><summary>Stand nach Themen</summary><ul id="scores"></ul></details>
+<details><summary>Abgleich mit den Unterrichtsmaterialien</summary><p>Der Hauptteil deckt Lichtquellen und Sichtbarkeit, Lichtstrahlen und Lichtbündel, Schattenraum, Kern- und Halbschatten, den optischen Rauchmelder sowie gerichtete und diffuse Reflexion ab. Das Reflexionsmaterial enthält auch Spiegelbild, Periskop und Fahrradrückstrahler.</p></details></main>
+<script>
+'use strict';
+const groups=[{"name":"Lichtquellen und beleuchtete Körper","items":[["Welche der folgenden Sachen erzeugt selbst sichtbares Licht?","Eine brennende Kerze","Ein Spiegel","Der Mond","Ein weißes Blatt","Die Flamme sendet eigenes Licht aus."],["Warum sieht man den Mond von der Erde aus?","Er reflektiert Sonnenlicht.","Er erzeugt sein sichtbares Licht selbst.","Er lässt Sonnenlicht durch sich hindurch.","Er sammelt Licht von Straßenlaternen.","Der Mond ist ein beleuchteter Körper und reflektiert Sonnenlicht."],["Eine Taschenlampe beleuchtet ein Buch. Welcher Lichtweg lässt dich das Buch sehen?","Lampe → Buch → Auge","Auge → Buch → Lampe","Buch → Lampe → Auge","Lampe → Auge → Buch","Das Buch wirft einen Teil des Lampenlichts ins Auge zurück."],["Ein Buch liegt in einem vollständig dunklen Raum. Weshalb kannst du es auch nach längerer Zeit nicht sehen?","Vom Buch gelangt kein sichtbares Licht ins Auge.","Das Auge sendet zu wenig Licht zum Buch.","Das Buch ist in der Dunkelheit durchsichtig.","Das Buch reflektiert sein eigenes Licht nach hinten.","Ein unbeleuchtetes Buch erzeugt kein eigenes sichtbares Licht."],["Was ändert sich für einen ausgeschalteten Bildschirm, wenn Sonnenlicht auf ihn fällt?","Er wird vom Sonnenlicht beleuchtet.","Er wird selbst zur Lichtquelle.","Er erzeugt sein eigenes Licht im Glas.","Er wird durch Sonnenlicht unsichtbar.","Beleuchtet zu sein beschreibt, ob Licht auf den Körper fällt."],["Welche Aussage über einen Fahrradreflektor im Licht eines Autoscheinwerfers stimmt?","Er wirft Licht in Richtung des Autos zurück.","Er schaltet eine eingebaute Lampe ein.","Er lässt das gesamte Licht durch.","Er schluckt das gesamte Licht.","Der Rückstrahler nutzt fremdes Licht und lenkt es weitgehend zur Quelle zurück."]]},{"name":"Lichtausbreitung","items":[["Wie verläuft ein Lichtstrahl in gleichmäßig beschaffener Luft?","Geradlinig","Zickzackförmig","Im Kreis","Nach unten gekrümmt","In gleichmäßig beschaffener Luft bleibt die Ausbreitungsrichtung gleich."],["Was zeigt die Pfeilspitze an einem eingezeichneten Lichtstrahl?","Die Ausbreitungsrichtung","Die Helligkeit","Die Farbe","Die Breite des Lichtbündels","Der Pfeil zeigt, in welche Richtung sich das Licht ausbreitet."],["Wie stellt man im Strahlenmodell die Breite eines Lichtbündels dar?","Durch den Abstand seiner Randstrahlen","Durch die Größe einer Pfeilspitze","Durch die Dicke der Mittellinie","Durch die Länge eines einzelnen Strahls","Die äußeren Strahlen begrenzen das Bündel."],["Drei Lochblenden geben eine gerade Sichtlinie zur Lampe frei. Die mittlere wird so verschoben, dass sie diese Linie vollständig verdeckt. Was beobachtest du?","Die Lampe ist durch die Löcher nicht mehr direkt sichtbar.","Die Lampe erscheint seitlich versetzt.","Die Lampe erscheint heller.","Die Lampe bleibt unverändert sichtbar.","Das Licht kann der versperrten geraden Sichtlinie nicht folgen und biegt nicht zur versetzten Öffnung ab."],["Warum siehst du den Lichtweg einer Taschenlampe im Sprühnebel von der Seite?","Wassertröpfchen streuen Licht zu deinem Auge.","Wassertröpfchen leuchten von selbst.","Wassertröpfchen nehmen alles Licht auf.","Der Strahl dreht sich als Ganzes zu dir.","Ein Teil des Lichts ändert an den Tröpfchen seine Richtung und erreicht das Auge."]]},{"name":"Optischer Rauchmelder","items":[["Welches Bauteil sendet in der Messkammer Licht aus?","Die Leuchtdiode","Die Fotodiode","Der Summer","Die Trennwand","Die LED ist der Sender. Die Fotodiode ist der lichtempfindliche Empfänger."],["Welches Bauteil reagiert auf ankommendes Streulicht?","Die Fotodiode","Die Leuchtdiode","Die Trennwand","Der Summer","Die Fotodiode wandelt einfallendes Licht in ein elektrisches Signal um."],["Welche Aufgabe hat die Trennwand in der Modellskizze zum Rauchmelder?","Sie blockiert den direkten Lichtweg von der LED zum Sensor.","Sie bündelt das LED-Licht auf dem Sensor.","Sie misst die Stärke des LED-Lichts.","Sie hält Rauch von der gesamten Messkammer fern.","Die Trennwand schirmt den Sensor gegen direktes LED-Licht ab."],["Warum erreicht bei Rauch ein Teil des LED-Lichts den Sensor?","Rauchpartikel streuen Licht zum Sensor.","Rauchpartikel machen die Trennwand durchsichtig.","Der Lichtstrahl biegt ohne Richtungswechsel um die Trennwand.","Rauchpartikel schalten eine zweite Lichtquelle ein.","Der Lichtweg ändert sich am Partikel. Vom Partikel zum Sensor verläuft er wieder geradlinig."],["Wann löst die Elektronik den Alarm aus?","Wenn der Sensor ausreichend Streulicht meldet.","Sobald die LED erstmals Licht aussendet.","Sobald die Trennwand den direkten Lichtweg abschirmt.","Wenn der Sensor trotz Rauch dunkel bleibt.","Die Elektronik wertet das Signal des Sensors aus."],["Wofür stehen die feinen Milchtröpfchen im Modellversuch mit Wasser, Milch und Taschenlampe?","Für die Rauchpartikel","Für die Trennwand","Für die LED","Für den Lichtsensor","Milchtröpfchen machen im Modell dieselbe Wirkung sichtbar: Sie streuen einfallendes Licht."]]},{"name":"Schattenbildung","items":[["Welcher Aufbau erzeugt den Schatten einer undurchsichtigen Scheibe auf einem Schirm?","Lampe → Scheibe → Schirm","Scheibe → Lampe → Schirm","Lampe → Schirm → Scheibe","Schirm → Lampe → Scheibe","Die Scheibe muss zwischen Lampe und Schirm einen Teil des Lichts abfangen."],["Was bezeichnet man als Schattenraum?","Den räumlichen Bereich hinter einem Hindernis, in den kein oder weniger direktes Licht von der Quelle gelangt.","Nur den dunklen Fleck auf dem Schirm.","Die gesamte Fläche vor der Lampe.","Den beleuchteten Rand des Hindernisses.","Das Schattenbild auf dem Schirm ist ein Schnitt durch den Schattenraum."],["Zwei kleine Lampen beleuchten einen Schirm. Von Punkt P aus ist eine Lampe sichtbar, die andere verdeckt. Wo liegt P?","Im Halbschatten","Im Kernschatten","Im voll beleuchteten Bereich","Im Überlappungsbereich beider Einzelschatten","P erhält direktes Licht von genau einer Lampe."],["Von einem Punkt auf dem Schirm aus sind beide Lampen durch den Gegenstand verdeckt. Wo liegt der Punkt?","Im Kernschatten","Im Halbschatten","Im voll beleuchteten Bereich","Auf der Lichtquelle","Von keiner der beiden Lampen erreicht direktes Licht diesen Punkt."],["Lampe und Schirm bleiben stehen. Du schiebst die Scheibe geradewegs näher an die kleine Lampe. Was geschieht mit ihrem Schattenbild?","Es wird größer.","Es wird kleiner.","Es bleibt gleich groß.","Es verschiebt sich nur seitlich.","Die Randstrahlen schließen von der Lampe aus einen größeren Winkel ein."],["Warum besitzt der Schatten bei einer ausgedehnten Leuchtfläche oft einen unscharfen Rand?","Am Rand ist jeweils nur ein Teil der Leuchtfläche verdeckt.","Die Randstrahlen biegen um das Hindernis.","Das Hindernis wird am Rand durchsichtig.","Alle Teile der Lichtquelle sind am Rand vollständig verdeckt.","Je nach Position im Halbschatten sieht man unterschiedlich viel von der Leuchtfläche."]]},{"name":"Reflexion an glatten und rauen Flächen","items":[["Zu welcher Linie misst man den Einfallswinkel?","Zum Lot am Auftreffpunkt","Zur Spiegeloberfläche","Zum reflektierten Strahl","Zu einer Waagerechten durch die Lampe","Das Lot steht am Auftreffpunkt senkrecht auf der Fläche."],["Ein Lichtstrahl trifft unter 30° zur Spiegeloberfläche auf. Wie groß ist der Reflexionswinkel zum Lot?","60°","30°","90°","120°","Zur Flächennormalen sind es 90° − 30° = 60°. Der Reflexionswinkel ist ebenso groß."],["Parallele Strahlen fallen schräg auf einen ebenen Spiegel. Wie verlaufen sie nach der Reflexion?","Sie bleiben parallel.","Sie laufen in einem Brennpunkt zusammen.","Sie verteilen sich fächerförmig.","Sie laufen auf ihren eigenen Wegen zurück.","Die Lote sind parallel. Damit stimmen auch die Reflexionsrichtungen überein."],["Warum wirft eine raue Oberfläche ein paralleles Lichtbündel in viele Richtungen zurück?","Kleine Flächenstücke sind unterschiedlich geneigt.","Alle Flächenstücke haben dasselbe Lot.","Das Bündel wird schon vor der Oberfläche in verschiedene Richtungen gelenkt.","Die Fläche erzeugt eigenes Licht in vielen Richtungen.","An jedem Flächenstück gilt das Reflexionsgesetz zum dortigen Lot."],["Warum eignet sich eine matte weiße Leinwand zur Projektion im Klassenzimmer?","Sie wirft Projektorlicht zu vielen Sitzplätzen zurück.","Sie wirft Projektorlicht nur zum Projektor zurück.","Sie lässt das Projektorlicht überwiegend hinter die Leinwand fallen.","Sie leuchtet bei jeder Projektion überall gleich hell.","Die diffuse Reflexion verteilt das Licht vom Bild in viele Richtungen."],["Eine Person steht 75 cm vor einem ebenen Spiegel. Wo erscheint ihr Bild?","75 cm hinter dem Spiegel","37,5 cm hinter dem Spiegel","Auf der Spiegelfläche","75 cm vor dem Spiegel","Bild und Gegenstand sind gleich weit von der Spiegelebene entfernt."],["Wie hilft ein einfaches Periskop beim Blick über eine Mauer?","Zwei Spiegel lenken das Licht nacheinander zum Auge um.","Zwei Spiegel erzeugen Licht jenseits der Mauer.","Ein Spiegel lässt Licht durch die Mauer dringen.","Ein Spiegel vergrößert die ganze Mauer.","An beiden Spiegeln ändert das Licht durch gerichtete Reflexion seine Richtung."]]}];
+const el=id=>document.getElementById(id);
+const all=groups.flatMap((group,topic)=>group.items.map(([question,right,...rest])=>{
+  const explanation=rest.pop();
+  return {topic,question,right,explanation,options:[right,...rest]};
+}));
+function shuffle(values){
+  const copy=[...values];
+  for(let i=copy.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [copy[i],copy[j]]=[copy[j],copy[i]];
+  }
+  return copy;
+}
+function resetAnswers(){
+  all.forEach(item=>Object.assign(item,{options:shuffle(item.options),selected:null,checked:false}));
+}
+const topic=el('topic');
+['Alle Fragen',...groups.map(g=>g.name)].forEach((name,i)=>topic.add(new Option(name,i-1)));
+let index=0;
+function questions(){
+  const selected=Number(topic.value);
+  return all.filter(item=>selected===-1||item.topic===selected);
+}
+function render(focus=false){
+  const list=questions();
+  const item=list[index];
+  const checked=list.filter(q=>q.checked);
+  el('meta').textContent=groups[item.topic].name+' · Frage '+(index+1)+' von '+list.length+' · '+checked.filter(q=>q.selected===q.right).length+' richtig';
+  el('progress').max=list.length;
+  el('progress').value=checked.length;
+  el('question').textContent=item.question;
+  el('choices').replaceChildren();
+  item.options.forEach((option,i)=>{
+    const button=document.createElement('button');
+    button.type='button';
+    button.className='choice';
+    button.textContent='ABCD'[i]+' · '+option;
+    button.setAttribute('aria-pressed',String(item.selected===option));
+    button.disabled=item.checked;
+    if(item.checked&&option===item.right)button.classList.add('right');
+    if(item.checked&&option===item.selected&&option!==item.right)button.classList.add('wrong');
+    button.onclick=()=>{
+      item.selected=option;
+      [...el('choices').children].forEach((choice,n)=>choice.setAttribute('aria-pressed',String(n===i)));
+      el('check').disabled=false;
+    };
+    el('choices').append(button);
+  });
+  const result=item.selected===item.right?'Richtig. ':'Die richtige Antwort ist '+ 'ABCD'[item.options.indexOf(item.right)]+'. ';
+  el('feedback').textContent=item.checked?result+item.explanation:'';
+  el('check').disabled=item.checked||item.selected===null;
+  el('prev').disabled=index===0;
+  el('next').disabled=index===list.length-1;
+  el('scores').replaceChildren(...groups.map((group,i)=>{
+    const li=document.createElement('li');
+    const finished=all.filter(q=>q.topic===i&&q.checked);
+    li.textContent=group.name+' · '+finished.length+'/'+group.items.length+' geprüft · '+finished.filter(q=>q.selected===q.right).length+' richtig';
+    return li;
+  }));
+  if(focus)el('question').focus();
+}
+el('check').onclick=()=>{const item=questions()[index];item.checked=true;render();(el('next').disabled?el('question'):el('next')).focus();};
+el('prev').onclick=()=>{index--;render(true);};
+el('next').onclick=()=>{index++;render(true);};
+topic.onchange=()=>{index=0;render(true);};
+el('reset').onclick=()=>{if(all.some(q=>q.selected!==null)&&!confirm('Alle bisherigen Antworten löschen?'))return;resetAnswers();index=0;render(true);};
+resetAnswers();
+render();
+</script></html>
