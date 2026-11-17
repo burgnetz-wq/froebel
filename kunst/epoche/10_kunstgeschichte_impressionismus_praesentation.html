@@ -1,0 +1,365 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impressionismus – Kunstepoche im Überblick</title>
+<style>
+  :root{
+    --bg:#12100e;
+    --paper:#f6f1e7;
+    --ink:#221d18;
+    --muted:#6d6257;
+    --accent:#c2683a;
+    --accent2:#3f6d8c;
+    --line:rgba(34,29,24,.14);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:var(--bg);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    color:var(--ink);
+    overflow:hidden;
+  }
+  #stage{position:relative;width:100vw;height:100vh;overflow:hidden}
+
+  .slide{
+    position:absolute;inset:0;
+    background:var(--paper);
+    display:none;
+    opacity:0;
+    transform:scale(1.015);
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .slide.active{display:block}
+  .slide.shown{opacity:1;transform:scale(1)}
+
+  /* ---------- Titel-Slide ---------- */
+  .cover{
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    text-align:center;height:100%;padding:6vh 8vw;position:relative;
+    background:
+      radial-gradient(circle at 20% 18%, rgba(194,104,58,.22), transparent 55%),
+      radial-gradient(circle at 82% 78%, rgba(63,109,140,.22), transparent 55%),
+      var(--paper);
+  }
+  .cover .kicker{letter-spacing:.42em;text-transform:uppercase;font-size:clamp(.62rem,1.1vw,.9rem);color:var(--accent);margin-bottom:2.2vh}
+  .cover h1{font-size:clamp(2.6rem,8.5vw,7.5rem);font-weight:400;line-height:.95;letter-spacing:-.02em}
+  .cover .years{font-size:clamp(1rem,2.2vw,1.7rem);color:var(--muted);margin-top:2.4vh;font-style:italic}
+  .cover .lede{max-width:58ch;margin-top:4vh;font-size:clamp(.95rem,1.5vw,1.2rem);line-height:1.65;color:#3b332b}
+  .rule{width:120px;height:2px;background:var(--accent);margin:3.4vh auto 0;opacity:.7}
+
+  /* ---------- Text-Slide (Epoche/Merkmale) ---------- */
+  .textslide{height:100%;padding:9vh 9vw;display:flex;flex-direction:column;justify-content:center;overflow:auto}
+  .textslide h2{font-size:clamp(1.8rem,4.4vw,3.4rem);font-weight:400;margin-bottom:1vh}
+  .textslide .sub{color:var(--accent);letter-spacing:.28em;text-transform:uppercase;font-size:clamp(.6rem,1vw,.78rem);margin-bottom:2.6vh}
+  .cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2.2rem;margin-top:2vh}
+  .cols h3{font-size:clamp(1rem,1.6vw,1.25rem);font-weight:600;margin-bottom:.6rem;color:var(--accent2)}
+  .cols p,.cols li{font-size:clamp(.88rem,1.25vw,1.02rem);line-height:1.7;color:#3b332b}
+  .cols ul{list-style:none}
+  .cols li{padding-left:1.1em;position:relative;margin-bottom:.45em}
+  .cols li::before{content:"—";position:absolute;left:0;color:var(--accent);opacity:.7}
+
+  .timeline{display:flex;gap:1px;margin-top:4vh;background:var(--line)}
+  .timeline div{flex:1;background:var(--paper);padding:1rem .8rem}
+  .timeline b{display:block;color:var(--accent);font-size:.95rem;margin-bottom:.25rem}
+  .timeline span{font-size:.82rem;line-height:1.5;color:var(--muted)}
+
+  /* ---------- Werk-Slide ---------- */
+  .work{display:grid;grid-template-columns:1.15fr .85fr;height:100%}
+  .art{
+    position:relative;background:#1a1613;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .art img{width:100%;height:100%;object-fit:contain;padding:3.2vh 2.6vw}
+  .art::after{content:"";position:absolute;inset:0;box-shadow:inset -40px 0 60px -40px rgba(0,0,0,.7);pointer-events:none}
+  .info{padding:7vh 4vw;display:flex;flex-direction:column;justify-content:center;overflow:auto}
+  .num{font-size:clamp(3rem,7vw,6rem);line-height:1;color:var(--accent);opacity:.22;font-weight:700;margin-bottom:1vh}
+  .artist{font-size:clamp(1.35rem,2.6vw,2.15rem);font-weight:400;line-height:1.15}
+  .life{color:var(--muted);font-size:clamp(.75rem,1.1vw,.92rem);margin-top:.4rem;letter-spacing:.06em}
+  .divider{width:56px;height:2px;background:var(--accent);margin:2.2vh 0;opacity:.8}
+  .title{font-size:clamp(1.05rem,1.8vw,1.45rem);font-style:italic;color:var(--accent2);line-height:1.35}
+  .meta{font-size:clamp(.75rem,1.05vw,.88rem);color:var(--muted);margin-top:.6rem;line-height:1.6}
+  .desc{margin-top:2.4vh;font-size:clamp(.85rem,1.2vw,1rem);line-height:1.72;color:#3b332b}
+  .tag{
+    display:inline-block;margin-top:2.6vh;padding:.42em .9em;border:1px solid var(--line);
+    border-radius:100px;font-size:clamp(.68rem,.95vw,.8rem);color:var(--muted);letter-spacing:.05em;
+    align-self:flex-start;background:rgba(255,255,255,.5)
+  }
+
+  /* ---------- Schluss ---------- */
+  .grid-end{height:100%;padding:8vh 7vw;display:flex;flex-direction:column;justify-content:center}
+  .grid-end h2{font-size:clamp(1.8rem,4vw,3rem);font-weight:400;margin-bottom:3vh}
+  .thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:.7rem}
+  .thumbs figure{cursor:pointer;transition:transform .25s}
+  .thumbs figure:hover{transform:translateY(-5px)}
+  .thumbs img{width:100%;aspect-ratio:1/1;object-fit:cover;filter:saturate(.95);border-radius:2px}
+  .thumbs figcaption{font-size:.7rem;color:var(--muted);margin-top:.4rem;line-height:1.35}
+
+  /* ---------- Chrome ---------- */
+  #bar{position:fixed;top:0;left:0;height:3px;background:var(--accent);width:0;z-index:50;transition:width .35s ease}
+  #hud{
+    position:fixed;bottom:0;left:0;right:0;z-index:40;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:.7rem 1.4rem;background:linear-gradient(to top,rgba(18,16,14,.82),transparent);
+    color:#f6f1e7;font-size:.78rem;letter-spacing:.08em;pointer-events:none;
+  }
+  #hud .side{display:flex;gap:.5rem;pointer-events:auto}
+  button.nav,a.nav{
+    background:rgba(246,241,231,.1);border:1px solid rgba(246,241,231,.3);color:#f6f1e7;
+    font:inherit;padding:.4em .95em;border-radius:100px;cursor:pointer;transition:.2s;backdrop-filter:blur(4px)
+  }
+  button.nav:hover,a.nav:hover{background:var(--accent);border-color:var(--accent)}
+  #count{font-variant-numeric:tabular-nums;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+  #label{opacity:.8;text-shadow:0 1px 6px rgba(0,0,0,.6);max-width:40vw;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+
+  @media (max-width:880px){
+    .work{grid-template-columns:1fr;grid-template-rows:48% 52%}
+    .art img{padding:2vh 4vw}
+    .info{padding:3vh 7vw 9vh}
+    .num{font-size:2.4rem;margin-bottom:0}
+    .thumbs{grid-template-columns:repeat(3,1fr)}
+    #label{display:none}
+  }
+  a.nav{text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div id="stage"></div>
+<div id="hud">
+  <div id="label"></div>
+  <div id="count"></div>
+  <div class="side"><a class="nav home" href="10_kunstgeschichte_kunstepochen_uebersicht.html" aria-label="Zur Übersicht">⌂ Übersicht</a>
+    <button class="nav" id="prev">‹ Zurück</button>
+    <button class="nav" id="next">Weiter ›</button>
+  </div>
+</div>
+
+<script>
+const C = f => "https://commons.wikimedia.org/wiki/Special:FilePath/" + encodeURIComponent(f) + "?width=1400";
+
+const works = [
+ {artist:"Claude Monet", life:"1840–1926, Frankreich",
+  title:"Impression, soleil levant", year:"1872", medium:"Öl auf Leinwand, 48 × 63 cm", loc:"Musée Marmottan Monet, Paris",
+  file:"Monet - Impression, Sunrise.jpg",
+  tag:"Namensgeber der Epoche",
+  desc:"Der Hafen von Le Havre im Morgendunst. Ein Kritiker spottete 1874 über das skizzenhafte Bild und prägte damit den Namen der ganzen Bewegung. Monet interessiert nicht der Gegenstand, sondern das Licht: Die orangerote Sonne hat exakt dieselbe Helligkeit wie der graue Himmel – sie leuchtet allein durch den Farbkontrast."},
+
+ {artist:"Pierre-Auguste Renoir", life:"1841–1919, Frankreich",
+  title:"Bal du moulin de la Galette", year:"1876", medium:"Öl auf Leinwand, 131 × 175 cm", loc:"Musée d'Orsay, Paris",
+  file:"Auguste Renoir - Dance at Le Moulin de la Galette - Musée d'Orsay RF 2739 (derivative work - AutoContrast edit in LCH space).jpg",
+  tag:"Licht & Lebensfreude",
+  desc:"Sonntagnachmittag in einem Tanzlokal auf dem Montmartre. Renoir malte große Teile direkt vor Ort. Das durch Blätter fallende Sonnenlicht zerlegt er in flirrende blau-violette Flecken auf Gesichtern und Kleidung – für Zeitgenossen ein Skandal, für uns das Sinnbild impressionistischer Leichtigkeit."},
+
+ {artist:"Edgar Degas", life:"1834–1917, Frankreich",
+  title:"La classe de danse", year:"1873–1876", medium:"Öl auf Leinwand, 85 × 75 cm", loc:"Musée d'Orsay, Paris",
+  file:"Edgar Degas - The Ballet Class - Google Art Project.jpg",
+  tag:"Bewegung & Bildausschnitt",
+  desc:"Degas nannte sich lieber Realist als Impressionist: Er malte im Atelier, nicht im Freien. Sein Thema ist die Bewegung des Körpers – und der ungewöhnliche, wie zufällig fotografierte Ausschnitt. Angeschnittene Figuren, eine schräg fluchtende Diagonale und Einflüsse japanischer Holzschnitte machen die Szene zum Schnappschuss."},
+
+ {artist:"Édouard Manet", life:"1832–1883, Frankreich",
+  title:"Un bar aux Folies-Bergère", year:"1882", medium:"Öl auf Leinwand, 96 × 130 cm", loc:"Courtauld Gallery, London",
+  file:"Edouard Manet, A Bar at the Folies-Bergère.jpg",
+  tag:"Wegbereiter der Moderne",
+  desc:"Manets letztes großes Werk und ein Rätsel: Die Spiegelung der Barfrau stimmt perspektivisch nicht mit ihrer Haltung überein. Der melancholische, leere Blick inmitten des Pariser Vergnügungsbetriebs macht das Bild zu einer frühen Studie über Einsamkeit in der modernen Großstadt."},
+
+ {artist:"Camille Pissarro", life:"1830–1903, Frankreich/Dänisch-Westindien",
+  title:"Boulevard Montmartre, Morgen, bedeckter Himmel", year:"1897", medium:"Öl auf Leinwand, 73 × 92 cm", loc:"National Gallery of Victoria, Melbourne",
+  file:"Camille Pissarro - Boulevard Montmartre, morning, cloudy weather - Google Art Project.jpg",
+  tag:"Serie & Stadtleben",
+  desc:"Pissarro, der väterliche Mentor der Gruppe und einziger Teilnehmer aller acht Impressionisten-Ausstellungen, mietete ein Hotelzimmer und malte denselben Boulevard rund ein Dutzend Mal – zu jeder Tageszeit und Witterung. Nicht das Motiv wechselt, sondern die Atmosphäre."},
+
+ {artist:"Alfred Sisley", life:"1839–1899, Frankreich/Großbritannien",
+  title:"L'inondation à Port-Marly", year:"1876", medium:"Öl auf Leinwand, 60 × 81 cm", loc:"Musée d'Orsay, Paris",
+  file:"Sisley - The-Flood-At-Port-Marly,-1876.jpg",
+  tag:"Der reine Landschafter",
+  desc:"Sisley blieb als Einziger sein Leben lang konsequent bei der Landschaft. Das überschwemmte Seine-Ufer wird bei ihm nicht zur Katastrophe, sondern zum stillen Spiegel: Wasser, Hauswand und Wolken verschmelzen in perlgrauen und silbrigen Tönen. Ein Meister des Himmels, den er „das Mittel“ der Landschaft nannte."},
+
+ {artist:"Berthe Morisot", life:"1841–1895, Frankreich",
+  title:"Le berceau (Die Wiege)", year:"1872", medium:"Öl auf Leinwand, 56 × 46 cm", loc:"Musée d'Orsay, Paris",
+  file:"Berthe Morisot - The Cradle - Google Art Project.jpg",
+  tag:"Gründungsmitglied 1874",
+  desc:"Morisots Schwester betrachtet ihr schlafendes Kind. Das erste Werk, das sie 1874 in der legendären ersten Impressionisten-Ausstellung zeigte. Der hauchdünn gemalte Schleier über der Wiege trennt Mutter und Kind wie ein Vorhang – ein zart-ambivalentes Bild über Mutterschaft und weibliche Innenräume."},
+
+ {artist:"Gustave Caillebotte", life:"1848–1894, Frankreich",
+  title:"Rue de Paris, temps de pluie", year:"1877", medium:"Öl auf Leinwand, 212 × 276 cm", loc:"Art Institute of Chicago",
+  file:"Gustave Caillebotte - Jour de pluie à Paris.jpg",
+  tag:"Mäzen & Fotoblick",
+  desc:"Caillebotte finanzierte die Ausstellungen der Gruppe mit und sammelte ihre Bilder – seine Schenkung bildet den Kern des Musée d'Orsay. Sein eigener Stil ist kühler: glatte Malweise, strenge Perspektive, der weite Platz des Haussmann-Paris. Anonyme Passanten unter Schirmen – die Moderne als Gefühl von Distanz."},
+
+ {artist:"Mary Cassatt", life:"1844–1926, USA/Frankreich",
+  title:"The Boating Party", year:"1893–1894", medium:"Öl auf Leinwand, 90 × 117 cm", loc:"National Gallery of Art, Washington",
+  file:"Mary Cassatt - The Boating Party - Google Art Project.jpg",
+  tag:"Amerikanerin in Paris",
+  desc:"Cassatt brachte den Impressionismus nach Amerika – als Beraterin großer Sammler ebenso wie als Malerin. Hier zeigt sich der Einfluss japanischer Holzschnitte: große flache Farbfelder, ein hoher Horizont, die kräftige dunkle Silhouette des Ruderers als Gegengewicht zu Mutter und Kind."},
+
+ {artist:"Max Liebermann", life:"1847–1935, Deutschland",
+  title:"Papageienallee", year:"1902", medium:"Öl auf Leinwand, 88 × 72 cm", loc:"Kunsthalle Bremen",
+  file:"Liebermann - Papageienallee.jpeg",
+  tag:"Deutscher Impressionismus",
+  desc:"Der Amsterdamer Zoo als Lichtspiel: Sonnenflecken auf dem Sandweg, das leuchtende Rot und Blau der Papageien. Liebermann, Kopf der Berliner Secession, brachte die französische Freilichtmalerei nach Deutschland – zusammen mit Lovis Corinth und Max Slevogt das „Dreigestirn“ des deutschen Impressionismus."}
+];
+
+const slides = [];
+
+// Cover
+slides.push({label:"Titel", html:`
+<div class="cover">
+  <div class="kicker">Kunstepoche · ca. 1860 – 1900</div>
+  <h1>Impressionismus</h1>
+  <div class="years">10 Künstlerinnen und Künstler · 10 Schlüsselwerke</div>
+  <div class="rule"></div>
+  <p class="lede">„Malt nicht, was ihr wisst – malt, was ihr seht.“ Eine Handvoll Pariser Maler verlässt das Atelier, stellt die Staffelei ins Freie und fängt das flüchtige Licht eines Augenblicks ein. Die Kritik höhnt, das Publikum lacht – und die moderne Kunst beginnt.</p>
+</div>`});
+
+// Epoche
+slides.push({label:"Die Epoche", html:`
+<div class="textslide">
+  <div class="sub">Kontext</div>
+  <h2>Wie alles begann</h2>
+  <div class="cols">
+    <div>
+      <h3>Der Skandal von 1874</h3>
+      <p>Vom offiziellen „Salon“ abgelehnt, organisieren rund 30 Künstler 1874 im Atelier des Fotografen Nadar eine eigene Ausstellung. Der Kritiker Louis Leroy verspottet Monets „Impression, soleil levant“ – der Schimpfname „Impressionisten“ wird zum Programm. Bis 1886 folgen acht Gruppenausstellungen.</p>
+    </div>
+    <div>
+      <h3>Neue Technik, neue Bilder</h3>
+      <p>Ölfarbe in Zinntuben (ab 1841) und die tragbare Staffelei machen Malerei im Freien erst möglich. Die Eisenbahn bringt die Maler aufs Land, die Fotografie befreit die Kunst vom Abbildungsauftrag – und liefert zugleich neue, angeschnittene Bildausschnitte.</p>
+    </div>
+    <div>
+      <h3>Neue Themen</h3>
+      <p>Keine Götter, keine Helden, keine Geschichte. Stattdessen: Bahnhöfe, Boulevards, Cafés, Ausflüge, Tänzerinnen, Gärten. Das moderne Leben des Bürgertums – flüchtig, hell, unheroisch.</p>
+    </div>
+  </div>
+  <div class="timeline">
+    <div><b>1863</b><span>Salon des Refusés – Manets „Frühstück im Grünen“ empört Paris</span></div>
+    <div><b>1874</b><span>1. Impressionisten-Ausstellung bei Nadar</span></div>
+    <div><b>1877</b><span>Höhepunkt: 3. Ausstellung, Gruppe nennt sich selbst so</span></div>
+    <div><b>1886</b><span>8. und letzte Ausstellung – die Gruppe zerfällt</span></div>
+    <div><b>ab 1890</b><span>Wirkung in ganz Europa; Postimpressionismus folgt</span></div>
+  </div>
+</div>`});
+
+// Merkmale
+slides.push({label:"Merkmale", html:`
+<div class="textslide">
+  <div class="sub">Bildsprache</div>
+  <h2>Woran man ein impressionistisches Bild erkennt</h2>
+  <div class="cols">
+    <div>
+      <h3>Malweise</h3>
+      <ul>
+        <li>Sichtbare, lockere, oft pastose Pinselstriche</li>
+        <li>Farben nebeneinander gesetzt statt gemischt – das Auge mischt</li>
+        <li>Keine Konturlinien, weiche Übergänge</li>
+        <li>Skizzenhaft, oft „unfertig“ wirkend</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Licht &amp; Farbe</h3>
+      <ul>
+        <li>Pleinairmalerei – gemalt wird draußen vor dem Motiv</li>
+        <li>Helle, reine Palette; Schwarz wird gemieden</li>
+        <li>Farbige Schatten (blau, violett) statt grauer</li>
+        <li>Serien: dasselbe Motiv zu verschiedenen Tageszeiten</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Komposition</h3>
+      <ul>
+        <li>Zufällig wirkende Ausschnitte, angeschnittene Figuren</li>
+        <li>Ungewöhnliche Blickwinkel (von oben, schräg)</li>
+        <li>Einfluss der Fotografie und japanischer Holzschnitte</li>
+        <li>Momentaufnahme statt Erzählung</li>
+      </ul>
+    </div>
+  </div>
+</div>`});
+
+// Werke
+works.forEach((w,i)=>{
+  slides.push({label:`${w.artist} – ${w.title}`, html:`
+  <div class="work">
+    <div class="art"><img src="${C(w.file)}" alt="${w.title} von ${w.artist}" loading="lazy"></div>
+    <div class="info">
+      <div class="num">${String(i+1).padStart(2,"0")}</div>
+      <div class="artist">${w.artist}</div>
+      <div class="life">${w.life}</div>
+      <div class="divider"></div>
+      <div class="title">${w.title}, ${w.year}</div>
+      <div class="meta">${w.medium}<br>${w.loc}</div>
+      <p class="desc">${w.desc}</p>
+      <span class="tag">${w.tag}</span>
+    </div>
+  </div>`});
+});
+
+// Schluss
+slides.push({label:"Überblick & Wirkung", html:`
+<div class="grid-end">
+  <div class="sub" style="color:var(--accent);letter-spacing:.28em;text-transform:uppercase;font-size:.72rem;margin-bottom:1.2vh">Zusammenfassung</div>
+  <h2>Zehn Werke auf einen Blick</h2>
+  <div class="thumbs">
+    ${works.map((w,i)=>`<figure data-go="${i+3}"><img src="${C(w.file)}" alt="${w.title}"><figcaption><b>${w.artist.split(" ").slice(-1)}</b><br>${w.title.length>26?w.title.slice(0,24)+"…":w.title}, ${w.year}</figcaption></figure>`).join("")}
+  </div>
+  <div class="cols" style="margin-top:4vh">
+    <div>
+      <h3>Und danach?</h3>
+      <p>Der Impressionismus löst die Farbe vom Gegenstand – und öffnet damit die Tür zur gesamten Moderne. Aus ihm entwickeln sich Pointillismus (Seurat), Postimpressionismus (Cézanne, van Gogh, Gauguin), Fauvismus und schließlich der Expressionismus.</p>
+    </div>
+    <div>
+      <h3>Bildnachweis</h3>
+      <p>Alle Abbildungen sind gemeinfrei (public domain) und stammen von Wikimedia Commons.</p>
+    </div>
+  </div>
+</div>`});
+
+// ---- Engine ----
+const stage=document.getElementById("stage");
+stage.innerHTML=slides.map(s=>`<section class="slide">${s.html}</section>`).join("");
+const els=[...document.querySelectorAll(".slide")];
+let idx=0;
+
+function show(n){
+  n=Math.max(0,Math.min(slides.length-1,n));
+  els[idx].classList.remove("shown");
+  els[idx].classList.remove("active");
+  idx=n;
+  els[idx].classList.add("active");
+  void els[idx].offsetWidth;
+  els[idx].classList.add("shown");
+  document.getElementById("count").textContent=`${idx+1} / ${slides.length}`;
+  document.getElementById("label").textContent=slides[idx].label;
+  document.getElementById("bar").style.width=((idx)/(slides.length-1)*100)+"%";
+  location.hash=idx+1;
+}
+document.getElementById("next").onclick=()=>show(idx+1);
+document.getElementById("prev").onclick=()=>show(idx-1);
+document.addEventListener("keydown",e=>{
+  if(["ArrowRight","PageDown"," ","Enter"].includes(e.key)){e.preventDefault();show(idx+1)}
+  if(["ArrowLeft","PageUp","Backspace"].includes(e.key)){e.preventDefault();show(idx-1)}
+  if(e.key==="Home")show(0);
+  if(e.key==="End")show(slides.length-1);
+  if(e.key==="f"||e.key==="F"){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen()}
+});
+stage.addEventListener("click",e=>{
+  const f=e.target.closest("[data-go]");
+  if(f){show(+f.dataset.go);return}
+  if(e.clientX>window.innerWidth*0.75)show(idx+1);
+  else if(e.clientX<window.innerWidth*0.25)show(idx-1);
+});
+let sx=null;
+stage.addEventListener("touchstart",e=>sx=e.touches[0].clientX,{passive:true});
+stage.addEventListener("touchend",e=>{
+  if(sx===null)return;
+  const d=e.changedTouches[0].clientX-sx;
+  if(Math.abs(d)>50)show(idx+(d<0?1:-1));
+  sx=null;
+},{passive:true});
+
+show(Math.max(0,(parseInt(location.hash.slice(1))||1)-1));
+</script>
+</body>
+</html>
