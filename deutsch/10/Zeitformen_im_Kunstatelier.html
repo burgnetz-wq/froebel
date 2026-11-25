@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zeitformen im Kunstatelier</title>
+<style>
+:root{color-scheme:light;--ink:#182c29;--muted:#47615b;--green:#21594d;--paper:#f2f4ed;--line:#cbd7ce;--lime:#e2efaf}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.55 system-ui,sans-serif}h1,h2,p{margin:0}button,input,select{font:inherit}button,select{cursor:pointer}button:disabled{cursor:default;opacity:.55}:focus-visible{outline:3px solid #80571e;outline-offset:4px}
+header{background:#173e36;color:white;padding:2.5rem max(1rem,calc((100vw - 70rem)/2));display:flex;align-items:center;justify-content:space-between;gap:2rem}.eyebrow{color:var(--lime);font-weight:700}h1{font:normal clamp(2.3rem,6vw,4.5rem)/1.02 Georgia,serif;margin:.45rem 0 .7rem}header p:last-child{color:#e8f1e9}.art{flex:none;width:clamp(7rem,16vw,12rem);height:6.5rem;background:#ebc985;position:relative;overflow:hidden;border-radius:20% 0 20% 0}.art:before,.art:after{content:"";position:absolute;width:75%;height:110%;border-radius:50%;transform:rotate(-28deg)}.art:before{background:#a6c3a6;left:-9%;top:28%}.art:after{background:#e18167;right:-16%;top:-32%;mix-blend-mode:multiply}
+main{max-width:72rem;margin:auto;padding:1.5rem 1rem 3rem}.layout{display:grid;grid-template-columns:16rem minmax(0,1fr);gap:1.25rem;align-items:start}.panel{background:#fff;border:1px solid var(--line);border-radius:1rem;padding:clamp(1rem,3vw,2rem)}aside.panel{padding:1rem}.progress-text{display:block;font-weight:700;margin-bottom:.25rem}progress{accent-color:var(--green);width:100%;height:.75rem}nav{display:grid;gap:.4rem;margin:1rem 0}button{border:1px solid var(--line);border-radius:.55rem;background:white;color:var(--ink);padding:.55rem .8rem;font-weight:650}button:hover:not(:disabled){background:#edf4ed}nav button{display:flex;justify-content:space-between;align-items:center;gap:.5rem;text-align:left}nav button[aria-current]{background:var(--lime);border-color:#849957}small,.muted,.steps{color:var(--muted)}.steps{margin-top:1rem}h2{font:normal clamp(1.65rem,4vw,2.3rem)/1.12 Georgia,serif;margin:.4rem 0 .7rem}.prompt{font-size:1.17rem;padding:1rem;background:#f2f5ee;border-radius:.55rem;margin:1rem 0;white-space:pre-line}.answers{display:grid;gap:.55rem}.option{display:flex;align-items:start;gap:.6rem;padding:.6rem .75rem;border:1px solid var(--line);border-radius:.5rem;cursor:pointer}.option:has(:checked){background:#e7f0df;border-color:var(--green)}.option input{margin-top:.4rem;accent-color:var(--green)}input[type=text],select{width:100%;padding:.65rem;border:1px solid #708780;border-radius:.4rem;color:var(--ink);background:white}#answer-label{display:block;margin-bottom:.35rem}.actions,.paging{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}.paging{justify-content:space-between;border-top:1px solid var(--line);padding-top:1rem}.primary{background:var(--green);color:white;border-color:var(--green)}.primary:hover:not(:disabled){background:#173e36}.feedback{margin-top:.85rem}.feedback:empty{display:none}.feedback:not(:empty){padding:.75rem;border-radius:.5rem;background:#f7f0de}.feedback.ok{background:#e1efd9}.feedback.bad{background:#fae5df}details{margin-top:1.25rem}summary{cursor:pointer;font-weight:700}table{width:100%;border-collapse:collapse;margin-top:.75rem}th,td{padding:.5rem;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}th{background:#edf4ed}.tablewrap{overflow:auto}dialog{border:1px solid var(--line);border-radius:1rem;padding:1.5rem;max-width:min(28rem,90vw)}dialog::backdrop{background:#173e3680}
+@media(max-width:720px){.layout{grid-template-columns:1fr}nav{grid-template-columns:repeat(2,minmax(0,1fr))}.art{display:none}header{padding:1.8rem 1rem}}@media(max-width:390px){nav{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div><p class="eyebrow">Deutsch · Klasse 10</p><h1>Zeitformen im Kunstatelier</h1><p>Übe die sechs Tempusformen mit Verben aus Atelier, Museum und Ausstellung.</p></div><div class="art" aria-hidden="true"></div></header>
+<main>
+<div class="layout">
+<aside class="panel" aria-label="Übersicht">
+<label class="progress-text" for="progress" id="progress-text"></label><progress id="progress"></progress>
+<nav id="modules" aria-label="Übungsbereiche"></nav>
+<button id="reset" type="button">Fortschritt zurücksetzen</button>
+</aside>
+<div>
+<section class="panel" aria-labelledby="module-title">
+<p class="muted" id="counter"></p><h2 id="module-title" tabindex="-1"></h2><p id="instruction"></p>
+<form id="form"><p class="prompt" id="prompt"></p><div id="answers"></div>
+<div class="actions"><button class="primary" type="submit">Antwort prüfen</button><button id="hint" type="button">Tipp</button><button id="solution" type="button">Lösung anzeigen</button></div>
+<p id="feedback" class="feedback" role="status" aria-live="polite"></p></form>
+<div class="paging"><button id="previous" type="button">Zurück</button><button id="next" type="button">Weiter</button></div>
+</section>
+<details class="panel"><summary>Merkhilfe zu den sechs Zeitformen</summary><div class="tablewrap"><table>
+<thead><tr><th scope="col">Tempus</th><th scope="col">Bildung</th><th scope="col">Beispiel</th></tr></thead>
+<tbody>
+<tr><th scope="row">Präsens</th><td>Verb in der Gegenwartsform</td><td>Sie zeichnet ein Porträt.</td></tr>
+<tr><th scope="row">Präteritum</th><td>Verb in der einfachen Vergangenheitsform</td><td>Sie zeichnete ein Porträt.</td></tr>
+<tr><th scope="row">Perfekt</th><td>haben oder sein im Präsens + Partizip II</td><td>Sie hat ein Porträt gezeichnet.</td></tr>
+<tr><th scope="row">Plusquamperfekt</th><td>haben oder sein im Präteritum + Partizip II</td><td>Sie hatte ein Porträt gezeichnet.</td></tr>
+<tr><th scope="row">Futur I</th><td>werden im Präsens + Infinitiv</td><td>Sie wird ein Porträt zeichnen.</td></tr>
+<tr><th scope="row">Futur II</th><td>werden im Präsens + Partizip II + haben oder sein im Infinitiv</td><td>Sie wird ein Porträt gezeichnet haben.</td></tr>
+</tbody></table></div></details>
+</div></div></main>
+<dialog id="confirm"><h2>Fortschritt zurücksetzen</h2><p>Deine Antworten und der bisherige Fortschritt werden gelöscht.</p><form method="dialog" class="actions"><button value="cancel" autofocus>Abbrechen</button><button class="primary" value="reset">Zurücksetzen</button></form></dialog>
+<script>
+'use strict';
+const tenses = ['Präsens','Präteritum','Perfekt','Plusquamperfekt','Futur I','Futur II'];
+const groups = [
+  {title:'Tempus erkennen', type:'select', task:'Bestimme das Tempus des gesamten Verbgefüges.', items:[
+    ['Bis zur Vernissage wird Mira die Plakate gedruckt haben.',5,'Das Verbgefüge besteht aus „wird“, „gedruckt“ und „haben“.','Werden + Partizip II + haben ergibt Futur II.'],
+    ['Der Keramiker brannte die Gefäße im Ofen.',1,'Achte auf die Form „brannte“.','„Brannte“ ist die einfache Vergangenheitsform von „brennen“.'],
+    ['Die Restauratorin hat den Firnis abgetragen.',2,'„Hat“ steht im Präsens.','„Hat abgetragen“ verbindet das Hilfsverb im Präsens mit dem Partizip II.'],
+    ['Das Team hatte die Lichtinstallation aufgebaut.',3,'„Hatte“ ist eine Vergangenheitsform von „haben“.','„Hatte aufgebaut“ ist Plusquamperfekt.'],
+    ['Morgen wird die Kuratorin die Werke arrangieren.',4,'„Arrangieren“ steht im Infinitiv.','„Wird arrangieren“ ist Futur I.'],
+    ['Morgen hängt die Künstlerin das Triptychon auf.',0,'Bestimme die Form von „hängt“ unabhängig von „morgen“.','„Hängt … auf“ steht im Präsens. Die Zeitangabe verweist auf morgen.']
+  ]},
+  {title:'Verbformen bilden', type:'text', task:'Ergänze alle fehlenden Verbteile. Trenne sie durch ein Leerzeichen.', items:[
+    ['Du ___ die Skizze auf die Leinwand. (übertragen, Präsens)','überträgst','„Übertragen“ ist hier untrennbar. Achte auf den Umlaut bei „du“.','Du überträgst die Skizze auf die Leinwand.'],
+    ['Der Bildhauer ___ die Figur aus Lindenholz. (schnitzen, Präteritum)','schnitzte','Das regelmäßige Verb bildet diese Form mit „-te“.','Der Bildhauer schnitzte die Figur aus Lindenholz.'],
+    ['Die Performerin ___ schon vor Beginn ___. (eintreffen, Perfekt)','ist eingetroffen','„Eintreffen“ bildet das Perfekt mit „sein“.','Die Performerin ist schon vor Beginn eingetroffen.'],
+    ['Vor der Eröffnung ___ ihr die Bilder bereits ___. (aufhängen, Plusquamperfekt)','hattet aufgehängt','Setze „haben“ in die zweite Person Plural des Präteritums.','Vor der Eröffnung hattet ihr die Bilder bereits aufgehängt.'],
+    ['Wir ___ die Abzüge morgen ___. (kolorieren, Futur I)','werden kolorieren','Verwende „werden“ und den Infinitiv.','Wir werden die Abzüge morgen kolorieren.'],
+    ['Bis Freitag ___ du die Schablone ___ ___. (zuschneiden, Futur II)','wirst zugeschnitten haben','Setze nach dem Partizip II den Infinitiv „haben“.','Bis Freitag wirst du die Schablone zugeschnitten haben.']
+  ]},
+  {title:'Sätze umformen', type:'text', task:'Schreibe den ganzen Satz im angegebenen Tempus. Behalte die übrige Wortfolge bei.', items:[
+    ['Die Schülerin entwirft ein Bühnenbild.\nSetze ins Präteritum.','Die Schülerin entwarf ein Bühnenbild.','„Entwerfen“ ist ein starkes Verb.','Der Vokal wechselt von „i“ zu „a“.'],
+    ['Wir gossen die Figur in Bronze.\nSetze ins Perfekt.','Wir haben die Figur in Bronze gegossen.','Das Partizip von „gießen“ hat einen Vokalwechsel.','„Gießen“ bildet das Perfekt mit „haben“.'],
+    ['Die Fotografen trafen im Museum ein.\nSetze ins Plusquamperfekt.','Die Fotografen waren im Museum eingetroffen.','Verwende das Präteritum von „sein“.','Bei „eintreffen“ steht „waren“ vor der Ortsangabe und das Partizip am Satzende.'],
+    ['Die Künstlerin signiert den Druck.\nSetze ins Futur I.','Die Künstlerin wird den Druck signieren.','Setze den Infinitiv ans Satzende.','„Wird“ stimmt mit dem Subjekt im Singular überein.'],
+    ['Das Team rahmt die Zeichnungen.\nSetze ins Futur II.','Das Team wird die Zeichnungen gerahmt haben.','Du brauchst das Partizip „gerahmt“.','Am Ende folgt auf das Partizip „gerahmt“ der Infinitiv „haben“.'],
+    ['Ihr habt die Farben gemischt.\nSetze ins Präsens.','Ihr mischt die Farben.','Konjugiere „mischen“ für „ihr“.','„Mischt“ ist die Form für die zweite Person Plural.']
+  ]},
+  {title:'Fehler korrigieren', type:'text', task:'Korrigiere die fehlerhafte Verbform. Schreibe den vollständigen Satz und behalte die Wortfolge bei.', items:[
+    ['Die Künstlerin hat den Druck signiertet. (Perfekt)','Die Künstlerin hat den Druck signiert.','Bei Verben auf „-ieren“ steht im Partizip kein „ge-“.','Das Partizip von „signieren“ endet auf „-iert“.'],
+    ['Gestern schneidete der Künstler die Vorlage aus. (Präteritum)','Gestern schnitt der Künstler die Vorlage aus.','„Schneiden“ bildet das Präteritum unregelmäßig.','„Schnitt … aus“ ist die Präteritumform von „ausschneiden“.'],
+    ['Die Gäste hatten schon zur Vernissage eingetroffen. (Plusquamperfekt)','Die Gäste waren schon zur Vernissage eingetroffen.','„Eintreffen“ verlangt das Hilfsverb „sein“.','„Waren“ ist die passende Form von „sein“ im Präteritum.'],
+    ['Du zeichnen die Konturen nach. (Präsens)','Du zeichnest die Konturen nach.','Setze „zeichnen“ in die zweite Person Singular.','Die Form lautet „zeichnest … nach“.'],
+    ['Morgen wird das Team die Fotos retuschiert. (Futur I)','Morgen wird das Team die Fotos retuschieren.','Futur I verlangt am Satzende den Infinitiv.','„Retuschieren“ ist der Infinitiv.'],
+    ['Bis Freitag wird die Künstlerin das Wandbild vollendet hat. (Futur II)','Bis Freitag wird die Künstlerin das Wandbild vollendet haben.','Am Satzende steht der Infinitiv des Hilfsverbs.','Die vollständige Form lautet „wird … vollendet haben“.']
+  ]},
+  {title:'Abfolge im Text', type:'radio', task:'Wähle die Antwort, die zur zeitlichen Abfolge im Text passt.', items:[
+    ['Nachdem Lio den Ton geknetet hatte, formte er eine Schale. Was tat Lio zuerst?', ['Er knetete den Ton.','Er formte eine Schale.','Beides geschah gleichzeitig.'],0,'„Nachdem“ leitet das frühere Ereignis ein.','„Geknetet hatte“ markiert die Vorzeitigkeit.'],
+    ['Als die Ausstellung begann, ___ die Kuratorin die Werke bereits ___. Wähle die Form für den früheren Vorgang.', ['hat … beschriftet','hatte … beschriftet','wird … beschriften'],1,'Der Beginn der Ausstellung liegt hier in der Vergangenheit.','Das Beschriften war zu diesem Zeitpunkt bereits abgeschlossen.'],
+    ['Zuerst belichtete Sam das Papier. Danach entwickelte Sam den Abzug. Welche Verbindung gibt die Abfolge korrekt wieder?', ['Nachdem Sam den Abzug entwickelt hatte, belichtete Sam das Papier.','Während Sam das Papier belichtete, entwickelte Sam den Abzug.','Nachdem Sam das Papier belichtet hatte, entwickelte Sam den Abzug.'],2,'Achte darauf, welches Verb im Plusquamperfekt stehen muss.','Belichten kommt zuerst, Entwickeln folgt danach.'],
+    ['Als sie das Mosaik präsentierte, hatte sie den Entwurf bereits überarbeitet. Worauf bezieht sich „bereits“?', ['Auf das Präsentieren.','Auf das Überarbeiten.','Auf beide Vorgänge.'],1,'Suche das Verbgefüge im Hauptsatz.','„Bereits“ bezieht sich auf „hatte … überarbeitet“.'],
+    ['Welcher Satz stellt das Grundieren als abgeschlossen dar, bevor das Malen begann?', ['Während er die Leinwand grundierte, begann er zu malen.','Bevor er die Leinwand grundierte, begann er zu malen.','Nachdem er die Leinwand grundiert hatte, begann er zu malen.'],2,'„Während“ zeigt Gleichzeitigkeit an.','Das Plusquamperfekt im nachdem-Satz markiert das frühere Grundieren.'],
+    ['Die Bühnenbildnerin hatte das Modell gebaut, bevor das Ensemble erstmals probte. Was geschah später?', ['Sie baute das Modell.','Das Ensemble probte.','Der Satz legt keine Reihenfolge fest.'],1,'„Bevor“ führt in diesem Satz das spätere Ereignis ein.','Das Modell war bei der ersten Probe schon fertig.']
+  ]},
+  {title:'Wirkung im Kontext', type:'radio', task:'Wähle die Deutung, die der Kontext nahelegt.', items:[
+    ['Bis zur Vernissage wird das Team alle Werke gehängt haben.', ['Vermutung über einen vergangenen Vorgang','Abschluss bis zu einem zukünftigen Zeitpunkt','Handlung, die gerade abläuft'],1,'„Bis zur Vernissage“ nennt einen künftigen Bezugspunkt.','Zu diesem Zeitpunkt sollen alle Werke bereits hängen.'],
+    ['Der Platz an der Wand ist leer. Das Team wird das Bild schon abgehängt haben.', ['Vermutung über einen vergangenen Vorgang','Auftrag für morgen','Wiederkehrendes Ereignis'],0,'Der leere Platz ist ein Hinweis, aus dem jemand einen Schluss zieht.','Mit Futur II lässt sich eine Vermutung über Vergangenes ausdrücken.'],
+    ['„Morgen skizziere ich die Installation.“ Wie verhalten sich Tempus und Zeitbezug?', ['Futur I mit Zukunftsbezug','Präsens mit Gegenwartsbezug','Präsens mit Zukunftsbezug'],2,'Welche Form hat „skizziere“?','Das Verb steht im Präsens. „Morgen“ gibt den Zukunftsbezug an.'],
+    ['Die Druckpresse läuft nicht, aber am Hebel ist Farbe. „Jemand wird vorhin einen Probedruck angefertigt haben.“ Welche Aussage passt?', ['Der Probedruck ist durch die Aussage sicher belegt.','Die Aussage enthält eine Vermutung über Vergangenes.','Die Aussage gibt eine Frist für den Probedruck an.'],1,'„Vorhin“ weist in die Vergangenheit.','Die Farbe ist ein Indiz. Das Futur II drückt hier eine Vermutung aus.'],
+    ['Die Museumsführung beginnt gleich. Die Kuratorin wird wohl schon im Foyer warten.', ['Vermutung über die Gegenwart','Sicherer Abschluss in der Zukunft','Rückblick auf einen vergangenen Vorgang'],0,'„Wohl schon“ ist hier ein Signal für eine Annahme über jetzt.','Futur I kann mit Gegenwartsbezug eine Vermutung ausdrücken.'],
+    ['„Gestern habe ich die Holzplatte graviert.“ Welche Beschreibung passt für diesen Satz?', ['Präteritum mit Zukunftsbezug','Perfekt mit Vergangenheitsbezug','Plusquamperfekt mit Vergangenheitsbezug'],1,'Bestimme zuerst die Form von „habe“.','„Habe graviert“ ist Perfekt. „Gestern“ verankert die Handlung in der Vergangenheit.']
+  ]}
+];
+const $ = id => document.getElementById(id);
+const storageKey = 'kunstatelier-tempus-v1';
+const empty = () => ({module:0,index:0,entries:{}});
+let state = empty();
+try {
+  const saved = JSON.parse(localStorage.getItem(storageKey));
+  if (saved && groups[saved.module]?.items[saved.index] && saved.entries && typeof saved.entries === 'object') state = saved;
+} catch {}
+const persist = () => { try { localStorage.setItem(storageKey,JSON.stringify(state)); } catch {} };
+const total = groups.reduce((sum,group) => sum + group.items.length,0);
+const id = () => state.module + ':' + state.index;
+const entry = () => state.entries[id()] ??= {};
+const normalize = text => text.normalize('NFC').toLocaleLowerCase('de').trim().replace(/[.!?]+$/,'').trim().replace(/\s+/g,' ');
+function current() {
+  const group = groups[state.module];
+  const [prompt, second, third, fourth, fifth] = group.items[state.index];
+  if (group.type === 'radio') return {group,prompt,options:second,key:third,hint:fourth,explanation:fifth};
+  if (group.type === 'select') return {group,prompt,options:tenses,key:second,hint:third,explanation:fourth};
+  return {group,prompt,key:second,hint:third,explanation:fourth};
+}
+function solution(task) {
+  return task.options ? task.options[task.key] : task.key;
+}
+function overview() {
+  const counts = groups.map((group,m) => group.items.filter((_,i) => state.entries[m+':'+i]?.solved).length);
+  const solved = counts.reduce((a,b) => a+b,0);
+  $('progress').max = total;
+  $('progress').value = solved;
+  $('progress-text').textContent = solved + ' von ' + total + ' gelöst';
+  Array.from($('modules').children).forEach((button,m) => {
+    button.lastChild.textContent = counts[m] + '/' + groups[m].items.length;
+    if (m === state.module) button.setAttribute('aria-current','true');
+    else button.removeAttribute('aria-current');
+  });
+}
+function feedback(message='',kind='') {
+  $('feedback').className = 'feedback ' + kind;
+  $('feedback').textContent = message;
+}
+function render(focus=false) {
+  const task = current();
+  const previous = state.entries[id()] ?? {};
+  const {group,prompt,options} = task;
+  $('counter').textContent = 'Aufgabe ' + (state.index+1) + ' von ' + group.items.length;
+  $('module-title').textContent = group.title;
+  $('instruction').textContent = group.task;
+  $('prompt').textContent = prompt;
+  const container = $('answers');
+  container.replaceChildren();
+  if (group.type === 'radio') {
+    container.className = 'answers';
+    container.setAttribute('role','radiogroup');
+    container.setAttribute('aria-labelledby','prompt');
+    options.forEach((option,i) => {
+      const label = document.createElement('label');
+      label.className = 'option';
+      const input = document.createElement('input');
+      input.type = 'radio'; input.name = 'answer'; input.value = i;
+      input.checked = previous.value === String(i);
+      label.append(input,document.createTextNode(option));
+      container.append(label);
+    });
+  } else {
+    container.className = '';
+    container.removeAttribute('role');
+    container.removeAttribute('aria-labelledby');
+    const label = document.createElement('label');
+    label.id = 'answer-label';
+    label.htmlFor = 'response';
+    label.textContent = options ? 'Tempus wählen' : 'Deine Antwort';
+    const input = document.createElement(options ? 'select' : 'input');
+    input.id = 'response'; input.name = 'answer';
+    input.setAttribute('aria-describedby','prompt');
+    if (options) {
+      input.add(new Option('Bitte auswählen',''));
+      options.forEach((option,i) => input.add(new Option(option,String(i))));
+    } else {
+      input.type = 'text'; input.autocomplete = 'off'; input.spellcheck = false;
+    }
+    input.value = previous.value ?? '';
+    container.append(label,input);
+  }
+  $('previous').disabled = state.module === 0 && state.index === 0;
+  $('next').disabled = state.module === groups.length-1 && state.index === group.items.length-1;
+  feedback(previous.message,previous.kind);
+  overview();
+  if (focus) $('module-title').focus();
+}
+function navigate(module,index) {
+  state.module = module; state.index = index;
+  persist(); render(true);
+}
+function move(direction) {
+  const index = state.index + direction;
+  if (groups[state.module].items[index]) navigate(state.module,index);
+  else {
+    const module = state.module + direction;
+    if (groups[module]) navigate(module,direction > 0 ? 0 : groups[module].items.length-1);
+  }
+}
+function remember(message,kind='') {
+  Object.assign(entry(),{message,kind});
+  feedback(message,kind); persist(); overview();
+}
+function answer() {
+  return new FormData($('form')).get('answer') ?? '';
+}
+$('form').addEventListener('input',() => {
+  Object.assign(entry(),{value:answer(),message:'',kind:''});
+  feedback(); persist();
+});
+$('form').addEventListener('submit',event => {
+  event.preventDefault();
+  const task = current();
+  const value = answer();
+  if (!value.trim()) { feedback('Gib zuerst eine Antwort ein oder wähle eine aus.'); return; }
+  entry().value = value;
+  const correct = task.options ? value === String(task.key) : normalize(value) === normalize(task.key);
+  if (correct) {
+    entry().solved = true;
+    remember('Richtig. ' + task.explanation,'ok');
+  } else remember('Versuch es noch einmal. Bei Bedarf hilft dir der Tipp.','bad');
+});
+$('hint').onclick = () => remember(current().hint);
+$('solution').onclick = () => {
+  const task = current();
+  remember('Lösung: ' + solution(task) + ' · ' + task.explanation);
+};
+$('previous').onclick = () => move(-1);
+$('next').onclick = () => move(1);
+$('reset').onclick = () => {
+  $('confirm').returnValue = '';
+  $('confirm').showModal();
+};
+$('confirm').addEventListener('close',() => {
+  if ($('confirm').returnValue !== 'reset') return;
+  state = empty(); persist(); render(true);
+});
+groups.forEach((group,m) => {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.append(document.createTextNode(group.title),document.createElement('small'));
+  button.onclick = () => navigate(m,0);
+  $('modules').append(button);
+});
+render();
+</script>
+</body>
+</html>
