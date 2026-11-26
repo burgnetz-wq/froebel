@@ -1,6 +1,6 @@
-<!doctype html>
-<html lang="de">
-<head>
+<!DOCTYPE html>
+<html lang="de"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Die sechs Zeitformen mit Salvador Dalí</title>
@@ -34,7 +34,7 @@ dt{font-weight:700}dd{margin:0 0 .6rem}
 <header><p>Deutsch · Klasse 10</p><h1>Die sechs Zeitformen<br>mit Salvador Dalí</h1><p>Vom Bild mit den weichen Uhren zum Museumsbericht</p></header>
 <main>
 <figure style="margin:0 auto 1rem;max-width:469px">
-<img src="https://www.moma.org/momaorg/shared/flattened_pages/moma_learning/_assets/www.moma.org/wp/moma_learning/wp-content/uploads/2012/07/dali-469x340.jpg" width="469" height="340" style="display:block;width:100%;height:auto" alt="Surrealistische Landschaft mit weichen Taschenuhren, die über einen Ast und Kanten hängen.">
+<img src="10_deutsch_33_zeitformen_dali_files/dali-469x340_ghxQ.jpg" width="469" height="340" style="display:block;width:100%;height:auto" alt="Surrealistische Landschaft mit weichen Taschenuhren, die über einen Ast und Kanten hängen.">
 <figcaption>Salvador Dalí, <cite>The Persistence of Memory</cite> (1931). <a href="https://www.moma.org/collection/works/79018">Bildquelle und Werkseite des MoMA</a></figcaption>
 </figure>
 <nav aria-label="Übung wählen">
@@ -43,12 +43,12 @@ dt{font-weight:700}dd{margin:0 0 .6rem}
 <button type="button" data-mode="2" aria-pressed="false">Museumsbericht ergänzen</button>
 </nav>
 <section aria-labelledby="heading">
-<h2 id="heading" tabindex="-1"></h2>
-<p id="progress"></p>
-<p id="prompt" class="prompt"></p>
+<h2 id="heading" tabindex="-1">Zeitformen erkennen</h2>
+<p id="progress">Aufgabe 1 von 6 · 1 gelöst</p>
+<p id="prompt" class="prompt">Auf dem Bild hängen weiche Uhren.</p>
 <form id="exercise">
-<label id="label" for="answer"></label>
-<div id="field"></div>
+<label id="label" for="answer">Welche Zeitform erkennst du?</label>
+<div id="field"><select id="answer"><option value="">Zeitform auswählen</option><option value="0" selected="selected">Präsens</option><option value="1">Präteritum</option><option value="2">Perfekt</option><option value="3">Plusquamperfekt</option><option value="4">Futur I</option><option value="5">Futur II</option></select></div>
 <div class="actions">
 <button type="submit">Prüfen</button>
 <button type="button" id="hint">Tipp</button>
@@ -56,9 +56,9 @@ dt{font-weight:700}dd{margin:0 0 .6rem}
 <button type="button" id="reset">Neu starten</button>
 </div>
 </form>
-<p id="result" role="status"></p>
+<p id="result" role="status" class="good">„Hängen“ steht hier im Präsens. Der Satz beschreibt, was auf dem Gemälde zu sehen ist.</p>
 </section>
-<details><summary>Die sechs Zeitformen im Überblick</summary><dl id="reference"></dl></details>
+<details><summary>Die sechs Zeitformen im Überblick</summary><dl id="reference"><dt>Präsens</dt><dd>Präsensform. Für Gegenwärtiges und Gewohnheiten. Mit einer Zeitangabe auch für Zukünftiges.</dd><dt>Präteritum</dt><dd>Präteritumform. Typisch für schriftliche Erzählungen über Vergangenes.</dd><dt>Perfekt</dt><dd>Haben oder sein im Präsens + Partizip II. Häufig für Vergangenes im Gespräch.</dd><dt>Plusquamperfekt</dt><dd>Haben oder sein im Präteritum + Partizip II. Eine Handlung war vor einem vergangenen Ereignis abgeschlossen.</dd><dt>Futur I</dt><dd>Werden im Präsens + Infinitiv. Kann ausdrücken, was in Zukunft geschieht.</dd><dt>Futur II</dt><dd>Werden im Präsens + Partizip II + haben oder sein im Infinitiv. Kann ausdrücken, was bis zu einem künftigen Zeitpunkt abgeschlossen sein wird.</dd></dl></details>
 </main>
 <script>
 'use strict';
@@ -74,17 +74,17 @@ const rules = [
 const recognize = [
   ['Auf dem Bild hängen weiche Uhren.',0,'„Hängen“ steht hier im Präsens. Der Satz beschreibt, was auf dem Gemälde zu sehen ist.'],
   ['Die Klasse betrachtete Dalís Gemälde.',1,'„Betrachtete“ ist die Präteritumform. Der Satz erzählt von einem vergangenen Besuch.'],
-  ['Pia hat eine weiche Uhr gezeichnet.',2,'„Hat gezeichnet“ steht im Perfekt.'],
+  ['Mia hat eine weiche Uhr gezeichnet.',2,'„Hat gezeichnet“ steht im Perfekt.'],
   ['Als die Führung begann, hatte Ben das Schild schon gelesen.',3,'„Hatte gelesen“ steht im Plusquamperfekt. Das Lesen war vor Beginn der Führung abgeschlossen.'],
   ['Morgen werden wir über Dalís Uhren sprechen.',4,'„Werden sprechen“ steht im Futur I. Das Gespräch liegt in der Zukunft.'],
   ['Bis morgen wird Ben den Text über Dalí gelesen haben.',5,'„Wird gelesen haben“ steht im Futur II. Morgen ist die Frist.']
 ];
 const build = [
-  ['Pia ___ eine weiche Uhr.','zeichnet',0,'zeichnen'],
-  ['Pia ___ eine weiche Uhr.','zeichnete',1,'zeichnen'],
-  ['Pia ___ eine weiche Uhr ___.','hat gezeichnet',2,'zeichnen'],
-  ['Zu Beginn der Stunde ___ Pia schon eine weiche Uhr ___.','hatte gezeichnet',3,'zeichnen'],
-  ['Morgen ___ Pia eine weiche Uhr ___.','wird zeichnen',4,'zeichnen'],
+  ['Mia ___ eine weiche Uhr.','zeichnet',0,'zeichnen'],
+  ['Mia ___ eine weiche Uhr.','zeichnete',1,'zeichnen'],
+  ['Mia ___ eine weiche Uhr ___.','hat gezeichnet',2,'zeichnen'],
+  ['Zu Beginn der Stunde ___ Mia schon eine weiche Uhr ___.','hatte gezeichnet',3,'zeichnen'],
+  ['Morgen ___ Mia eine weiche Uhr ___.','wird zeichnen',4,'zeichnen'],
   ['Bis morgen ___ Lea ins Museum ___ ___.','wird gefahren sein',5,'fahren']
 ];
 const report = [
@@ -135,7 +135,7 @@ buttons.forEach(button=>button.addEventListener('click',()=>{
 get('exercise').addEventListener('submit',event=>{
   event.preventDefault();
   const state=states[mode];
-  const [,solution,form,detail]=activities[mode][state.index];
+  const [,solution,form]=activities[mode][state.index];
   const value=get('answer').value.trim().toLocaleLowerCase('de').replace(/\s+/g,' ');
   if(!value){feedback('Gib zuerst eine Antwort ein.','retry');get('answer').focus();return;}
   if(value!==String(solution)){
@@ -144,7 +144,7 @@ get('exercise').addEventListener('submit',event=>{
   }
   state.done.add(state.index);
   get('progress').textContent=`Aufgabe ${state.index+1} von 6 · ${state.done.size} gelöst`;
-  feedback(mode===0 ? detail : `Richtig. „${solution}“ steht im ${forms[form]}.`,'good');
+  feedback(mode===0 ? form : `Richtig. „${solution}“ steht im ${forms[form]}.`,'good');
 });
 get('hint').addEventListener('click',()=>{
   const [,solution,form,verb,context]=activities[mode][states[mode].index];
@@ -170,5 +170,7 @@ forms.forEach((name,i)=>{
 });
 render(false);
 </script>
-</body>
-</html>
+
+
+
+</body></html>
