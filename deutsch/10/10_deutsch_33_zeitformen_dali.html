@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Die sechs Zeitformen mit Salvador Dalí</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f5eee2;color:#241b15;font:1.1rem/1.55 system-ui,sans-serif}
+header{background:#262b39;color:#fff6e6;padding:2.3rem max(1rem,calc((100% - 58rem)/2));border-bottom:6px solid #ae6541}
+header p{margin:0;color:#f1bd94}
+h1,h2{font-family:Georgia,serif;line-height:1.13}
+h1{font-size:clamp(2.15rem,6vw,4rem);margin:.35rem 0 .6rem}
+h2{font-size:1.8rem;margin:.3rem 0}
+main{max-width:60rem;margin:auto;padding:1rem 1rem 3rem}
+nav{display:flex;flex-wrap:wrap;gap:.55rem;margin:.5rem 0 1.3rem}
+button,select,input{font:inherit}
+button{cursor:pointer;border:1px solid #744b36;border-radius:.5rem;background:white;color:#382719;padding:.45rem .8rem}
+button[aria-pressed=true],button[type=submit]{background:#693722;color:white}
+button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #146585;outline-offset:3px}
+section,details{background:#fffdfa;border:1px solid #d7c5b1;border-radius:1rem;padding:clamp(1rem,4vw,2rem);margin-bottom:1rem}
+summary{cursor:pointer;font-weight:650}
+.prompt{font-size:clamp(1.25rem,3.5vw,1.8rem);font-weight:600}
+label{display:block;margin-bottom:.35rem}
+select,input{width:min(100%,30rem);padding:.5rem;border:1px solid #745f52;border-radius:.35rem;background:white;color:inherit}
+.actions{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+#result{min-height:3.4rem;margin:.85rem 0 0}
+#result.good{color:#245432} #result.retry{color:#852e21}
+small{display:block;margin-top:.55rem}
+dt{font-weight:700}dd{margin:0 0 .6rem}
+</style>
+</head>
+<body>
+<header><p>Deutsch · Klasse 10</p><h1>Die sechs Zeitformen<br>mit Salvador Dalí</h1><p>Vom Bild mit den weichen Uhren zum Museumsbericht</p></header>
+<main>
+<figure style="margin:0 auto 1rem;max-width:469px">
+<img src="https://www.moma.org/momaorg/shared/flattened_pages/moma_learning/_assets/www.moma.org/wp/moma_learning/wp-content/uploads/2012/07/dali-469x340.jpg" width="469" height="340" style="display:block;width:100%;height:auto" alt="Surrealistische Landschaft mit weichen Taschenuhren, die über einen Ast und Kanten hängen.">
+<figcaption>Salvador Dalí, <cite>The Persistence of Memory</cite> (1931). <a href="https://www.moma.org/collection/works/79018">Bildquelle und Werkseite des MoMA</a></figcaption>
+</figure>
+<nav aria-label="Übung wählen">
+<button type="button" data-mode="0" aria-pressed="true">Zeitformen erkennen</button>
+<button type="button" data-mode="1" aria-pressed="false">Verbformen bilden</button>
+<button type="button" data-mode="2" aria-pressed="false">Museumsbericht ergänzen</button>
+</nav>
+<section aria-labelledby="heading">
+<h2 id="heading" tabindex="-1"></h2>
+<p id="progress"></p>
+<p id="prompt" class="prompt"></p>
+<form id="exercise">
+<label id="label" for="answer"></label>
+<div id="field"></div>
+<div class="actions">
+<button type="submit">Prüfen</button>
+<button type="button" id="hint">Tipp</button>
+<button type="button" id="next">Weiter</button>
+<button type="button" id="reset">Neu starten</button>
+</div>
+</form>
+<p id="result" role="status"></p>
+</section>
+<details><summary>Die sechs Zeitformen im Überblick</summary><dl id="reference"></dl></details>
+</main>
+<script>
+'use strict';
+const forms = ['Präsens','Präteritum','Perfekt','Plusquamperfekt','Futur I','Futur II'];
+const rules = [
+  'Präsensform. Für Gegenwärtiges und Gewohnheiten. Mit einer Zeitangabe auch für Zukünftiges.',
+  'Präteritumform. Typisch für schriftliche Erzählungen über Vergangenes.',
+  'Haben oder sein im Präsens + Partizip II. Häufig für Vergangenes im Gespräch.',
+  'Haben oder sein im Präteritum + Partizip II. Eine Handlung war vor einem vergangenen Ereignis abgeschlossen.',
+  'Werden im Präsens + Infinitiv. Kann ausdrücken, was in Zukunft geschieht.',
+  'Werden im Präsens + Partizip II + haben oder sein im Infinitiv. Kann ausdrücken, was bis zu einem künftigen Zeitpunkt abgeschlossen sein wird.'
+];
+const recognize = [
+  ['Auf dem Bild hängen weiche Uhren.',0,'„Hängen“ steht hier im Präsens. Der Satz beschreibt, was auf dem Gemälde zu sehen ist.'],
+  ['Die Klasse betrachtete Dalís Gemälde.',1,'„Betrachtete“ ist die Präteritumform. Der Satz erzählt von einem vergangenen Besuch.'],
+  ['Pia hat eine weiche Uhr gezeichnet.',2,'„Hat gezeichnet“ steht im Perfekt.'],
+  ['Als die Führung begann, hatte Ben das Schild schon gelesen.',3,'„Hatte gelesen“ steht im Plusquamperfekt. Das Lesen war vor Beginn der Führung abgeschlossen.'],
+  ['Morgen werden wir über Dalís Uhren sprechen.',4,'„Werden sprechen“ steht im Futur I. Das Gespräch liegt in der Zukunft.'],
+  ['Bis morgen wird Ben den Text über Dalí gelesen haben.',5,'„Wird gelesen haben“ steht im Futur II. Morgen ist die Frist.']
+];
+const build = [
+  ['Pia ___ eine weiche Uhr.','zeichnet',0,'zeichnen'],
+  ['Pia ___ eine weiche Uhr.','zeichnete',1,'zeichnen'],
+  ['Pia ___ eine weiche Uhr ___.','hat gezeichnet',2,'zeichnen'],
+  ['Zu Beginn der Stunde ___ Pia schon eine weiche Uhr ___.','hatte gezeichnet',3,'zeichnen'],
+  ['Morgen ___ Pia eine weiche Uhr ___.','wird zeichnen',4,'zeichnen'],
+  ['Bis morgen ___ Lea ins Museum ___ ___.','wird gefahren sein',5,'fahren']
+];
+const report = [
+  ['Gestern ___ wir eine Dalí-Ausstellung.','besuchten',1,'besuchen','Der schriftliche Bericht erzählt von gestern.'],
+  ['Vor dem Besuch ___ wir schon Fragen ___.','hatten gesammelt',3,'sammeln','Die Fragen waren bereits vor dem Besuch gesammelt.'],
+  ['Jetzt ___ wir über die weichen Uhren.','sprechen',0,'sprechen','„Jetzt“ bezeichnet hier den Moment, in dem gesprochen wird.'],
+  ['Zu Hause erzähle ich: „Ich ___ Dalís Gemälde ___.“','habe gesehen',2,'sehen','Setze für das Gespräch die Vergangenheit mit „haben“ und Partizip II ein.'],
+  ['Morgen ___ wir dem Museumsführer eine E-Mail ___.','werden schicken',4,'schicken','Verwende „werden“ und den Infinitiv.'],
+  ['Bis Freitag ___ wir den Bericht ___ ___.','werden abgeschlossen haben',5,'abschließen','Am Freitag soll der Bericht spätestens fertig sein.']
+];
+const activities = [recognize,build,report];
+const titles = ['Zeitformen erkennen','Verbformen bilden','Museumsbericht ergänzen'];
+const states = activities.map(()=>({index:0,done:new Set()}));
+const get = id=>document.getElementById(id);
+const buttons = [...document.querySelectorAll('[data-mode]')];
+let mode = 0;
+function render(focus) {
+  const {index,done} = states[mode];
+  const [sentence,,form,verb] = activities[mode][index];
+  get('heading').textContent = titles[mode];
+  get('progress').textContent = `Aufgabe ${index+1} von ${activities[mode].length} · ${done.size} gelöst`;
+  get('prompt').textContent = sentence;
+  const answer = document.createElement(mode===0?'select':'input');
+  answer.id = 'answer';
+  if(mode===0){
+    get('label').textContent = index===3?'In welcher Zeitform steht „lesen“?':'Welche Zeitform erkennst du?';
+    answer.add(new Option('Zeitform auswählen',''));
+    forms.forEach((name,i)=>answer.add(new Option(name,String(i))));
+  }else{
+    get('label').textContent = mode===1 ? `${verb} im ${forms[form]} – nur die Verbteile eingeben` : `${verb} – nur die Verbteile eingeben`;
+    answer.type='text'; answer.autocomplete='off'; answer.spellcheck=false;
+    answer.placeholder='Verbteile durch Leerzeichen trennen';
+  }
+  get('field').replaceChildren(answer);
+  get('next').textContent = index===activities[mode].length-1?'Zum Anfang':'Weiter';
+  feedback('');
+  if(focus) get('heading').focus();
+}
+function feedback(message,style=''){
+  get('result').className=style;
+  get('result').textContent=message;
+}
+buttons.forEach(button=>button.addEventListener('click',()=>{
+  mode=Number(button.dataset.mode);
+  buttons.forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
+  render(true);
+}));
+get('exercise').addEventListener('submit',event=>{
+  event.preventDefault();
+  const state=states[mode];
+  const [,solution,form,detail]=activities[mode][state.index];
+  const value=get('answer').value.trim().toLocaleLowerCase('de').replace(/\s+/g,' ');
+  if(!value){feedback('Gib zuerst eine Antwort ein.','retry');get('answer').focus();return;}
+  if(value!==String(solution)){
+    feedback('Versuch es noch einmal. Der Tipp hilft dir bei der Bildung.','retry');
+    return;
+  }
+  state.done.add(state.index);
+  get('progress').textContent=`Aufgabe ${state.index+1} von 6 · ${state.done.size} gelöst`;
+  feedback(mode===0 ? detail : `Richtig. „${solution}“ steht im ${forms[form]}.`,'good');
+});
+get('hint').addEventListener('click',()=>{
+  const [,solution,form,verb,context]=activities[mode][states[mode].index];
+  if(mode===0){
+    const clues=['Das Bild wird in der Gegenwart beschrieben.','Achte auf die einteilige Form „betrachtete“.','Achte auf „hat“ und das Partizip.','Achte auf „hatte“ und das Partizip.','Achte auf „werden“ und den Infinitiv.','Die Verbform besteht aus drei Teilen.'];
+    feedback(clues[solution]);return;
+  }
+  feedback(context || rules[form]);
+});
+get('next').addEventListener('click',()=>{
+  const state=states[mode];
+  state.index=(state.index+1)%activities[mode].length;
+  render(true);
+});
+get('reset').addEventListener('click',()=>{
+  states[mode]={index:0,done:new Set()};
+  render(true);
+});
+forms.forEach((name,i)=>{
+  const term=document.createElement('dt'),definition=document.createElement('dd');
+  term.textContent=name; definition.textContent=rules[i];
+  get('reference').append(term,definition);
+});
+render(false);
+</script>
+</body>
+</html>
